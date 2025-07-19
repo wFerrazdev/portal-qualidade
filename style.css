@@ -86,7 +86,7 @@ html, body {
 /* --- PÁGINA PROJETOS --- */
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   gap: 40px;
 }
 
@@ -106,7 +106,7 @@ html, body {
 }
 
 .card-image-container {
-  height: 220px;
+  height: 430px;
   overflow: hidden;
   background-color: #f0f0f0; /* Fundo para imagens transparentes */
 }
