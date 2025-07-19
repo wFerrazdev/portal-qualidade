@@ -101,7 +101,7 @@ html, body {
 /* Em telas largas (desktops), mudamos para 3 colunas */
 @media (min-width: 1200px) {
   .projects-grid {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
   }
 }
 
@@ -121,13 +121,13 @@ html, body {
 }
 
 .card-image-container {
-  height: 360px;
+  height: 250px;
   overflow: hidden;
   background-color: #f0f0f0; /* Fundo para imagens transparentes */
 }
 
 .card-image-container img {
-  width: 90%;
+  width: 100%;
   height: 100%;
   object-fit: cover;
   transition: transform 0.3s ease;
