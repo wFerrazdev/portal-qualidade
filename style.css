@@ -486,3 +486,33 @@ body.menu-open .main-content {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
+
+  .form-actions {
+    display: flex; /* Ativa o flexbox */
+    justify-content: flex-end; /* Alinha os botões da direita para a direita */
+    align-items: center; /* Alinha verticalmente */
+    margin-top: 30px;
+  }
+  
+  .delete-button {
+    margin-right: auto; /* MÁGICA: Empurra o botão de excluir para a esquerda */
+    background-color: transparent;
+    border: 1px solid #dc3545;
+    color: #dc3545;
+    padding: 8px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+  .delete-button:hover {
+    background-color: #dc3545;
+    color: white;
+  }
+  
+  /* Classe utilitária para esconder/mostrar o botão */
+  .hidden {
+    display: none !important;
+  }

@@ -109,6 +109,9 @@
                         <textarea id="principais_feitos" name="principais_feitos" rows="4"></textarea>
                     </div>
                     <div class="form-actions">
+                        <button type="button" id="deleteProjectBtn" class="delete-button hidden">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                        </button>
                         <button type="submit" class="save-button">Salvar Projeto</button>
                         <button type="button" id="cancelModalBtn" class="cancel-button">Cancelar</button>
                     </div>
@@ -127,6 +130,7 @@
         const projectModal = document.getElementById('projectModal');
         const closeModalBtn = document.getElementById('closeModalBtn');
         const cancelModalBtn = document.getElementById('cancelModalBtn');
+        const deleteProjectBtn = document.getElementById('deleteProjectBtn');
         const projectForm = document.getElementById('projectForm');
         const projectsGrid = document.querySelector('.projects-grid');
         const modalTitle = projectModal.querySelector('.modal-header h2');
@@ -181,7 +185,7 @@
                 }
                 const projects = await response.json();
                 
-                projectsGrid.innerHTML = ''; // Limpa os projetos antigos
+                projectsGrid.innerHTML = '';
                 if (projects.length === 0) {
                     projectsGrid.innerHTML = '<p>Nenhum projeto encontrado. Adicione o primeiro!</p>';
                 } else {
@@ -195,7 +199,7 @@
             }
         }
     
-        // NOVA FUNÇÃO: Preenche o formulário com dados de um projeto e abre o modal
+        // Função para preencher o formulário com dados de um projeto e abrir o modal para EDIÇÃO
         function populateFormAndOpenModal(project) {
             document.getElementById('titulo').value = project.titulo;
             document.getElementById('status').value = project.status;
@@ -204,12 +208,13 @@
             document.getElementById('imagem_file').value = '';
     
             modalTitle.textContent = 'Editar Projeto';
-            projectForm.dataset.editingId = project.id; // Armazena o ID no formulário
-    
-            openModalDisplay(); // Apenas mostra o modal, sem resetar
+            projectForm.dataset.editingId = project.id;
+            
+            deleteProjectBtn.classList.remove('hidden'); // MOSTRA o botão de excluir
+            openModalDisplay();
         }
     
-        // Função para lidar com o envio do formulário (AGORA INTELIGENTE)
+        // Função para lidar com o envio do formulário (Adicionar ou Editar)
         async function handleFormSubmit(event) {
             event.preventDefault();
             const saveButton = event.target.querySelector('.save-button');
@@ -217,7 +222,6 @@
             saveButton.disabled = true;
     
             const editingId = projectForm.dataset.editingId;
-    
             let imageUrl = '';
             const imageFile = document.getElementById('imagem_file').files[0];
     
@@ -234,9 +238,7 @@
                     const data = await response.json();
                     if (data.secure_url) {
                         imageUrl = data.secure_url;
-                    } else {
-                        throw new Error('Upload para Cloudinary falhou.');
-                    }
+                    } else { throw new Error('Upload para Cloudinary falhou.'); }
                 } catch (error) {
                     console.error('Erro ao enviar imagem:', error);
                     alert('Houve um erro ao enviar a imagem. O projeto não foi salvo.');
@@ -260,9 +262,7 @@
             try {
                 let response;
                 if (editingId) {
-                    // Se não enviou uma imagem nova, precisamos manter a antiga
                     if (!imageUrl) {
-                        // Para isso, precisamos buscar os dados antigos primeiro
                         const oldProjectResponse = await fetch(`${API_BASE_URL}/getUmProjeto?id=${editingId}`);
                         const oldProject = await oldProjectResponse.json();
                         projectData.imagem_url = oldProject.imagem_url;
@@ -295,11 +295,34 @@
             }
         }
     
-        // Funções do Modal (separadas para mais clareza)
+        // Função para lidar com o clique no botão de excluir
+        async function handleDeleteProject() {
+            const editingId = projectForm.dataset.editingId;
+            if (!editingId) return;
+    
+            const confirmed = confirm('Tem certeza que deseja excluir este projeto? Esta ação não pode ser desfeita.');
+    
+            if (confirmed) {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/deleteProjeto?id=${editingId}`, {
+                        method: 'DELETE'
+                    });
+                    if (!response.ok) { throw new Error('Falha ao excluir o projeto.'); }
+                    closeModal();
+                    await fetchAndRenderProjects();
+                } catch (error) {
+                    console.error('Erro ao excluir projeto:', error);
+                    alert('Não foi possível excluir o projeto.');
+                }
+            }
+        }
+    
+        // Funções de controle do Modal
         function openModalForAdd() {
             projectForm.reset();
             delete projectForm.dataset.editingId;
             modalTitle.textContent = 'Adicionar Novo Projeto';
+            deleteProjectBtn.classList.add('hidden'); // ESCONDE o botão de excluir
             projectModal.style.display = 'flex';
         }
         
@@ -317,6 +340,7 @@
         addProjectBtn.addEventListener('click', openModalForAdd);
         closeModalBtn.addEventListener('click', closeModal);
         cancelModalBtn.addEventListener('click', closeModal);
+        deleteProjectBtn.addEventListener('click', handleDeleteProject);
         projectForm.addEventListener('submit', handleFormSubmit);
         window.addEventListener('click', (event) => { if (event.target == projectModal) { closeModal(); } });
     
@@ -334,45 +358,6 @@
                     alert('Não foi possível carregar os dados para edição.');
                 }
             }
-        });
-
-                // No seu arquivo projetos.html, dentro do <script>
-
-        document.addEventListener('DOMContentLoaded', () => {
-            // ... todo o seu código de modal, formulário, etc. fica aqui dentro ...
-
-            // LÓGICA DO MENU MOBILE (Onde o código de preload deve estar)
-            const body = document.body;
-            const sidebar = document.querySelector('.sidebar');
-            const mobileMenuButton = document.getElementById('mobileMenuButton');
-            const overlay = document.getElementById('overlay');
-
-            function openMenu() {
-                body.classList.add('menu-open');
-                sidebar.classList.add('mobile-nav-open');
-                overlay.classList.add('active');
-            }
-
-            function closeMenu() {
-                body.classList.remove('menu-open');
-                sidebar.classList.remove('mobile-nav-open');
-                overlay.classList.remove('active');
-            }
-
-            if (mobileMenuButton) {
-                mobileMenuButton.addEventListener('click', openMenu);
-            }
-
-            if (overlay) {
-                overlay.addEventListener('click', closeMenu);
-            }
-
-            // CÓDIGO QUE ATIVA A ANIMAÇÃO (VERIFIQUE SE ELE ESTÁ AQUI)
-            window.addEventListener('load', () => {
-                if (sidebar) {
-                    sidebar.classList.remove('preload');
-                }
-            });
         });
     </script>
 </body>
