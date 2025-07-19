@@ -523,3 +523,68 @@ body.menu-open .main-content {
     height: 20px;
     stroke: currentColor; /* Faz o ícone herdar a cor do texto do botão (vermelho) */
   }
+
+/* --- ESTILOS DA PÁGINA DE AUDITORIAS --- */
+.audits-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* Uma coluna, cards um embaixo do outro */
+  gap: 25px;
+}
+
+.audit-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 71, 137, 0.07);
+  transition: box-shadow 0.2s ease;
+}
+
+.audit-card:hover {
+  box-shadow: 0 8px 16px rgba(0, 71, 137, 0.1);
+}
+
+.audit-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 25px;
+  border-bottom: 1px solid #eef2f7;
+}
+
+.audit-card-header h3 {
+  margin: 0;
+  color: #003366;
+  font-size: 1.3em;
+}
+
+.audit-status {
+  padding: 5px 12px;
+  border-radius: 15px;
+  font-size: 0.8em;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+}
+
+/* Cores dos Status */
+.status-agendado { background-color: #007bff; }
+.status-em-andamento { background-color: #fd7e14; }
+.status-concluido { background-color: #28a745; }
+.status-cancelado { background-color: #6c757d; }
+
+.audit-card-body {
+  padding: 25px;
+}
+
+.audit-info {
+  margin-bottom: 10px;
+  color: #555;
+}
+
+.audit-description {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px dashed #e0e5eb;
+  color: #333;
+  font-size: 0.95em;
+  line-height: 1.6;
+}

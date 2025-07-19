@@ -2,47 +2,26 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale-1.0">
     <title>Auditorias e Visitas | Portal da Qualidade</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="page-container">
+        
         <aside class="sidebar preload">
             <div class="sidebar-header">
                 <img src="GT Branco - Transparente.png" alt="Logo GT">
                 <h2>Portal da Qualidade</h2>
             </div>
-            
             <nav class="sidebar-nav">
                 <ul>
-                    <li>
-                        <a href="index.html">
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
-                            <span>Dashboard</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="projetos.html">
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                            <span>Projetos</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="reunioes.html">
-                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                            <span>Reuniões</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="auditoriasevisitas.html" class="active">
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 12h6M7 8h6"></path></svg>
-                            <span>Auditorias e Visitas</span>
-                        </a>
-                    </li>
+                    <li><a href="index.html"><span>Dashboard</span></a></li>
+                    <li><a href="projetos.html"><span>Projetos</span></a></li>
+                    <li><a href="auditoriasevisitas.html" class="active"><span>Auditorias e Visitas</span></a></li>
+                    <li><a href="reunioes.html"><span>Reuniões</span></a></li>
                 </ul>
             </nav>
-
             <div class="sidebar-footer-logo">
                 <img src="logo.png" alt="Logo WF">
             </div>
@@ -57,20 +36,14 @@
                 </button>
                 <div>
                     <h1>Auditorias e Visitas</h1>
-                    <p>Visão geral das Auditorias programadas e Visitas de clientes.</p>
+                    <p>Acompanhamento de auditorias internas, externas, visitas técnicas e treinamentos.</p>
                 </div>
             </header>
 
             <main class="content-area">
-                <h2>Nova Política de Gestão de Documentos</h2>
-                <p><strong>Publicado em: 15 de Julho de 2025</strong></p>
-                <p>A partir do dia 1º de Agosto, entrará em vigor a nova política de gestão de documentos (PG-QLD-002). Todos os colaboradores devem se familiarizar com os novos procedimentos...</p>
-
-                <hr style="margin: 40px 0; border: 1px solid #eee;">
-
-                <h2>Treinamento de Ferramentas da Qualidade</h2>
-                <p><strong>Publicado em: 10 de Julho de 2025</strong></p>
-                <p>Estão abertas as inscrições para o treinamento de Ferramentas da Qualidade (MASP, Diagrama de Ishikawa), que ocorrerá na última semana do mês. Vagas limitadas.</p>
+                <div class="audits-grid">
+                    <div class="loading-spinner"></div>
+                </div>
             </main>
 
             <footer class="footer">
@@ -78,35 +51,77 @@
             </footer>
         </div>
     </div>
+    
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const sidebar = document.querySelector('.sidebar');
-            const mobileMenuButton = document.getElementById('mobileMenuButton');
-            const overlay = document.getElementById('overlay'); // Pega o overlay
+    // Lógica do Menu (igual às outras páginas)
+    document.addEventListener('DOMContentLoaded', () => {
+        const body = document.body;
+        const sidebar = document.querySelector('.sidebar');
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const overlay = document.getElementById('overlay');
+        function openMenu() { /* ... */ }
+        function closeMenu() { /* ... */ }
+        if (mobileMenuButton) { mobileMenuButton.addEventListener('click', openMenu); }
+        if (overlay) { overlay.addEventListener('click', closeMenu); }
+        window.addEventListener('load', () => { if (sidebar) { sidebar.classList.remove('preload'); } });
+    });
     
-            function openMenu() {
-                sidebar.classList.add('mobile-nav-open');
-                overlay.classList.add('active');
-            }
-    
-            function closeMenu() {
-                sidebar.classList.remove('mobile-nav-open');
-                overlay.classList.remove('active');
-            }
-    
-            if (mobileMenuButton) {
-                mobileMenuButton.addEventListener('click', openMenu);
-            }
-    
-            if (overlay) {
-                overlay.addEventListener('click', closeMenu);
-            }
+    // Lógica para buscar e exibir as Auditorias
+    const API_BASE_URL = '/.netlify/functions';
+    const auditsGrid = document.querySelector('.audits-grid');
+
+    // Função para formatar a data (ex: 15/08/2025)
+    function formatarData(dataISO) {
+        if (!dataISO) return 'N/D';
+        const data = new Date(dataISO);
+        // Adiciona 1 dia para corrigir o fuso horário que pode causar problemas
+        data.setDate(data.getDate() + 1);
+        return data.toLocaleDateString('pt-BR');
+    }
+
+    // Função para "desenhar" o card de uma auditoria
+    function renderAuditCard(audit) {
+        // Lógica para dar uma classe de cor ao status
+        const statusClass = audit.status.toLowerCase().replace(/\s+/g, '-');
+
+        return `
+            <div class="audit-card">
+                <div class="audit-card-header">
+                    <h3>${audit.titulo}</h3>
+                    <span class="audit-status status-${statusClass}">${audit.status}</span>
+                </div>
+                <div class="audit-card-body">
+                    <div class="audit-info"><strong>Tipo:</strong> ${audit.tipo}</div>
+                    <div class="audit-info"><strong>Data:</strong> ${formatarData(audit.data_evento)}</div>
+                    <div class="audit-info"><strong>Responsável:</strong> ${audit.responsavel}</div>
+                    <p class="audit-description">${audit.descricao}</p>
+                </div>
+            </div>
+        `;
+    }
+
+    // Função principal que busca os dados da API
+    async function fetchAndRenderAudits() {
+        try {
+            const response = await fetch(`${API_BASE_URL}/getAuditorias`);
+            const audits = await response.json();
             
-            // Remove a classe 'preload' para ativar as animações de desktop
-            window.addEventListener('load', () => {
-                sidebar.classList.remove('preload');
-            });
-        });
+            auditsGrid.innerHTML = ''; // Limpa o spinner de carregamento
+            if (audits.length === 0) {
+                auditsGrid.innerHTML = '<p>Nenhuma auditoria ou visita encontrada.</p>';
+            } else {
+                audits.forEach(audit => {
+                    auditsGrid.innerHTML += renderAuditCard(audit);
+                });
+            }
+        } catch (error) {
+            console.error('Erro ao buscar auditorias:', error);
+            auditsGrid.innerHTML = '<p style="color: red;">Não foi possível carregar os dados.</p>';
+        }
+    }
+
+    // Roda a função principal quando a página carrega
+    document.addEventListener('DOMContentLoaded', fetchAndRenderAudits);
     </script>
 </body>
 </html>
