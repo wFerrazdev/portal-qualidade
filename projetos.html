@@ -109,6 +109,7 @@
                     </div>
                     <div class="form-actions">
                         <button type="submit" class="save-button">Salvar Projeto</button>
+                        <button type="button" id="cancelModalBtn" class="cancel-button">Cancelar</button>
                     </div>
                 </form>
             </main>
@@ -130,9 +131,19 @@
     // =================== FUNÇÕES ===================
 
     // Função para renderizar um único card de projeto
+    // Função para renderizar um único card de projeto (VERSÃO ATUALIZADA)
     function renderProjectCard(project) {
-        // Converte a lista de "feitos" em itens de lista <li>
         const feitosHtml = project.principais_feitos.map(feito => `<li>${feito}</li>`).join('');
+
+        // Lógica para definir a cor da barra de progresso
+        let progressBarColor = '#29abe2'; // Azul (padrão < 50%)
+        if (project.progresso == 100) {
+            progressBarColor = '#28a745'; // Verde
+        } else if (project.progresso >= 70) {
+            progressBarColor = '#ffc107'; // Amarelo
+        } else if (project.progresso >= 50) {
+            progressBarColor = '#fd7e14'; // Laranja
+        }
 
         return `
             <div class="project-card">
@@ -153,7 +164,7 @@
                             <span>${project.progresso}%</span>
                         </div>
                         <div class="progress-bar-background">
-                            <div class="progress-bar-fill" style="width: ${project.progresso}%;"></div>
+                            <div class="progress-bar-fill" style="width: ${project.progresso}%; background-color: ${progressBarColor};"></div>
                         </div>
                     </div>
                 </div>
@@ -221,12 +232,19 @@
         }
 
         // Monta o objeto do projeto com os dados do formulário
+        // Pega o valor do progresso e o limita
+        let progressoValue = parseInt(document.getElementById('progresso').value) || 0;
+        if (progressoValue > 100) {
+            progressoValue = 100;
+        } else if (progressoValue < 0) {
+            progressoValue = 0;
+        }
+
         const projectData = {
             titulo: document.getElementById('titulo').value,
             status: document.getElementById('status').value,
             imagem_url: imageUrl,
-            progresso: document.getElementById('progresso').value,
-            // Converte o texto da textarea em uma lista (array), filtrando linhas vazias
+            progresso: progressoValue, // Usa o valor já tratado
             principais_feitos: document.getElementById('principais_feitos').value.split('\n').filter(line => line.trim() !== '')
         };
 
@@ -253,7 +271,11 @@
 
     // Funções do Modal
     function openModal() { projectModal.style.display = 'flex'; }
-    function closeModal() { projectModal.style.display = 'none'; }
+    // Versão atualizada da função
+    function closeModal() {
+        projectModal.style.display = 'none';
+        projectForm.reset(); // Limpa todos os campos do formulário
+    }
 
     // =================== EVENT LISTENERS ===================
     // Roda quando a página carrega pela primeira vez
@@ -267,6 +289,13 @@
             closeModal();
         }
     });
+    // --- Adicione esta parte no final do script ---
+
+    // Pega o novo botão
+    const cancelModalBtn = document.getElementById('cancelModalBtn');
+    // Adiciona a ação de clique nele
+    cancelModalBtn.addEventListener('click', closeModal);
+    
     </script>
 </body>
 </html>

@@ -201,7 +201,7 @@ body.menu-open .main-content {
 }
 
 .card-image-container {
-    height: 200px;
+    height: 220px;
     overflow: hidden;
 }
 
@@ -306,7 +306,7 @@ body.menu-open .main-content {
   }
   
   .add-button:hover {
-    background-color: #218838;
+    background-color: #214288;
   }
   
   /* Overlay do Modal (fundo escuro) */
@@ -412,4 +412,12 @@ body.menu-open .main-content {
       transform: translateY(0);
       opacity: 1;
     }
+  }
+
+  /* Adicione estas duas linhas à regra existente */
+.projects-header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 30px; 
+    margin-top: 15px; /* Adiciona o respiro em relação ao título */
   }
