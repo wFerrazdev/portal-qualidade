@@ -84,24 +84,147 @@ html, body {
 .card-graph { flex-grow: 1; padding: 25px; display: flex; align-items: center; justify-content: center; }
 
 /* --- PÁGINA PROJETOS --- */
-.projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px; }
-.project-card { background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 71, 137, 0.07); transition: transform 0.2s ease, box-shadow 0.2s ease; display: flex; flex-direction: column; overflow: hidden; }
-.project-card:hover { transform: translateY(-5px); box-shadow: 0 8px 16px rgba(0, 71, 137, 0.1); }
-.card-image-container { height: 220px; overflow: hidden; }
-.card-image-container img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
-.project-card:hover .card-image-container img { transform: scale(1.05); }
-.card-project-body { position: relative; padding: 25px; display: flex; flex-direction: column; flex-grow: 1; }
-.card-project-body h3 { margin: 0 0 5px 0; color: #003366; font-size: 1.4em; }
-.card-project-body p { margin: 0 0 15px 0; color: #555; font-size: 0.9em; }
-.card-project-body hr { border: none; border-top: 1px solid #eef2f7; margin: 0 0 15px 0; }
-.card-project-details { flex-grow: 1; }
-.card-project-details h4 { margin: 0 0 10px 0; font-size: 1em; color: #333; }
-.card-project-details ul { margin: 0; padding-left: 20px; color: #555; font-size: 0.95em; }
-.card-project-details ul li { margin-bottom: 8px; }
-.card-progress-container { margin-top: 20px; }
-.progress-bar-info { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9em; color: #555; font-weight: 500; }
-.progress-bar-background { height: 10px; background-color: #eef2f7; border-radius: 5px; overflow: hidden; }
-.progress-bar-fill { height: 100%; background-color: #29abe2; border-radius: 5px; transition: width 0.5s ease-in-out, background-color 0.5s ease; }
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 40px;
+}
+
+.project-card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 71, 137, 0.07);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.project-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 71, 137, 0.1);
+}
+
+.card-image-container {
+  height: 220px;
+  overflow: hidden;
+  background-color: #f0f0f0; /* Fundo para imagens transparentes */
+}
+
+.card-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.project-card:hover .card-image-container img {
+  transform: scale(1.05);
+}
+
+.card-project-body {
+  position: relative;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+/* Estilo específico para o botão de editar do card de projeto */
+.project-card .edit-button {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: all 0.2s ease;
+}
+.project-card .edit-button:hover {
+  opacity: 1;
+  transform: scale(1.1);
+  background: white;
+}
+.project-card .edit-button svg {
+  width: 20px;
+  height: 20px;
+  stroke: #003366;
+}
+
+
+.card-project-body h3 {
+  margin: 0 0 5px 0;
+  color: #003366;
+  font-size: 1.4em;
+  padding-right: 40px; /* Espaço para o botão de editar */
+}
+
+.card-project-body p {
+  margin: 0 0 15px 0;
+  color: #555;
+  font-size: 0.9em;
+}
+
+.card-project-body hr {
+  border: none;
+  border-top: 1px solid #eef2f7;
+  margin: 0 0 15px 0;
+}
+
+.card-project-details {
+  flex-grow: 1; /* Empurra a barra de progresso para baixo */
+}
+
+.card-project-details h4 {
+  margin: 0 0 10px 0;
+  font-size: 1em;
+  color: #333;
+}
+
+.card-project-details ul {
+  margin: 0;
+  padding-left: 20px;
+  color: #555;
+  font-size: 0.95em;
+}
+
+.card-project-details ul li {
+  margin-bottom: 8px;
+}
+
+.card-progress-container {
+  margin-top: 20px;
+}
+
+.progress-bar-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 0.9em;
+  color: #555;
+  font-weight: 500;
+}
+
+.progress-bar-background {
+  height: 10px;
+  background-color: #eef2f7;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background-color: #29abe2;
+  border-radius: 5px;
+  transition: width 0.5s ease-in-out, background-color 0.5s ease;
+}
 
 /* --- PÁGINA AUDITORIAS (TEMA CARTÃO DE DESTAQUE) --- */
 .audits-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; }
