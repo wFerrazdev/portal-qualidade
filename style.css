@@ -469,3 +469,20 @@ body.menu-open .main-content {
     flex-direction: column;
     flex-grow: 1;
   }
+
+  /* --- ESTILO DO LOADING SPINNER --- */
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f0f0f0; /* Cinza bem claro */
+    border-top: 5px solid #003366; /* Azul marinho do seu tema */
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 80px auto; /* Centraliza o spinner com uma margem no topo */
+  }
+  
+  /* Animação que faz o spinner girar */
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
