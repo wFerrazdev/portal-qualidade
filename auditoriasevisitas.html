@@ -119,22 +119,24 @@
         return new Date(data.getTime() + data.getTimezoneOffset() * 60000).toLocaleDateString('pt-BR');
     }
     
+    // Função para "desenhar" o card de auditoria (VERSÃO POST-IT)
     function renderAuditCard(audit) {
-        const statusClass = audit.status ? audit.status.toLowerCase().replace(/\s+/g, '-') : 'default';
         return `
             <div class="audit-card">
                 <div class="audit-card-header">
                     <h3>${audit.titulo}</h3>
-                    <span class="audit-status status-${statusClass}">${audit.status}</span>
                 </div>
                 <div class="audit-card-body">
-                    <button class="edit-button" data-id="${audit.id}">
-                        <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.536L16.732 3.732z"></path></svg>
-                    </button>
                     <div class="audit-info"><strong>Tipo:</strong> ${audit.tipo || ''}</div>
                     <div class="audit-info"><strong>Data:</strong> ${formatarData(audit.data_evento)}</div>
                     <div class="audit-info"><strong>Responsável:</strong> ${audit.responsavel || ''}</div>
                     <p class="audit-description">${audit.descricao || ''}</p>
+
+                    <div class="audit-card-actions">
+                        <button class="edit-button" data-id="${audit.id}">
+                            <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.536L16.732 3.732z"></path></svg>
+                        </button>
+                        </div>
                 </div>
             </div>
         `;
