@@ -88,7 +88,7 @@ html, body {
   display: grid;
   /* Por padrão (mobile), temos 1 coluna */
   grid-template-columns: 1fr;
-  gap: 25px; /* Reduzindo um pouco o espaço para ficar mais junto */
+  gap: 40px; /* Reduzindo um pouco o espaço para ficar mais junto */
 }
 
 /* Em telas um pouco maiores (tablets), mudamos para 2 colunas */
