@@ -16,7 +16,7 @@ exports.handler = async function (event, context) {
   });
 
   try {
-    const result = await pool.query('SELECT * FROM projetos ORDER BY created_at DESC;');
+    const result = await pool.query('SELECT * FROM projetos ORDER BY created_at ASC;');
     
     return {
       statusCode: 200,
