@@ -528,7 +528,7 @@ body.menu-open .main-content {
 .audits-grid {
   display: grid;
   /* Em telas grandes, tenta criar 2 colunas. Em telas menores, volta para 1. */
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
   gap: 30px;
 }
 
