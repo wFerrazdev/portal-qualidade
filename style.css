@@ -414,12 +414,11 @@ body.menu-open .main-content {
     }
   }
 
-  /* Adicione estas duas linhas à regra existente */
-.projects-header {
+  .page-actions {
     display: flex;
     justify-content: flex-end;
-    margin-bottom: 30px; 
-    margin-top: 15px; /* Adiciona o respiro em relação ao título */
+    margin-bottom: 30px;
+    margin-top: 15px;
   }
 /* Mudar o botao de cancelar as coisas */
   .cancel-button {
