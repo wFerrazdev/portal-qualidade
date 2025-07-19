@@ -525,73 +525,99 @@ body.menu-open .main-content {
     stroke: currentColor; /* Faz o ícone herdar a cor do texto do botão (vermelho) */
   }
 
-/* --- ESTILOS DA PÁGINA DE AUDITORIAS (TEMA QUADRO BRANCO) --- */
-.audits-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 40px;
-  padding-top: 20px; /* Espaço para os alfinetes */
-}
-.audit-card {
-  background-color: #ffffff; /* Fundo de papel branco */
-  border: 1px solid #eef2f7; /* Borda sutil para definir a folha */
-  box-shadow: 0 4px 12px rgba(0, 71, 137, 0.08); /* Sombra mais suave */
-  padding: 25px 20px 20px 20px;
-  transition: all 0.2s ease-out;
+/* --- ESTILOS DA PÁGINA DE AUDITORIAS (TEMA TIMELINE) --- */
+.timeline {
   position: relative;
-  /* Removemos a fonte de escrita a mão para um visual mais limpo */
+  max-width: 900px;
+  margin: 0 auto; /* Centraliza a timeline na página */
+  padding: 40px 0;
 }
-.audit-card:hover {
-  transform: translateY(-5px); /* Efeito de levantar ao passar o mouse */
-  z-index: 10;
-  box-shadow: 0 8px 20px rgba(0, 71, 137, 0.12);
-}
-/* O "Alfinete" (Push Pin) Azul */
-.audit-card::before {
+
+/* A linha vertical principal da timeline */
+.timeline::before {
   content: '';
   position: absolute;
-  top: -12px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 24px;
-  height: 24px;
-  /* Gradiente sutil para dar um efeito 3D ao alfinete */
-  background-image: radial-gradient(circle, #85c1e9 0%, #3498db 100%);
-  border-radius: 50%;
-  box-shadow: 1px 1px 5px rgba(0,0,0,0.4);
-  border: 2px solid #fff;
-  z-index: 2;
+  top: 0;
+  left: 20px;
+  height: 100%;
+  width: 4px;
+  background: #e0e5eb; /* Cinza claro */
+  border-radius: 2px;
 }
-/* Reset dos estilos internos que não precisamos mais */
-.audit-card-header, .audit-card-body {
-  background: none;
-  border: none;
-  padding: 0;
-  margin: 0;
-}
-.audit-card-header h3 {
-  color: #003366; /* Azul escuro do tema */
-  font-weight: 600;
-  font-size: 1.2em;
-  margin-bottom: 15px;
-  padding-right: 30px; /* Espaço para o botão de editar não sobrepor o texto */
-}
-.audit-status { display: none; }
-.audit-info { margin-bottom: 8px; font-size: 0.9em; color: #555; }
-.audit-info strong { color: #333; }
-.audit-description { margin-top: 15px; font-size: 0.9em; }
 
-/* Botão de editar agora fica fixo no canto superior direito da "folha" */
+/* Cada item/evento na timeline */
+.timeline-item {
+  position: relative;
+  margin-bottom: 40px;
+  padding-left: 60px; /* Espaço à esquerda para a linha e o ponto */
+}
+
+/* O "ponto" na linha do tempo que marca cada evento */
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: 12px;
+  top: 5px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: white;
+  border: 4px solid #003366; /* Azul escuro do tema */
+  z-index: 1; /* Para ficar acima da linha principal */
+}
+
+/* O card de conteúdo de cada item */
+.timeline-content {
+  background: white;
+  padding: 20px 25px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 71, 137, 0.08);
+  position: relative; /* Para posicionar o botão de editar dentro dele */
+  transition: all 0.2s ease-out;
+}
+
+.timeline-content:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(0, 71, 137, 0.12);
+}
+
+.timeline-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 15px;
+  flex-wrap: wrap; /* Permite que a data quebre a linha em telas pequenas */
+  gap: 10px;
+}
+
+.timeline-header h3 {
+  margin: 0;
+  color: #003366;
+  font-size: 1.3em;
+  padding-right: 30px; /* Espaço para o botão de editar */
+}
+
+.timeline-date {
+  font-size: 0.9em;
+  font-weight: 600;
+  color: #555;
+  background-color: #eef2f7;
+  padding: 5px 12px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.timeline-details p {
+  margin: 0 0 10px 0;
+  font-size: 0.95em;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* O botão de editar continua o mesmo, só garantimos a posição */
 .edit-button {
   position: absolute;
   top: 15px;
   right: 15px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 5px;
-  opacity: 0.5;
-  transition: opacity 0.2s ease;
+  /* ... o resto do estilo do edit-button já existe e será aplicado ... */
 }
-.edit-button:hover { opacity: 1; }
-.edit-button svg { width: 22px; height: 22px; stroke: #555; }
