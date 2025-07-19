@@ -8,12 +8,12 @@
 </head>
 <body>
     <div class="page-container">
+        
         <aside class="sidebar preload">
             <div class="sidebar-header">
                 <img src="GT Branco - Transparente.png" alt="Logo GT">
                 <h2>Portal da Qualidade</h2>
             </div>
-            
             <nav class="sidebar-nav">
                 <ul>
                     <li>
@@ -42,22 +42,16 @@
                     </li>
                 </ul>
             </nav>
-
             <div class="sidebar-footer-logo">
                 <img src="logo.png" alt="Logo WF">
             </div>
         </aside>
 
-        <div class="overlay" id="overlay"></div>
-
         <div class="main-content">
             <header class="content-header">
-                <button class="mobile-menu-button" id="mobileMenuButton">
-                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-                </button>
                 <div>
-                    <h1>Reuniões</h1>
-                    <p>Reuniões agendadas para o mês.</p>
+                    <h1>Atas de Reunião</h1>
+                    <p>Histórico e arquivos das reuniões da Qualidade.</p>
                 </div>
             </header>
 
@@ -79,35 +73,16 @@
             </footer>
         </div>
     </div>
+
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const sidebar = document.querySelector('.sidebar');
-            const mobileMenuButton = document.getElementById('mobileMenuButton');
-            const overlay = document.getElementById('overlay'); // Pega o overlay
-    
-            function openMenu() {
-                sidebar.classList.add('mobile-nav-open');
-                overlay.classList.add('active');
-            }
-    
-            function closeMenu() {
-                sidebar.classList.remove('mobile-nav-open');
-                overlay.classList.remove('active');
-            }
-    
-            if (mobileMenuButton) {
-                mobileMenuButton.addEventListener('click', openMenu);
-            }
-    
-            if (overlay) {
-                overlay.addEventListener('click', closeMenu);
-            }
-            
-            // Remove a classe 'preload' para ativar as animações de desktop
-            window.addEventListener('load', () => {
+    document.addEventListener('DOMContentLoaded', () => {
+        const sidebar = document.querySelector('.sidebar');
+        window.addEventListener('load', () => {
+            if (sidebar) {
                 sidebar.classList.remove('preload');
-            });
+            }
         });
+    });
     </script>
 </body>
 </html>

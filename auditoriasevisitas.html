@@ -47,13 +47,8 @@
             </div>
         </aside>
 
-        <div class="overlay" id="overlay"></div>
-
         <div class="main-content">
             <header class="content-header">
-                <button class="mobile-menu-button" id="mobileMenuButton">
-                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-                </button>
                 <div>
                     <h1>Auditorias e Visitas</h1>
                     <p>Acompanhamento de auditorias, visitas técnicas e treinamentos.</p>
@@ -101,6 +96,13 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', () => {
+        const sidebar = document.querySelector('.sidebar');
+        window.addEventListener('load', () => {
+            if (sidebar) {
+                sidebar.classList.remove('preload');
+            }
+        });
+
         // =================== ELEMENTOS DO DOM ===================
         const API_BASE_URL = '/.netlify/functions';
         const addAuditBtn = document.getElementById('addAuditBtn');
@@ -134,7 +136,9 @@
                     <div class="audit-card-body">
                         <div class="audit-info"><strong>Tipo:</strong> ${audit.tipo || 'N/D'}</div>
                         <div class="audit-info"><strong>Data:</strong> ${formatarData(audit.data_evento)}</div>
+                        <div class="audit-info"><strong>Status:</strong> ${audit.status || 'N/D'}</div>
                         <div class="audit-info"><strong>Responsável:</strong> ${audit.responsavel || 'N/D'}</div>
+                        <hr>
                         <p class="audit-description">${audit.descricao || ''}</p>
                     </div>
                 </div>
@@ -224,21 +228,11 @@
             deleteAuditBtn.classList.add('hidden');
             auditModal.style.display = 'flex';
         }
+
         function closeModal() {
             auditModal.style.display = 'none';
             auditForm.reset();
         }
-
-        // --- LÓGICA DO MENU MOBILE ---
-        const body = document.body;
-        const sidebar = document.querySelector('.sidebar');
-        const mobileMenuButton = document.getElementById('mobileMenuButton');
-        const overlay = document.getElementById('overlay');
-        function openMenu() { body.classList.add('menu-open'); sidebar.classList.add('mobile-nav-open'); overlay.classList.add('active'); }
-        function closeMenu() { body.classList.remove('menu-open'); sidebar.classList.remove('mobile-nav-open'); overlay.classList.remove('active'); }
-        if (mobileMenuButton) { mobileMenuButton.addEventListener('click', openMenu); }
-        if (overlay) { overlay.addEventListener('click', closeMenu); }
-        window.addEventListener('load', () => { if (sidebar) { sidebar.classList.remove('preload'); } });
 
         // =================== EVENT LISTENERS ===================
         fetchAndRenderAudits();

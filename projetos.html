@@ -47,13 +47,8 @@
             </div>
         </aside>
 
-        <div class="overlay" id="overlay"></div>
-
         <div class="main-content">
             <header class="content-header">
-                <button class="mobile-menu-button" id="mobileMenuButton">
-                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-                </button>
                 <div>
                     <h1>Projetos da Qualidade</h1>
                     <p>Acompanhe a evolução e os resultados dos nossos projetos de melhoria contínua.</p>
@@ -78,7 +73,7 @@
     <div id="projectModal" class="modal-overlay">
         <div class="modal-content">
             <header class="modal-header">
-                <h2>Adicionar Novo Projeto</h2>
+                <h2 id="modalTitle">Adicionar Novo Projeto</h2>
                 <button id="closeModalBtn" class="close-button">&times;</button>
             </header>
             <main class="modal-body">
@@ -100,6 +95,13 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', () => {
+        const sidebar = document.querySelector('.sidebar');
+        window.addEventListener('load', () => {
+            if (sidebar) {
+                sidebar.classList.remove('preload');
+            }
+        });
+
         // =================== CONFIGURAÇÕES ===================
         const CLOUDINARY_CLOUD_NAME = 'dsge4dbjy';
         const CLOUDINARY_UPLOAD_PRESET = 'ml_default';
@@ -257,19 +259,8 @@
             projectForm.reset();
         }
 
-        // --- LÓGICA DO MENU MOBILE ---
-        const body = document.body;
-        const sidebar = document.querySelector('.sidebar');
-        const mobileMenuButton = document.getElementById('mobileMenuButton');
-        const overlay = document.getElementById('overlay');
-        function openMenu() { body.classList.add('menu-open'); sidebar.classList.add('mobile-nav-open'); overlay.classList.add('active'); }
-        function closeMenu() { body.classList.remove('menu-open'); sidebar.classList.remove('mobile-nav-open'); overlay.classList.remove('active'); }
-        if (mobileMenuButton) { mobileMenuButton.addEventListener('click', openMenu); }
-        if (overlay) { overlay.addEventListener('click', closeMenu); }
-        window.addEventListener('load', () => { if (sidebar) { sidebar.classList.remove('preload'); } });
-
         // =================== EVENT LISTENERS ===================
-        fetchAndRenderProjects(); // Busca os projetos ao carregar a página
+        fetchAndRenderProjects();
         addProjectBtn.addEventListener('click', openModalForAdd);
         closeModalBtn.addEventListener('click', closeModal);
         cancelModalBtn.addEventListener('click', closeModal);
