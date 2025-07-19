@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Portal da Qualidade</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="page-container">
+        
+        <aside class="sidebar preload">
+            <div class="sidebar-header">
+                <img src="GT Branco - Transparente.png" alt="Logo GT">
+                <h2>Portal da Qualidade</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="index.html" class="active">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="projetos.html">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                            <span>Projetos</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="reunioes.html">
+                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                            <span>Reuniões</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="eventos.html">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 12h6M7 8h6"></path></svg>
+                            <span>Eventos</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer-logo">
+                <img src="logo.png" alt="Logo WF">
+            </div>
+        </aside>
+
+        <div class="overlay" id="overlay"></div>
+
+        <div class="main-content">
+            <header class="content-header">
+                <button class="mobile-menu-button" id="mobileMenuButton">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                </button>
+                <div>
+                    <h1>Dashboard de Indicadores</h1>
+                    <p>Visão geral dos indicadores de qualidade do mês.</p>
+                </div>
+            </header>
+
+            <main class="content-area">
+                <div class="indicators-grid">
+                    <div class="indicator-card">
+                        <div class="card-info">
+                            <h3>Custos de Não-Qualidade</h3>
+                            <p><strong>Valor Atual:</strong> R$ 16.234,00</p>
+                            <p><strong>Meta:</strong> R$ 0,00</p>
+                        </div>
+                        <div class="card-graph">
+                            <canvas id="grafico1"></canvas>
+                        </div>
+                    </div>
+    
+                    <div class="indicator-card">
+                        <div class="card-info">
+                            <h3>Taxa de Retrabalho</h3>
+                            <p><strong>Valor Atual:</strong> 2.1%</p>
+                            <p><strong>Meta:</strong> &lt; 3%</p>
+                        </div>
+                        <div class="card-graph">
+                            <canvas id="grafico2"></canvas>
+                        </div>
+                    </div>
+    
+                    <div class="indicator-card">
+                        <div class="card-info">
+                            <h3>Gestão de Equipamentos</h3>
+                            <p><strong>Quantidade em tratativa:</strong> 23</p>
+                        </div>
+                        <div class="card-graph">
+                            <canvas id="grafico3"></canvas>
+                        </div>
+                    </div>
+    
+                    <div class="indicator-card">
+                        <div class="card-info">
+                            <h3>Conformidade de Processos</h3>
+                            <p><strong>Valor Atual:</strong> 98%</p>
+                            <p><strong>Meta:</strong> &gt; 95%</p>
+                        </div>
+                        <div class="card-graph">
+                            <canvas id="grafico4"></canvas>
+                        </div>
+                    </div>
+    
+                    <div class="indicator-card">
+                        <div class="card-info">
+                            <h3>Índice de Reclamações</h3>
+                            <p><strong>Valor Atual:</strong> 8 Reclamações</p>
+                            <p><strong>Meta:</strong> &lt; 10 Reclamações</p>
+                        </div>
+                        <div class="card-graph">
+                            <canvas id="grafico5"></canvas>
+                        </div>
+                    </div>
+    
+                    <div class="indicator-card">
+                        <div class="card-info">
+                            <h3>Quantidade de NC Procedente</h3>
+                            <p><strong>Quantidade Atual:</strong> 1</p>
+                            <p><strong>Meta:</strong> 0</p>
+                        </div>
+                        <div class="card-graph">
+                            <canvas id="grafico6"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <footer class="footer">
+                <p>&copy; 2025 - GT Soluções Corporativas</p>
+            </footer>
+        </div>
+        
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                // --- SEU CÓDIGO ORIGINAL PARA O MENU (NÃO MUDA NADA AQUI) ---
+                const body = document.body;
+                const sidebar = document.querySelector('.sidebar');
+                const mobileMenuButton = document.getElementById('mobileMenuButton');
+                const overlay = document.getElementById('overlay');
+            
+                function openMenu() {
+                    body.classList.add('menu-open');
+                    sidebar.classList.add('mobile-nav-open');
+                    overlay.classList.add('active');
+                }
+            
+                function closeMenu() {
+                    body.classList.remove('menu-open');
+                    sidebar.classList.remove('mobile-nav-open');
+                    overlay.classList.remove('active');
+                }
+            
+                if (mobileMenuButton) {
+                    mobileMenuButton.addEventListener('click', openMenu);
+                }
+            
+                if (overlay) {
+                    overlay.addEventListener('click', closeMenu);
+                }
+                
+                window.addEventListener('load', () => {
+                    sidebar.classList.remove('preload');
+                });
+        
+                // --- INÍCIO DO NOVO CÓDIGO PARA OS GRÁFICOS ---
+        
+                // Dados de exemplo para os gráficos (nos próximos passos, podemos buscar isso de uma planilha)
+                const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'];
+                const optionsPadrao = {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false // Oculta a legenda padrão, pois o título já está no card
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                font: { size: 10 }
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                font: { size: 10 }
+                            }
+                        }
+                    }
+                };
+        
+                // --- Gráfico 1: Custos de Não-Qualidade ---
+                const ctx1 = document.getElementById('grafico1').getContext('2d');
+                new Chart(ctx1, {
+                    type: 'bar', // Gráfico de linha para mostrar evolução
+                    data: {
+                        labels: meses,
+                        datasets: [{
+                            label: 'Custo R$',
+                            data: [12562.52, 808.27, 3122.41, 0.00, 0.00, 2060.70],
+                            borderColor: '#003366',
+                            backgroundColor: 'rgba(32, 72, 192, 0.7)',
+                            fill: true,
+                            tension: 0.3 // Deixa a linha mais suave
+                        }]
+                    },
+                    options: optionsPadrao
+                });
+        
+                // --- Gráfico 2: Taxa de Retrabalho ---
+                const ctx2 = document.getElementById('grafico2').getContext('2d');
+                new Chart(ctx2, {
+                    type: 'line',
+                    data: {
+                        labels: meses,
+                        datasets: [{
+                            label: 'Taxa %',
+                            data: [3.5, 2.8, 3.1, 2.5, 2.2, 2.1],
+                            borderColor: '#29abe2',
+                            tension: 0.3
+                        }]
+                    },
+                    options: optionsPadrao
+                });
+        
+                // --- Gráfico 3: Gestão de Equipamentos ---
+                const ctx3 = document.getElementById('grafico3').getContext('2d');
+                new Chart(ctx3, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Concluído', 'Em Tratativa', 'Aguardando Peças'],
+                        datasets: [{
+                            data: [120, 23, 15],
+                            backgroundColor: ['#4CAF50', '#FFC107', '#F44336'],
+                            borderWidth: 0,
+                            hoverOffset: 10
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'bottom',
+                                labels: { font: { size: 11 } }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed !== null) {
+                                            label += context.parsed;
+                                        }
+                                        return label;
+                                    }
+                                }
+                            },
+                            datalabels: {
+                                color: '#fff',
+                                formatter: (value, context) => {
+                                    return value;
+                                },
+                                font: {
+                                    weight: 'bold',
+                                    size: 12
+                                }
+                            }
+                        }
+                    },
+                    plugins: [ChartDataLabels], // Certifique-se que o plugin está carregado
+                });
+        
+                // --- Gráfico 4: Conformidade de Processos ---
+                // --- Gráfico 4: Conformidade de Processos (VERSÃO MELHORADA) ---
+                    const ctx4 = document.getElementById('grafico4').getContext('2d');
+                    new Chart(ctx4, {
+                        type: 'line',
+                        data: {
+                            labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho'],
+                            datasets: [{
+                                label: 'Realizado',
+                                data: [65, 59, 80, 81, 56, 55],
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                backgroundColor: 'rgba(75, 192, 192, 0.4)',
+                                fill: true,
+                                tension: 0.3
+                            }, {
+                                label: 'Meta',
+                                data: [95, 95, 95, 95, 95, 95],
+                                borderColor: 'rgba(255, 10, 10, 0.6)',
+                                borderWidth: 2, // Linha um pouco mais grossa para destaque
+                                pointRadius: 0, // Remove os "pontos" da linha da meta
+                                fill: false
+                            }]
+                        },
+                        options: {
+                            ...optionsPadrao, // Usa as opções padrão que já criamos
+                            plugins: {
+                                legend: {
+                                    display: true, // Mostra a legenda para este gráfico
+                                    position: 'top',
+                                    align: 'end'
+                                },
+                                datalabels: {
+                                    // A mágica acontece aqui!
+                                    display: function(context) {
+                                        // Só mostra o rótulo se o dataset for o 'Realizado' (o primeiro, índice 0)
+                                        return context.datasetIndex === 0; 
+                                    },
+                                    anchor: 'end',
+                                    align: 'top',
+                                    font: {
+                                        weight: 'bold'
+                                    },
+                                    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                                    borderRadius: 4,
+                                    padding: 4
+                                }
+                            }
+                        },
+                        plugins: [ChartDataLabels]
+                    });
+        
+                // --- Gráfico 5: Índice de Reclamações ---
+                const ctx5 = document.getElementById('grafico5').getContext('2d');
+                new Chart(ctx5, {
+                    type: 'bar',
+                    data: {
+                        labels: meses,
+                        datasets: [{
+                            label: 'Nº de Reclamações',
+                            data: [12, 9, 11, 7, 9, 8],
+                            backgroundColor: '#F44336',
+                            datalabels: {
+                                anchor: 'end',
+                                align: 'top',
+                                font: {
+                                    weight: 'bold'
+                                }
+                            }
+                        }]
+                    },
+                    options: {
+                        ...optionsPadrao,
+                        plugins: {
+                            ...optionsPadrao.plugins,
+                            datalabels: {}
+                        }
+                    },
+                    plugins: [ChartDataLabels] // Certifique-se que o plugin está carregado
+                });
+        
+                // --- Gráfico 6: Quantidade de NC Procedente ---
+                const ctx6 = document.getElementById('grafico6').getContext('2d');
+                new Chart(ctx6, {
+                    type: 'bar',
+                    data: {
+                        labels: meses,
+                        datasets: [{
+                            label: 'Quantidade',
+                            data: [3, 2, 2, 1, 0, 1],
+                            backgroundColor: '#FF9800',
+                            datalabels: {
+                                anchor: 'end',
+                                align: 'top',
+                                font: {
+                                    weight: 'bold'
+                                }
+                            }
+                        }]
+                    },
+                    options: {
+                        ...optionsPadrao,
+                        plugins: {
+                            ...optionsPadrao.plugins,
+                            datalabels: {}
+                        }
+                    },
+                    plugins: [ChartDataLabels] // Certifique-se que o plugin está carregado
+                });
+            });
+        </script>
+</body>
+</html>
