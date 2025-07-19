@@ -516,3 +516,10 @@ body.menu-open .main-content {
   .hidden {
     display: none !important;
   }
+
+  /* Adiciona tamanho e cor ao ícone da lixeira */
+.delete-button svg {
+    width: 20px;
+    height: 20px;
+    stroke: currentColor; /* Faz o ícone herdar a cor do texto do botão (vermelho) */
+  }
