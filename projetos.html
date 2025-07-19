@@ -10,8 +10,6 @@
     <div class="page-container">
         
         <aside class="sidebar preload">
-
-            
             <div class="sidebar-header">
                 <img src="GT Branco - Transparente.png" alt="Logo GT">
                 <h2>Portal da Qualidade</h2>
@@ -63,13 +61,12 @@
             </header>
 
             <main class="content-area">
-                <div class="projects-header">
+                <div class="page-actions">
                     <button id="addProjectBtn" class="add-button">+ Adicionar Projeto</button>
                 </div>
-
                 <div class="projects-grid">
                     <div class="loading-spinner"></div>
-                    </div>
+                </div>
             </main>
 
             <footer class="footer">
@@ -86,47 +83,28 @@
             </header>
             <main class="modal-body">
                 <form id="projectForm">
-                    <div class="form-group">
-                        <label for="titulo">Título do Projeto</label>
-                        <input type="text" id="titulo" name="titulo" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="status">Status</label>
-                        <select id="status" name="status">
-                            <option value="A Fazer">A Fazer</option>
-                            <option value="Em Andamento">Em Andamento</option>
-                            <option value="Concluído">Concluído</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="imagem_file">Foto do Projeto</label>
-                        <input type="file" id="imagem_file" name="imagem_file" accept="image/*">
-                    </div>
-                    <div class="form-group">
-                        <label for="progresso">Progresso (%)</label>
-                        <input type="number" id="progresso" name="progresso" min="0" max="100" value="0">
-                    </div>
-                    <div class="form-group">
-                        <label for="principais_feitos">Principais Feitos (um por linha)</label>
-                        <textarea id="principais_feitos" name="principais_feitos" rows="4"></textarea>
-                    </div>
+                    <div class="form-group"><label for="titulo">Título do Projeto</label><input type="text" id="titulo" name="titulo" required></div>
+                    <div class="form-group"><label for="status">Status</label><select id="status" name="status"><option value="A Fazer">A Fazer</option><option value="Em Andamento">Em Andamento</option><option value="Concluído">Concluído</option></select></div>
+                    <div class="form-group"><label for="imagem_file">Foto do Projeto</label><input type="file" id="imagem_file" name="imagem_file" accept="image/*"></div>
+                    <div class="form-group"><label for="progresso">Progresso (%)</label><input type="number" id="progresso" name="progresso" min="0" max="100" value="0"></div>
+                    <div class="form-group"><label for="principais_feitos">Principais Feitos (um por linha)</label><textarea id="principais_feitos" name="principais_feitos" rows="4"></textarea></div>
                     <div class="form-actions">
-                        <button type="button" id="deleteProjectBtn" class="delete-button hidden">
-                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                        </button>
-                        <button type="submit" class="save-button">Salvar Projeto</button>
+                        <button type="button" id="deleteProjectBtn" class="delete-button hidden"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
                         <button type="button" id="cancelModalBtn" class="cancel-button">Cancelar</button>
+                        <button type="submit" class="save-button">Salvar Projeto</button>
                     </div>
                 </form>
             </main>
         </div>
     </div>
+
     <script>
+    document.addEventListener('DOMContentLoaded', () => {
         // =================== CONFIGURAÇÕES ===================
         const CLOUDINARY_CLOUD_NAME = 'dsge4dbjy';
         const CLOUDINARY_UPLOAD_PRESET = 'ml_default';
         const API_BASE_URL = '/.netlify/functions';
-    
+
         // =================== ELEMENTOS DO DOM ===================
         const addProjectBtn = document.getElementById('addProjectBtn');
         const projectModal = document.getElementById('projectModal');
@@ -136,111 +114,80 @@
         const projectForm = document.getElementById('projectForm');
         const projectsGrid = document.querySelector('.projects-grid');
         const modalTitle = projectModal.querySelector('.modal-header h2');
-    
+
         // =================== FUNÇÕES ===================
-    
-        // Função para renderizar um único card de projeto
         function renderProjectCard(project) {
             const feitosHtml = project.principais_feitos.map(feito => `<li>${feito}</li>`).join('');
-            
             let progressBarColor = '#29abe2';
             if (project.progresso == 100) { progressBarColor = '#28a745'; }
             else if (project.progresso >= 70) { progressBarColor = '#ffc107'; }
             else if (project.progresso >= 50) { progressBarColor = '#fd7e14'; }
-    
             return `
                 <div class="project-card">
                     <div class="card-image-container">
                         <img src="${project.imagem_url || 'https://via.placeholder.com/600x400/CCCCCC/FFFFFF?text=Sem+Imagem'}" alt="Imagem do Projeto ${project.titulo}">
                     </div>
                     <div class="card-project-body">
-                        <button class="edit-button" data-id="${project.id}">
-                            <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.536L16.732 3.732z"></path></svg>
-                        </button>
+                        <button class="edit-button" data-id="${project.id}"><svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.536L16.732 3.732z"></path></svg></button>
                         <h3>${project.titulo}</h3>
-                        <p><strong>Status:</strong> ${project.status}</p>
-                        <hr>
+                        <p><strong>Status:</strong> ${project.status}</p><hr>
                         <div class="card-project-details">
                             <h4>Principais Feitos:</h4>
                             <ul>${feitosHtml}</ul>
                         </div>
                         <div class="card-progress-container">
-                            <div class="progress-bar-info">
-                                <span>Progresso</span>
-                                <span>${project.progresso}%</span>
-                            </div>
-                            <div class="progress-bar-background">
-                                <div class="progress-bar-fill" style="width: ${project.progresso}%; background-color: ${progressBarColor};"></div>
-                            </div>
+                            <div class="progress-bar-info"><span>Progresso</span><span>${project.progresso}%</span></div>
+                            <div class="progress-bar-background"><div class="progress-bar-fill" style="width: ${project.progresso}%; background-color: ${progressBarColor};"></div></div>
                         </div>
                     </div>
-                </div>
-            `;
+                </div>`;
         }
-    
-        // Função para buscar todos os projetos da API e mostrá-los na tela
+
         async function fetchAndRenderProjects() {
             try {
                 const response = await fetch(`${API_BASE_URL}/getProjetos`);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
+                if (!response.ok) { throw new Error(`HTTP error! status: ${response.status}`); }
                 const projects = await response.json();
-                
                 projectsGrid.innerHTML = '';
                 if (projects.length === 0) {
                     projectsGrid.innerHTML = '<p>Nenhum projeto encontrado. Adicione o primeiro!</p>';
                 } else {
-                    projects.forEach(project => {
-                        projectsGrid.innerHTML += renderProjectCard(project);
-                    });
+                    projects.forEach(project => { projectsGrid.innerHTML += renderProjectCard(project); });
                 }
             } catch (error) {
                 console.error('Erro ao buscar projetos:', error);
-                projectsGrid.innerHTML = '<p style="color: red;">Não foi possível carregar os projetos. Verifique o console para mais detalhes.</p>';
+                projectsGrid.innerHTML = '<p style="color: red;">Não foi possível carregar os projetos.</p>';
             }
         }
-    
-        // Função para preencher o formulário com dados de um projeto e abrir o modal para EDIÇÃO
-        function populateFormAndOpenModal(project) {
-            document.getElementById('titulo').value = project.titulo;
-            document.getElementById('status').value = project.status;
-            document.getElementById('progresso').value = project.progresso;
-            document.getElementById('principais_feitos').value = project.principais_feitos.join('\n');
-            document.getElementById('imagem_file').value = '';
-    
+
+        function populateFormForEdit(project) {
+            projectForm.querySelector('#titulo').value = project.titulo;
+            projectForm.querySelector('#status').value = project.status;
+            projectForm.querySelector('#progresso').value = project.progresso;
+            projectForm.querySelector('#principais_feitos').value = project.principais_feitos.join('\n');
+            projectForm.querySelector('#imagem_file').value = '';
             modalTitle.textContent = 'Editar Projeto';
             projectForm.dataset.editingId = project.id;
-            
-            deleteProjectBtn.classList.remove('hidden'); // MOSTRA o botão de excluir
-            openModalDisplay();
+            deleteProjectBtn.classList.remove('hidden');
+            projectModal.style.display = 'flex';
         }
-    
-        // Função para lidar com o envio do formulário (Adicionar ou Editar)
+
         async function handleFormSubmit(event) {
             event.preventDefault();
             const saveButton = event.target.querySelector('.save-button');
             saveButton.textContent = 'Salvando...';
             saveButton.disabled = true;
-    
             const editingId = projectForm.dataset.editingId;
             let imageUrl = '';
             const imageFile = document.getElementById('imagem_file').files[0];
-    
             if (imageFile) {
-                 try {
+                try {
                     const formData = new FormData();
                     formData.append('file', imageFile);
                     formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
-                    
-                    const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
-                        method: 'POST',
-                        body: formData,
-                    });
+                    const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, { method: 'POST', body: formData });
                     const data = await response.json();
-                    if (data.secure_url) {
-                        imageUrl = data.secure_url;
-                    } else { throw new Error('Upload para Cloudinary falhou.'); }
+                    if (data.secure_url) { imageUrl = data.secure_url; } else { throw new Error('Upload para Cloudinary falhou.'); }
                 } catch (error) {
                     console.error('Erro ao enviar imagem:', error);
                     alert('Houve um erro ao enviar a imagem. O projeto não foi salvo.');
@@ -249,18 +196,15 @@
                     return;
                 }
             }
-    
-            let progressoValue = parseInt(document.getElementById('progresso').value) || 0;
+            let progressoValue = parseInt(projectForm.querySelector('#progresso').value) || 0;
             if (progressoValue > 100) { progressoValue = 100; } else if (progressoValue < 0) { progressoValue = 0; }
-    
             const projectData = {
-                titulo: document.getElementById('titulo').value,
-                status: document.getElementById('status').value,
+                titulo: projectForm.querySelector('#titulo').value,
+                status: projectForm.querySelector('#status').value,
                 imagem_url: imageUrl,
                 progresso: progressoValue,
-                principais_feitos: document.getElementById('principais_feitos').value.split('\n').filter(line => line.trim() !== '')
+                principais_feitos: projectForm.querySelector('#principais_feitos').value.split('\n').filter(line => line.trim() !== '')
             };
-            
             try {
                 let response;
                 if (editingId) {
@@ -269,25 +213,13 @@
                         const oldProject = await oldProjectResponse.json();
                         projectData.imagem_url = oldProject.imagem_url;
                     }
-                    
-                    response = await fetch(`${API_BASE_URL}/updateProjeto?id=${editingId}`, {
-                        method: 'PUT',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(projectData)
-                    });
+                    response = await fetch(`${API_BASE_URL}/updateProjeto?id=${editingId}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(projectData) });
                 } else {
-                    response = await fetch(`${API_BASE_URL}/addProjeto`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(projectData)
-                    });
+                    response = await fetch(`${API_BASE_URL}/addProjeto`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(projectData) });
                 }
-    
                 if (!response.ok) { throw new Error('Falha na API ao salvar projeto'); }
-    
                 closeModal();
                 await fetchAndRenderProjects();
-    
             } catch (error) {
                 console.error('Erro ao salvar projeto:', error);
                 alert('Não foi possível salvar o projeto.');
@@ -296,19 +228,13 @@
                 saveButton.disabled = false;
             }
         }
-    
-        // Função para lidar com o clique no botão de excluir
+
         async function handleDeleteProject() {
             const editingId = projectForm.dataset.editingId;
             if (!editingId) return;
-    
-            const confirmed = confirm('Tem certeza que deseja excluir este projeto? Esta ação não pode ser desfeita.');
-    
-            if (confirmed) {
+            if (confirm('Tem certeza que deseja excluir este projeto? Esta ação não pode ser desfeita.')) {
                 try {
-                    const response = await fetch(`${API_BASE_URL}/deleteProjeto?id=${editingId}`, {
-                        method: 'DELETE'
-                    });
+                    const response = await fetch(`${API_BASE_URL}/deleteProjeto?id=${editingId}`, { method: 'DELETE' });
                     if (!response.ok) { throw new Error('Falha ao excluir o projeto.'); }
                     closeModal();
                     await fetchAndRenderProjects();
@@ -318,88 +244,54 @@
                 }
             }
         }
-    
-        // Funções de controle do Modal
+
         function openModalForAdd() {
             projectForm.reset();
             delete projectForm.dataset.editingId;
             modalTitle.textContent = 'Adicionar Novo Projeto';
-            deleteProjectBtn.classList.add('hidden'); // ESCONDE o botão de excluir
+            deleteProjectBtn.classList.add('hidden');
             projectModal.style.display = 'flex';
         }
-        
-        function openModalDisplay() {
-            projectModal.style.display = 'flex';
-        }
-    
         function closeModal() {
             projectModal.style.display = 'none';
             projectForm.reset();
         }
-    
+
+        // --- LÓGICA DO MENU MOBILE ---
+        const body = document.body;
+        const sidebar = document.querySelector('.sidebar');
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const overlay = document.getElementById('overlay');
+        function openMenu() { body.classList.add('menu-open'); sidebar.classList.add('mobile-nav-open'); overlay.classList.add('active'); }
+        function closeMenu() { body.classList.remove('menu-open'); sidebar.classList.remove('mobile-nav-open'); overlay.classList.remove('active'); }
+        if (mobileMenuButton) { mobileMenuButton.addEventListener('click', openMenu); }
+        if (overlay) { overlay.addEventListener('click', closeMenu); }
+        window.addEventListener('load', () => { if (sidebar) { sidebar.classList.remove('preload'); } });
+
         // =================== EVENT LISTENERS ===================
-        document.addEventListener('DOMContentLoaded', fetchAndRenderProjects);
+        fetchAndRenderProjects(); // Busca os projetos ao carregar a página
         addProjectBtn.addEventListener('click', openModalForAdd);
         closeModalBtn.addEventListener('click', closeModal);
         cancelModalBtn.addEventListener('click', closeModal);
         deleteProjectBtn.addEventListener('click', handleDeleteProject);
         projectForm.addEventListener('submit', handleFormSubmit);
         window.addEventListener('click', (event) => { if (event.target == projectModal) { closeModal(); } });
-    
         projectsGrid.addEventListener('click', async (event) => {
             const editButton = event.target.closest('.edit-button');
             if (editButton) {
                 const projectId = editButton.dataset.id;
                 try {
                     const response = await fetch(`${API_BASE_URL}/getUmProjeto?id=${projectId}`);
-                    if (!response.ok) { throw new Error('Não foi possível buscar dados do projeto.'); }
+                    if (!response.ok) { throw new Error('Falha ao buscar dados do projeto'); }
                     const project = await response.json();
-                    populateFormAndOpenModal(project);
+                    populateFormForEdit(project);
                 } catch (error) {
                     console.error('Erro ao editar:', error);
                     alert('Não foi possível carregar os dados para edição.');
                 }
             }
         });
-
-        // No seu arquivo projetos.html, dentro do <script>
-
-        document.addEventListener('DOMContentLoaded', () => {
-            // ... todo o seu código de modal, formulário, etc. fica aqui dentro ...
-
-            // LÓGICA DO MENU MOBILE (Onde o código de preload deve estar)
-            const body = document.body;
-            const sidebar = document.querySelector('.sidebar');
-            const mobileMenuButton = document.getElementById('mobileMenuButton');
-            const overlay = document.getElementById('overlay');
-
-            function openMenu() {
-                body.classList.add('menu-open');
-                sidebar.classList.add('mobile-nav-open');
-                overlay.classList.add('active');
-            }
-
-            function closeMenu() {
-                body.classList.remove('menu-open');
-                sidebar.classList.remove('mobile-nav-open');
-                overlay.classList.remove('active');
-            }
-
-            if (mobileMenuButton) {
-                mobileMenuButton.addEventListener('click', openMenu);
-            }
-
-            if (overlay) {
-                overlay.addEventListener('click', closeMenu);
-            }
-
-            // CÓDIGO QUE ATIVA A ANIMAÇÃO (VERIFIQUE SE ELE ESTÁ AQUI)
-            window.addEventListener('load', () => {
-                if (sidebar) {
-                    sidebar.classList.remove('preload');
-                }
-            });
-        });
+    });
     </script>
 </body>
 </html>

@@ -1,34 +1,37 @@
-@import url('https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&display=swap');
-
 /* --- GERAL E LAYOUT DA PÁGINA --- */
 html, body {
-    height: 100%;
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background-color: #f4f7fc;
-    color: #333;
-    overflow-x: hidden;
+  height: 100%;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: #f4f7fc;
+  color: #333;
+  overflow-x: hidden;
+}
+
+.page-container {
+  display: flex;
+  height: 100vh;
 }
 
 /* --- MENU LATERAL FLUTUANTE (SIDEBAR) --- */
 .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    z-index: 1000;
-    width: 100px;
-    background-color: #003366;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  z-index: 1000;
+  width: 100px;
+  background-color: #003366;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 .sidebar:hover {
-    width: 260px;
+  width: 260px;
 }
 
-/* --- Conteúdo do Menu --- */
+/* Conteúdo do Menu */
 .sidebar-header { padding: 20px 0; margin-bottom: 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; flex-shrink: 0; }
 .sidebar-header img { height: 45px; width: auto; margin-bottom: 15px; }
 .sidebar-header h2 { margin: 0; font-size: 1.2em; font-weight: 500; opacity: 0; visibility: hidden; white-space: nowrap; }
@@ -46,7 +49,7 @@ html, body {
 .sidebar-footer-logo img { max-width: 40px; opacity: 0.7; }
 .sidebar:hover .sidebar-footer-logo img { max-width: 100px; }
 
-/* --- LÓGICA CONTRA O "PISCA-PISCA" --- */
+/* Lógica contra o "pisca-pisca" */
 .sidebar:not(.preload) { transition: width 0.3s ease; }
 .sidebar:not(.preload) .sidebar-header h2,
 .sidebar:not(.preload) .sidebar-nav li a span { transition: opacity 0.2s ease 0.1s, visibility 0.2s ease 0.1s; }
@@ -55,564 +58,131 @@ html, body {
 
 /* --- ÁREA DE CONTEÚDO PRINCIPAL --- */
 .main-content {
-    padding-left: 100px;
-    height: 100vh;
-    overflow-y: auto;
-    transition: filter 0.3s ease;
+  margin-left: 100px;
+  width: calc(100% - 100px);
+  height: 100vh;
+  overflow-y: auto;
+  transition: filter 0.3s ease, margin-left 0.3s ease;
+  display: flex;
+  flex-direction: column;
 }
 
-/* --- OVERLAY E ESTADO DE MENU ABERTO --- */
-.overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 999;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-}
-.overlay.active {
-    opacity: 1;
-    visibility: visible;
-}
-body.menu-open .main-content {
-    filter: blur(4px);
-}
+/* Overlay e estado de menu aberto */
+.overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 999; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
+.overlay.active { opacity: 1; visibility: visible; }
+body.menu-open .main-content { filter: blur(4px); }
 
-/* --- BOTÃO HAMBURGER E RESPONSIVO (MOBILE) --- */
-.mobile-menu-button { display: none; background: none; border: none; cursor: pointer; padding: 5px; z-index: 1001; }
-.mobile-menu-button svg { width: 30px; height: 30px; stroke: #003366; }
-
-/* AJUSTE 1: AUMENTANDO O "RESPIRO" NO DESKTOP */
+/* Cabeçalho e Rodapé */
 .content-header { padding: 30px 50px; background-color: #ffffff; border-bottom: 1px solid #e0e5eb; display: flex; align-items: center; gap: 20px; }
 .content-header h1 { margin: 0; font-size: 2em; color: #003366; }
 .content-header > div { flex-grow: 1; }
 .content-header p { margin: 5px 0 0 0; color: #777; }
-.content-area { padding: 50px; flex-grow: 1; }
-.footer { text-align: center; padding: 20px; color: #777; font-size: 0.9em; background-color: #fff; border-top: 1px solid #e0e5eb; }
+.content-area { padding: 30px 50px; flex-grow: 1; }
+.footer { text-align: center; padding: 20px; color: #777; font-size: 0.9em; background-color: #fff; border-top: 1px solid #e0e5eb; margin-top: auto; }
 
+/* Header de Ações da Página (Botão + Adicionar) */
+.page-actions { display: flex; justify-content: flex-end; margin-bottom: 30px; margin-top: 15px; }
+.add-button { background-color: #003366; color: white; border: none; padding: 10px 20px; font-size: 1em; font-weight: 500; border-radius: 5px; cursor: pointer; transition: background-color 0.2s ease; white-space: nowrap; }
+.add-button:hover { background-color: #004488; }
 
-/* =================================== */
-/* --- ESTILOS PARA MOBILE (TABLET E ABAIXO) --- */
-/* =================================== */
-@media (max-width: 900px) {
-    /* --- CONFIGURAÇÕES GERAIS --- */
-    .main-content {
-        padding-left: 0 !important; /* Remove o espaçamento que era do menu desktop */
-    }
-    .content-header {
-        padding: 20px;
-    }
-    .content-header h1 {
-        font-size: 1.5em;
-    }
-    .content-area {
-        padding: 20px;
-    }
-    .indicators-grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
-    .indicator-card {
-        min-height: auto;
-    }
-
-    /* --- ESTADOS DO MENU ABERTO --- */
-    body.menu-open {
-        overflow: hidden; /* Impede o scroll do fundo com o menu aberto */
-    }
-    body.menu-open .mobile-menu-button {
-        /* Esconde o botão de forma inteligente quando o menu está aberto */
-        /* Isso evita o clique fantasma e o bug do menu 'preso' */
-        pointer-events: none; /* Desativa QUALQUER clique ou toque no botão */
-        opacity: 0;           /* Faz o botão desaparecer suavemente */
-        transition: opacity 0.1s ease;
-    }
-    
-    /* --- ESTILOS DO MENU LATERAL (SIDEBAR) --- */
-    .sidebar:hover {
-        width: 280px; /* No mobile, o hover não deve ter efeito de expandir */
-    }
-    .sidebar {
-        width: 280px;
-        transform: translateX(-100%); /* Menu começa totalmente escondido à esquerda */
-        transition: transform 0.3s ease-in-out; /* Animação mais suave para abrir/fechar */
-    }
-    .sidebar.mobile-nav-open {
-        transform: translateX(0); /* Traz o menu para a tela */
-        box-shadow: 5px 0px 25px rgba(0, 0, 0, 0.2); /* Sombra para dar profundidade */
-    }
-    .sidebar.mobile-nav-open .sidebar-header h2,
-    .sidebar.mobile-nav-open .sidebar-nav li a span {
-        opacity: 1;
-        visibility: visible;
-    }
-
-    /* --- BOTÃO HAMBÚRGUER (A CORREÇÃO PRINCIPAL ESTÁ AQUI) --- */
-    .mobile-menu-button {
-        display: block; /* Mostra o botão apenas no mobile */
-        z-index: 1001; /* Garante que ele fique acima do conteúdo, mas abaixo do menu */
-        -webkit-tap-highlight-color: transparent; /* Remove o brilho do toque no iOS/Android */
-    }
-
-    /* Remove o 'efeito pressionado' azul/cinza do navegador */
-    .mobile-menu-button:focus,
-    .mobile-menu-button:active {
-        outline: none;
-        border: none;
-        box-shadow: none;
-    }
-}
-
-/* Estilos dos cards com o efeito de hover que você personalizou */
-.indicators-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; }
-@media (max-width: 1200px) { .indicators-grid { grid-template-columns: 1fr; } }
-.indicator-card { background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 71, 137, 0.07); display: flex; flex-direction: column; min-height: 500px; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+/* --- PÁGINA DASHBOARD --- */
+.indicators-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px; }
+.indicator-card { background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 71, 137, 0.07); display: flex; flex-direction: column; min-height: 400px; transition: transform 0.2s ease, box-shadow 0.2s ease; }
 .indicator-card:hover { transform: translateY(-5px); box-shadow: 0 8px 16px rgba(0, 71, 137, 0.07); }
 .card-info { padding: 25px; border-bottom: 1px solid #eef2f7; }
 .card-info h3 { margin: 0 0 15px 0; color: #003366; font-size: 1.4em; }
 .card-info p { margin: 5px 0; color: #555; }
 .card-info strong { color: #333; }
 .card-graph { flex-grow: 1; padding: 25px; display: flex; align-items: center; justify-content: center; }
-.card-graph:empty::before { content: 'Espaço para o Gráfico'; display: block; width: 100%; height: 100%; border: 2px dashed #d0d9e2; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #b0c0d1; font-style: italic; font-weight: 400; font-size: 1.1em; }
 
-/* --- ESTILOS DA PÁGINA DE PROJETOS --- */
-.projects-grid {
-    display: grid;
-    /* Cria colunas responsivas: elas terão no mínimo 350px e no máximo 1fr (fração do espaço) */
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 40px;
-}
+/* --- PÁGINA PROJETOS --- */
+.projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px; }
+.project-card { background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 71, 137, 0.07); transition: transform 0.2s ease, box-shadow 0.2s ease; display: flex; flex-direction: column; overflow: hidden; }
+.project-card:hover { transform: translateY(-5px); box-shadow: 0 8px 16px rgba(0, 71, 137, 0.1); }
+.card-image-container { height: 220px; overflow: hidden; }
+.card-image-container img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
+.project-card:hover .card-image-container img { transform: scale(1.05); }
+.card-project-body { position: relative; padding: 25px; display: flex; flex-direction: column; flex-grow: 1; }
+.card-project-body h3 { margin: 0 0 5px 0; color: #003366; font-size: 1.4em; }
+.card-project-body p { margin: 0 0 15px 0; color: #555; font-size: 0.9em; }
+.card-project-body hr { border: none; border-top: 1px solid #eef2f7; margin: 0 0 15px 0; }
+.card-project-details { flex-grow: 1; }
+.card-project-details h4 { margin: 0 0 10px 0; font-size: 1em; color: #333; }
+.card-project-details ul { margin: 0; padding-left: 20px; color: #555; font-size: 0.95em; }
+.card-project-details ul li { margin-bottom: 8px; }
+.card-progress-container { margin-top: 20px; }
+.progress-bar-info { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9em; color: #555; font-weight: 500; }
+.progress-bar-background { height: 10px; background-color: #eef2f7; border-radius: 5px; overflow: hidden; }
+.progress-bar-fill { height: 100%; background-color: #29abe2; border-radius: 5px; transition: width 0.5s ease-in-out, background-color 0.5s ease; }
 
-.project-card {
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 71, 137, 0.07);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden; /* Garante que a imagem com borda arredondada funcione */
-}
-
-.project-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 71, 137, 0.1);
-}
-
-.card-image-container {
-    height: 430px;
-    overflow: hidden;
-}
-
-.card-image-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Faz a imagem cobrir o espaço sem distorcer */
-    transition: transform 0.3s ease;
-}
-
-.project-card:hover .card-image-container img {
-    transform: scale(1.05); /* Efeito de zoom sutil na imagem ao passar o mouse */
-}
-
-.card-project-body {
-    padding: 25px;
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1; /* Faz esta área ocupar o espaço restante */
-}
-
-.card-project-body h3 {
-    margin: 0 0 5px 0;
-    color: #003366;
-    font-size: 1.4em;
-}
-
-.card-project-body p {
-    margin: 0 0 15px 0;
-    color: #555;
-    font-size: 0.9em;
-}
-
-.card-project-body hr {
-    border: none;
-    border-top: 1px solid #eef2f7;
-    margin: 0 0 15px 0;
-}
-
-.card-project-details {
-    flex-grow: 1; /* Empurra a barra de progresso para o final */
-}
-
-.card-project-details h4 {
-    margin: 0 0 10px 0;
-    font-size: 1em;
-    color: #333;
-}
-
-.card-project-details ul {
-    margin: 0;
-    padding-left: 20px;
-    color: #555;
-    font-size: 0.95em;
-}
-
-.card-project-details ul li {
-    margin-bottom: 8px;
-}
-
-.card-progress-container {
-    margin-top: 20px;
-}
-
-.progress-bar-info {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 8px;
-    font-size: 0.9em;
-    color: #555;
-    font-weight: 500;
-}
-
-.progress-bar-background {
-    height: 10px;
-    background-color: #eef2f7;
-    border-radius: 5px;
-    overflow: hidden;
-}
-
-.progress-bar-fill {
-    height: 100%;
-    background-color: #29abe2; /* Azul dos links ativos, para consistência */
-    border-radius: 5px;
-    transition: width 0.5s ease-in-out;
-}
-
-/* --- ESTILOS DO BOTÃO ADICIONAR E MODAL --- */
-
-/* Botão Adicionar Projeto */
-.add-button {
-    background-color: #15316d;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    font-size: 1em;
-    font-weight: 500;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-    white-space: nowrap; /* Impede que o texto quebre */
-  }
-  
-  .add-button:hover {
-    background-color: #0f4169;
-  }
-  
-  /* Overlay do Modal (fundo escuro) */
-  .modal-overlay {
-    display: none; /* Escondido por padrão */
-    position: fixed;
-    z-index: 2000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
-    justify-content: center;
-    align-items: center;
-  }
-  
-  /* Conteúdo do Modal (a janela branca) */
-  .modal-content {
-    background-color: #fefefe;
-    border-radius: 8px;
-    width: 90%;
-    max-width: 600px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    animation: slide-down 0.3s ease-out;
-  }
-  
-  .modal-header {
-    padding: 15px 25px;
-    border-bottom: 1px solid #e9ecef;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .modal-header h2 {
-    margin: 0;
-    font-size: 1.5em;
-    color: #003366;
-  }
-  
-  .close-button {
-    background: none;
-    border: none;
-    font-size: 2em;
-    font-weight: 300;
-    color: #888;
-    cursor: pointer;
-    line-height: 1;
-  }
-  
-  .modal-body {
-    padding: 25px;
-  }
-  
-  .form-group {
-    margin-bottom: 20px;
-  }
-  
-  .form-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 500;
-    color: #333;
-  }
-  
-  .form-group input,
-  .form-group select,
-  .form-group textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1em;
-    box-sizing: border-box; /* Garante que padding não afete a largura total */
-  }
-  
-  .form-actions {
-    text-align: right;
-    margin-top: 30px;
-  }
-  
-  .save-button {
-    background-color: #007bff;
-    color: white;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.2s ease;
-  }
-  .save-button:hover {
-    background-color: #0056b3;
-  }
-  
-  /* Animação do modal */
-  @keyframes slide-down {
-    from {
-      transform: translateY(-50px);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
-
-  .page-actions {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 30px;
-    margin-top: 15px;
-  }
-/* Mudar o botao de cancelar as coisas */
-  .cancel-button {
-    background-color: #8f2521;
-    color: white;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.2s ease;
-  }
-  .cancel-button:hover {
-    background-color: #964542;
-  }
-
-  /* --- Estilo para o novo botão de Editar --- */
-.edit-button {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 5px;
-    opacity: 0.5;
-    transition: opacity 0.2s ease;
-  }
-  
-  .edit-button:hover {
-    opacity: 1;
-  }
-  
-  .edit-button svg {
-    width: 24px;
-    height: 24px;
-    stroke: #003366; /* Azul marinho do tema */
-    stroke-width: 2;
-  }
-  
-  /* Adicione position: relative ao corpo do card para o botão funcionar */
-  .card-project-body {
-    position: relative;
-    padding: 25px;
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-  }
-
-  /* --- ESTILO DO LOADING SPINNER --- */
-.loading-spinner {
-    width: 50px;
-    height: 50px;
-    border: 5px solid #f0f0f0; /* Cinza bem claro */
-    border-top: 5px solid #003366; /* Azul marinho do seu tema */
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin: 80px auto; /* Centraliza o spinner com uma margem no topo */
-  }
-  
-  /* Animação que faz o spinner girar */
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-
-  .form-actions {
-    display: flex; /* Ativa o flexbox */
-    justify-content: flex-end; /* Alinha os botões da direita para a direita */
-    align-items: center; /* Alinha verticalmente */
-    margin-top: 30px;
-    gap: 10px;
-  }
-  
-  .delete-button {
-    margin-right: auto; /* MÁGICA: Empurra o botão de excluir para a esquerda */
-    background-color: transparent;
-    border: 1px solid #dc3545;
-    color: #dc3545;
-    padding: 8px;
-    border-radius: 5px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease;
-  }
-  .delete-button:hover {
-    background-color: #dc3545;
-    color: white;
-  }
-  
-  /* Classe utilitária para esconder/mostrar o botão */
-  .hidden {
-    display: none !important;
-  }
-
-  /* Adiciona tamanho e cor ao ícone da lixeira */
-.delete-button svg {
-    width: 20px;
-    height: 20px;
-    stroke: currentColor; /* Faz o ícone herdar a cor do texto do botão (vermelho) */
-  }
-
-/* --- ESTILOS DA PÁGINA DE AUDITORIAS (TEMA CARTÃO DE DESTAQUE) --- */
-.audits-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 25px; /* Um espaçamento menor e mais agradável */
-}
-
-.audit-card {
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 71, 137, 0.09);
-  transition: all 0.2s ease-out;
-  overflow: hidden; /* Importante para o cabeçalho colorido */
-  display: flex;
-  flex-direction: column;
-}
-
-.audit-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0, 71, 137, 0.15);
-}
-
-.audit-card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 20px;
-  color: white;
-}
-
-.audit-card-header h3 {
-  margin: 0;
-  font-size: 1.2em;
-  font-weight: 600;
-}
-
-/* Ações (botões) dentro do cabeçalho */
-.card-actions {
-  display: flex;
-  gap: 8px;
-}
-.card-actions .edit-button,
-.card-actions .delete-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 5px;
-  opacity: 0.8;
-  transition: opacity 0.2s ease;
-}
-.card-actions .edit-button:hover,
-.card-actions .delete-button:hover {
-  opacity: 1;
-}
-.card-actions svg {
-  width: 20px;
-  height: 20px;
-  stroke: white; /* Cor dos ícones */
-  stroke-width: 2;
-}
-
-
-/* Cores dinâmicas baseadas no Status */
-.status-agendado .audit-card-header { background-color: #007bff; } /* Azul */
-.status-em-andamento .audit-card-header { background-color: #fd7e14; } /* Laranja */
-.status-concluido .audit-card-header { background-color: #28a745; } /* Verde */
-.status-cancelado .audit-card-header { background-color: #6c757d; } /* Cinza */
-.status-default .audit-card-header { background-color: #003366; } /* Azul Padrão */
-
-
-.audit-card-body {
-  padding: 20px;
-  flex-grow: 1;
-}
-
-.audit-info {
-  margin-bottom: 10px;
-  color: #555;
-  font-size: 0.9em;
-}
+/* --- PÁGINA AUDITORIAS (TEMA CARTÃO DE DESTAQUE) --- */
+.audits-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; }
+.audit-card { background-color: #fff; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 71, 137, 0.09); transition: all 0.2s ease-out; overflow: hidden; display: flex; flex-direction: column; }
+.audit-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0, 71, 137, 0.15); }
+.audit-card-header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; color: white; }
+.audit-card-header h3 { margin: 0; font-size: 1.2em; font-weight: 600; }
+.card-actions { display: flex; gap: 8px; }
+.card-actions .edit-button { background: none; border: none; cursor: pointer; padding: 5px; opacity: 0.8; transition: opacity 0.2s ease; }
+.card-actions .edit-button:hover { opacity: 1; }
+.card-actions svg { width: 20px; height: 20px; stroke: white; stroke-width: 2; }
+.status-agendado .audit-card-header { background-color: #007bff; }
+.status-em-andamento .audit-card-header { background-color: #fd7e14; }
+.status-concluido .audit-card-header { background-color: #28a745; }
+.status-cancelado .audit-card-header { background-color: #6c757d; }
+.status-default .audit-card-header { background-color: #003366; }
+.audit-card-body { padding: 20px; flex-grow: 1; }
+.audit-info { margin-bottom: 10px; color: #555; font-size: 0.9em; }
 .audit-info strong { color: #333; }
+.audit-description { margin-top: 15px; font-size: 0.9em; color: #333; line-height: 1.6; }
 
-.audit-description {
-  margin-top: 15px;
-  font-size: 0.9em;
-  color: #333;
-  line-height: 1.6;
+/* --- ELEMENTOS GLOBAIS (MODAL, BOTÕES, ETC) --- */
+.loading-spinner { width: 50px; height: 50px; border: 5px solid #f0f0f0; border-top: 5px solid #003366; border-radius: 50%; animation: spin 1s linear infinite; margin: 80px auto; }
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+.modal-overlay { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.6); justify-content: center; align-items: center; animation: fade-in 0.3s ease; }
+.modal-content { background-color: #fefefe; border-radius: 8px; width: 90%; max-width: 600px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); animation: slide-down 0.3s ease-out; }
+.modal-header { padding: 15px 25px; border-bottom: 1px solid #e9ecef; display: flex; justify-content: space-between; align-items: center; }
+.modal-header h2 { margin: 0; font-size: 1.5em; color: #003366; }
+.close-button { background: none; border: none; font-size: 2em; font-weight: 300; color: #888; cursor: pointer; line-height: 1; }
+.modal-body { padding: 25px; max-height: 70vh; overflow-y: auto; }
+.form-group { margin-bottom: 20px; }
+.form-group label { display: block; margin-bottom: 8px; font-weight: 500; color: #333; }
+.form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 1em; box-sizing: border-box; }
+.form-actions { display: flex; justify-content: flex-end; align-items: center; margin-top: 30px; gap: 10px; }
+.save-button { background-color: #007bff; color: white; padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 1em; transition: background-color 0.2s ease; }
+.save-button:hover { background-color: #0056b3; }
+.cancel-button { background-color: #6c757d; color: white; padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 1em; transition: background-color 0.2s ease; }
+.cancel-button:hover { background-color: #5a6268; }
+.delete-button { margin-right: auto; background-color: transparent; border: 1px solid #dc3545; color: #dc3545; padding: 8px; border-radius: 5px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
+.delete-button:hover { background-color: #dc3545; color: white; }
+.delete-button svg { width: 20px; height: 20px; stroke: currentColor; }
+.edit-button { position: static; /* Reset para o card de projeto */ }
+.hidden { display: none !important; }
+
+/* Animações */
+@keyframes slide-down { from { transform: translateY(-30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+/* =================================== */
+/* --- ESTILOS PARA MOBILE (TABLET E ABAIXO) --- */
+/* =================================== */
+@media (max-width: 900px) {
+  .sidebar { transform: translateX(-100%); transition: transform 0.3s ease-in-out; width: 280px; }
+  .sidebar:hover { width: 280px; }
+  .sidebar.mobile-nav-open { transform: translateX(0); box-shadow: 5px 0px 25px rgba(0, 0, 0, 0.2); }
+  .sidebar.mobile-nav-open .sidebar-header h2,
+  .sidebar.mobile-nav-open .sidebar-nav li a span { opacity: 1; visibility: visible; }
+  
+  .main-content { margin-left: 0 !important; width: 100%; }
+  .mobile-menu-button { display: block; background: none; border: none; cursor: pointer; padding: 5px; z-index: 1001; -webkit-tap-highlight-color: transparent; }
+  .mobile-menu-button svg { width: 30px; height: 30px; stroke: #003366; }
+  
+  body.menu-open { overflow: hidden; }
+  body.menu-open .mobile-menu-button { pointer-events: none; opacity: 0; transition: opacity 0.1s ease; }
+
+  .content-header { padding: 20px; flex-wrap: wrap; }
+  .content-header h1 { font-size: 1.5em; }
+  .content-area { padding: 20px; }
+  
+  .indicators-grid, .projects-grid, .audits-grid { grid-template-columns: 1fr; gap: 20px; }
+  .page-actions { justify-content: center; }
 }
-
-/* Removemos o botão de editar da sua posição antiga */
-.edit-button { position: static; }
