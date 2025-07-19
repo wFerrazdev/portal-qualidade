@@ -117,10 +117,10 @@
     </div>
     <script>
         // =================== CONFIGURAÇÕES ===================
-        const CLOUDINARY_CLOUD_NAME = 'dsge4dbjy';
-        const CLOUDINARY_UPLOAD_PRESET = 'ml_default';
+        const CLOUDINARY_CLOUD_NAME = 'SEU_CLOUD_NAME';
+        const CLOUDINARY_UPLOAD_PRESET = 'SEU_UPLOAD_PRESET';
         const API_BASE_URL = '/.netlify/functions';
-        
+    
         // =================== ELEMENTOS DO DOM ===================
         const addProjectBtn = document.getElementById('addProjectBtn');
         const projectModal = document.getElementById('projectModal');
@@ -129,16 +129,18 @@
         const projectForm = document.getElementById('projectForm');
         const projectsGrid = document.querySelector('.projects-grid');
         const modalTitle = projectModal.querySelector('.modal-header h2');
-        
+    
         // =================== FUNÇÕES ===================
-        
-        // Função para renderizar o card (já atualizada no passo anterior)
+    
+        // Função para renderizar um único card de projeto
         function renderProjectCard(project) {
             const feitosHtml = project.principais_feitos.map(feito => `<li>${feito}</li>`).join('');
+            
             let progressBarColor = '#29abe2';
             if (project.progresso == 100) { progressBarColor = '#28a745'; }
             else if (project.progresso >= 70) { progressBarColor = '#ffc107'; }
             else if (project.progresso >= 50) { progressBarColor = '#fd7e14'; }
+    
             return `
                 <div class="project-card">
                     <div class="card-image-container">
@@ -168,43 +170,84 @@
                 </div>
             `;
         }
-        
-        // Função para buscar todos os projetos e renderizar
-        async function fetchAndRenderProjects() { /* ... esta função não muda ... */ }
-        
+    
+        // Função para buscar todos os projetos da API e mostrá-los na tela
+        async function fetchAndRenderProjects() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/getProjetos`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const projects = await response.json();
+                
+                projectsGrid.innerHTML = ''; // Limpa os projetos antigos
+                if (projects.length === 0) {
+                    projectsGrid.innerHTML = '<p>Nenhum projeto encontrado. Adicione o primeiro!</p>';
+                } else {
+                    projects.forEach(project => {
+                        projectsGrid.innerHTML += renderProjectCard(project);
+                    });
+                }
+            } catch (error) {
+                console.error('Erro ao buscar projetos:', error);
+                projectsGrid.innerHTML = '<p style="color: red;">Não foi possível carregar os projetos. Verifique o console para mais detalhes.</p>';
+            }
+        }
+    
         // NOVA FUNÇÃO: Preenche o formulário com dados de um projeto e abre o modal
         function populateFormAndOpenModal(project) {
             document.getElementById('titulo').value = project.titulo;
             document.getElementById('status').value = project.status;
             document.getElementById('progresso').value = project.progresso;
-            // Converte a lista de feitos de volta para texto, com uma quebra de linha
             document.getElementById('principais_feitos').value = project.principais_feitos.join('\n');
-            // Limpa o campo de arquivo, pois não podemos pré-selecionar uma imagem
             document.getElementById('imagem_file').value = '';
-        
-            modalTitle.textContent = 'Editar Projeto'; // Muda o título do modal
-            projectForm.dataset.editingId = project.id; // IMPORTANTE: Armazena o ID no formulário
-        
-            openModal();
+    
+            modalTitle.textContent = 'Editar Projeto';
+            projectForm.dataset.editingId = project.id; // Armazena o ID no formulário
+    
+            openModalDisplay(); // Apenas mostra o modal, sem resetar
         }
-        
+    
         // Função para lidar com o envio do formulário (AGORA INTELIGENTE)
         async function handleFormSubmit(event) {
             event.preventDefault();
             const saveButton = event.target.querySelector('.save-button');
             saveButton.textContent = 'Salvando...';
             saveButton.disabled = true;
-        
-            const editingId = projectForm.dataset.editingId; // Verifica se estamos editando
-        
+    
+            const editingId = projectForm.dataset.editingId;
+    
             let imageUrl = '';
             const imageFile = document.getElementById('imagem_file').files[0];
-        
-            if (imageFile) { /* ... lógica de upload do Cloudinary não muda ... */ }
-        
+    
+            if (imageFile) {
+                 try {
+                    const formData = new FormData();
+                    formData.append('file', imageFile);
+                    formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+                    
+                    const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
+                        method: 'POST',
+                        body: formData,
+                    });
+                    const data = await response.json();
+                    if (data.secure_url) {
+                        imageUrl = data.secure_url;
+                    } else {
+                        throw new Error('Upload para Cloudinary falhou.');
+                    }
+                } catch (error) {
+                    console.error('Erro ao enviar imagem:', error);
+                    alert('Houve um erro ao enviar a imagem. O projeto não foi salvo.');
+                    saveButton.textContent = 'Salvar Projeto';
+                    saveButton.disabled = false;
+                    return;
+                }
+            }
+    
             let progressoValue = parseInt(document.getElementById('progresso').value) || 0;
             if (progressoValue > 100) { progressoValue = 100; } else if (progressoValue < 0) { progressoValue = 0; }
-        
+    
             const projectData = {
                 titulo: document.getElementById('titulo').value,
                 status: document.getElementById('status').value,
@@ -212,30 +255,36 @@
                 progresso: progressoValue,
                 principais_feitos: document.getElementById('principais_feitos').value.split('\n').filter(line => line.trim() !== '')
             };
-        
+            
             try {
                 let response;
                 if (editingId) {
-                    // MODO EDIÇÃO: Usa o método PUT e a função updateProjeto
+                    // Se não enviou uma imagem nova, precisamos manter a antiga
+                    if (!imageUrl) {
+                        // Para isso, precisamos buscar os dados antigos primeiro
+                        const oldProjectResponse = await fetch(`${API_BASE_URL}/getUmProjeto?id=${editingId}`);
+                        const oldProject = await oldProjectResponse.json();
+                        projectData.imagem_url = oldProject.imagem_url;
+                    }
+                    
                     response = await fetch(`${API_BASE_URL}/updateProjeto?id=${editingId}`, {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(projectData)
                     });
                 } else {
-                    // MODO ADIÇÃO: Usa o método POST e a função addProjeto
                     response = await fetch(`${API_BASE_URL}/addProjeto`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(projectData)
                     });
                 }
-        
-                if (!response.ok) { throw new Error('Falha na API'); }
-        
+    
+                if (!response.ok) { throw new Error('Falha na API ao salvar projeto'); }
+    
                 closeModal();
                 await fetchAndRenderProjects();
-        
+    
             } catch (error) {
                 console.error('Erro ao salvar projeto:', error);
                 alert('Não foi possível salvar o projeto.');
@@ -244,28 +293,32 @@
                 saveButton.disabled = false;
             }
         }
-        
-        // Funções do Modal (openModal agora prepara o formulário para ADIÇÃO)
-        function openModal() {
-            projectForm.reset(); // Sempre limpa o formulário ao abrir
-            delete projectForm.dataset.editingId; // Garante que não está em modo de edição
-            modalTitle.textContent = 'Adicionar Novo Projeto'; // Define o título padrão
+    
+        // Funções do Modal (separadas para mais clareza)
+        function openModalForAdd() {
+            projectForm.reset();
+            delete projectForm.dataset.editingId;
+            modalTitle.textContent = 'Adicionar Novo Projeto';
             projectModal.style.display = 'flex';
         }
+        
+        function openModalDisplay() {
+            projectModal.style.display = 'flex';
+        }
+    
         function closeModal() {
             projectModal.style.display = 'none';
             projectForm.reset();
         }
-        
+    
         // =================== EVENT LISTENERS ===================
         document.addEventListener('DOMContentLoaded', fetchAndRenderProjects);
-        addProjectBtn.addEventListener('click', openModal); // O botão principal sempre abre em modo de ADIÇÃO
+        addProjectBtn.addEventListener('click', openModalForAdd);
         closeModalBtn.addEventListener('click', closeModal);
         cancelModalBtn.addEventListener('click', closeModal);
         projectForm.addEventListener('submit', handleFormSubmit);
         window.addEventListener('click', (event) => { if (event.target == projectModal) { closeModal(); } });
-        
-        // NOVO EVENT LISTENER: Escuta cliques nos botões de editar
+    
         projectsGrid.addEventListener('click', async (event) => {
             const editButton = event.target.closest('.edit-button');
             if (editButton) {
@@ -281,6 +334,6 @@
                 }
             }
         });
-        </script>
+    </script>
 </body>
 </html>
