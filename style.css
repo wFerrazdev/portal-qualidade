@@ -86,8 +86,23 @@ html, body {
 /* --- PÁGINA PROJETOS --- */
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  gap: 40px;
+  /* Por padrão (mobile), temos 1 coluna */
+  grid-template-columns: 1fr;
+  gap: 25px; /* Reduzindo um pouco o espaço para ficar mais junto */
+}
+
+/* Em telas um pouco maiores (tablets), mudamos para 2 colunas */
+@media (min-width: 768px) {
+  .projects-grid {
+      grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Em telas largas (desktops), mudamos para 3 colunas */
+@media (min-width: 1200px) {
+  .projects-grid {
+      grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 .project-card {
