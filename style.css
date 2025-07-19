@@ -525,89 +525,73 @@ body.menu-open .main-content {
     stroke: currentColor; /* Faz o ícone herdar a cor do texto do botão (vermelho) */
   }
 
-/* --- ESTILOS DA PÁGINA DE AUDITORIAS (TEMA QUADRO DE CORTIÇA) --- */
-.content-area {
-  /* Textura sutil de cortiça para o fundo */
-  background-color: #f2e4c9;
-  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAAUVBMVEWFhYWDg4N3d3dtbW17e3t1dHTZ2dnu7u7X19f8/PzU1NTg4ODT09Pb29vQ0NDp6eng4OHT09PX19f6+vr09PTb29vQ0NDg4ODe3t76+vr//f7w8PDQ0NDZ2dn19fXa2tphcHZlAAAAEXRSTlMAw8i8O2533tDFt7y9j495eHll356yAAABZElEQVR42t3R23KiQBCG4QJ93222s5Vf9v//r00P2EJV2a2cmVR02wEIAkIe2zVFURRFURRFERQzM2fO55vOKHsoz81+t3b35u1nOU2M5nNrN3f/z9qBwcQyPlWAxSRkMsjQ3AN2YVI2dsK7fQ4Y4D2f2YxHXALcIWb9lIqg2g7sSckp4L2GiQI8gLAD5I4V6diVwZ0CGWBvQ2a36d4kHrwPlv6ABfDPrV6ZNo6QIE8gD0y9bKpCR/ABbT9kS8AGEb2wV9P2FvtXGlRz/hOP4wNxG0xG8n4CRQ5cO4gBJHv8YIdI+2p4k236Lohk8b7Oh4gGBdkD/gOZD8hp8gX0p2MdwA/0k9mcfIDpBc8GfIDpE/YAn0g9m8vICpoH/Nn/gB5Anp2kP8E3gB5Anpxo/8FeAPCSc8Ov/fxrB8jT/359kP/9r0s020sCAyqf0v2p9561a/s5x8PyL81n743gPzoPz75/yfnx+f8Lw2i/fsym/5+s0a/s5y/s8dsP6/b8/uX/70+f8Lw2i/fswP0lfz8/u/fL+/v3k/3m/35/z+a/3//v39/f8L/C8FoiuIoiqIoiqIYwz8B0x/gJc7zQcAAAAASUVORK5CYII=");
-}
+/* --- ESTILOS DA PÁGINA DE AUDITORIAS (TEMA QUADRO BRANCO) --- */
 .audits-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 40px;
+  padding-top: 20px; /* Espaço para os alfinetes */
 }
 .audit-card {
-  background-color: #fffacd; /* Cor de post-it */
-  box-shadow: 5px 5px 10px rgba(0,0,0,0.2);
-  padding: 20px;
-  font-family: 'Kalam', cursive; /* Nossa nova fonte! */
-  transition: all 0.2s ease;
+  background-color: #ffffff; /* Fundo de papel branco */
+  border: 1px solid #eef2f7; /* Borda sutil para definir a folha */
+  box-shadow: 0 4px 12px rgba(0, 71, 137, 0.08); /* Sombra mais suave */
+  padding: 25px 20px 20px 20px;
+  transition: all 0.2s ease-out;
   position: relative;
-  transform: rotate(-2deg); /* Inclinação inicial */
-}
-/* Faz cada segundo card inclinar para o outro lado */
-.audit-card:nth-child(even) {
-  transform: rotate(2deg);
+  /* Removemos a fonte de escrita a mão para um visual mais limpo */
 }
 .audit-card:hover {
-  transform: rotate(0deg) scale(1.05);
+  transform: translateY(-5px); /* Efeito de levantar ao passar o mouse */
   z-index: 10;
-  box-shadow: 10px 10px 20px rgba(0,0,0,0.3);
+  box-shadow: 0 8px 20px rgba(0, 71, 137, 0.12);
 }
-/* O "Alfinete" (Push Pin) */
+/* O "Alfinete" (Push Pin) Azul */
 .audit-card::before {
   content: '';
   position: absolute;
-  top: -10px;
+  top: -12px;
   left: 50%;
   transform: translateX(-50%);
-  width: 20px;
-  height: 20px;
-  background-color: #e74c3c; /* Vermelho */
+  width: 24px;
+  height: 24px;
+  /* Gradiente sutil para dar um efeito 3D ao alfinete */
+  background-image: radial-gradient(circle, #85c1e9 0%, #3498db 100%);
   border-radius: 50%;
   box-shadow: 1px 1px 5px rgba(0,0,0,0.4);
   border: 2px solid #fff;
+  z-index: 2;
 }
-.audit-card-header, .audit-card-body, .audit-info, .audit-description {
+/* Reset dos estilos internos que não precisamos mais */
+.audit-card-header, .audit-card-body {
   background: none;
   border: none;
   padding: 0;
   margin: 0;
-  font-size: 1.1em;
 }
 .audit-card-header h3 {
-  color: #333;
-  font-weight: 700;
+  color: #003366; /* Azul escuro do tema */
+  font-weight: 600;
+  font-size: 1.2em;
   margin-bottom: 15px;
+  padding-right: 30px; /* Espaço para o botão de editar não sobrepor o texto */
 }
-.audit-status { display: none; } /* Vamos esconder o status por enquanto para um visual mais limpo */
-.audit-info { margin-bottom: 5px; }
-.audit-description { margin-top: 15px; font-size: 1em; }
+.audit-status { display: none; }
+.audit-info { margin-bottom: 8px; font-size: 0.9em; color: #555; }
+.audit-info strong { color: #333; }
+.audit-description { margin-top: 15px; font-size: 0.9em; }
 
-/* Posição dos botões de ação no card */
-.audit-card-actions {
+/* Botão de editar agora fica fixo no canto superior direito da "folha" */
+.edit-button {
   position: absolute;
-  bottom: 10px;
-  right: 10px;
-  display: flex;
-  gap: 5px;
-  opacity: 0;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  opacity: 0.5;
   transition: opacity 0.2s ease;
 }
-.audit-card:hover .audit-card-actions {
-  opacity: 1;
-}
-/* Reestilizando o botão de editar para ser um ícone */
-.edit-button {
-  position: static;
-  opacity: 1;
-  background-color: rgba(255,255,255,0.7);
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.edit-button:hover { background-color: #fff; }
-.edit-button svg { width: 20px; height: 20px; stroke: #555; }
+.edit-button:hover { opacity: 1; }
+.edit-button svg { width: 22px; height: 22px; stroke: #555; }
