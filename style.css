@@ -121,7 +121,7 @@ html, body {
 }
 
 .card-image-container {
-  height: 430px;
+  height: 400px;
   overflow: hidden;
   background-color: #f0f0f0; /* Fundo para imagens transparentes */
 }
