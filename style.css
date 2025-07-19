@@ -288,3 +288,128 @@ body.menu-open .main-content {
     border-radius: 5px;
     transition: width 0.5s ease-in-out;
 }
+
+/* --- ESTILOS DO BOTÃO ADICIONAR E MODAL --- */
+
+/* Botão Adicionar Projeto */
+.add-button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 1em;
+    font-weight: 500;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    white-space: nowrap; /* Impede que o texto quebre */
+  }
+  
+  .add-button:hover {
+    background-color: #218838;
+  }
+  
+  /* Overlay do Modal (fundo escuro) */
+  .modal-overlay {
+    display: none; /* Escondido por padrão */
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Conteúdo do Modal (a janela branca) */
+  .modal-content {
+    background-color: #fefefe;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    animation: slide-down 0.3s ease-out;
+  }
+  
+  .modal-header {
+    padding: 15px 25px;
+    border-bottom: 1px solid #e9ecef;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .modal-header h2 {
+    margin: 0;
+    font-size: 1.5em;
+    color: #003366;
+  }
+  
+  .close-button {
+    background: none;
+    border: none;
+    font-size: 2em;
+    font-weight: 300;
+    color: #888;
+    cursor: pointer;
+    line-height: 1;
+  }
+  
+  .modal-body {
+    padding: 25px;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #333;
+  }
+  
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+    box-sizing: border-box; /* Garante que padding não afete a largura total */
+  }
+  
+  .form-actions {
+    text-align: right;
+    margin-top: 30px;
+  }
+  
+  .save-button {
+    background-color: #007bff;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.2s ease;
+  }
+  .save-button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Animação do modal */
+  @keyframes slide-down {
+    from {
+      transform: translateY(-50px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
