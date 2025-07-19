@@ -245,7 +245,6 @@ html, body {
 .audits-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; }
 .audit-card { background-color: #fff; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 71, 137, 0.09); transition: all 0.2s ease-out; overflow: hidden; display: flex; flex-direction: column; }
 .audit-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0, 71, 137, 0.15); }
-.status-concluido.audit-card { border-left: 5px solid #28a745; } /* Borda verde para status concluído */
 .audit-card-header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; color: white; }
 .audit-card-header h3 { margin: 0; font-size: 1.2em; font-weight: 600; }
 .card-actions { display: flex; gap: 8px; }
