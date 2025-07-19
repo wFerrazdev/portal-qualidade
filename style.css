@@ -525,99 +525,94 @@ body.menu-open .main-content {
     stroke: currentColor; /* Faz o ícone herdar a cor do texto do botão (vermelho) */
   }
 
-/* --- ESTILOS DA PÁGINA DE AUDITORIAS (TEMA TIMELINE) --- */
-.timeline {
-  position: relative;
-  max-width: 900px;
-  margin: 0 auto; /* Centraliza a timeline na página */
-  padding: 40px 0;
+/* --- ESTILOS DA PÁGINA DE AUDITORIAS (TEMA CARTÃO DE DESTAQUE) --- */
+.audits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 25px; /* Um espaçamento menor e mais agradável */
 }
 
-/* A linha vertical principal da timeline */
-.timeline::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 20px;
-  height: 100%;
-  width: 4px;
-  background: #e0e5eb; /* Cinza claro */
-  border-radius: 2px;
-}
-
-/* Cada item/evento na timeline */
-.timeline-item {
-  position: relative;
-  margin-bottom: 40px;
-  padding-left: 60px; /* Espaço à esquerda para a linha e o ponto */
-}
-
-/* O "ponto" na linha do tempo que marca cada evento */
-.timeline-item::before {
-  content: '';
-  position: absolute;
-  left: 12px;
-  top: 5px;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: white;
-  border: 4px solid #003366; /* Azul escuro do tema */
-  z-index: 1; /* Para ficar acima da linha principal */
-}
-
-/* O card de conteúdo de cada item */
-.timeline-content {
-  background: white;
-  padding: 20px 25px;
+.audit-card {
+  background-color: #fff;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 71, 137, 0.08);
-  position: relative; /* Para posicionar o botão de editar dentro dele */
+  box-shadow: 0 4px 12px rgba(0, 71, 137, 0.09);
   transition: all 0.2s ease-out;
+  overflow: hidden; /* Importante para o cabeçalho colorido */
+  display: flex;
+  flex-direction: column;
 }
 
-.timeline-content:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 16px rgba(0, 71, 137, 0.12);
+.audit-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 71, 137, 0.15);
 }
 
-.timeline-header {
+.audit-card-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 15px;
-  flex-wrap: wrap; /* Permite que a data quebre a linha em telas pequenas */
-  gap: 10px;
+  align-items: center;
+  padding: 15px 20px;
+  color: white;
 }
 
-.timeline-header h3 {
+.audit-card-header h3 {
   margin: 0;
-  color: #003366;
-  font-size: 1.3em;
-  padding-right: 30px; /* Espaço para o botão de editar */
-}
-
-.timeline-date {
-  font-size: 0.9em;
+  font-size: 1.2em;
   font-weight: 600;
-  color: #555;
-  background-color: #eef2f7;
-  padding: 5px 12px;
-  border-radius: 4px;
-  white-space: nowrap;
 }
 
-.timeline-details p {
-  margin: 0 0 10px 0;
-  font-size: 0.95em;
+/* Ações (botões) dentro do cabeçalho */
+.card-actions {
+  display: flex;
+  gap: 8px;
+}
+.card-actions .edit-button,
+.card-actions .delete-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+}
+.card-actions .edit-button:hover,
+.card-actions .delete-button:hover {
+  opacity: 1;
+}
+.card-actions svg {
+  width: 20px;
+  height: 20px;
+  stroke: white; /* Cor dos ícones */
+  stroke-width: 2;
+}
+
+
+/* Cores dinâmicas baseadas no Status */
+.status-agendado .audit-card-header { background-color: #007bff; } /* Azul */
+.status-em-andamento .audit-card-header { background-color: #fd7e14; } /* Laranja */
+.status-concluido .audit-card-header { background-color: #28a745; } /* Verde */
+.status-cancelado .audit-card-header { background-color: #6c757d; } /* Cinza */
+.status-default .audit-card-header { background-color: #003366; } /* Azul Padrão */
+
+
+.audit-card-body {
+  padding: 20px;
+  flex-grow: 1;
+}
+
+.audit-info {
+  margin-bottom: 10px;
+  color: #555;
+  font-size: 0.9em;
+}
+.audit-info strong { color: #333; }
+
+.audit-description {
+  margin-top: 15px;
+  font-size: 0.9em;
   color: #333;
   line-height: 1.6;
 }
 
-/* O botão de editar continua o mesmo, só garantimos a posição */
-.edit-button {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  /* ... o resto do estilo do edit-button já existe e será aplicado ... */
-}
+/* Removemos o botão de editar da sua posição antiga */
+.edit-button { position: static; }
