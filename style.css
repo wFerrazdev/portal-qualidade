@@ -293,7 +293,7 @@ body.menu-open .main-content {
 
 /* Botão Adicionar Projeto */
 .add-button {
-    background-color: #28a745;
+    background-color: #15316d;
     color: white;
     border: none;
     padding: 10px 15px;
@@ -306,7 +306,7 @@ body.menu-open .main-content {
   }
   
   .add-button:hover {
-    background-color: #214288;
+    background-color: #0f4169;
   }
   
   /* Overlay do Modal (fundo escuro) */
