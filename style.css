@@ -524,11 +524,12 @@ body.menu-open .main-content {
     stroke: currentColor; /* Faz o ícone herdar a cor do texto do botão (vermelho) */
   }
 
-/* --- ESTILOS DA PÁGINA DE AUDITORIAS --- */
+/* --- ESTILOS DA PÁGINA DE AUDITORIAS (VERSÃO COMPACTA) --- */
 .audits-grid {
   display: grid;
-  grid-template-columns: 1fr; /* Uma coluna, cards um embaixo do outro */
-  gap: 25px;
+  /* Em telas grandes, tenta criar 2 colunas. Em telas menores, volta para 1. */
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  gap: 30px;
 }
 
 .audit-card {
@@ -536,6 +537,8 @@ body.menu-open .main-content {
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 71, 137, 0.07);
   transition: box-shadow 0.2s ease;
+  display: flex; /* Adicionado para controle de altura */
+  flex-direction: column; /* Adicionado para controle de altura */
 }
 
 .audit-card:hover {
@@ -546,45 +549,47 @@ body.menu-open .main-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 25px;
+  padding: 15px 20px; /* Reduzido */
   border-bottom: 1px solid #eef2f7;
 }
 
 .audit-card-header h3 {
   margin: 0;
   color: #003366;
-  font-size: 1.3em;
+  font-size: 1.15em; /* Reduzido */
 }
 
 .audit-status {
-  padding: 5px 12px;
+  padding: 4px 10px; /* Reduzido */
   border-radius: 15px;
-  font-size: 0.8em;
+  font-size: 0.75em; /* Reduzido */
   font-weight: 600;
   color: #fff;
   white-space: nowrap;
 }
 
-/* Cores dos Status */
+/* Cores dos Status (não muda) */
 .status-agendado { background-color: #007bff; }
 .status-em-andamento { background-color: #fd7e14; }
 .status-concluido { background-color: #28a745; }
 .status-cancelado { background-color: #6c757d; }
 
 .audit-card-body {
-  padding: 25px;
+  padding: 20px; /* Reduzido */
+  flex-grow: 1; /* Faz o corpo do card crescer */
 }
 
 .audit-info {
-  margin-bottom: 10px;
+  margin-bottom: 8px; /* Reduzido */
   color: #555;
+  font-size: 0.9em;
 }
 
 .audit-description {
-  margin-top: 20px;
-  padding-top: 20px;
+  margin-top: 15px; /* Reduzido */
+  padding-top: 15px; /* Reduzido */
   border-top: 1px dashed #e0e5eb;
   color: #333;
-  font-size: 0.95em;
-  line-height: 1.6;
+  font-size: 0.9em; /* Reduzido */
+  line-height: 1.5;
 }
