@@ -540,6 +540,7 @@ body.menu-open .main-content {
   display: flex;
   flex-direction: column;
   height: 300px; /* Define a altura fixa do card */
+  width: 450px;
 }
 
 .audit-card-body {
