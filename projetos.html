@@ -10,6 +10,8 @@
     <div class="page-container">
         
         <aside class="sidebar preload">
+
+            
             <div class="sidebar-header">
                 <img src="GT Branco - Transparente.png" alt="Logo GT">
                 <h2>Portal da Qualidade</h2>
@@ -358,6 +360,45 @@
                     alert('Não foi possível carregar os dados para edição.');
                 }
             }
+        });
+
+        // No seu arquivo projetos.html, dentro do <script>
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // ... todo o seu código de modal, formulário, etc. fica aqui dentro ...
+
+            // LÓGICA DO MENU MOBILE (Onde o código de preload deve estar)
+            const body = document.body;
+            const sidebar = document.querySelector('.sidebar');
+            const mobileMenuButton = document.getElementById('mobileMenuButton');
+            const overlay = document.getElementById('overlay');
+
+            function openMenu() {
+                body.classList.add('menu-open');
+                sidebar.classList.add('mobile-nav-open');
+                overlay.classList.add('active');
+            }
+
+            function closeMenu() {
+                body.classList.remove('menu-open');
+                sidebar.classList.remove('mobile-nav-open');
+                overlay.classList.remove('active');
+            }
+
+            if (mobileMenuButton) {
+                mobileMenuButton.addEventListener('click', openMenu);
+            }
+
+            if (overlay) {
+                overlay.addEventListener('click', closeMenu);
+            }
+
+            // CÓDIGO QUE ATIVA A ANIMAÇÃO (VERIFIQUE SE ELE ESTÁ AQUI)
+            window.addEventListener('load', () => {
+                if (sidebar) {
+                    sidebar.classList.remove('preload');
+                }
+            });
         });
     </script>
 </body>
