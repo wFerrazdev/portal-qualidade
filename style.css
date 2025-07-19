@@ -550,8 +550,8 @@ body.menu-open .main-content {
 }
 
 .audit-card:hover {
-  box-shadow: 0 8px 16px rgba(0, 71, 137, 0.1);
   transform: translateY(-5);
+  box-shadow: 0 8px 16px rgba(0, 71, 137, 0.1);
 }
 
 .audit-card-header {
