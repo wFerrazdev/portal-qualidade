@@ -122,7 +122,13 @@
         }
         
         function renderAuditCard(audit) {
-            const statusClass = audit.status ? audit.status.toLowerCase().replace(/\s+/g, '-') : 'default';
+            const statusClass = audit.status
+                ? audit.status
+                    .toLowerCase()
+                    .normalize("NFD") // Separa acentos das letras (ex: 'í' vira 'i' + '´')
+                    .replace(/[\u0300-\u036f]/g, "") // Remove os acentos
+                    .replace(/\s+/g, '-') // Substitui espaços (continua fazendo o que já fazia)
+                : 'default';
             return `
                 <div class="audit-card status-${statusClass}">
                     <div class="audit-card-header">
