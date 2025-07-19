@@ -537,8 +537,15 @@ body.menu-open .main-content {
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 71, 137, 0.07);
   transition: box-shadow 0.2s ease;
-  display: flex; /* Adicionado para controle de altura */
-  flex-direction: column; /* Adicionado para controle de altura */
+  display: flex;
+  flex-direction: column;
+  height: 300px; /* Define a altura fixa do card */
+}
+
+.audit-card-body {
+  padding: 20px;
+  flex-grow: 1; /* Faz o corpo do card tentar ocupar o espaço disponível */
+  overflow-y: auto; /* ADICIONADO: Adiciona uma barra de rolagem vertical APENAS se o conteúdo for maior que o espaço */
 }
 
 .audit-card:hover {
