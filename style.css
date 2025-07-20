@@ -271,3 +271,41 @@ body.menu-open .main-content { filter: blur(4px); }
       color: #6c757d;
   }
 }
+
+/* Estilos para os botões de Ação na lista de Reuniões */
+.list-row .card-actions {
+  display: flex;
+  justify-content: flex-end; /* Alinha os botões à direita da célula */
+  align-items: center;
+  gap: 8px;
+}
+
+.list-row .edit-button, .list-row .delete-button {
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #555; /* Cor base do ícone */
+  transition: all 0.2s ease;
+}
+
+.list-row .edit-button:hover {
+  background-color: #007bff; /* Azul no hover */
+  color: white;
+}
+
+.list-row .delete-button:hover {
+  background-color: #dc3545; /* Vermelho no hover */
+  color: white;
+}
+
+.list-row .edit-button svg, .list-row .delete-button svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor; /* Herda a cor (color) do botão */
+}
