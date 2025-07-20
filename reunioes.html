@@ -272,7 +272,7 @@
             if (editButton) {
                 const reuniaoId = editButton.dataset.id;
                 try {
-                    const response = await fetch(`${API_BASE_URL}/getItemById?type=reunioes&id=${reuniaoId}`);
+                    const response = await fetch(`${API_BASE_URL}/getUmItem?type=reunioes&id=${reuniaoId}`);
                     const reuniao = await response.json();
                     populateFormForEdit(reuniao);
                 } catch (error) {
