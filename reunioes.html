@@ -50,14 +50,10 @@
         <div class="overlay" id="overlay"></div>
 
         <div class="main-content">
-
-        <div class="main-content">
             <header class="content-header">
-
                 <button class="mobile-menu-button" id="mobileMenuButton">
                     <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
                 </button>
-
                 <div>
                     <h1>Atas de Reunião</h1>
                     <p>Histórico e arquivos das reuniões da Qualidade.</p>
@@ -85,39 +81,38 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', () => {
+        // --- LÓGICA DO MENU ---
+        const body = document.body;
         const sidebar = document.querySelector('.sidebar');
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const overlay = document.getElementById('overlay');
+    
+        function openMenu() {
+            body.classList.add('menu-open');
+            sidebar.classList.add('mobile-nav-open');
+            overlay.classList.add('active');
+        }
+    
+        function closeMenu() {
+            body.classList.remove('menu-open');
+            sidebar.classList.remove('mobile-nav-open');
+            overlay.classList.remove('active');
+        }
+    
+        if (mobileMenuButton) {
+            mobileMenuButton.addEventListener('click', openMenu);
+        }
+    
+        if (overlay) {
+            overlay.addEventListener('click', closeMenu);
+        }
+        
         window.addEventListener('load', () => {
             if (sidebar) {
                 sidebar.classList.remove('preload');
             }
         });
     });
-
-    // --- LÓGICA DO MENU MOBILE ---
-    const body = document.body;
-    const sidebar = document.querySelector('.sidebar');
-    const mobileMenuButton = document.getElementById('mobileMenuButton');
-    const overlay = document.getElementById('overlay');
-
-    function openMenu() {
-        body.classList.add('menu-open');
-        sidebar.classList.add('mobile-nav-open');
-        overlay.classList.add('active');
-    }
-
-    function closeMenu() {
-        body.classList.remove('menu-open');
-        sidebar.classList.remove('mobile-nav-open');
-        overlay.classList.remove('active');
-    }
-
-    if (mobileMenuButton) {
-        mobileMenuButton.addEventListener('click', openMenu);
-    }
-
-    if (overlay) {
-        overlay.addEventListener('click', closeMenu);
-    }
     </script>
 </body>
 </html>

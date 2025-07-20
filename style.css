@@ -44,23 +44,30 @@ html, body {
 .sidebar-footer-logo { padding: 20px 0; margin-top: 20px; text-align: center; flex-shrink: 0; }
 .sidebar-footer-logo img { max-width: 40px; opacity: 0.7; }
 .sidebar:hover .sidebar-footer-logo img { max-width: 100px; }
-/* Lógica contra o "pisca-pisca" */
 .sidebar:not(.preload) { transition: width 0.3s ease; }
 .sidebar:not(.preload) .sidebar-header h2,
 .sidebar:not(.preload) .sidebar-nav li a span { transition: opacity 0.2s ease 0.1s, visibility 0.2s ease 0.1s; }
 .sidebar:not(.preload) .sidebar-nav li a { transition: background-color 0.2s ease, padding 0.3s ease; }
 .sidebar:not(.preload) .sidebar-footer-logo img { transition: max-width 0.3s ease, opacity 0.3s ease; }
+
 /* --- ÁREA DE CONTEÚDO PRINCIPAL --- */
 .main-content {
   margin-left: 100px;
   width: calc(100% - 100px);
   height: 100vh;
   overflow-y: auto;
-  transition: margin-left 0.3s ease;
+  transition: filter 0.3s ease, margin-left 0.3s ease;
   display: flex;
   flex-direction: column;
 }
-/* --- CABEÇALHO E RODAPÉ --- */
+
+/* --- LÓGICA DO MENU MOBILE (OVERLAY, BOTÃO) --- */
+.overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 999; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
+.overlay.active { opacity: 1; visibility: visible; }
+body.menu-open .main-content { filter: blur(4px); }
+.mobile-menu-button { display: none; /* Escondido por padrão no desktop */ }
+
+/* Cabeçalho e Rodapé */
 .content-header { padding: 30px 50px; background-color: #ffffff; border-bottom: 1px solid #e0e5eb; display: flex; align-items: center; gap: 20px; }
 .content-header h1 { margin: 0; font-size: 2em; color: #003366; }
 .content-header > div { flex-grow: 1; }
@@ -73,30 +80,6 @@ html, body {
 .add-button { background-color: #003366; color: white; border: none; padding: 10px 20px; font-size: 1em; font-weight: 500; border-radius: 5px; cursor: pointer; transition: background-color 0.2s ease; white-space: nowrap; }
 .add-button:hover { background-color: #004488; }
 
-/* --- LÓGICA DO MENU MOBILE (OVERLAY, BOTÃO) --- */
-.overlay { 
-  position: fixed; 
-  top: 0; 
-  left: 0; 
-  width: 100%; 
-  height: 100%; 
-  background-color: rgba(0, 0, 0, 0.5); 
-  z-index: 999; 
-  opacity: 0; 
-  visibility: hidden; 
-  transition: opacity 0.3s ease, visibility 0.3s ease; 
-}
-.overlay.active { 
-  opacity: 1; 
-  visibility: visible; 
-}
-body.menu-open .main-content { 
-  filter: blur(4px); 
-}
-.mobile-menu-button { 
-  display: none; /* Escondido por padrão no desktop */
-}
-
 /* --- PÁGINA DASHBOARD --- */
 .indicators-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; }
 .indicator-card { background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 71, 137, 0.07); display: flex; flex-direction: column; min-height: 400px; transition: transform 0.2s ease, box-shadow 0.2s ease; }
@@ -108,162 +91,29 @@ body.menu-open .main-content {
 .card-graph { flex-grow: 1; padding: 25px; display: flex; align-items: center; justify-content: center; }
 
 /* --- PÁGINA PROJETOS --- */
-.projects-grid {
-  display: grid;
-  /* Por padrão (mobile), temos 1 coluna */
-  grid-template-columns: 1fr;
-  gap: 40px; /* Reduzindo um pouco o espaço para ficar mais junto */
-}
-
-/* Em telas um pouco maiores (tablets), mudamos para 2 colunas */
-@media (min-width: 768px) {
-  .projects-grid {
-      grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-/* Em telas largas (desktops), mudamos para 3 colunas */
-@media (min-width: 1200px) {
-  .projects-grid {
-      grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-.project-card {
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 71, 137, 0.07);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.project-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0, 71, 137, 0.1);
-}
-
-.card-image-container {
-  height: 400px;
-  overflow: hidden;
-  background-color: #f0f0f0; /* Fundo para imagens transparentes */
-}
-
-.card-image-container img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-}
-
-.project-card:hover .card-image-container img {
-  transform: scale(1.05);
-}
-
-.card-project-body {
-  position: relative;
-  padding: 25px;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-}
-
-/* Estilo específico para o botão de editar do card de projeto */
-.project-card .edit-button {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  background: rgba(255, 255, 255, 0.8);
-  border: 1px solid #ddd;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  opacity: 0.6;
-  transition: all 0.2s ease;
-}
-.project-card .edit-button:hover {
-  opacity: 1;
-  transform: scale(1.1);
-  background: white;
-}
-.project-card .edit-button svg {
-  width: 20px;
-  height: 20px;
-  stroke: #003366;
-}
-
-
-.card-project-body h3 {
-  margin: 0 0 5px 0;
-  color: #003366;
-  font-size: 1.4em;
-  padding-right: 40px; /* Espaço para o botão de editar */
-}
-
-.card-project-body p {
-  margin: 0 0 15px 0;
-  color: #555;
-  font-size: 0.9em;
-}
-
-.card-project-body hr {
-  border: none;
-  border-top: 1px solid #eef2f7;
-  margin: 0 0 15px 0;
-}
-
-.card-project-details {
-  flex-grow: 1; /* Empurra a barra de progresso para baixo */
-}
-
-.card-project-details h4 {
-  margin: 0 0 10px 0;
-  font-size: 1em;
-  color: #333;
-}
-
-.card-project-details ul {
-  margin: 0;
-  padding-left: 20px;
-  color: #555;
-  font-size: 0.95em;
-}
-
-.card-project-details ul li {
-  margin-bottom: 8px;
-}
-
-.card-progress-container {
-  margin-top: 20px;
-}
-
-.progress-bar-info {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 8px;
-  font-size: 0.9em;
-  color: #555;
-  font-weight: 500;
-}
-
-.progress-bar-background {
-  height: 10px;
-  background-color: #eef2f7;
-  border-radius: 5px;
-  overflow: hidden;
-}
-
-.progress-bar-fill {
-  height: 100%;
-  background-color: #29abe2;
-  border-radius: 5px;
-  transition: width 0.5s ease-in-out, background-color 0.5s ease;
-}
+.projects-grid { display: grid; grid-template-columns: 1fr; gap: 25px; }
+@media (min-width: 768px) { .projects-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1200px) { .projects-grid { grid-template-columns: repeat(3, 1fr); } }
+.project-card { background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 71, 137, 0.07); transition: transform 0.2s ease, box-shadow 0.2s ease; display: flex; flex-direction: column; overflow: hidden; }
+.project-card:hover { transform: translateY(-5px); box-shadow: 0 8px 16px rgba(0, 71, 137, 0.1); }
+.card-image-container { height: 250px; overflow: hidden; background-color: #f0f0f0; }
+.card-image-container img { width: 100%; height: 100%; object-fit: contain; transition: transform 0.3s ease; }
+.project-card:hover .card-image-container img { transform: scale(1.05); }
+.card-project-body { position: relative; padding: 25px; display: flex; flex-direction: column; flex-grow: 1; }
+.project-card .edit-button { position: absolute; top: 15px; right: 15px; background: rgba(255, 255, 255, 0.8); border: 1px solid #ddd; border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0.6; transition: all 0.2s ease; }
+.project-card .edit-button:hover { opacity: 1; transform: scale(1.1); background: white; }
+.project-card .edit-button svg { width: 20px; height: 20px; stroke: #003366; }
+.card-project-body h3 { margin: 0 0 5px 0; color: #003366; font-size: 1.4em; padding-right: 40px; }
+.card-project-body p { margin: 0 0 15px 0; color: #555; font-size: 0.9em; }
+.card-project-body hr { border: none; border-top: 1px solid #eef2f7; margin: 0 0 15px 0; }
+.card-project-details { flex-grow: 1; }
+.card-project-details h4 { margin: 0 0 10px 0; font-size: 1em; color: #333; }
+.card-project-details ul { margin: 0; padding-left: 20px; color: #555; font-size: 0.95em; }
+.card-project-details ul li { margin-bottom: 8px; }
+.card-progress-container { margin-top: 20px; }
+.progress-bar-info { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9em; color: #555; font-weight: 500; }
+.progress-bar-background { height: 10px; background-color: #eef2f7; border-radius: 5px; overflow: hidden; }
+.progress-bar-fill { height: 100%; background-color: #29abe2; border-radius: 5px; transition: width 0.5s ease-in-out, background-color 0.5s ease; }
 
 /* --- PÁGINA AUDITORIAS (TEMA CARTÃO DE DESTAQUE) --- */
 .audits-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; }
@@ -302,11 +152,10 @@ body.menu-open .main-content {
 .save-button { background-color: #007bff; color: white; padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 1em; transition: background-color 0.2s ease; }
 .save-button:hover { background-color: #0056b3; }
 .cancel-button { background-color: #dc3545; color: white; padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 1em; transition: background-color 0.2s ease; }
-.cancel-button:hover { background-color: #5a6268; }
+.cancel-button:hover { background-color: #c82333; }
 .delete-button { margin-right: auto; background-color: transparent; border: 1px solid #dc3545; color: #dc3545; padding: 8px; border-radius: 5px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
 .delete-button:hover { background-color: #dc3545; color: white; }
 .delete-button svg { width: 20px; height: 20px; stroke: currentColor; }
-.edit-button { position: static; }
 .hidden { display: none !important; }
 
 /* Animações */
@@ -324,42 +173,18 @@ body.menu-open .main-content {
   .sidebar.mobile-nav-open .sidebar-nav li a span { opacity: 1; visibility: visible; }
   
   .main-content { margin-left: 0 !important; width: 100%; }
-  .content-header { padding: 20px; flex-wrap: wrap; }
+  
+  .mobile-menu-button { display: block; background: none; border: none; cursor: pointer; padding: 5px; z-index: 1001; -webkit-tap-highlight-color: transparent; }
+  .mobile-menu-button svg { width: 30px; height: 30px; stroke: #003366; }
+  
+  body.menu-open { overflow: hidden; }
+  body.menu-open .mobile-menu-button { pointer-events: none; opacity: 0; transition: opacity 0.1s ease; }
+
+  .content-header { padding: 20px; }
   .content-header h1 { font-size: 1.5em; }
   .content-area { padding: 20px; }
   
-  .indicators-grid, .projects-grid, .audits-grid { grid-template-columns: 1fr; gap: 20px; }
+  .indicators-grid { grid-template-columns: 1fr; }
+  .projects-grid, .audits-grid { grid-template-columns: 1fr; gap: 20px; }
   .page-actions { justify-content: center; }
-
-  /* Adicione estas regras dentro do @media (max-width: 900px) */
-  .sidebar { transform: translateX(-100%); transition: transform 0.3s ease-in-out; width: 280px; }
-  .sidebar:hover { width: 280px; }
-  .sidebar.mobile-nav-open { transform: translateX(0); box-shadow: 5px 0px 25px rgba(0, 0, 0, 0.2); }
-  .sidebar.mobile-nav-open .sidebar-header h2,
-  .sidebar.mobile-nav-open .sidebar-nav li a span { opacity: 1; visibility: visible; }
-
-  .mobile-menu-button { 
-      display: block; 
-      background: none; 
-      border: none; 
-      cursor: pointer; 
-      padding: 5px; 
-      z-index: 1001; 
-      -webkit-tap-highlight-color: transparent; 
-  }
-  .mobile-menu-button svg { 
-      width: 30px; 
-      height: 30px; 
-      stroke: #003366; 
-  }
-
-  body.menu-open { 
-      overflow: hidden; 
-  }
-  body.menu-open .mobile-menu-button { 
-      pointer-events: none; 
-      opacity: 0; 
-      transition: opacity 0.1s ease; 
-  }
 }
-

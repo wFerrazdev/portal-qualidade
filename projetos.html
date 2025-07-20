@@ -50,14 +50,10 @@
         <div class="overlay" id="overlay"></div>
 
         <div class="main-content">
-
-        <div class="main-content">
             <header class="content-header">
-
                 <button class="mobile-menu-button" id="mobileMenuButton">
                     <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
                 </button>
-
                 <div>
                     <h1>Projetos da Qualidade</h1>
                     <p>Acompanhe a evolução e os resultados dos nossos projetos de melhoria contínua.</p>
@@ -104,19 +100,21 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // --- LÓGICA DO MENU ---
+            const body = document.body;
             const sidebar = document.querySelector('.sidebar');
-            window.addEventListener('load', () => {
-                if (sidebar) {
-                    sidebar.classList.remove('preload');
-                }
-            });
-    
-            // =================== CONFIGURAÇÕES ===================
+            const mobileMenuButton = document.getElementById('mobileMenuButton');
+            const overlay = document.getElementById('overlay');
+            function openMenu() { body.classList.add('menu-open'); sidebar.classList.add('mobile-nav-open'); overlay.classList.add('active'); }
+            function closeMenu() { body.classList.remove('menu-open'); sidebar.classList.remove('mobile-nav-open'); overlay.classList.remove('active'); }
+            if (mobileMenuButton) { mobileMenuButton.addEventListener('click', openMenu); }
+            if (overlay) { overlay.addEventListener('click', closeMenu); }
+            window.addEventListener('load', () => { if (sidebar) { sidebar.classList.remove('preload'); } });
+            
+            // =================== LÓGICA DA PÁGINA DE PROJETOS ===================
             const CLOUDINARY_CLOUD_NAME = 'dsge4dbjy';
             const CLOUDINARY_UPLOAD_PRESET = 'ml_default';
             const API_BASE_URL = '/.netlify/functions';
-    
-            // =================== ELEMENTOS DO DOM ===================
             const addProjectBtn = document.getElementById('addProjectBtn');
             const projectModal = document.getElementById('projectModal');
             const closeModalBtn = document.getElementById('closeModalBtn');
@@ -125,8 +123,7 @@
             const projectForm = document.getElementById('projectForm');
             const projectsGrid = document.querySelector('.projects-grid');
             const modalTitle = projectModal.querySelector('.modal-header h2');
-    
-            // =================== FUNÇÕES ===================
+            
             function renderProjectCard(project) {
                 const feitosHtml = project.principais_feitos.map(feito => `<li>${feito}</li>`).join('');
                 let progressBarColor = '#29abe2';
@@ -220,8 +217,7 @@
                     let response;
                     if (editingId) {
                         if (!imageUrl) {
-                            // CORREÇÃO APLICADA AQUI TAMBÉM
-                            const oldProjectResponse = await fetch(`${API_BASE_URL}/getUmItem?type=projetos&id=${editingId}`);
+                            const oldProjectResponse = await fetch(`${API_BASE_URL}/getItemById?type=projetos&id=${editingId}`);
                             const oldProject = await oldProjectResponse.json();
                             projectData.imagem_url = oldProject.imagem_url;
                         }
@@ -269,7 +265,6 @@
                 projectForm.reset();
             }
     
-            // =================== EVENT LISTENERS ===================
             fetchAndRenderProjects();
             addProjectBtn.addEventListener('click', openModalForAdd);
             closeModalBtn.addEventListener('click', closeModal);
@@ -282,9 +277,7 @@
                 if (editButton) {
                     const projectId = editButton.dataset.id;
                     try {
-                        // CORREÇÃO PRINCIPAL APLICADA AQUI
-                        const response = await fetch(`${API_BASE_URL}/getUmItem?type=projetos&id=${projectId}`);
-                        
+                        const response = await fetch(`${API_BASE_URL}/getItemById?type=projetos&id=${projectId}`);
                         if (!response.ok) { throw new Error('Falha ao buscar dados do projeto'); }
                         const project = await response.json();
                         populateFormForEdit(project);
@@ -295,32 +288,6 @@
                 }
             });
         });
-
-        // --- LÓGICA DO MENU MOBILE ---
-        const body = document.body;
-        const sidebar = document.querySelector('.sidebar');
-        const mobileMenuButton = document.getElementById('mobileMenuButton');
-        const overlay = document.getElementById('overlay');
-
-        function openMenu() {
-            body.classList.add('menu-open');
-            sidebar.classList.add('mobile-nav-open');
-            overlay.classList.add('active');
-        }
-
-        function closeMenu() {
-            body.classList.remove('menu-open');
-            sidebar.classList.remove('mobile-nav-open');
-            overlay.classList.remove('active');
-        }
-
-        if (mobileMenuButton) {
-            mobileMenuButton.addEventListener('click', openMenu);
-        }
-
-        if (overlay) {
-            overlay.addEventListener('click', closeMenu);
-        }
-    </script>
+        </script>
 </body>
 </html>
