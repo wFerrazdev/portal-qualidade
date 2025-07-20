@@ -47,6 +47,10 @@
             </div>
         </aside>
 
+        <div class="overlay" id="overlay"></div>
+
+        <div class="main-content">
+
         <div class="main-content">
             <header class="content-header">
 
@@ -269,6 +273,32 @@
             }
         });
     });
+
+    // --- LÓGICA DO MENU MOBILE ---
+        const body = document.body;
+        const sidebar = document.querySelector('.sidebar');
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const overlay = document.getElementById('overlay');
+
+        function openMenu() {
+            body.classList.add('menu-open');
+            sidebar.classList.add('mobile-nav-open');
+            overlay.classList.add('active');
+        }
+
+        function closeMenu() {
+            body.classList.remove('menu-open');
+            sidebar.classList.remove('mobile-nav-open');
+            overlay.classList.remove('active');
+        }
+
+        if (mobileMenuButton) {
+            mobileMenuButton.addEventListener('click', openMenu);
+        }
+
+        if (overlay) {
+            overlay.addEventListener('click', closeMenu);
+        }
     </script>
 </body>
 </html>
