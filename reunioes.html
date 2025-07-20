@@ -10,13 +10,55 @@
     <div class="page-container">
         
         <aside class="sidebar preload">
-            </aside>
+            <div class="sidebar-header">
+                <img src="GT Branco - Transparente.png" alt="Logo GT">
+                <h2>Portal da Qualidade</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="index.html">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="projetos.html">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                            <span>Projetos</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="reunioes.html" class="active">
+                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                            <span>Reuniões</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="auditoriasevisitas.html">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 12h6M7 8h6"></path></svg>
+                            <span>Auditorias e Visitas</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer-logo">
+                <img src="logo.png" alt="Logo WF">
+            </div>
+        </aside>
 
         <div class="overlay" id="overlay"></div>
 
         <div class="main-content">
             <header class="content-header">
-                 </header>
+                <button class="mobile-menu-button" id="mobileMenuButton">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                </button>
+                <div>
+                    <h1>Atas de Reunião</h1>
+                    <p>Histórico e arquivos das reuniões da Qualidade.</p>
+                </div>
+            </header>
 
             <main class="content-area">
                 <div class="page-actions">
@@ -49,21 +91,14 @@
             </header>
             <main class="modal-body">
                 <form id="meetingForm">
-                    <div class="form-group"><label for="titulo">Título</label><input type="text" id="titulo" required></div>
-                    <div class="form-group"><label for="data_reuniao">Data da Reunião</label><input type="date" id="data_reuniao"></div>
-                    <div class="form-group"><label for="participantes">Participantes (um por linha)</label><textarea id="participantes" rows="3"></textarea></div>
-                    <div class="form-group"><label for="pauta">Pauta / Resumo</label><textarea id="pauta" rows="4"></textarea></div>
-                    <hr style="margin: 30px 0; border-color: #eef2f7;">
-                    <div class="form-group">
-                        <label for="link_ata">Opção 1: Link para a Ata (Google Drive, etc.)</label>
-                        <input type="url" id="link_ata">
-                    </div>
-                    <div class="form-group">
-                        <label for="file_ata">Opção 2: Ou faça upload de um arquivo (PDF, PPTX, etc.)</label>
-                        <input type="file" id="file_ata">
-                    </div>
+                    <div class="form-group"><label for="titulo">Título</label><input type="text" id="titulo" name="titulo" required></div>
+                    <div class="form-group"><label for="data_reuniao">Data da Reunião</label><input type="date" id="data_reuniao" name="data_reuniao"></div>
+                    <div class="form-group"><label for="participantes">Participantes (um por linha)</label><textarea id="participantes" name="participantes" rows="3"></textarea></div>
+                    <div class="form-group"><label for="pauta">Pauta / Resumo</label><textarea id="pauta" name="pauta" rows="4"></textarea></div>
+                    <hr style="margin: 30px 0; border-color: #eef2f7;"><div class="form-group"><label for="link_ata">Opção 1: Link para a Ata (Google Drive, etc.)</label><input type="url" id="link_ata" name="link_ata"></div>
+                    <div class="form-group"><label for="file_ata">Opção 2: Ou faça upload de um arquivo (PDF, PPTX, etc.)</label><input type="file" id="file_ata" name="file_ata"></div>
                     <div class="form-actions">
-                        <button type="button" id="deleteMeetingBtn" class="delete-button hidden"><svg></svg></button>
+                        <button type="button" id="deleteMeetingBtn" class="delete-button hidden"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
                         <button type="button" id="cancelModalBtn" class="cancel-button">Cancelar</button>
                         <button type="submit" class="save-button">Salvar</button>
                     </div>
@@ -73,98 +108,183 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // --- LÓGICA DO MENU ---
-            const body = document.body;
-            const sidebar = document.querySelector('.sidebar');
-            // ... (código completo do menu mobile e preload aqui) ...
-            
-            // =================== LÓGICA DA PÁGINA DE REUNIÕES ===================
-            const API_BASE_URL = '/.netlify/functions';
-            // ... (resto das suas consts para pegar elementos) ...
-            const listBody = document.querySelector('.list-body');
-            
-            function formatarData(dataISO) { /* ... não muda ... */ }
-    
-            function renderMeetingRow(reuniao) {
-                const participantesPreview = (reuniao.participantes || []).slice(0, 2).join(', ') + ((reuniao.participantes || []).length > 2 ? '...' : '');
-                return `
-                    <div class="list-row" data-date="${formatarData(reuniao.data_reuniao)}" data-participants="${(reuniao.participantes || []).length}">
-                        <div class="meeting-title">${reuniao.titulo}</div>
-                        <div>${formatarData(reuniao.data_reuniao)}</div>
-                        <div>${participantesPreview}</div>
-                        <div class="card-actions">
-                            ${reuniao.link_ata ? `<a href="${reuniao.link_ata}" target="_blank" rel="noopener noreferrer" class="ata-button">Ver Ata</a>` : `<span class="ata-button disabled">Sem Ata</span>`}
-                            
-                            <button class="edit-button" data-id="${reuniao.id}">
-                                <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.536L16.732 3.732z"></path></svg>
-                            </button>
-                            
-                            <button class="delete-button" data-id="${reuniao.id}">
-                                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                            </button>
-                        </div>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- LÓGICA DO MENU ---
+        const body = document.body;
+        const sidebar = document.querySelector('.sidebar');
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const overlay = document.getElementById('overlay');
+        function openMenu() { body.classList.add('menu-open'); sidebar.classList.add('mobile-nav-open'); overlay.classList.add('active'); }
+        function closeMenu() { body.classList.remove('menu-open'); sidebar.classList.remove('mobile-nav-open'); overlay.classList.remove('active'); }
+        if (mobileMenuButton) { mobileMenuButton.addEventListener('click', openMenu); }
+        if (overlay) { overlay.addEventListener('click', closeMenu); }
+        window.addEventListener('load', () => { if (sidebar) { sidebar.classList.remove('preload'); } });
+
+        // =================== LÓGICA DA PÁGINA DE REUNIÕES ===================
+        const CLOUDINARY_CLOUD_NAME = 'dsge4dbjy';
+        const CLOUDINARY_UPLOAD_PRESET = 'ml_default';
+        const API_BASE_URL = '/.netlify/functions';
+        const addMeetingBtn = document.getElementById('addMeetingBtn');
+        const meetingModal = document.getElementById('meetingModal');
+        const closeModalBtn = meetingModal.querySelector('#closeModalBtn');
+        const cancelModalBtn = meetingModal.querySelector('#cancelModalBtn');
+        const deleteMeetingBtn = document.getElementById('deleteMeetingBtn');
+        const meetingForm = document.getElementById('meetingForm');
+        const listBody = document.querySelector('.list-body');
+        const modalTitle = document.getElementById('modalTitle');
+
+        function formatarData(dataISO) {
+            if (!dataISO) return 'N/D';
+            const data = new Date(dataISO);
+            return new Date(data.getTime() + data.getTimezoneOffset() * 60000).toLocaleDateString('pt-BR');
+        }
+
+        function renderMeetingRow(reuniao) {
+            const participantesPreview = (reuniao.participantes || []).slice(0, 2).join(', ') + ((reuniao.participantes || []).length > 2 ? '...' : '');
+            return `
+                <div class="list-row" data-date="${formatarData(reuniao.data_reuniao)}" data-participants="${(reuniao.participantes || []).length}">
+                    <div class="meeting-title">${reuniao.titulo}</div>
+                    <div>${formatarData(reuniao.data_reuniao)}</div>
+                    <div>${participantesPreview}</div>
+                    <div class="card-actions">
+                        ${reuniao.link_ata ? `<a href="${reuniao.link_ata}" target="_blank" rel="noopener noreferrer" class="ata-button">Ver Ata</a>` : `<span class="ata-button disabled">Sem Ata</span>`}
+                        <button class="edit-button" data-id="${reuniao.id}"><svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.536L16.732 3.732z"></path></svg></button>
+                        <button class="delete-button" data-id="${reuniao.id}"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
                     </div>
-                `;
-            }
-    
-            async function fetchAndRenderMeetings() { /* ... não muda ... */ }
-    
-            function populateFormForEdit(reuniao) { /* ... não muda ... */ }
-    
-            async function handleFormSubmit(event) { /* ... não muda ... */ }
-    
-            async function handleDeleteMeeting() {
-                // Esta função agora é para o modal, vamos criar uma nova para a lista
-                const editingId = meetingForm.dataset.editingId;
-                if (!editingId || !confirm('Tem certeza?')) return;
+                </div>
+            `;
+        }
+
+        async function fetchAndRenderMeetings() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/getReunioes`);
+                const reunioes = await response.json();
+                listBody.innerHTML = '';
+                if (reunioes.length === 0) {
+                    listBody.innerHTML = '<p style="padding: 20px;">Nenhuma reunião encontrada. Adicione a primeira!</p>';
+                } else {
+                    reunioes.forEach(reuniao => { listBody.innerHTML += renderMeetingRow(reuniao); });
+                }
+            } catch (error) { console.error('Erro ao buscar reuniões:', error); listBody.innerHTML = '<p style="padding: 20px; color: red;">Não foi possível carregar as reuniões.</p>'; }
+        }
+
+        function populateFormForEdit(reuniao) {
+            meetingForm.querySelector('#titulo').value = reuniao.titulo;
+            meetingForm.querySelector('#data_reuniao').value = reuniao.data_reuniao ? reuniao.data_reuniao.split('T')[0] : '';
+            meetingForm.querySelector('#participantes').value = (reuniao.participantes || []).join('\n');
+            meetingForm.querySelector('#pauta').value = reuniao.pauta;
+            meetingForm.querySelector('#link_ata').value = reuniao.link_ata;
+            meetingForm.querySelector('#file_ata').value = '';
+            modalTitle.textContent = 'Editar Reunião';
+            meetingForm.dataset.editingId = reuniao.id;
+            deleteMeetingBtn.classList.remove('hidden');
+            meetingModal.style.display = 'flex';
+        }
+
+        async function handleFormSubmit(event) {
+            event.preventDefault();
+            const saveButton = event.target.querySelector('.save-button');
+            saveButton.textContent = 'Salvando...';
+            saveButton.disabled = true;
+
+            let finalLinkAta = meetingForm.querySelector('#link_ata').value;
+            const fileAta = meetingForm.querySelector('#file_ata').files[0];
+
+            if (fileAta) {
                 try {
-                    await fetch(`${API_BASE_URL}/deleteReuniao?id=${editingId}`, { method: 'DELETE' });
-                    closeModal();
-                    await fetchAndRenderMeetings();
-                } catch (error) { alert('Não foi possível excluir a reunião.'); }
+                    const formData = new FormData();
+                    formData.append('file', fileAta);
+                    formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+                    const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/auto/upload`, { method: 'POST', body: formData });
+                    const data = await response.json();
+                    if (data.secure_url) { finalLinkAta = data.secure_url; } else { throw new Error('Upload para Cloudinary falhou.'); }
+                } catch (error) {
+                    alert('Houve um erro ao enviar o arquivo. A reunião não foi salva.');
+                    saveButton.textContent = 'Salvar';
+                    saveButton.disabled = false;
+                    return;
+                }
             }
-    
-            function openModalForAdd() { /* ... não muda ... */ }
-            function closeModal() { /* ... não muda ... */ }
-    
-            // =================== EVENT LISTENERS ===================
-            fetchAndRenderMeetings();
-            addMeetingBtn.addEventListener('click', openModalForAdd);
-            closeModalBtn.addEventListener('click', closeModal);
-            cancelModalBtn.addEventListener('click', closeModal);
-            deleteMeetingBtn.addEventListener('click', handleDeleteMeeting); // Botão do MODAL
-            meetingForm.addEventListener('submit', handleFormSubmit);
+
+            const editingId = meetingForm.dataset.editingId;
+            const meetingData = {
+                titulo: meetingForm.querySelector('#titulo').value,
+                data_reuniao: meetingForm.querySelector('#data_reuniao').value || null,
+                participantes: meetingForm.querySelector('#participantes').value.split('\n').filter(p => p.trim() !== ''),
+                pauta: meetingForm.querySelector('#pauta').value,
+                link_ata: finalLinkAta
+            };
             
-            // Listener principal para a lista (agora escuta cliques de editar E excluir)
-            listBody.addEventListener('click', async (event) => {
-                const editButton = event.target.closest('.edit-button');
-                const deleteButton = event.target.closest('.delete-button');
-    
-                if (editButton) {
-                    const reuniaoId = editButton.dataset.id;
-                    try {
-                        const response = await fetch(`${API_BASE_URL}/getItemById?type=reunioes&id=${reuniaoId}`);
-                        const reuniao = await response.json();
-                        populateFormForEdit(reuniao);
-                    } catch (error) {
-                        alert('Não foi possível carregar os dados para edição.');
-                    }
+            try {
+                const url = editingId ? `${API_BASE_URL}/updateReuniao?id=${editingId}` : `${API_BASE_URL}/addReuniao`;
+                const method = editingId ? 'PUT' : 'POST';
+                const response = await fetch(url, { method: method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(meetingData) });
+                if (!response.ok) { throw new Error('Falha na API'); }
+                closeModal();
+                await fetchAndRenderMeetings();
+            } catch (error) { alert('Não foi possível salvar a reunião.'); }
+            finally {
+                saveButton.textContent = 'Salvar';
+                saveButton.disabled = false;
+            }
+        }
+
+        async function handleDeleteFromList(reuniaoId) {
+            if (confirm('Tem certeza que deseja excluir esta reunião?')) {
+                try {
+                    await fetch(`${API_BASE_URL}/deleteReuniao?id=${reuniaoId}`, { method: 'DELETE' });
+                    await fetchAndRenderMeetings();
+                } catch (error) {
+                    alert('Não foi possível excluir a reunião.');
                 }
-    
-                if (deleteButton) {
-                    const reuniaoId = deleteButton.dataset.id;
-                    if (confirm('Tem certeza que deseja excluir esta reunião?')) {
-                        try {
-                            await fetch(`${API_BASE_URL}/deleteReuniao?id=${reuniaoId}`, { method: 'DELETE' });
-                            await fetchAndRenderMeetings(); // Apenas atualiza a lista
-                        } catch (error) {
-                            alert('Não foi possível excluir a reunião.');
-                        }
-                    }
-                }
-            });
+            }
+        }
+
+        function openModalForAdd() {
+            meetingForm.reset();
+            delete meetingForm.dataset.editingId;
+            modalTitle.textContent = 'Adicionar Nova Reunião';
+            deleteMeetingBtn.classList.add('hidden');
+            meetingModal.style.display = 'flex';
+        }
+
+        function closeModal() { meetingModal.style.display = 'none'; meetingForm.reset(); }
+
+        // =================== EVENT LISTENERS ===================
+        fetchAndRenderMeetings();
+        addMeetingBtn.addEventListener('click', openModalForAdd);
+        closeModalBtn.addEventListener('click', closeModal);
+        cancelModalBtn.addEventListener('click', closeModal);
+        deleteMeetingBtn.addEventListener('click', () => {
+            const editingId = meetingForm.dataset.editingId;
+            if (editingId) {
+                closeModal();
+                handleDeleteFromList(editingId);
+            }
         });
+        meetingForm.addEventListener('submit', handleFormSubmit);
+        window.addEventListener('click', (event) => { if (event.target == meetingModal) { closeModal(); } });
+        
+        listBody.addEventListener('click', async (event) => {
+            const editButton = event.target.closest('.edit-button');
+            const deleteButton = event.target.closest('.delete-button');
+
+            if (editButton) {
+                const reuniaoId = editButton.dataset.id;
+                try {
+                    const response = await fetch(`${API_BASE_URL}/getItemById?type=reunioes&id=${reuniaoId}`);
+                    const reuniao = await response.json();
+                    populateFormForEdit(reuniao);
+                } catch (error) {
+                    console.error('Erro ao carregar dados da reunião:', error);
+                    alert('Não foi possível carregar os dados para edição.');
+                }
+            }
+            if (deleteButton) {
+                handleDeleteFromList(deleteButton.dataset.id);
+            }
+        });
+    });
     </script>
 </body>
 </html>
