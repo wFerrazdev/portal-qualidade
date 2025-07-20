@@ -188,3 +188,86 @@ body.menu-open .main-content { filter: blur(4px); }
   .projects-grid, .audits-grid { grid-template-columns: 1fr; gap: 20px; }
   .page-actions { justify-content: center; }
 }
+
+/* --- ESTILOS DA PÁGINA DE REUNIÕES (TEMA LISTA DE REGISTROS) --- */
+.meetings-list {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 71, 137, 0.09);
+  overflow: hidden;
+}
+
+.list-header, .list-row {
+  display: grid;
+  grid-template-columns: 3fr 1fr 1fr 1fr; /* 4 colunas: Título, Data, Participantes, Ações */
+  gap: 20px;
+  padding: 15px 25px;
+  align-items: center;
+}
+
+.list-header {
+  background-color: #f8f9fa;
+  color: #6c757d;
+  font-weight: 600;
+  font-size: 0.9em;
+  text-transform: uppercase;
+  border-bottom: 2px solid #e9ecef;
+}
+
+.list-row {
+  border-bottom: 1px solid #eef2f7;
+  transition: background-color 0.2s ease;
+}
+
+.list-row:last-child {
+  border-bottom: none;
+}
+
+.list-row:hover {
+  background-color: #f8f9fa;
+}
+
+.list-row .meeting-title {
+  font-weight: 600;
+  color: #003366;
+}
+
+.list-row .ata-button {
+  background-color: #28a745;
+  color: white;
+  text-decoration: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  font-size: 0.9em;
+  font-weight: 500;
+  text-align: center;
+  transition: background-color 0.2s ease;
+}
+
+.list-row .ata-button:hover {
+  background-color: #218838;
+}
+
+.list-row .ata-button.disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+/* Responsividade para a lista */
+@media (max-width: 768px) {
+  .list-header {
+      display: none; /* Esconde o cabeçalho no mobile */
+  }
+  .list-row {
+      grid-template-columns: 1fr; /* Uma coluna só */
+      gap: 10px;
+      padding: 20px;
+  }
+  .list-row::before {
+      /* Adiciona os "títulos" antes de cada item no mobile */
+      content: 'Data: ' attr(data-date) ' | Participantes: ' attr(data-participants);
+      font-size: 0.8em;
+      font-weight: 600;
+      color: #6c757d;
+  }
+}
