@@ -42,8 +42,8 @@ html, body {
 .sidebar-nav li a span { opacity: 0; visibility: hidden; white-space: nowrap; }
 .sidebar:hover .sidebar-nav li a span { opacity: 1; visibility: visible; }
 .sidebar-footer-logo { padding: 20px 0; margin-top: 20px; text-align: center; flex-shrink: 0; }
-.sidebar-footer-logo img { max-width: 100px; opacity: 0.7; }
-.sidebar:hover .sidebar-footer-logo img { max-width: 150px; }
+.sidebar-footer-logo img { max-width: 75px; opacity: 0.7; }
+.sidebar:hover .sidebar-footer-logo img { max-width: 100px; }
 .sidebar:not(.preload) { transition: width 0.3s ease; }
 .sidebar:not(.preload) .sidebar-header h2,
 .sidebar:not(.preload) .sidebar-nav li a span { transition: opacity 0.2s ease 0.1s, visibility 0.2s ease 0.1s; }
