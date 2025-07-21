@@ -169,6 +169,8 @@
             }
     
             function populateFormForEdit(reuniao) {
+                console.log('Dados da reunião recebidos:', reuniao);
+                
                 meetingForm.querySelector('#titulo').value = reuniao.titulo;
                 meetingForm.querySelector('#data_reuniao').value = reuniao.data_reuniao ? reuniao.data_reuniao.split('T')[0] : '';
                 meetingForm.querySelector('#participantes').value = (reuniao.participantes || []).join('\n');
