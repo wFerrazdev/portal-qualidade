@@ -124,6 +124,7 @@
             const CLOUDINARY_CLOUD_NAME = 'dsge4dbjy';
             const CLOUDINARY_UPLOAD_PRESET = 'ml_default';
             const API_BASE_URL = '/.netlify/functions';
+    
             const addMeetingBtn = document.getElementById('addMeetingBtn');
             const meetingModal = document.getElementById('meetingModal');
             const closeModalBtn = meetingModal.querySelector('#closeModalBtn');
@@ -169,8 +170,7 @@
             }
     
             function populateFormForEdit(reuniao) {
-                console.log('Dados da reunião recebidos:', reuniao);
-                
+                console.log('Dados da reunião recebidos:', reuniao); // Mantendo nosso detetive aqui
                 meetingForm.querySelector('#titulo').value = reuniao.titulo;
                 meetingForm.querySelector('#data_reuniao').value = reuniao.data_reuniao ? reuniao.data_reuniao.split('T')[0] : '';
                 meetingForm.querySelector('#participantes').value = (reuniao.participantes || []).join('\n');
@@ -272,8 +272,8 @@
                 if (editButton) {
                     const reuniaoId = editButton.dataset.id;
                     try {
-                        // AQUI ESTÁ A CORREÇÃO
-                        const response = await fetch(`${API_BASE_URL}/getReunioes?type=reunioes&id=${reuniaoId}`);
+                        // ESTA É A LINHA QUE FAZ A CHAMADA CORRETA
+                        const response = await fetch(`${API_BASE_URL}/getUmItem?type=reunioes&id=${reuniaoId}`);
                         if (!response.ok) { throw new Error('Falha ao buscar dados da reunião'); }
                         const reuniao = await response.json();
                         populateFormForEdit(reuniao);
