@@ -217,7 +217,7 @@
                     let response;
                     if (editingId) {
                         if (!imageUrl) {
-                            const oldProjectResponse = await fetch(`${API_BASE_URL}/getItemById?type=projetos&id=${editingId}`);
+                            const oldProjectResponse = await fetch(`${API_BASE_URL}/getUmItem?type=projetos&id=${editingId}`);
                             const oldProject = await oldProjectResponse.json();
                             projectData.imagem_url = oldProject.imagem_url;
                         }

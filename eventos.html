@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notícias | Portal da Qualidade</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page-container">
+        <aside class="sidebar preload">
+            <div class="sidebar-header">
+                <img src="GT Branco - Transparente.png" alt="Logo GT">
+                <h2>Portal da Qualidade</h2>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="index.html">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="reunioes.html">
+                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                            <span>Reuniões</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="eventos.html" class="active">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 12h6M7 8h6"></path></svg>
+                            <span>Eventos</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer-logo">
+                <img src="logo.png" alt="Logo WF">
+            </div>
+        </aside>
+
+        <div class="overlay" id="overlay"></div>
+
+        <div class="main-content">
+            <header class="content-header">
+                <button class="mobile-menu-button" id="mobileMenuButton">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                </button>
+                <div>
+                    <h1>Dashboard de Indicadores</h1>
+                    <p>Visão geral dos indicadores de qualidade do mês.</p>
+                </div>
+            </header>
+
+            <main class="content-area">
+                <h2>Nova Política de Gestão de Documentos</h2>
+                <p><strong>Publicado em: 15 de Julho de 2025</strong></p>
+                <p>A partir do dia 1º de Agosto, entrará em vigor a nova política de gestão de documentos (PG-QLD-002). Todos os colaboradores devem se familiarizar com os novos procedimentos...</p>
+
+                <hr style="margin: 40px 0; border: 1px solid #eee;">
+
+                <h2>Treinamento de Ferramentas da Qualidade</h2>
+                <p><strong>Publicado em: 10 de Julho de 2025</strong></p>
+                <p>Estão abertas as inscrições para o treinamento de Ferramentas da Qualidade (MASP, Diagrama de Ishikawa), que ocorrerá na última semana do mês. Vagas limitadas.</p>
+            </main>
+
+            <footer class="footer">
+                <p>&copy; 2025 - GT Soluções Corporativas</p>
+            </footer>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebar = document.querySelector('.sidebar');
+            const mobileMenuButton = document.getElementById('mobileMenuButton');
+            const overlay = document.getElementById('overlay'); // Pega o overlay
+    
+            function openMenu() {
+                sidebar.classList.add('mobile-nav-open');
+                overlay.classList.add('active');
+            }
+    
+            function closeMenu() {
+                sidebar.classList.remove('mobile-nav-open');
+                overlay.classList.remove('active');
+            }
+    
+            if (mobileMenuButton) {
+                mobileMenuButton.addEventListener('click', openMenu);
+            }
+    
+            if (overlay) {
+                overlay.addEventListener('click', closeMenu);
+            }
+            
+            // Remove a classe 'preload' para ativar as animações de desktop
+            window.addEventListener('load', () => {
+                sidebar.classList.remove('preload');
+            });
+        });
+    </script>
+</body>
+</html>
