@@ -217,7 +217,7 @@
                     let response;
                     if (editingId) {
                         if (!imageUrl) {
-                            const oldProjectResponse = await fetch(`${API_BASE_URL}/getItemById?type=projetos&id=${editingId}`);
+                            const oldProjectResponse = await fetch(`${API_BASE_URL}/getUmItem?type=projetos&id=${editingId}`);
                             const oldProject = await oldProjectResponse.json();
                             projectData.imagem_url = oldProject.imagem_url;
                         }
@@ -277,7 +277,7 @@
                 if (editButton) {
                     const projectId = editButton.dataset.id;
                     try {
-                        const response = await fetch(`${API_BASE_URL}/getItemById?type=projetos&id=${projectId}`);
+                        const response = await fetch(`${API_BASE_URL}/getUmItem?type=projetos&id=${projectId}`);
                         if (!response.ok) { throw new Error('Falha ao buscar dados do projeto'); }
                         const project = await response.json();
                         populateFormForEdit(project);
