@@ -81,15 +81,8 @@
         const API_BASE_URL = '/.netlify/functions';
         const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'];
 
-        // A VARIÁVEL QUE FALTAVA, AGORA NO LUGAR CERTO
-        const optionsPadrao = { 
-            responsive: true, 
-            maintainAspectRatio: false, 
-            plugins: { legend: { display: false }, datalabels: { display: false } },
-            scales: { y: { beginAtZero: true, ticks: { font: { size: 10 } } }, x: { ticks: { font: { size: 10 } } } }
-        };
-
         // --- GRÁFICOS ESTÁTICOS ORIGINAIS (1 a 6) ---
+        // (O código dos 6 gráficos estáticos com seus estilos aprimorados)
         const ctx1 = document.getElementById('grafico1').getContext('2d');
         const gradienteAzul = ctx1.createLinearGradient(0, 0, 0, ctx1.canvas.height);
         gradienteAzul.addColorStop(0, 'rgba(0, 51, 102, 0.5)');
@@ -110,6 +103,8 @@
         new Chart(ctx6, { type: 'bar', data: { labels: meses, datasets: [{ label: 'Quantidade', data: [3, 2, 2, 1, 0, 1], backgroundColor: '#fd7e14', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } } });
 
         // --- NOVOS GRÁFICOS DINÂMICOS (7, 8 e 9) ---
+        
+        // GRÁFICO 7: NC por Cliente
         async function loadNcPorClienteChart() {
             try {
                 const response = await fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID}&sheet=nc_por_cliente`);
@@ -119,10 +114,25 @@
                 const labels = topData.map(item => item.cliente);
                 const values = topData.map(item => parseInt(item.quantidadecliente_nc));
                 const ctx7 = document.getElementById('grafico7').getContext('2d');
-                new Chart(ctx7, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade de NC', data: values, backgroundColor: '#003366', borderRadius: 5 }] }, options: optionsPadrao });
+                new Chart(ctx7, { 
+                    type: 'bar', 
+                    data: { labels: labels, datasets: [{ label: 'Quantidade de NC', data: values, backgroundColor: '#003366', borderRadius: 5 }] }, 
+                    options: { 
+                        responsive: true, maintainAspectRatio: false, 
+                        plugins: { 
+                            legend: { display: false }, 
+                            datalabels: { 
+                                display: true, anchor: 'end', align: 'end', color: 'white', font: { weight: 'bold' } 
+                            } 
+                        },
+                        scales: { y: { beginAtZero: true, max: 20 } }
+                    },
+                    plugins: [ChartDataLabels] // Ativa o plugin para este gráfico
+                });
             } catch (error) { console.error("Erro Gráfico 7:", error); }
         }
 
+        // GRÁFICO 8: NC por Projeto
         async function loadNcPorProjetoChart() {
             try {
                 const response = await fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID}&sheet=nc_por_projeto`);
@@ -132,10 +142,25 @@
                 const labels = topData.map(item => item.projeto);
                 const values = topData.map(item => parseInt(item.quantidadeprojeto_nc));
                 const ctx8 = document.getElementById('grafico8').getContext('2d');
-                new Chart(ctx8, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade de NC', data: values, backgroundColor: '#29abe2', borderRadius: 5 }] }, options: optionsPadrao });
+                new Chart(ctx8, { 
+                    type: 'bar', 
+                    data: { labels: labels, datasets: [{ label: 'Quantidade de NC', data: values, backgroundColor: '#29abe2', borderRadius: 5 }] }, 
+                    options: { 
+                        responsive: true, maintainAspectRatio: false, 
+                        plugins: { 
+                            legend: { display: false }, 
+                            datalabels: { 
+                                display: true, anchor: 'end', align: 'end', color: 'white', font: { weight: 'bold' } 
+                            } 
+                        },
+                        scales: { y: { beginAtZero: true, max: 20 } }
+                    },
+                    plugins: [ChartDataLabels] // Ativa o plugin para este gráfico
+                });
             } catch (error) { console.error("Erro Gráfico 8:", error); }
         }
 
+        // GRÁFICO 9: Tipos de NC por Cliente (Empilhado)
         async function loadNcDetalhadoChart() {
             try {
                 const response = await fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID}&sheet=nc_detalhado`);
@@ -156,9 +181,19 @@
                     data: { labels: labels, datasets: datasets },
                     options: {
                         responsive: true, maintainAspectRatio: false,
-                        plugins: { legend: { display: true, position: 'bottom', labels: { font: { size: 10 }, boxWidth: 15 } }, datalabels: { display: false } },
-                        scales: { x: { stacked: true, ticks: { font: { size: 10 } } }, y: { stacked: true, beginAtZero: true, ticks: { font: { size: 10 } } } }
-                    }
+                        plugins: { 
+                            legend: { display: true, position: 'bottom', labels: { font: { size: 10 }, boxWidth: 15 } }, 
+                            datalabels: {
+                                display: true, anchor: 'center', align: 'center', color: 'white', font: { weight: 'bold' },
+                                formatter: (value) => { return value > 0 ? value : null; } // Esconde o rótulo se o valor for 0
+                            }
+                        },
+                        scales: { 
+                            x: { stacked: true, ticks: { font: { size: 10 } } }, 
+                            y: { stacked: true, beginAtZero: true, max: 15, ticks: { stepSize: 2 } } 
+                        }
+                    },
+                    plugins: [ChartDataLabels] // Ativa o plugin para este gráfico
                 });
             } catch (error) { console.error("Erro Gráfico 9:", error); }
         }
