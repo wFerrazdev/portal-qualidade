@@ -311,3 +311,40 @@ body.menu-open .main-content { filter: blur(4px); }
   height: 18px;
   stroke: currentColor; /* Herda a cor (color) do botão */
 }
+
+/* --- ESTILO MELHORADO PARA O BOTÃO DE ATUALIZAR --- */
+.refresh-button {
+  margin-left: auto; /* Empurra o botão para a direita */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;  /* Largura fixa */
+  height: 40px; /* Altura fixa */
+  background-color: transparent;
+  border: 1px solid #dee2e6;
+  color: #003366;
+  border-radius: 50%; /* Deixa o botão redondo */
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.refresh-button:hover {
+  background-color: #f8f9fa;
+  border-color: #003366;
+  transform: rotate(90deg); /* Efeito de rotação no hover */
+}
+
+/* Esconde o texto "Atualizar" para um visual mais limpo */
+.refresh-button span {
+  display: none;
+}
+
+.refresh-button .refresh-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* Animação de carregamento */
+.refresh-button.loading .refresh-icon {
+  animation: spin 1s linear infinite;
+}

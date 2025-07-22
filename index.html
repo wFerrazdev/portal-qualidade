@@ -12,54 +12,27 @@
     <div class="page-container">
         
         <aside class="sidebar preload">
-            <div class="sidebar-header">
-                <img src="GT Branco - Transparente.png" alt="Logo GT">
-                <h2>Portal da Qualidade</h2>
-            </div>
-            <nav class="sidebar-nav">
-                <ul>
-                    <li><a href="index.html" class="active"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg><span>Dashboard</span></a></li>
-                    <li><a href="projetos.html"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg><span>Projetos</span></a></li>
-                    <li><a href="reunioes.html"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg><span>Reuniões</span></a></li>
-                    <li><a href="auditoriasevisitas.html"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 12h6M7 8h6"></path></svg><span>Auditorias e Visitas</span></a></li>
-                </ul>
-            </nav>
-            <div class="sidebar-footer-logo">
-                <img src="logo.png" alt="Logo WF">
-            </div>
-        </aside>
+            </aside>
 
         <div class="overlay" id="overlay"></div>
 
         <div class="main-content">
             <header class="content-header">
                 <button class="mobile-menu-button" id="mobileMenuButton">
-                    </button>
+                    <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                </button>
                 <div>
                     <h1>Dashboard de Indicadores</h1>
                     <p>Visão geral dos indicadores de qualidade do mês.</p>
                 </div>
-            
                 <button id="refreshChartsBtn" class="refresh-button" title="Atualizar dados">
-                    <svg class="refresh-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h5M20 20v-5h-5M20 4s-2-2-6-2-8 4-8 8 4 8 8 8 6-2 6-2"></path>
-                    </svg>
-                    <span>Atualizar</span>
-                </button>
+                    <svg class="refresh-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h5M20 20v-5h-5M20 4s-2-2-6-2-8 4-8 8 4 8 8 8 6-2 6-2"></path></svg>
+                    <span></span> </button>
             </header>
 
             <main class="content-area">
                 <div class="indicators-grid">
-                    <div class="indicator-card"><div class="card-info"><h3>Custos de Não-Qualidade</h3><p><strong>Valor Atual:</strong> R$ 16.234,00</p><p><strong>Meta:</strong> R$ 0,00</p></div><div class="card-graph"><canvas id="grafico1"></canvas></div></div>
-                    <div class="indicator-card"><div class="card-info"><h3>Taxa de Retrabalho</h3><p><strong>Valor Atual:</strong> 2.1%</p><p><strong>Meta:</strong> &lt; 3%</p></div><div class="card-graph"><canvas id="grafico2"></canvas></div></div>
-                    <div class="indicator-card"><div class="card-info"><h3>Gestão de Equipamentos</h3><p><strong>Quantidade em tratativa:</strong> 23</p></div><div class="card-graph"><canvas id="grafico3"></canvas></div></div>
-                    <div class="indicator-card"><div class="card-info"><h3>Conformidade de Processos</h3><p><strong>Valor Atual:</strong> 98%</p><p><strong>Meta:</strong> &gt; 95%</p></div><div class="card-graph"><canvas id="grafico4"></canvas></div></div>
-                    <div class="indicator-card"><div class="card-info"><h3>Índice de Reclamações</h3><p><strong>Valor Atual:</strong> 8 Reclamações</p><p><strong>Meta:</strong> &lt; 10 Reclamações</p></div><div class="card-graph"><canvas id="grafico5"></canvas></div></div>
-                    <div class="indicator-card"><div class="card-info"><h3>Quantidade de NC Procedente</h3><p><strong>Quantidade Atual:</strong> 1</p><p><strong>Meta:</strong> 0</p></div><div class="card-graph"><canvas id="grafico6"></canvas></div></div>
-                    <div class="indicator-card"><div class="card-info"><h3>NC por Cliente</h3><p>Quantidade de Não Conformidades por Cliente.</p></div><div class="card-graph"><canvas id="grafico7"></canvas></div></div>
-                    <div class="indicator-card"><div class="card-info"><h3>NC por Projeto</h3><p>Quantidade de Não Conformidades por Projeto.</p></div><div class="card-graph"><canvas id="grafico8"></canvas></div></div>
-                    <div class="indicator-card"><div class="card-info"><h3>Tipos de NC por Cliente</h3><p>Detalhamento das Não Conformidades por tipo.</p></div><div class="card-graph"><canvas id="grafico9"></canvas></div></div>
-                </div>
+                    </div>
             </main>
 
             <footer class="footer">
@@ -69,26 +42,27 @@
     </div>
     
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // --- LÓGICA DO MENU ---
-            const body = document.body;
-            const sidebar = document.querySelector('.sidebar');
-            const mobileMenuButton = document.getElementById('mobileMenuButton');
-            const overlay = document.getElementById('overlay');
-            function openMenu() { body.classList.add('menu-open'); sidebar.classList.add('mobile-nav-open'); overlay.classList.add('active'); }
-            function closeMenu() { body.classList.remove('menu-open'); sidebar.classList.remove('mobile-nav-open'); overlay.classList.remove('active'); }
-            if (mobileMenuButton) { mobileMenuButton.addEventListener('click', openMenu); }
-            if (overlay) { overlay.addEventListener('click', closeMenu); }
-            window.addEventListener('load', () => { if (sidebar) { sidebar.classList.remove('preload'); } });
-            
-            // =================== LÓGICA DO DASHBOARD ===================
-    
-            const SPREADSHEET_ID = '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4';
-            const API_BASE_URL = '/.netlify/functions';
-            const refreshBtn = document.getElementById('refreshChartsBtn');
-            
-            // --- GRÁFICOS ESTÁTICOS ORIGINAIS (1 a 6) ---
-            // (O código dos 6 gráficos estáticos com seus estilos aprimorados)
+    // SCRIPT COMPLETO E FINAL PARA O DASHBOARD
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- LÓGICA DO MENU ---
+        const body = document.body;
+        const sidebar = document.querySelector('.sidebar');
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const overlay = document.getElementById('overlay');
+        function openMenu() { body.classList.add('menu-open'); sidebar.classList.add('mobile-nav-open'); overlay.classList.add('active'); }
+        function closeMenu() { body.classList.remove('menu-open'); sidebar.classList.remove('mobile-nav-open'); overlay.classList.remove('active'); }
+        if (mobileMenuButton) { mobileMenuButton.addEventListener('click', openMenu); }
+        if (overlay) { overlay.addEventListener('click', closeMenu); }
+        window.addEventListener('load', () => { if (sidebar) { sidebar.classList.remove('preload'); } });
+        
+        // =================== LÓGICA DO DASHBOARD ===================
+        const SPREADSHEET_ID = '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4';
+        const API_BASE_URL = '/.netlify/functions';
+        const refreshBtn = document.getElementById('refreshChartsBtn');
+        const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'];
+        
+        // --- GRÁFICOS ESTÁTICOS ORIGINAIS (1 a 6) ---
+        function createStaticCharts(){
             const ctx1 = document.getElementById('grafico1').getContext('2d');
             const gradienteAzul = ctx1.createLinearGradient(0, 0, 0, ctx1.canvas.height);
             gradienteAzul.addColorStop(0, 'rgba(0, 51, 102, 0.5)');
@@ -107,81 +81,62 @@
             new Chart(ctx5, { type: 'bar', data: { labels: meses, datasets: [{ label: 'Nº de Reclamações', data: [12, 9, 11, 7, 9, 8], backgroundColor: '#dc3545', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } } });
             const ctx6 = document.getElementById('grafico6').getContext('2d');
             new Chart(ctx6, { type: 'bar', data: { labels: meses, datasets: [{ label: 'Quantidade', data: [3, 2, 2, 1, 0, 1], backgroundColor: '#fd7e14', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } } });
+        }
 
-    
-            // --- LÓGICA OTIMIZADA PARA GRÁFICOS DINÂMICOS ---
-            
-            let chart7, chart8, chart9; // Variáveis para guardar as instâncias dos gráficos
-    
-            async function updateDynamicCharts() {
-                if (refreshBtn) {
-                    refreshBtn.disabled = true;
-                    refreshBtn.classList.add('loading');
+        // --- LÓGICA OTIMIZADA PARA GRÁFICOS DINÂMICOS ---
+        let chart7, chart8, chart9;
+        async function updateDynamicCharts() {
+            if (refreshBtn) { refreshBtn.disabled = true; refreshBtn.classList.add('loading'); }
+            try {
+                const sheetNames = 'nc_por_cliente,nc_por_projeto,nc_detalhado';
+                const response = await fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID}&sheets=${sheetNames}`);
+                const allData = await response.json();
+                if (chart7) chart7.destroy(); if (chart8) chart8.destroy(); if (chart9) chart9.destroy();
+                // GRÁFICO 7
+                const dataCliente = allData.nc_por_cliente || [];
+                if (dataCliente.length > 0) {
+                    const topData = dataCliente.slice(0, 6);
+                    const labels = topData.map(item => item.cliente);
+                    const values = topData.map(item => parseInt(item.quantidadecliente_nc));
+                    const ctx7 = document.getElementById('grafico7').getContext('2d');
+                    chart7 = new Chart(ctx7, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade de NC', data: values, backgroundColor: '#003366', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: true, anchor: 'end', align: 'end', color: 'black', font: { weight: 'bold' } } }, scales: { y: { beginAtZero: true, max: 20 } } }, plugins: [ChartDataLabels] });
                 }
-                try {
-                    const sheetNames = 'nc_por_cliente,nc_por_projeto,nc_detalhado';
-                    const response = await fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID}&sheets=${sheetNames}`);
-                    const allData = await response.json();
-    
-                    // Destrói os gráficos antigos antes de desenhar os novos
-                    if (chart7) chart7.destroy();
-                    if (chart8) chart8.destroy();
-                    if (chart9) chart9.destroy();
-    
-                    // GRÁFICO 7
-                    const dataCliente = allData.nc_por_cliente || [];
-                    if (dataCliente.length > 0) {
-                        const topData = dataCliente.slice(0, 6);
-                        const labels = topData.map(item => item.cliente);
-                        const values = topData.map(item => parseInt(item.quantidadecliente_nc));
-                        const ctx7 = document.getElementById('grafico7').getContext('2d');
-                        chart7 = new Chart(ctx7, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade de NC', data: values, backgroundColor: '#003366', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: true, anchor: 'end', align: 'end', color: 'black', font: { weight: 'bold' } } }, scales: { y: { beginAtZero: true, max: 20 } } }, plugins: [ChartDataLabels] });
-                    }
-    
-                    // GRÁFICO 8
-                    const dataProjeto = allData.nc_por_projeto || [];
-                    if (dataProjeto.length > 0) {
-                        const topData = dataProjeto.slice(0, 6);
-                        const labels = topData.map(item => item.projeto);
-                        const values = topData.map(item => parseInt(item.quantidadeprojeto_nc));
-                        const ctx8 = document.getElementById('grafico8').getContext('2d');
-                        chart8 = new Chart(ctx8, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade de NC', data: values, backgroundColor: '#29abe2', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: true, anchor: 'end', align: 'end', color: 'black', font: { weight: 'bold' } } }, scales: { y: { beginAtZero: true, max: 20 } } }, plugins: [ChartDataLabels] });
-                    }
-    
-                    // GRÁFICO 9
-                    const dataDetalhado = allData.nc_detalhado || [];
-                    if (dataDetalhado.length > 0) {
-                        const topData = dataDetalhado.slice(0, 6);
-                        const labels = topData.map(item => item.cliente);
-                        const tiposDeNC = Object.keys(topData[0]).filter(key => key !== 'cliente');
-                        const colors = ['#003366', '#29abe2', '#fd7e14', '#28a745', '#dc3545', '#6c757d', '#ffc107'];
-                        const datasets = tiposDeNC.map((tipo, index) => ({
-                            label: tipo.replace(/_/g, ' ').replace(/(^\w{1})|(\s+\w{1})/g, letra => letra.toUpperCase()),
-                            data: topData.map(item => parseInt(item[tipo]) || 0),
-                            backgroundColor: colors[index % colors.length]
-                        }));
-                        const ctx9 = document.getElementById('grafico9').getContext('2d');
-                        chart9 = new Chart(ctx9, {
-                            type: 'bar', data: { labels: labels, datasets: datasets }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom', labels: { font: { size: 10 }, boxWidth: 15 } }, datalabels: { display: true, anchor: 'center', align: 'center', color: 'white', font: { weight: 'bold' }, formatter: (value) => { return value > 0 ? value : null; } } }, scales: { x: { stacked: true, ticks: { font: { size: 10 } } }, y: { stacked: true, beginAtZero: true, max: 7, ticks: { stepSize: 2 } } } },
-                            plugins: [ChartDataLabels]
-                        });
-                    }
-                } catch (error) {
-                    console.error("Erro ao atualizar gráficos dinâmicos:", error);
-                } finally {
-                    if (refreshBtn) {
-                        refreshBtn.disabled = false;
-                        refreshBtn.classList.remove('loading');
-                    }
+                // GRÁFICO 8
+                const dataProjeto = allData.nc_por_projeto || [];
+                if (dataProjeto.length > 0) {
+                    const topData = dataProjeto.slice(0, 6);
+                    const labels = topData.map(item => item.projeto);
+                    const values = topData.map(item => parseInt(item.quantidadeprojeto_nc));
+                    const ctx8 = document.getElementById('grafico8').getContext('2d');
+                    chart8 = new Chart(ctx8, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade de NC', data: values, backgroundColor: '#29abe2', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: true, anchor: 'end', align: 'end', color: 'black', font: { weight: 'bold' } } }, scales: { y: { beginAtZero: true, max: 20 } } }, plugins: [ChartDataLabels] });
                 }
+                // GRÁFICO 9
+                const dataDetalhado = allData.nc_detalhado || [];
+                if (dataDetalhado.length > 0) {
+                    const topData = dataDetalhado.slice(0, 6);
+                    const labels = topData.map(item => item.cliente);
+                    const tiposDeNC = Object.keys(topData[0]).filter(key => key !== 'cliente');
+                    const colors = ['#003366', '#29abe2', '#fd7e14', '#28a745', '#dc3545', '#6c757d', '#ffc107'];
+                    const datasets = tiposDeNC.map((tipo, index) => ({ label: tipo.replace(/_/g, ' ').replace(/(^\w{1})|(\s+\w{1})/g, letra => letra.toUpperCase()), data: topData.map(item => parseInt(item[tipo]) || 0), backgroundColor: colors[index % colors.length] }));
+                    const ctx9 = document.getElementById('grafico9').getContext('2d');
+                    chart9 = new Chart(ctx9, { type: 'bar', data: { labels: labels, datasets: datasets }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom', labels: { font: { size: 10 }, boxWidth: 15 } }, datalabels: { display: true, anchor: 'center', align: 'center', color: 'white', font: { weight: 'bold' }, formatter: (value) => { return value > 0 ? value : null; } } }, scales: { x: { stacked: true, ticks: { font: { size: 10 } } }, y: { stacked: true, beginAtZero: true, max: 7, ticks: { stepSize: 2 } } } }, plugins: [ChartDataLabels] });
+                }
+            } catch (error) {
+                console.error("Erro ao atualizar gráficos dinâmicos:", error);
+            } finally {
+                if (refreshBtn) { refreshBtn.disabled = false; refreshBtn.classList.remove('loading'); }
             }
-    
-            if (refreshBtn) {
-                refreshBtn.addEventListener('click', updateDynamicCharts);
-            }
-            
-            updateDynamicCharts(); // Carregamento inicial
-        });
+        }
+        
+        // Execução inicial
+        createStaticCharts();
+        updateDynamicCharts();
+
+        // Adiciona o listener para o botão
+        if (refreshBtn) {
+            refreshBtn.addEventListener('click', updateDynamicCharts);
+        }
+    });
     </script>
 </body>
 </html>
