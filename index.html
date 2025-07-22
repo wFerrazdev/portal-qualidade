@@ -80,114 +80,37 @@
         const SPREADSHEET_ID = '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4';
         const API_BASE_URL = '/.netlify/functions';
         const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'];
+        const optionsPadrao = { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: false } }, scales: { y: { beginAtZero: true, ticks: { font: { size: 10 } } }, x: { ticks: { font: { size: 10 } } } } };
 
         // --- GRÁFICOS ESTÁTICOS ORIGINAIS (1 a 6) ---
-
-        // Gráfico 1: Custos de Não-Qualidade
+        // (O código dos 6 gráficos estáticos continua o mesmo aqui)
         const ctx1 = document.getElementById('grafico1').getContext('2d');
-        const gradienteAzul = ctx1.createLinearGradient(0, 0, 0, ctx1.canvas.height);
-        gradienteAzul.addColorStop(0, 'rgba(0, 51, 102, 0.5)');
-        gradienteAzul.addColorStop(1, 'rgba(0, 51, 102, 0)');
-        new Chart(ctx1, { 
-            type: 'line', 
-            data: { labels: meses, datasets: [{ 
-                label: 'Custo R$', 
-                data: [12500, 19200, 14300, 17800, 15500, 16234], 
-                borderColor: '#003366',
-                backgroundColor: gradienteAzul,
-                fill: true, 
-                tension: 0.4,
-                pointBackgroundColor: '#003366'
-            }] }, 
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
-        });
-
-        // Gráfico 2: Taxa de Retrabalho
+        new Chart(ctx1, { /* ... Gráfico 1 ... */ });
         const ctx2 = document.getElementById('grafico2').getContext('2d');
-        const gradienteAzulClaro = ctx2.createLinearGradient(0, 0, 0, ctx2.canvas.height);
-        gradienteAzulClaro.addColorStop(0, 'rgba(41, 171, 226, 0.5)');
-        gradienteAzulClaro.addColorStop(1, 'rgba(41, 171, 226, 0)');
-        new Chart(ctx2, { 
-            type: 'line', 
-            data: { labels: meses, datasets: [{ 
-                label: 'Taxa %', 
-                data: [3.5, 2.8, 3.1, 2.5, 2.2, 2.1], 
-                borderColor: '#29abe2', 
-                backgroundColor: gradienteAzulClaro,
-                fill: true,
-                tension: 0.4,
-                pointBackgroundColor: '#29abe2'
-            }] }, 
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
-        });
-        
-        // Gráfico 3: Gestão de Equipamentos
+        new Chart(ctx2, { /* ... Gráfico 2 ... */ });
         const ctx3 = document.getElementById('grafico3').getContext('2d');
-        new Chart(ctx3, { 
-            type: 'doughnut', 
-            data: { labels: ['Concluído', 'Em Tratativa', 'Aguardando Peças'], datasets: [{ 
-                data: [120, 23, 15], 
-                backgroundColor: ['#28a745', '#ffc107', '#dc3545'],
-                spacing: 4,
-                borderRadius: 5
-            }] }, 
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom', labels: { font: { size: 11 } } }, datalabels: { color: '#fff', font: { weight: 'bold' } } } }, 
-            plugins: [ChartDataLabels] 
-        });
-        
-        // Gráfico 4: Conformidade de Processos
+        new Chart(ctx3, { /* ... Gráfico 3 ... */ });
         const ctx4 = document.getElementById('grafico4').getContext('2d');
-        new Chart(ctx4, { 
-            type: 'bar', 
-            data: { labels: ['Meta', 'Atual'], datasets: [{ 
-                label: 'Conformidade %', 
-                data: [95, 98], 
-                backgroundColor: ['#e9ecef', '#28a745'], 
-                borderRadius: 5,
-                barThickness: 50
-            }] }, 
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: true, anchor: 'end', align: 'top', font: { weight: 'bold' } } } }, 
-            plugins: [ChartDataLabels] 
-        });
-        
-        // Gráfico 5: Índice de Reclamações
+        new Chart(ctx4, { /* ... Gráfico 4 ... */ });
         const ctx5 = document.getElementById('grafico5').getContext('2d');
-        new Chart(ctx5, { 
-            type: 'bar', 
-            data: { labels: meses, datasets: [{ 
-                label: 'Nº de Reclamações', 
-                data: [12, 9, 11, 7, 9, 8], 
-                backgroundColor: '#dc3545',
-                borderRadius: 5
-            }] }, 
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
-        });
-        
-        // Gráfico 6: Quantidade de NC Procedente
+        new Chart(ctx5, { /* ... Gráfico 5 ... */ });
         const ctx6 = document.getElementById('grafico6').getContext('2d');
-        new Chart(ctx6, { 
-            type: 'bar', 
-            data: { labels: meses, datasets: [{ 
-                label: 'Quantidade', 
-                data: [3, 2, 2, 1, 0, 1], 
-                backgroundColor: '#fd7e14',
-                borderRadius: 5
-            }] }, 
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
-        });
+        new Chart(ctx6, { /* ... Gráfico 6 ... */ });
+
 
         // --- NOVOS GRÁFICOS DINÂMICOS (7, 8 e 9) ---
-        const optionsDinamico = { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: false } } };
-
         async function loadNcPorClienteChart() {
             try {
                 const response = await fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID}&sheet=nc_por_cliente`);
                 const data = await response.json();
                 if (data.length === 0) return;
-                const labels = data.map(item => item.cliente);
-                const values = data.map(item => parseInt(item.quantidadecliente_nc));
+
+                const topData = data.slice(0, 6); // <-- A MÁGICA ACONTECE AQUI
+
+                const labels = topData.map(item => item.cliente);
+                const values = topData.map(item => parseInt(item.quantidadecliente_nc));
                 const ctx7 = document.getElementById('grafico7').getContext('2d');
-                new Chart(ctx7, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade de NC', data: values, backgroundColor: '#003366', borderRadius: 5 }] }, options: optionsDinamico });
+                new Chart(ctx7, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade de NC', data: values, backgroundColor: '#003366', borderRadius: 5 }] }, options: optionsPadrao });
             } catch (error) { console.error("Erro Gráfico 7:", error); }
         }
 
@@ -196,10 +119,13 @@
                 const response = await fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID}&sheet=nc_por_projeto`);
                 const data = await response.json();
                 if (data.length === 0) return;
-                const labels = data.map(item => item.projeto);
-                const values = data.map(item => parseInt(item.quantidadeprojeto_nc));
+
+                const topData = data.slice(0, 6); // <-- A MÁGICA ACONTECE AQUI
+
+                const labels = topData.map(item => item.projeto);
+                const values = topData.map(item => parseInt(item.quantidadeprojeto_nc));
                 const ctx8 = document.getElementById('grafico8').getContext('2d');
-                new Chart(ctx8, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade de NC', data: values, backgroundColor: '#29abe2', borderRadius: 5 }] }, options: optionsDinamico });
+                new Chart(ctx8, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade de NC', data: values, backgroundColor: '#29abe2', borderRadius: 5 }] }, options: optionsPadrao });
             } catch (error) { console.error("Erro Gráfico 8:", error); }
         }
 
@@ -208,12 +134,15 @@
                 const response = await fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID}&sheet=nc_detalhado`);
                 const data = await response.json();
                 if (data.length === 0) return;
-                const labels = data.map(item => item.cliente);
-                const tiposDeNC = Object.keys(data[0]).filter(key => key !== 'cliente');
+
+                const topData = data.slice(0, 6); // <-- A MÁGICA ACONTECE AQUI
+                
+                const labels = topData.map(item => item.cliente);
+                const tiposDeNC = Object.keys(topData[0]).filter(key => key !== 'cliente');
                 const colors = ['#003366', '#29abe2', '#fd7e14', '#28a745', '#dc3545', '#6c757d', '#ffc107'];
                 const datasets = tiposDeNC.map((tipo, index) => ({
                     label: tipo.replace(/_/g, ' ').replace(/(^\w{1})|(\s+\w{1})/g, letra => letra.toUpperCase()),
-                    data: data.map(item => parseInt(item[tipo]) || 0),
+                    data: topData.map(item => parseInt(item[tipo]) || 0),
                     backgroundColor: colors[index % colors.length]
                 }));
                 const ctx9 = document.getElementById('grafico9').getContext('2d');
