@@ -34,12 +34,18 @@
         <div class="main-content">
             <header class="content-header">
                 <button class="mobile-menu-button" id="mobileMenuButton">
-                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-                </button>
+                    </button>
                 <div>
                     <h1>Dashboard de Indicadores</h1>
                     <p>Visão geral dos indicadores de qualidade do mês.</p>
                 </div>
+            
+                <button id="refreshChartsBtn" class="refresh-button" title="Atualizar dados">
+                    <svg class="refresh-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h5M20 20v-5h-5M20 4s-2-2-6-2-8 4-8 8 4 8 8 8 6-2 6-2"></path>
+                    </svg>
+                    <span>Atualizar</span>
+                </button>
             </header>
 
             <main class="content-area">
@@ -79,9 +85,9 @@
     
             const SPREADSHEET_ID = '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4';
             const API_BASE_URL = '/.netlify/functions';
-    
+            const refreshBtn = document.getElementById('refreshChartsBtn');
+            
             // --- GRÁFICOS ESTÁTICOS ORIGINAIS (1 a 6) ---
-            const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'];
             // (O código dos 6 gráficos estáticos com seus estilos aprimorados)
             const ctx1 = document.getElementById('grafico1').getContext('2d');
             const gradienteAzul = ctx1.createLinearGradient(0, 0, 0, ctx1.canvas.height);
@@ -104,44 +110,45 @@
 
     
             // --- LÓGICA OTIMIZADA PARA GRÁFICOS DINÂMICOS ---
-            async function loadDynamicCharts() {
+            
+            let chart7, chart8, chart9; // Variáveis para guardar as instâncias dos gráficos
+    
+            async function updateDynamicCharts() {
+                if (refreshBtn) {
+                    refreshBtn.disabled = true;
+                    refreshBtn.classList.add('loading');
+                }
                 try {
-                    // UMA ÚNICA CHAMADA PARA AS 3 ABAS
                     const sheetNames = 'nc_por_cliente,nc_por_projeto,nc_detalhado';
                     const response = await fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID}&sheets=${sheetNames}`);
                     const allData = await response.json();
     
-                    // GRÁFICO 7: NC por Cliente
+                    // Destrói os gráficos antigos antes de desenhar os novos
+                    if (chart7) chart7.destroy();
+                    if (chart8) chart8.destroy();
+                    if (chart9) chart9.destroy();
+    
+                    // GRÁFICO 7
                     const dataCliente = allData.nc_por_cliente || [];
                     if (dataCliente.length > 0) {
                         const topData = dataCliente.slice(0, 6);
                         const labels = topData.map(item => item.cliente);
                         const values = topData.map(item => parseInt(item.quantidadecliente_nc));
                         const ctx7 = document.getElementById('grafico7').getContext('2d');
-                        new Chart(ctx7, { 
-                            type: 'bar', 
-                            data: { labels: labels, datasets: [{ label: 'Quantidade de NC', data: values, backgroundColor: '#003366', borderRadius: 5 }] }, 
-                            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: true, anchor: 'end', align: 'end', color: 'black', font: { weight: 'bold' } } }, scales: { y: { beginAtZero: true, max: 20 } } },
-                            plugins: [ChartDataLabels]
-                        });
+                        chart7 = new Chart(ctx7, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade de NC', data: values, backgroundColor: '#003366', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: true, anchor: 'end', align: 'end', color: 'black', font: { weight: 'bold' } } }, scales: { y: { beginAtZero: true, max: 20 } } }, plugins: [ChartDataLabels] });
                     }
     
-                    // GRÁFICO 8: NC por Projeto
+                    // GRÁFICO 8
                     const dataProjeto = allData.nc_por_projeto || [];
                     if (dataProjeto.length > 0) {
                         const topData = dataProjeto.slice(0, 6);
                         const labels = topData.map(item => item.projeto);
                         const values = topData.map(item => parseInt(item.quantidadeprojeto_nc));
                         const ctx8 = document.getElementById('grafico8').getContext('2d');
-                        new Chart(ctx8, { 
-                            type: 'bar', 
-                            data: { labels: labels, datasets: [{ label: 'Quantidade de NC', data: values, backgroundColor: '#29abe2', borderRadius: 5 }] }, 
-                            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: true, anchor: 'end', align: 'end', color: 'black', font: { weight: 'bold' } } }, scales: { y: { beginAtZero: true, max: 20 } } },
-                            plugins: [ChartDataLabels]
-                        });
+                        chart8 = new Chart(ctx8, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade de NC', data: values, backgroundColor: '#29abe2', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: true, anchor: 'end', align: 'end', color: 'black', font: { weight: 'bold' } } }, scales: { y: { beginAtZero: true, max: 20 } } }, plugins: [ChartDataLabels] });
                     }
     
-                    // GRÁFICO 9: Tipos de NC por Cliente (Empilhado)
+                    // GRÁFICO 9
                     const dataDetalhado = allData.nc_detalhado || [];
                     if (dataDetalhado.length > 0) {
                         const topData = dataDetalhado.slice(0, 6);
@@ -154,29 +161,27 @@
                             backgroundColor: colors[index % colors.length]
                         }));
                         const ctx9 = document.getElementById('grafico9').getContext('2d');
-                        new Chart(ctx9, {
-                            type: 'bar',
-                            data: { labels: labels, datasets: datasets },
-                            options: {
-                                responsive: true, maintainAspectRatio: false,
-                                plugins: { 
-                                    legend: { display: true, position: 'bottom', labels: { font: { size: 10 }, boxWidth: 15 } }, 
-                                    datalabels: { display: true, anchor: 'center', align: 'center', color: 'white', font: { weight: 'bold' }, formatter: (value) => { return value > 0 ? value : null; } }
-                                },
-                                scales: { x: { stacked: true, ticks: { font: { size: 10 } } }, y: { stacked: true, beginAtZero: true, max: 7, ticks: { stepSize: 2 } } }
-                            },
+                        chart9 = new Chart(ctx9, {
+                            type: 'bar', data: { labels: labels, datasets: datasets }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom', labels: { font: { size: 10 }, boxWidth: 15 } }, datalabels: { display: true, anchor: 'center', align: 'center', color: 'white', font: { weight: 'bold' }, formatter: (value) => { return value > 0 ? value : null; } } }, scales: { x: { stacked: true, ticks: { font: { size: 10 } } }, y: { stacked: true, beginAtZero: true, max: 7, ticks: { stepSize: 2 } } } },
                             plugins: [ChartDataLabels]
                         });
                     }
-    
                 } catch (error) {
-                    console.error("Erro ao carregar gráficos dinâmicos:", error);
+                    console.error("Erro ao atualizar gráficos dinâmicos:", error);
+                } finally {
+                    if (refreshBtn) {
+                        refreshBtn.disabled = false;
+                        refreshBtn.classList.remove('loading');
+                    }
                 }
             }
     
-            // Chama a função única que carrega tudo
-            loadDynamicCharts();
+            if (refreshBtn) {
+                refreshBtn.addEventListener('click', updateDynamicCharts);
+            }
+            
+            updateDynamicCharts(); // Carregamento inicial
         });
-        </script>
+    </script>
 </body>
 </html>
