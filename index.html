@@ -12,80 +12,27 @@
     <div class="page-container">
         
         <aside class="sidebar preload">
-            <div class="sidebar-header">
-                <img src="GT Branco - Transparente.png" alt="Logo GT">
-                <h2>Portal da Qualidade</h2>
-            </div>
-            <nav class="sidebar-nav">
-                <ul>
-                    <li>
-                        <a href="index.html" class="active">
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
-                            <span>Dashboard</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="projetos.html">
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                            <span>Projetos</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="reunioes.html">
-                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                            <span>Reuniões</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="auditoriasevisitas.html">
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 12h6M7 8h6"></path></svg>
-                            <span>Auditorias e Visitas</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-            <div class="sidebar-footer-logo">
-                <img src="logo.png" alt="Logo WF">
-            </div>
-        </aside>
+            </aside>
 
         <div class="overlay" id="overlay"></div>
 
         <div class="main-content">
             <header class="content-header">
-                <button class="mobile-menu-button" id="mobileMenuButton">
-                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-                </button>
-                <div>
-                    <h1>Dashboard de Indicadores</h1>
-                    <p>Visão geral dos indicadores de qualidade do mês.</p>
-                </div>
-            </header>
+                </header>
 
             <main class="content-area">
-                <div class="indicator-card">
-                    <div class="card-info">
-                        <h3>NC por Cliente</h3>
-                        <p>Quantidade de Não Conformidades por Cliente.</p>
-                    </div>
-                    <div class="card-graph"><canvas id="grafico7"></canvas></div>
+                <div class="indicators-grid">
+                    <div class="indicator-card"><div class="card-info"><h3>Custos de Não-Qualidade</h3><p><strong>Valor Atual:</strong> R$ 16.234,00</p><p><strong>Meta:</strong> R$ 0,00</p></div><div class="card-graph"><canvas id="grafico1"></canvas></div></div>
+                    <div class="indicator-card"><div class="card-info"><h3>Taxa de Retrabalho</h3><p><strong>Valor Atual:</strong> 2.1%</p><p><strong>Meta:</strong> &lt; 3%</p></div><div class="card-graph"><canvas id="grafico2"></canvas></div></div>
+                    <div class="indicator-card"><div class="card-info"><h3>Gestão de Equipamentos</h3><p><strong>Quantidade em tratativa:</strong> 23</p></div><div class="card-graph"><canvas id="grafico3"></canvas></div></div>
+                    <div class="indicator-card"><div class="card-info"><h3>Conformidade de Processos</h3><p><strong>Valor Atual:</strong> 98%</p><p><strong>Meta:</strong> &gt; 95%</p></div><div class="card-graph"><canvas id="grafico4"></canvas></div></div>
+                    <div class="indicator-card"><div class="card-info"><h3>Índice de Reclamações</h3><p><strong>Valor Atual:</strong> 8 Reclamações</p><p><strong>Meta:</strong> &lt; 10 Reclamações</p></div><div class="card-graph"><canvas id="grafico5"></canvas></div></div>
+                    <div class="indicator-card"><div class="card-info"><h3>Quantidade de NC Procedente</h3><p><strong>Quantidade Atual:</strong> 1</p><p><strong>Meta:</strong> 0</p></div><div class="card-graph"><canvas id="grafico6"></canvas></div></div>
+                    
+                    <div class="indicator-card"><div class="card-info"><h3>NC por Cliente</h3><p>Quantidade de Não Conformidades por Cliente.</p></div><div class="card-graph"><canvas id="grafico7"></canvas></div></div>
+                    <div class="indicator-card"><div class="card-info"><h3>NC por Projeto</h3><p>Quantidade de Não Conformidades por Projeto.</p></div><div class="card-graph"><canvas id="grafico8"></canvas></div></div>
+                    <div class="indicator-card"><div class="card-info"><h3>Tipos de NC por Cliente</h3><p>Detalhamento das Não Conformidades por tipo.</p></div><div class="card-graph"><canvas id="grafico9"></canvas></div></div>
                 </div>
-                <div class="indicator-card">
-                    <div class="card-info">
-                        <h3>NC por Projeto</h3>
-                        <p>Quantidade de Não Conformidades por Projeto.</p>
-                    </div>
-                    <div class="card-graph"><canvas id="grafico8"></canvas></div>
-                </div>
-                <div class="indicator-card">
-                    <div class="card-info">
-                        <h3>Tipos de NC por Cliente</h3>
-                        <p>Detalhamento das Não Conformidades por tipo.</p>
-                    </div>
-                    <div class="card-graph"><canvas id="grafico9"></canvas></div>
-                </div>
-
-                </div> ```
             </main>
 
             <footer class="footer">
@@ -97,9 +44,8 @@
     <script>
     document.addEventListener('DOMContentLoaded', () => {
         // --- LÓGICA DO MENU ---
-        const body = document.body;
-        // ... (todo o seu código de menu mobile e preload aqui) ...
-        
+        // (Cole seu código completo do menu mobile aqui)
+
         // =================== LÓGICA DO DASHBOARD ===================
 
         // ATENÇÃO: COLE O ID DA SUA PLANILHA AQUI
@@ -112,25 +58,29 @@
             plugins: { legend: { display: false }, datalabels: { display: false } },
             scales: { y: { beginAtZero: true, ticks: { font: { size: 10 } } }, x: { ticks: { font: { size: 10 } } } }
         };
+        const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'];
 
         // --- GRÁFICOS ESTÁTICOS ORIGINAIS (1 a 6) ---
-        const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul'];
         const ctx1 = document.getElementById('grafico1').getContext('2d');
         new Chart(ctx1, { type: 'line', data: { labels: meses, datasets: [{ label: 'Custo R$', data: [12500, 19200, 14300, 17800, 15500, 16234], borderColor: '#003366', backgroundColor: 'rgba(0, 51, 102, 0.1)', fill: true, tension: 0.3 }] }, options: optionsPadrao });
-        // ... (Cole aqui os códigos dos seus gráficos 2, 3, 4, 5 e 6 que já funcionavam) ...
+        
         const ctx2 = document.getElementById('grafico2').getContext('2d');
         new Chart(ctx2, { type: 'line', data: { labels: meses, datasets: [{ label: 'Taxa %', data: [3.5, 2.8, 3.1, 2.5, 2.2, 2.1], borderColor: '#29abe2', tension: 0.3 }] }, options: optionsPadrao });
+        
         const ctx3 = document.getElementById('grafico3').getContext('2d');
         new Chart(ctx3, { type: 'doughnut', data: { labels: ['Concluído', 'Em Tratativa', 'Aguardando Peças'], datasets: [{ data: [120, 23, 15], backgroundColor: ['#4CAF50', '#FFC107', '#F44336'] }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom', labels: { font: { size: 11 } } }, datalabels: { color: '#fff', font: { weight: 'bold' } } } }, plugins: [ChartDataLabels] });
+        
         const ctx4 = document.getElementById('grafico4').getContext('2d');
         new Chart(ctx4, { type: 'bar', data: { labels: ['Meta', 'Atual'], datasets: [{ label: 'Conformidade %', data: [95, 98], backgroundColor: ['#CCCCCC', '#4CAF50'], barThickness: 50 }] }, options: { ...optionsPadrao, plugins: { ...optionsPadrao.plugins, datalabels: { display: true, anchor: 'end', align: 'top', font: { weight: 'bold' } } } }, plugins: [ChartDataLabels] });
+        
         const ctx5 = document.getElementById('grafico5').getContext('2d');
         new Chart(ctx5, { type: 'bar', data: { labels: meses, datasets: [{ label: 'Nº de Reclamações', data: [12, 9, 11, 7, 9, 8], backgroundColor: '#F44336' }] }, options: optionsPadrao });
+        
         const ctx6 = document.getElementById('grafico6').getContext('2d');
         new Chart(ctx6, { type: 'bar', data: { labels: meses, datasets: [{ label: 'Quantidade', data: [3, 2, 2, 1, 0, 1], backgroundColor: '#FF9800' }] }, options: optionsPadrao });
-        // --- NOVOS GRÁFICOS DINÂMICOS (7, 8 e 9) ---
 
-        // GRÁFICO 7: NC por Cliente
+
+        // --- NOVOS GRÁFICOS DINÂMICOS (7, 8 e 9) ---
         async function loadNcPorClienteChart() {
             try {
                 const response = await fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID}&sheet=nc_por_cliente`);
@@ -142,7 +92,6 @@
             } catch (error) { console.error("Erro Gráfico 7:", error); }
         }
 
-        // GRÁFICO 8: NC por Projeto
         async function loadNcPorProjetoChart() {
             try {
                 const response = await fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID}&sheet=nc_por_projeto`);
@@ -154,7 +103,6 @@
             } catch (error) { console.error("Erro Gráfico 8:", error); }
         }
 
-        // GRÁFICO 9: Tipos de NC por Cliente (Empilhado)
         async function loadNcDetalhadoChart() {
             try {
                 const response = await fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID}&sheet=nc_detalhado`);
@@ -162,10 +110,10 @@
                 
                 const labels = data.map(item => item.cliente);
                 const tiposDeNC = Object.keys(data[0]).filter(key => key !== 'cliente');
-                const colors = ['#003366', '#29abe2', '#fd7e14', '#28a745', '#dc3545', '#6c757d'];
+                const colors = ['#003366', '#29abe2', '#fd7e14', '#28a745', '#dc3545', '#6c757d', '#ffc107'];
 
                 const datasets = tiposDeNC.map((tipo, index) => ({
-                    label: tipo.replace(/_/g, ' ').replace('materia prima', 'matéria-prima'), // Formata o rótulo
+                    label: tipo.replace(/_/g, ' ').replace(/(^\w{1})|(\s+\w{1})/g, letra => letra.toUpperCase()),
                     data: data.map(item => parseInt(item[tipo])),
                     backgroundColor: colors[index % colors.length]
                 }));
@@ -175,22 +123,18 @@
                     type: 'bar',
                     data: { labels: labels, datasets: datasets },
                     options: {
-                        ...optionsPadrao,
-                        plugins: { legend: { display: true, position: 'bottom' }, datalabels: { display: false } },
-                        scales: {
-                            x: { stacked: true, ticks: { font: { size: 10 } } },
-                            y: { stacked: true, beginAtZero: true, ticks: { font: { size: 10 } } }
-                        }
+                        responsive: true, maintainAspectRatio: false,
+                        plugins: { legend: { display: true, position: 'bottom', labels: { font: { size: 10 }, boxWidth: 15 } }, datalabels: { display: false } },
+                        scales: { x: { stacked: true, ticks: { font: { size: 10 } } }, y: { stacked: true, beginAtZero: true, ticks: { font: { size: 10 } } } }
                     }
                 });
             } catch (error) { console.error("Erro Gráfico 9:", error); }
         }
 
-        // Chama as funções para carregar os gráficos dinâmicos
         loadNcPorClienteChart();
         loadNcPorProjetoChart();
         loadNcDetalhadoChart();
     });
-</script>
+    </script>
 </body>
 </html>
