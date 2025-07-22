@@ -312,42 +312,48 @@ body.menu-open .main-content { filter: blur(4px); }
   stroke: currentColor; /* Herda a cor (color) do botão */
 }
 
-/* --- ESTILO MELHORADO PARA O BOTÃO DE ATUALIZAR (COM TEXTO) --- */
+/* --- ESTILO FINAL PARA O BOTÃO DE ATUALIZAR ('GLASSMORPHISM') --- */
 .refresh-button {
-  margin-left: auto; /* Empurra o botão para a direita */
+  margin-left: auto;
   display: flex;
   align-items: center;
-  gap: 8px; /* Espaço entre o ícone e o texto */
-  background-color: #003366; /* Azul do tema */
-  color: white;
-  border: none;
+  gap: 8px;
+  
+  /* O Efeito Vidro Fosco */
+  background-color: rgba(255, 255, 255, 0.4); /* Fundo branco semi-transparente */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); /* Para compatibilidade com Safari */
+  
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Borda sutil e semi-transparente */
+  border-radius: 30px; /* Bordas bem arredondadas (formato de pílula) */
+  
+  color: #003366;
   padding: 8px 15px;
   font-size: 0.9em;
   font-weight: 600;
-  border-radius: 5px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.2s ease-in-out;
 }
 
 .refresh-button:hover {
-  background-color: #004488;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-/* O span com o texto agora é visível */
-.refresh-button span {
-  display: inline;
+  background-color: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 4px_15px rgba(0, 51, 102, 0.1);
+  transform: translateY(-2px);
 }
 
 .refresh-button .refresh-icon {
   width: 16px;
   height: 16px;
-  stroke: white;
+  stroke: currentColor;
   stroke-width: 2.5;
   transition: transform 0.5s ease;
 }
 
-/* Animação de carregamento */
+.refresh-button:hover .refresh-icon {
+  transform: rotate(180deg);
+}
+
+/* Animação de carregamento (não muda) */
 .refresh-button.loading .refresh-icon {
   animation: spin 1s linear infinite;
 }
