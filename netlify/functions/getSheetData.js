@@ -1,5 +1,3 @@
-// Arquivo: netlify/functions/getSheetData.js (VERSÃO ATUALIZADA)
-
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 const { JWT } = require('google-auth-library');
 
@@ -11,16 +9,15 @@ const corsHeaders = {
 
 exports.handler = async function (event, context) {
   if (event.httpMethod === 'OPTIONS') {
-    return { statusCode: 200, headers: corsHeaders, body: 'Preflight OK' };
+    return { statusCode: 200, headers: corsHeaders };
   }
 
   try {
-    const { id: spreadsheetId, sheet: sheetName } = event.queryStringParameters;
-    if (!spreadsheetId || !sheetName) {
-      return { statusCode: 400, headers: corsHeaders, body: 'ID da planilha e nome da aba sao obrigatorios.' };
+    const { id: spreadsheetId, sheet: singleSheetName, sheets: multipleSheetNames } = event.queryStringParameters;
+    if (!spreadsheetId) {
+      return { statusCode: 400, headers: corsHeaders, body: 'ID da planilha é obrigatório.' };
     }
 
-    // A nova forma de autenticação (padrão da v4 da biblioteca)
     const serviceAccountAuth = new JWT({
       email: process.env.GOOGLE_CLIENT_EMAIL,
       key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
@@ -28,23 +25,27 @@ exports.handler = async function (event, context) {
     });
 
     const doc = new GoogleSpreadsheet(spreadsheetId, serviceAccountAuth);
+    await doc.loadInfo();
 
-    await doc.loadInfo(); // Carrega as propriedades do documento
-
-    const sheet = doc.sheetsByTitle[sheetName];
-    if (!sheet) {
-      return { statusCode: 404, headers: corsHeaders, body: `Aba com o nome "${sheetName}" nao foi encontrada.` };
+    const sheetNamesToLoad = multipleSheetNames ? multipleSheetNames.split(',') : [singleSheetName];
+    if (!sheetNamesToLoad[0]) {
+        return { statusCode: 400, headers: corsHeaders, body: 'Nome da(s) aba(s) é obrigatório.' };
     }
-    
-    const rows = await sheet.getRows();
 
-    // Formata os dados para um JSON limpo
-    const data = rows.map(row => row.toObject());
+    const allData = {};
+
+    for (const sheetName of sheetNamesToLoad) {
+        const sheet = doc.sheetsByTitle[sheetName];
+        if (sheet) {
+            const rows = await sheet.getRows();
+            allData[sheetName] = rows.map(row => row.toObject());
+        }
+    }
 
     return {
       statusCode: 200,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
+      body: JSON.stringify(allData)
     };
 
   } catch (error) {
