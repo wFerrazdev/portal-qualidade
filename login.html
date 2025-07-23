@@ -7,11 +7,41 @@
     <link rel="stylesheet" href="style.css">
     <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
-<body class="login-page-background">
-    <div class="login-container">
-        <img src="GT Branco - Transparente.png" alt="Logo GT" class="login-logo">
-        <h2 class="login-title">Portal da Qualidade</h2>
-        <div data-netlify-identity-button></div>
+<body>
+    <div class="split-container">
+        <div class="split-left">
+            <div class="left-content">
+                <img src="GT Branco - Transparente.png" alt="Logo GT" class="login-logo">
+                <h2 class="login-title">Portal da Qualidade</h2>
+            </div>
+            <div class="sidebar-footer-logo">
+                <img src="logo.png" alt="Logo WF">
+            </div>
+        </div>
+
+        <div class="split-right">
+            <div class="login-form-container">
+                <h3>Acesse a Plataforma</h3>
+                <p>Insira suas credenciais para continuar.</p>
+                <div id="netlify-identity-widget-container"></div>
+            </div>
+        </div>
     </div>
+
+    <script>
+        // Este script vai garantir que o widget apareça dentro do nosso container
+        if (window.netlifyIdentity) {
+            window.netlifyIdentity.on("init", user => {
+                if (!user) {
+                    window.netlifyIdentity.on("login", () => {
+                        document.location.href = "/index.html";
+                    });
+                }
+            });
+        }
+        // Abre o widget de login dentro do container específico
+        netlifyIdentity.open('login');
+        netlifyIdentity.on('close', () => { /* pode adicionar alguma ação se o modal fechar */ });
+    </script>
 </body>
 </html>

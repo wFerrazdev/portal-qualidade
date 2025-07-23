@@ -361,44 +361,115 @@ body.menu-open .main-content { filter: blur(4px); }
   cursor: not-allowed;
 }
 
-/* --- ESTILOS DA PÁGINA DE LOGIN --- */
+/* --- ESTILOS DA PÁGINA DE LOGIN (LAYOUT DIVIDIDO) --- */
+/* Removemos o fundo azul do body que tínhamos antes */
 .login-page-background {
-  background-color: #003366; /* Azul escuro do tema */
+  background-color: #fff; /* Fundo padrão branco */
+}
+
+.split-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
   height: 100vh;
 }
 
-.login-container {
-  text-align: center;
+.split-left {
+  width: 25%; /* Ocupa 1/4 da tela */
+  background-color: #003366; /* Azul do tema */
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Alinha conteúdo no topo e rodapé */
   padding: 40px;
+  box-sizing: border-box;
 }
 
-.login-logo {
-  max-width: 150px;
+.split-left .left-content {
+  text-align: center;
+}
+
+.split-left .login-logo {
+  max-width: 120px;
   margin-bottom: 20px;
 }
 
-.login-title {
-  color: white;
+.split-left .login-title {
   font-weight: 300;
-  font-size: 2em;
-  margin-bottom: 40px;
+  font-size: 2.2em;
+  margin: 0;
 }
 
-/* Estilizando o botão padrão do Netlify Identity */
-[data-netlify-identity-button] {
-  background-color: white !important;
-  color: #003366 !important;
+/* Reutiliza o estilo do rodapé do sidebar */
+.split-left .sidebar-footer-logo {
+  padding: 20px 0;
+  text-align: center;
+}
+.split-left .sidebar-footer-logo img {
+  max-width: 100px;
+  opacity: 0.7;
+}
+
+.split-right {
+  width: 75%; /* Ocupa 3/4 da tela */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f4f7fc; /* Fundo cinza claro */
+  background-image: url('https://www.transparenttextures.com/patterns/clean-gray-paper.png'); /* Textura sutil */
+  position: relative;
+}
+
+.login-form-container {
+  background-color: white;
+  padding: 50px;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 71, 137, 0.1);
+  width: 100%;
+  max-width: 450px;
+  text-align: center;
+}
+
+.login-form-container h3 {
+  margin: 0 0 10px 0;
+  font-size: 1.8em;
+  color: #003366;
+}
+
+.login-form-container p {
+  margin-bottom: 30px;
+  color: #777;
+}
+
+/* Estilizando o formulário do Netlify Identity */
+#netlify-identity-widget-container .modal {
+  position: static !important;
+  box-shadow: none !important;
   border: none !important;
-  border-radius: 5px !important;
-  padding: 15px 30px !important;
-  font-weight: 600 !important;
-  cursor: pointer !important;
-  transition: transform 0.2s ease !important;
+  max-width: 100% !important;
 }
 
-[data-netlify-identity-button]:hover {
-  transform: translateY(-2px);
+/* Media query para telas pequenas (mobile) */
+@media (max-width: 900px) {
+  .split-container {
+      flex-direction: column; /* Empilha os lados */
+  }
+  .split-left, .split-right {
+      width: 100%;
+  }
+  .split-left {
+      height: 25vh; /* Ocupa 1/4 da altura */
+      justify-content: center;
+      padding: 20px;
+  }
+  .split-left .sidebar-footer-logo {
+      display: none; /* Esconde a logo do rodapé no mobile para economizar espaço */
+  }
+  .split-right {
+      height: 75vh; /* Ocupa 3/4 da altura */
+      align-items: flex-start;
+      padding-top: 40px;
+  }
+  .login-form-container {
+      box-shadow: none;
+      padding: 20px;
+  }
 }
