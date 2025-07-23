@@ -363,7 +363,7 @@ body.menu-open .main-content { filter: blur(4px); }
   cursor: not-allowed;
 }
 
-/* --- ESTILOS DA PÁGINA DE LOGIN (DESIGN FINAL BY WILLIAM) --- */
+/* --- ESTILOS DA PÁGINA DE LOGIN (IDÊNTICO AO SEU DESIGN) --- */
 .login-page-background {
   background-color: #fff;
 }
@@ -373,34 +373,35 @@ body.menu-open .main-content { filter: blur(4px); }
   height: 100vh;
   width: 100vw;
   overflow: hidden;
+  background-color: #f4f7fc; /* Cor de fundo geral */
 }
 
+/* FAIXA LATERAL AZUL */
 .split-left {
-  width: 40%; /* Ajustado para um pouco mais de espaço */
+  width: 35%; /* Ocupa um pouco mais de 1/4 da tela */
   background-color: #003366;
   color: white;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 50px;
+  padding: 60px; /* Mais preenchimento interno */
   box-sizing: border-box;
   position: relative;
-  overflow: hidden;
 }
 
 .split-left .left-content {
-  text-align: left; /* Alinhado à esquerda como no seu design */
+  text-align: left; /* Alinhado à esquerda */
 }
 
 .split-left .login-logo {
-  max-width: 100px; /* Tamanho ajustado */
-  margin-bottom: 30px;
+  max-width: 100px;
+  margin-bottom: 25px;
 }
 
 .split-left .login-title {
   font-family: 'Poppins', sans-serif;
   font-weight: 600;
-  font-size: 3.5em; /* Maior para mais impacto */
+  font-size: 3.2em; /* Tamanho ajustado */
   margin: 0;
   line-height: 1.2;
 }
@@ -414,19 +415,19 @@ body.menu-open .main-content { filter: blur(4px); }
   opacity: 0.7;
 }
 
+/* LADO DIREITO COM IMAGEM DE FUNDO SUTIL */
 .split-right {
-  width: 60%;
+  width: 65%;
   display: flex;
   justify-content: center;
   align-items: center;
-  /* Fundo com imagem de gestão */
-  background-image: url('https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1632&q=80');
-  background-size: cover;
-  background-position: center;
   position: relative;
+  /* Fundo com imagem de gestão sutil */
+  background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/intersection.png');
+  background-repeat: repeat;
 }
 
-/* Camada escura sobre a imagem para dar contraste */
+/* Camada branca sobre a imagem para suavizar */
 .split-right::before {
   content: '';
   position: absolute;
@@ -434,7 +435,8 @@ body.menu-open .main-content { filter: blur(4px); }
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(255, 255, 255, 0.5); /* Camada branca semi-transparente */
+  background-color: rgba(244, 247, 252, 0.6); /* Fundo do site com opacidade */
+  z-index: 1;
 }
 
 .login-form-container {
@@ -462,9 +464,9 @@ body.menu-open .main-content { filter: blur(4px); }
 }
 
 #loginBtn {
-  background-color: transparent;
+  background-color: #003366;
   border: 2px solid #003366;
-  color: #003366;
+  color: white;
   padding: 12px 30px;
   font-size: 1em;
   font-weight: 600;
@@ -474,8 +476,8 @@ body.menu-open .main-content { filter: blur(4px); }
   width: 100%;
 }
 #loginBtn:hover {
-  background-color: #003366;
-  color: white;
+  background-color: #004488;
+  border-color: #004488;
 }
 
 /* Media query para telas pequenas (mobile) */
