@@ -113,12 +113,19 @@
         // --- LÓGICA OTIMIZADA PARA GRÁFICOS DINÂMICOS ---
         let chart7, chart8, chart9;
         async function updateDynamicCharts() {
-            if (refreshBtn) { refreshBtn.disabled = true; refreshBtn.classList.add('loading'); }
-            try {
-                const sheetNames = 'nc_por_cliente,nc_por_projeto,nc_detalhado';
-                const response = await fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID}&sheets=${sheetNames}`);
-                const allData = await response.json();
-                if (chart7) chart7.destroy(); if (chart8) chart8.destroy(); if (chart9) chart9.destroy();
+        if (refreshBtn) {
+        refreshBtn.disabled = true;
+        refreshBtn.textContent = 'Atualizando...'; // Muda o texto
+        }
+        try {
+        const sheetNames = 'nc_por_cliente,nc_por_projeto,nc_detalhado';
+        const response = await fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID}&sheets=${sheetNames}`);
+        const allData = await response.json();
+        
+        // Destrói os gráficos antigos antes de desenhar os novos
+        if (chart7) chart7.destroy();
+        if (chart8) chart8.destroy();
+        if (chart9) chart9.destroy();
                 
                 const dataCliente = allData.nc_por_cliente || [];
                 if (dataCliente.length > 0) {
@@ -151,7 +158,10 @@
             } catch (error) {
                 console.error("Erro ao atualizar gráficos dinâmicos:", error);
             } finally {
-                if (refreshBtn) { refreshBtn.disabled = false; refreshBtn.classList.remove('loading'); }
+                if (refreshBtn) {
+                    refreshBtn.disabled = false;
+                    refreshBtn.textContent = 'Atualizar'; // Restaura o texto original
+                }
             }
         }
         
