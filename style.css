@@ -363,7 +363,7 @@ body.menu-open .main-content { filter: blur(4px); }
   cursor: not-allowed;
 }
 
-/* --- ESTILOS DA PÁGINA DE LOGIN (REDESIGN FINAL) --- */
+/* --- ESTILOS DA PÁGINA DE LOGIN (DESIGN FINAL BY WILLIAM) --- */
 .login-page-background {
   background-color: #fff;
 }
@@ -376,7 +376,7 @@ body.menu-open .main-content { filter: blur(4px); }
 }
 
 .split-left {
-  width: 30%;
+  width: 40%; /* Ajustado para um pouco mais de espaço */
   background-color: #003366;
   color: white;
   display: flex;
@@ -388,85 +388,78 @@ body.menu-open .main-content { filter: blur(4px); }
   overflow: hidden;
 }
 
-/* O NOVO DESIGN DE ONDAS NO FUNDO */
-.split-left::before, .split-left::after {
-  content: '';
-  position: absolute;
-  border-radius: 50%;
-  background: linear-gradient(45deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.15));
-  z-index: 1;
-  filter: blur(5px);
-}
-.split-left::before {
-  width: 400px;
-  height: 400px;
-  bottom: -200px;
-  left: -150px;
-}
-.split-left::after {
-  width: 300px;
-  height: 300px;
-  top: -100px;
-  right: -180px;
-  background: linear-gradient(-45deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.1));
-}
-
-
 .split-left .left-content {
-  text-align: center;
-  z-index: 2;
+  text-align: left; /* Alinhado à esquerda como no seu design */
 }
 
 .split-left .login-logo {
-  max-width: 130px;
-  margin-bottom: 20px;
+  max-width: 100px; /* Tamanho ajustado */
+  margin-bottom: 30px;
 }
 
 .split-left .login-title {
   font-family: 'Poppins', sans-serif;
   font-weight: 600;
-  font-size: 2.5em;
+  font-size: 3.5em; /* Maior para mais impacto */
   margin: 0;
   line-height: 1.2;
 }
 
 .split-left .sidebar-footer-logo {
   padding: 20px 0;
-  text-align: center;
-  z-index: 2;
+  text-align: left; /* Alinhado à esquerda */
 }
 .split-left .sidebar-footer-logo img {
-  max-width: 100px;
+  max-width: 80px;
   opacity: 0.7;
 }
 
 .split-right {
-  width: 70%;
+  width: 60%;
   display: flex;
   justify-content: center;
   align-items: center;
-  /* A NOVA TEXTURA DE FIBRA DE VIDRO */
-  background-color: #f4f7fc;
-  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAAAXNSR0IArs4c6QAAAIRlWElmTU0AKgAAAAgABQESAAMAAAABAAEAAAEaAAUAAAABAAAASgEbAAUAAAABAAAAUgEoAAMAAAABAAIAAIdpAAQAAAABAAAAWgAAAAAAAACQAAAAAQAAAJAAAAABAAOgAQADAAAAAQABAACgAgAEAAAAAQAAAGSgAwAEAAAAAQAAAGQAAAAA1c0e3gAAAAlwSFlzAAALEwAACxMBAJqcGAAAAIBJREFUeAHt0AEJADAMA8HYv/PkKCLHkI92QGoCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABg1gB6d40026c2iQAAAABJRU5ErkJggg==");
-  background-repeat: repeat;
+  /* Fundo com imagem de gestão */
+  background-image: url('https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1632&q=80');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+/* Camada escura sobre a imagem para dar contraste */
+.split-right::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.5); /* Camada branca semi-transparente */
 }
 
 .login-form-container {
   background-color: white;
   padding: 50px;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 71, 137, 0.1);
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 420px;
-  min-height: 450px;
+  max-width: 400px;
   text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  z-index: 2; /* Para ficar na frente da camada de fundo */
 }
 
-.login-form-container h3 { margin: 0 0 10px 0; font-size: 1.8em; color: #003366; }
-.login-form-container p { margin-bottom: 40px; color: #777; }
+.login-form-container h3 {
+  margin: 0 0 10px 0;
+  font-size: 1.8em;
+  color: #333;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+}
+
+.login-form-container p {
+  margin-bottom: 30px;
+  color: #777;
+}
 
 #loginBtn {
   background-color: transparent;
@@ -485,18 +478,12 @@ body.menu-open .main-content { filter: blur(4px); }
   color: white;
 }
 
-#netlify-identity-widget-container .modal {
-  position: static !important;
-  box-shadow: none !important;
-  border: none !important;
-  max-width: 100% !important;
-}
-
+/* Media query para telas pequenas (mobile) */
 @media (max-width: 900px) {
   .split-container { flex-direction: column; }
   .split-left, .split-right { width: 100%; }
-  .split-left { height: auto; padding: 40px 20px; }
-  .split-left .sidebar-footer-logo { display: none; }
+  .split-left { height: auto; padding: 40px 20px; text-align: center; }
+  .split-left .left-content, .split-left .sidebar-footer-logo { text-align: center; }
   .split-right { flex-grow: 1; padding: 20px; }
-  .login-form-container { box-shadow: none; padding: 20px; min-height: 0; }
+  .login-form-container { box-shadow: none; padding: 20px; }
 }
