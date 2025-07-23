@@ -312,48 +312,31 @@ body.menu-open .main-content { filter: blur(4px); }
   stroke: currentColor; /* Herda a cor (color) do botão */
 }
 
-/* --- ESTILO FINAL PARA O BOTÃO DE ATUALIZAR ('GLASSMORPHISM') --- */
+/* --- ESTILO FINAL E ELEGANTE PARA O BOTÃO DE ATUALIZAR (TEXTO) --- */
 .refresh-button {
   margin-left: auto;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  
-  /* O Efeito Vidro Fosco */
-  background-color: rgba(255, 255, 255, 0.4); /* Fundo branco semi-transparente */
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px); /* Para compatibilidade com Safari */
-  
-  border: 1px solid rgba(255, 255, 255, 0.2); /* Borda sutil e semi-transparente */
-  border-radius: 30px; /* Bordas bem arredondadas (formato de pílula) */
-  
-  color: #003366;
-  padding: 8px 15px;
+  background-color: transparent; /* Fundo transparente */
+  border: 2px solid #003366;    /* Borda na cor do tema */
+  color: #003366;               /* Texto na cor do tema */
+  padding: 8px 20px;
   font-size: 0.9em;
   font-weight: 600;
+  border-radius: 5px; /* Bordas levemente arredondadas */
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 }
 
 .refresh-button:hover {
-  background-color: rgba(255, 255, 255, 0.7);
-  box-shadow: 0 4px_15px rgba(0, 51, 102, 0.1);
+  background-color: #003366; /* Fundo preenche no hover */
+  color: white;              /* Texto fica branco */
   transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 51, 102, 0.2);
 }
 
-.refresh-button .refresh-icon {
-  width: 16px;
-  height: 16px;
-  stroke: currentColor;
-  stroke-width: 2.5;
-  transition: transform 0.5s ease;
-}
-
-.refresh-button:hover .refresh-icon {
-  transform: rotate(180deg);
-}
-
-/* Animação de carregamento (não muda) */
-.refresh-button.loading .refresh-icon {
-  animation: spin 1s linear infinite;
+/* Estilo para quando o botão estiver desabilitado (carregando) */
+.refresh-button:disabled {
+  background-color: #6c757d;
+  border-color: #6c757d;
+  color: white;
+  cursor: not-allowed;
 }
