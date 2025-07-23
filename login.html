@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="style.css">
     <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
-<body>
+<body class="login-page-background">
     <div class="split-container">
         <div class="split-left">
             <div class="left-content">
@@ -23,25 +23,25 @@
             <div class="login-form-container">
                 <h3>Acesse a Plataforma</h3>
                 <p>Insira suas credenciais para continuar.</p>
-                <div id="netlify-identity-widget-container"></div>
+                <button id="loginBtn">Acessar</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Este script vai garantir que o widget apareça dentro do nosso container
-        if (window.netlifyIdentity) {
-            window.netlifyIdentity.on("init", user => {
-                if (!user) {
-                    window.netlifyIdentity.on("login", () => {
-                        document.location.href = "/index.html";
-                    });
-                }
-            });
-        }
-        // Abre o widget de login dentro do container específico
-        netlifyIdentity.open('login');
-        netlifyIdentity.on('close', () => { /* pode adicionar alguma ação se o modal fechar */ });
+        // Pega o botão que criamos
+        const loginButton = document.getElementById('loginBtn');
+
+        // Adiciona um "escutador" que abre o widget do Netlify ao clicar no nosso botão
+        loginButton.addEventListener('click', () => {
+            netlifyIdentity.open();
+        });
+
+        // Este código redireciona o usuário para a página principal (index.html)
+        // assim que o login for bem-sucedido.
+        netlifyIdentity.on('login', user => {
+            document.location.href = '/index.html';
+        });
     </script>
 </body>
 </html>
