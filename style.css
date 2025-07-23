@@ -363,7 +363,7 @@ body.menu-open .main-content { filter: blur(4px); }
   cursor: not-allowed;
 }
 
-/* --- ESTILOS DA PÁGINA DE LOGIN (REDESIGN) --- */
+/* --- ESTILOS DA PÁGINA DE LOGIN (REDESIGN FINAL) --- */
 .login-page-background {
   background-color: #fff;
 }
@@ -372,11 +372,11 @@ body.menu-open .main-content { filter: blur(4px); }
   display: flex;
   height: 100vh;
   width: 100vw;
-  overflow: hidden; /* Evita barras de rolagem desnecessárias */
+  overflow: hidden;
 }
 
 .split-left {
-  width: 30%; /* Aumentei um pouco para 30% */
+  width: 30%;
   background-color: #003366;
   color: white;
   display: flex;
@@ -384,35 +384,37 @@ body.menu-open .main-content { filter: blur(4px); }
   justify-content: space-between;
   padding: 50px;
   box-sizing: border-box;
-  position: relative; /* Para as formas de fundo */
+  position: relative;
   overflow: hidden;
 }
 
-/* Formas de fundo para decorar */
+/* O NOVO DESIGN DE ONDAS NO FUNDO */
 .split-left::before, .split-left::after {
   content: '';
   position: absolute;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.05);
+  background: linear-gradient(45deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.15));
   z-index: 1;
+  filter: blur(5px);
 }
 .split-left::before {
-  width: 300px;
-  height: 300px;
-  bottom: -150px;
-  left: -100px;
+  width: 400px;
+  height: 400px;
+  bottom: -200px;
+  left: -150px;
 }
 .split-left::after {
-  width: 200px;
-  height: 200px;
-  top: -80px;
-  right: -120px;
+  width: 300px;
+  height: 300px;
+  top: -100px;
+  right: -180px;
+  background: linear-gradient(-45deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.1));
 }
 
 
 .split-left .left-content {
   text-align: center;
-  z-index: 2; /* Para ficar na frente das formas */
+  z-index: 2;
 }
 
 .split-left .login-logo {
@@ -421,8 +423,8 @@ body.menu-open .main-content { filter: blur(4px); }
 }
 
 .split-left .login-title {
-  font-family: 'Poppins', sans-serif; /* Nova fonte aplicada */
-  font-weight: 600; /* Peso "grosso" */
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
   font-size: 2.5em;
   margin: 0;
   line-height: 1.2;
@@ -443,19 +445,20 @@ body.menu-open .main-content { filter: blur(4px); }
   display: flex;
   justify-content: center;
   align-items: center;
-  /* Textura de Fibra de Vidro */
-  background-color: #ffffff;
-  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAAUVBMVEWFhYWDg4N3d3dtbW17e3t1dHTZ2dnu7u7X19f8/PzU1NTg4ODT09Pb29vQ0NDp6eng4OHT09PX19f6+vr09PTb29vQ0NDg4ODe3t76+vr//f7w8PDQ0NDZ2dn19fXa2tphcHZlAAAAEXRSTlMAw8i8O2533tDFt7y9j495eHll356yAAABZElEQVR42t3R23KiQBCG4QJ93222s5Vf9v//r00P2EJV2a2cmVR02wEIAkIe2zVFURRFURRFERQzM2fO55vOKHsoz81+t3b35u1nOU2M5nNrN3f/z9qBwcQyPlWAxSRkMsjQ3AN2YVI2dsK7fQ4Y4D2f2YxHXALcIWb9lIqg2g7sSckp4L2GiQI8gLAD5I4V6diVwZ0CGWBvQ2a36d4kHrwPlv6ABfDPrV6ZNo6QIE8gD0y9bKpCR/ABbT9kS8AGEb2wV9P2FvtXGlRz/hOP4wNxG0xG8n4CRQ5cO4gBJHv8YIdI+2p4k236Lohk8b7Oh4gGBdkD/gOZD8hp8gX0p2MdwA/0k9mcfIDpBc8GfIDpE/YAn0g9m8vICpoH/Nn/gB5Anp2kP8E3gB5Anpxo/8FeAPCSc8Ov/fxrB8jT/359kP/9r0s020sCAyqf0v2p9561a/s5x8PyL81n743gPzoPz75/yfnx+f8Lw2i/fsym/5+s0a/s5y/s8dsP6/b8/uX/70+f8Lw2i/fswP0lfz8/u/fL+/v3k/3m/35/z+a/3//v39/f8L/C8FoiuIoiqIoiqIYwz8B0x/gJc7zQcAAAAASUVORK5CYII=");
+  /* A NOVA TEXTURA DE FIBRA DE VIDRO */
+  background-color: #f4f7fc;
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAAAXNSR0IArs4c6QAAAIRlWElmTU0AKgAAAAgABQESAAMAAAABAAEAAAEaAAUAAAABAAAASgEbAAUAAAABAAAAUgEoAAMAAAABAAIAAIdpAAQAAAABAAAAWgAAAAAAAACQAAAAAQAAAJAAAAABAAOgAQADAAAAAQABAACgAgAEAAAAAQAAAGSgAwAEAAAAAQAAAGQAAAAA1c0e3gAAAAlwSFlzAAALEwAACxMBAJqcGAAAAIBJREFUeAHt0AEJADAMA8HYv/PkKCLHkI92QGoCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABg1gB6d40026c2iQAAAABJRU5ErkJggg==");
+  background-repeat: repeat;
 }
 
 .login-form-container {
   background-color: white;
   padding: 50px;
-  border-radius: 12px; /* Bordas mais arredondadas */
+  border-radius: 12px;
   box-shadow: 0 10px 30px rgba(0, 71, 137, 0.1);
   width: 100%;
-  max-width: 420px; /* Largura fixa */
-  min-height: 450px; /* Altura mínima para orientação retrato */
+  max-width: 420px;
+  min-height: 450px;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -465,7 +468,6 @@ body.menu-open .main-content { filter: blur(4px); }
 .login-form-container h3 { margin: 0 0 10px 0; font-size: 1.8em; color: #003366; }
 .login-form-container p { margin-bottom: 40px; color: #777; }
 
-/* Novo botão de acesso customizado */
 #loginBtn {
   background-color: transparent;
   border: 2px solid #003366;
@@ -483,12 +485,18 @@ body.menu-open .main-content { filter: blur(4px); }
   color: white;
 }
 
-/* Media query para telas pequenas (mobile) - ajustado */
+#netlify-identity-widget-container .modal {
+  position: static !important;
+  box-shadow: none !important;
+  border: none !important;
+  max-width: 100% !important;
+}
+
 @media (max-width: 900px) {
   .split-container { flex-direction: column; }
   .split-left, .split-right { width: 100%; }
   .split-left { height: auto; padding: 40px 20px; }
   .split-left .sidebar-footer-logo { display: none; }
   .split-right { flex-grow: 1; padding: 20px; }
-  .login-form-container { box-shadow: none; padding: 20px; }
+  .login-form-container { box-shadow: none; padding: 20px; min-height: 0; }
 }
