@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | Portal da Qualidade</title>
+    <title>Dashboarde | Portal da Qualidade</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
@@ -102,7 +102,9 @@
                 const gradienteAzul = ctx1.createLinearGradient(0, 0, 0, ctx1.canvas.height);
                 gradienteAzul.addColorStop(0, 'rgba(0, 51, 102, 0.5)');
                 gradienteAzul.addColorStop(1, 'rgba(0, 51, 102, 0)');
-                new Chart(ctx1, { type: 'line', data: { labels: meses, datasets: [{ label: 'Custo R$', data: [12500, 19200, 14300, 17800, 15500, 16234], borderColor: '#003366', backgroundColor: gradienteAzul, fill: true, tension: 0.4, pointBackgroundColor: '#003366' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } } });
+                new Chart(ctx1, { 
+                    type: 'line', 
+                    data: { labels: meses, datasets: [{ label: 'Custo R$', data: [12500, 19200, 14300, 17800, 15500, 16234], borderColor: '#003366', backgroundColor: gradienteAzul, fill: true, tension: 0.4, pointBackgroundColor: '#003366' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } } });
                 const ctx2 = document.getElementById('grafico2').getContext('2d');
                 const gradienteAzulClaro = ctx2.createLinearGradient(0, 0, 0, ctx2.canvas.height);
                 gradienteAzulClaro.addColorStop(0, 'rgba(41, 171, 226, 0.5)');
