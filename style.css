@@ -360,3 +360,45 @@ body.menu-open .main-content { filter: blur(4px); }
   color: white;
   cursor: not-allowed;
 }
+
+/* --- ESTILOS DA PÁGINA DE LOGIN --- */
+.login-page-background {
+  background-color: #003366; /* Azul escuro do tema */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.login-container {
+  text-align: center;
+  padding: 40px;
+}
+
+.login-logo {
+  max-width: 150px;
+  margin-bottom: 20px;
+}
+
+.login-title {
+  color: white;
+  font-weight: 300;
+  font-size: 2em;
+  margin-bottom: 40px;
+}
+
+/* Estilizando o botão padrão do Netlify Identity */
+[data-netlify-identity-button] {
+  background-color: white !important;
+  color: #003366 !important;
+  border: none !important;
+  border-radius: 5px !important;
+  padding: 15px 30px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: transform 0.2s ease !important;
+}
+
+[data-netlify-identity-button]:hover {
+  transform: translateY(-2px);
+}
