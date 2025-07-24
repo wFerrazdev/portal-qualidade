@@ -10,24 +10,20 @@
 <body class="unauthenticated">
 
     <script>
-        // Script de Proteção de Página (Final e com Suporte a Tokens)
-        if (window.location.hash.includes('_token=')) {
-            // Se tiver um token, o widget do Netlify precisa ser aberto para processá-lo.
-            // A página de login já faz isso. Então, redirecionamos para lá.
-            window.location.href = '/login.html' + window.location.hash;
-        } else {
-            // Se NÃO tiver um token, fazemos a verificação de segurança normal
-            if (window.netlifyIdentity) {
-                netlifyIdentity.on('init', user => {
-                    if (!user) {
-                        // Se, após a inicialização, não houver usuário, redireciona
-                        window.location.href = '/login.html';
-                    } else {
-                        // Se houver usuário, remove a classe que esconde o corpo da página
-                        document.body.classList.remove('unauthenticated');
-                    }
+        // Script de Segurança Anti-Flash e Anti-Loop
+        if (window.netlifyIdentity) {
+            if (window.location.hash.includes('_token=')) {
+                netlifyIdentity.on('init', () => {
+                    netlifyIdentity.open();
                 });
             }
+            netlifyIdentity.on('init', user => {
+                if (!user && !window.location.hash.includes('_token=')) {
+                    window.location.href = '/login.html';
+                } else {
+                    document.body.classList.remove('unauthenticated');
+                }
+            });
         }
     </script>
 
@@ -89,7 +85,29 @@
     </div>
     
     <div id="meetingModal" class="modal-overlay">
+        <div class="modal-content">
+            <header class="modal-header">
+                <h2 id="modalTitle">Adicionar Nova Reunião</h2>
+                <button id="closeModalBtn" class="close-button">&times;</button>
+            </header>
+            <main class="modal-body">
+                <form id="meetingForm">
+                    <div class="form-group"><label for="titulo">Título</label><input type="text" id="titulo" name="titulo" required></div>
+                    <div class="form-group"><label for="data_reuniao">Data da Reunião</label><input type="date" id="data_reuniao" name="data_reuniao"></div>
+                    <div class="form-group"><label for="participantes">Participantes (um por linha)</label><textarea id="participantes" name="participantes" rows="3"></textarea></div>
+                    <div class="form-group"><label for="pauta">Pauta / Resumo</label><textarea id="pauta" name="pauta" rows="4"></textarea></div>
+                    <hr style="margin: 30px 0; border-color: #eef2f7;">
+                    <div class="form-group"><label for="link_ata">Opção 1: Link Externo para a Ata</label><input type="url" id="link_ata" name="link_ata"></div>
+                    <div class="form-group"><label for="file_ata">Opção 2: Ou faça upload de um arquivo</label><input type="file" id="file_ata" name="file_ata"></div>
+                    <div class="form-actions">
+                        <button type="button" id="deleteMeetingBtn" class="delete-button hidden"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
+                        <button type="button" id="cancelModalBtn" class="cancel-button">Cancelar</button>
+                        <button type="submit" class="save-button">Salvar</button>
+                    </div>
+                </form>
+            </main>
         </div>
+    </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -117,28 +135,18 @@
             if (mobileMenuButton) { mobileMenuButton.addEventListener('click', openMenu); }
             if (overlay) { overlay.addEventListener('click', closeMenu); }
             window.addEventListener('load', () => { if (sidebar) { sidebar.classList.remove('preload'); } });
-            const logoutBtn = document.getElementById('logoutBtn');
-            if (logoutBtn) { logoutBtn.addEventListener('click', (e) => { e.preventDefault(); netlifyIdentity.logout(); }); }
-            netlifyIdentity.on('logout', () => { window.location.href = '/login.html'; });
-            // --- LÓGICA DE PERMISSÕES (VISUAL) ---
-            if (window.netlifyIdentity) {
-                const user = netlifyIdentity.currentUser();
-                if (user) {
-                    const userRoles = user.app_metadata.roles || [];
-                    // Se o usuário NÃO tiver a permissão 'admin' na sua lista de permissões...
-                    if (!userRoles.includes('admin')) {
-                        // ...encontra e esconde todos os botões de ação.
-                        const addBtn = document.querySelector('.add-button');
-                        if (addBtn) addBtn.style.display = 'none';
-
-                        // Também esconde os botões de editar/excluir que são criados dinamicamente
-                        // Adicionando uma classe ao container principal para o CSS esconder os botões
-                        const grid = document.querySelector('.projects-grid, .audits-grid, .meetings-list');
-                        if(grid) grid.classList.add('viewer-mode');
-                    }
-                }
-            }
             
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (window.netlifyIdentity) netlifyIdentity.logout();
+                });
+            }
+            if (window.netlifyIdentity) {
+                netlifyIdentity.on('logout', () => { window.location.href = '/login.html'; });
+            }
+
             const API_BASE_URL = '/.netlify/functions';
             const addMeetingBtn = document.getElementById('addMeetingBtn');
             const meetingModal = document.getElementById('meetingModal');

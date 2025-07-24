@@ -12,9 +12,15 @@
 <body class="unauthenticated">
 
     <script>
+        // Script de Segurança Anti-Flash e Anti-Loop
         if (window.netlifyIdentity) {
+            if (window.location.hash.includes('_token=')) {
+                netlifyIdentity.on('init', () => {
+                    netlifyIdentity.open();
+                });
+            }
             netlifyIdentity.on('init', user => {
-                if (!user) {
+                if (!user && !window.location.hash.includes('_token=')) {
                     window.location.href = '/login.html';
                 } else {
                     document.body.classList.remove('unauthenticated');
@@ -75,10 +81,15 @@
     </div>
 
     <script>
-        // Script de Segurança Anti-Flash
+        // Script de Segurança Anti-Flash e Anti-Loop
         if (window.netlifyIdentity) {
+            if (window.location.hash.includes('_token=')) {
+                netlifyIdentity.on('init', () => {
+                    netlifyIdentity.open();
+                });
+            }
             netlifyIdentity.on('init', user => {
-                if (!user) {
+                if (!user && !window.location.hash.includes('_token=')) {
                     window.location.href = '/login.html';
                 } else {
                     document.body.classList.remove('unauthenticated');
@@ -102,12 +113,12 @@
             if (logoutBtn) {
                 logoutBtn.addEventListener('click', (e) => {
                     e.preventDefault();
-                    netlifyIdentity.logout();
+                    if (window.netlifyIdentity) netlifyIdentity.logout();
                 });
             }
-            netlifyIdentity.on('logout', () => {
-                window.location.href = '/login.html';
-            });
+            if (window.netlifyIdentity) {
+                netlifyIdentity.on('logout', () => { window.location.href = '/login.html'; });
+            }
             
             // =================== LÓGICA DO DASHBOARD ===================
             const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'];
