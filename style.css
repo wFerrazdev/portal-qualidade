@@ -457,3 +457,37 @@ body.menu-open .main-content { filter: blur(4px); }
         box-shadow: 0 5px 20px rgba(0, 71, 137, 0.15); /* Adiciona a sombra */
     }
 }
+
+/* ================================================= */
+/* --- AJUSTES FINOS PARA CELULARES (480px e abaixo) --- */
+/* ================================================= */
+@media (max-width: 480px) {
+    /* Diminui a fonte do título do login no celular */
+    .login-title-mobile {
+        font-size: 1.6em; /* Um pouco menor */
+        margin-top: 10px;
+    }
+
+    .mobile-login-header {
+        margin-bottom: 25px; /* Menos espaço abaixo do título */
+    }
+
+    /* Diminui o padding do formulário para caber melhor */
+    .login-form-container {
+        padding: 25px 20px;
+    }
+
+    .login-form-container h3 {
+        font-size: 1.4em; /* Título do form menor */
+    }
+
+    .login-form-container p {
+        margin-bottom: 25px; /* Menos espaço abaixo do parágrafo */
+    }
+
+    /* Diminui um pouco o botão de Acessar */
+    #loginBtn {
+        padding: 10px 20px;
+        font-size: 0.9em;
+    }
+}
