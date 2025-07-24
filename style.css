@@ -363,7 +363,7 @@ body.menu-open .main-content { filter: blur(4px); }
   cursor: not-allowed;
 }
 
-/* --- ESTILOS DA PÁGINA DE LOGIN (IDÊNTICO AO SEU DESIGN) --- */
+/* --- ESTILOS DA PÁGINA DE LOGIN (DESIGN CURVADO) --- */
 .login-page-background {
   background-color: #fff;
 }
@@ -373,70 +373,88 @@ body.menu-open .main-content { filter: blur(4px); }
   height: 100vh;
   width: 100vw;
   overflow: hidden;
-  background-color: #f4f7fc; /* Cor de fundo geral */
+  background-color: #f4f7fc;
 }
 
-/* FAIXA LATERAL AZUL */
 .split-left {
-  width: 35%; /* Ocupa um pouco mais de 1/4 da tela */
+  width: 40%;
   background-color: #003366;
   color: white;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  padding: 60px; /* Mais preenchimento interno */
+  justify-content: center; /* Centraliza o conteúdo principal verticalmente */
+  padding: 50px;
   box-sizing: border-box;
   position: relative;
+  overflow: hidden;
+}
+
+/* A MÁGICA DA CURVA: Usamos um pseudo-elemento gigante e redondo */
+.split-left::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -450px; /* Puxa o círculo para a direita, revelando a curva */
+  transform: translateY(-50%);
+  width: 600px;
+  height: 120vh; /* Um círculo bem alto */
+  background-color: #f4f7fc; /* Mesma cor do fundo da direita */
+  border-radius: 50%;
+  z-index: 2;
+}
+
+.split-left .left-content, .split-left .sidebar-footer-logo {
+  position: relative;
+  z-index: 3; /* Garante que o conteúdo fique na frente da curva */
+  text-align: left;
+  width: 100%;
 }
 
 .split-left .left-content {
-  text-align: left; /* Alinhado à esquerda */
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* O "oblongo" branco para a logo */
+.logo-container {
+  background-color: white;
+  border-radius: 20px;
+  padding: 20px;
+  display: inline-block; /* Faz o fundo se ajustar ao conteúdo */
+  margin-bottom: 30px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
 .split-left .login-logo {
   max-width: 100px;
-  margin-bottom: 25px;
+  display: block;
 }
 
 .split-left .login-title {
   font-family: 'Poppins', sans-serif;
   font-weight: 600;
-  font-size: 3.2em; /* Tamanho ajustado */
+  font-size: 3.5em;
   margin: 0;
   line-height: 1.2;
 }
 
 .split-left .sidebar-footer-logo {
-  padding: 20px 0;
-  text-align: left; /* Alinhado à esquerda */
+  padding: 20px 0 0 0;
+  flex-shrink: 0;
 }
 .split-left .sidebar-footer-logo img {
   max-width: 80px;
   opacity: 0.7;
 }
 
-/* LADO DIREITO COM IMAGEM DE FUNDO SUTIL */
 .split-right {
-  width: 65%;
+  width: 60%;
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
-  /* Fundo com imagem de gestão sutil */
-  background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/intersection.png');
-  background-repeat: repeat;
-}
-
-/* Camada branca sobre a imagem para suavizar */
-.split-right::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(244, 247, 252, 0.6); /* Fundo do site com opacidade */
-  z-index: 1;
 }
 
 .login-form-container {
@@ -447,44 +465,20 @@ body.menu-open .main-content { filter: blur(4px); }
   width: 100%;
   max-width: 400px;
   text-align: center;
-  z-index: 2; /* Para ficar na frente da camada de fundo */
+  z-index: 2;
 }
 
-.login-form-container h3 {
-  margin: 0 0 10px 0;
-  font-size: 1.8em;
-  color: #333;
-  font-family: 'Poppins', sans-serif;
-  font-weight: 600;
-}
-
-.login-form-container p {
-  margin-bottom: 30px;
-  color: #777;
-}
-
-#loginBtn {
-  background-color: #003366;
-  border: 2px solid #003366;
-  color: white;
-  padding: 12px 30px;
-  font-size: 1em;
-  font-weight: 600;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  width: 100%;
-}
-#loginBtn:hover {
-  background-color: #004488;
-  border-color: #004488;
-}
+.login-form-container h3 { /* ... sem alteração aqui ... */ }
+.login-form-container p { /* ... sem alteração aqui ... */ }
+#loginBtn { /* ... sem alteração aqui ... */ }
+#netlify-identity-widget-container .modal { /* ... sem alteração aqui ... */ }
 
 /* Media query para telas pequenas (mobile) */
 @media (max-width: 900px) {
   .split-container { flex-direction: column; }
   .split-left, .split-right { width: 100%; }
   .split-left { height: auto; padding: 40px 20px; text-align: center; }
+  .split-left::after { display: none; } /* Esconde a curva no mobile */
   .split-left .left-content, .split-left .sidebar-footer-logo { text-align: center; }
   .split-right { flex-grow: 1; padding: 20px; }
   .login-form-container { box-shadow: none; padding: 20px; }

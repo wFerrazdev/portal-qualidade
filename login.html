@@ -11,7 +11,9 @@
     <div class="split-container">
         <div class="split-left">
             <div class="left-content">
-                <img src="GT Logo - Fundo Transparente.png" alt="Logo GT" class="login-logo">
+                <div class="logo-container">
+                    <img src="GT Logo - Fundo Transparente.png" alt="Logo GT" class="login-logo">
+                </div>
                 <h2 class="login-title">Portal da Qualidade</h2>
             </div>
             <div class="sidebar-footer-logo">
@@ -21,7 +23,7 @@
 
         <div class="split-right">
             <div class="login-form-container">
-                <h3>Acesse a Plataforma</h3>
+                <h3>Acessar a Plataforma</h3>
                 <p>Insira suas credenciais para continuar.</p>
                 <button id="loginBtn">Acessar</button>
             </div>
@@ -29,16 +31,10 @@
     </div>
 
     <script>
-        // Pega o botão que criamos
         const loginButton = document.getElementById('loginBtn');
-
-        // Adiciona um "escutador" que abre o widget do Netlify ao clicar no nosso botão
         loginButton.addEventListener('click', () => {
             netlifyIdentity.open();
         });
-
-        // Este código redireciona o usuário para a página principal (index.html)
-        // assim que o login for bem-sucedido.
         netlifyIdentity.on('login', user => {
             document.location.href = '/index.html';
         });
