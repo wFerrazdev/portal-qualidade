@@ -113,6 +113,19 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
+        // Script de Proteção de Página (Final e com Suporte a Tokens)
+        if (window.location.hash.includes('_token=')) {
+            window.location.href = '/login.html' + window.location.hash;
+        } else {
+            if (window.netlifyIdentity) {
+                netlifyIdentity.on('init', user => {
+                    if (!user) {
+                        window.location.href = '/login.html';
+                    }
+                });
+            }
+        }
+
         const firebaseConfig = {
             apiKey: "AIzaSyCoymJyMK4oDbCHuXJluh35G2wgw5Tk2Rs",
             authDomain: "portal-qualidade.firebaseapp.com",
@@ -141,6 +154,9 @@
             if (mobileMenuButton) { mobileMenuButton.addEventListener('click', openMenu); }
             if (overlay) { overlay.addEventListener('click', closeMenu); }
             window.addEventListener('load', () => { if (sidebar) { sidebar.classList.remove('preload'); } });
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) { logoutBtn.addEventListener('click', (e) => { e.preventDefault(); netlifyIdentity.logout(); }); }
+            netlifyIdentity.on('logout', () => { window.location.href = '/login.html'; });
             
             const API_BASE_URL = '/.netlify/functions';
             const addMeetingBtn = document.getElementById('addMeetingBtn');
@@ -298,33 +314,6 @@
                     handleDeleteFromList(deleteButton.dataset.id);
                 }
             });
-            // --- LÓGICA DE LOGOUT ---
-            const logoutBtn = document.getElementById('logoutBtn');
-            if (logoutBtn) {
-                logoutBtn.addEventListener('click', (event) => {
-                    event.preventDefault(); // Impede que o link mude a URL
-                    if (window.netlifyIdentity) {
-                        window.netlifyIdentity.logout();
-                    }
-                });
-            }
-
-            // Script de Proteção de Página (Final e com Suporte a Tokens)
-            // Primeiro, verificamos se a URL contém um token do Netlify Identity
-            if (window.location.hash.includes('_token=')) {
-                // Se tiver um token, redireciona para a página de login para que o widget possa processá-lo
-                window.location.href = '/login.html' + window.location.hash;
-            } else {
-                // Se NÃO tiver um token, fazemos a verificação de segurança normal
-                if (window.netlifyIdentity) {
-                    netlifyIdentity.on('init', user => {
-                        if (!user) {
-                            // Se, após a inicialização, não houver usuário, redireciona
-                            window.location.href = '/login.html';
-                        }
-                    });
-                }
-            }
         });
     </script>
 </body>
