@@ -122,7 +122,7 @@
             };
 
             // Executa o fetch original, mas com os cabeçalhos de autorização
-            return authFetch(url, {
+            return fetch(url, {
                 ...options,
                 headers: defaultHeaders,
             });
