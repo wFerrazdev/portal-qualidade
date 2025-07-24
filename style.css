@@ -428,6 +428,7 @@ body.menu-open .main-content { filter: blur(4px); }
   /* Para aumentar a ALTURA, aumente o primeiro valor (25px) */
   /* Para aumentar a LARGURA, aumente o segundo valor (35px) */
   padding: 25px 50px;
+  width: 15px;
 
   /* Para mover para CIMA/BAIXO, altere este valor */
   margin-bottom: 50px;
