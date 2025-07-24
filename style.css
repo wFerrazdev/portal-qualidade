@@ -363,7 +363,7 @@ body.menu-open .main-content { filter: blur(4px); }
   cursor: not-allowed;
 }
 
-/* --- ESTILOS DA PÁGINA DE LOGIN (DESIGN FINAL v2) --- */
+/* --- ESTILOS DA PÁGINA DE LOGIN (COM IMAGEM PERSONALIZADA) --- */
 .login-page-background {
   background-color: #fff;
 }
@@ -372,99 +372,20 @@ body.menu-open .main-content { filter: blur(4px); }
   display: flex;
   height: 100vh;
   width: 100vw;
-  overflow-x: hidden;
+  overflow: hidden;
   background-color: #f4f7fc;
 }
 
 .split-left {
   width: 40%;
-  background-color: #003366;
-  color: white;
+  /* A MÁGICA ESTÁ AQUI: Usando sua imagem como fundo */
+  background-image: url('menulogin.png');
+  background-size: cover; /* Garante que a imagem cubra todo o espaço */
+  background-position: center; /* Centraliza a imagem */
+  
+  /* Removemos a cor de fundo e outras propriedades que não precisamos mais */
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 50px;
-  box-sizing: border-box;
   position: relative;
-  overflow: hidden;
-}
-
-/* Curva mais suave (metade) */
-.split-left::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-
-  /* Para uma curva MAIS SUAVE, aumente este valor (ex: -650px) */
-  /* Para uma curva MAIS FECHADA, diminua este valor (ex: -550px) */
-  right: -900px;
-
-  /* Para mudar o tamanho geral da curva, altere a largura e altura */
-  width: 800px;
-  height: 120vh;
-
-  background-color: #f4f7fc;
-  border-radius: 50%;
-  z-index: 2;
-}
-
-.split-left .left-content, .split-left .sidebar-footer-logo {
-  position: relative;
-  z-index: 3;
-  text-align: left;
-  width: 100%;
-}
-
-.split-left .left-content {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-/* Oblongo da logo redesenhado */
-.logo-container {
-  /* Para aumentar a ALTURA, aumente o primeiro valor (25px) */
-  /* Para aumentar a LARGURA, aumente o segundo valor (35px) */
-  padding: 25px 50px;
-  width: 45px;
-
-  /* Para mover para CIMA/BAIXO, altere este valor */
-  margin-bottom: 50px;
-
-  /* O resto controla a aparência */
-  background-color: white;
-  border-radius: 999px;
-  display: inline-block;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-
-.split-left .login-logo {
-  max-width: 100px;
-  display: block;
-}
-
-.split-left .login-title {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 600;
-  font-size: 3.5em;
-  margin: 15px;
-  line-height: 1.2;
-}
-
-.split-left .sidebar-footer-logo {
-  /* Para alinhar, você pode mudar de 'left' para 'center' ou 'right' */
-  text-align: center;
-
-  /* Para dar mais espaço acima, aumente o 'padding-top' */
-  padding: 20px 0 0 0;
-  flex-shrink: 0;
-}
-.split-left .sidebar-footer-logo img {
-  /* Para mudar o tamanho da logo, altere este valor */
-  max-width: 80px;
-  opacity: 0.7;
 }
 
 .split-right {
@@ -475,9 +396,7 @@ body.menu-open .main-content { filter: blur(4px); }
   position: relative;
   background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/triangle-mosaic.png');
   background-repeat: repeat;
-  /* ADICIONE ESTA LINHA. Valores menores = textura menor/mais fina. */
-  /* Valores maiores = textura maior/mais grossa. */
-  background-size: 80px; /* Experimente valores como 30px, 50px, 80px */
+  background-size: 80px;
 }
 
 .split-right::before {
@@ -515,11 +434,11 @@ body.menu-open .main-content { filter: blur(4px); }
   color: #777;
 }
 
-/* Estilo do botão 'Acessar' (restaurado) */
+/* Botão "Acessar" com o mesmo estilo do "Atualizar" */
 #loginBtn {
-  background-color: #003366;
+  background-color: transparent;
   border: 2px solid #003366;
-  color: white;
+  color: #003366;
   padding: 12px 30px;
   font-size: 1em;
   font-weight: 600;
@@ -529,17 +448,18 @@ body.menu-open .main-content { filter: blur(4px); }
   width: 100%;
 }
 #loginBtn:hover {
-  background-color: #004488;
-  border-color: #004488;
+  background-color: #003366;
+  color: white;
 }
 
 /* Media query para telas pequenas (mobile) */
 @media (max-width: 900px) {
   .split-container { flex-direction: column; }
   .split-left, .split-right { width: 100%; }
-  .split-left { height: auto; padding: 40px 20px; text-align: center; }
-  .split-left::after { display: none; }
-  .split-left .left-content, .split-left .sidebar-footer-logo { text-align: center; }
+  .split-left { 
+      height: 250px; /* Altura fixa para a faixa no mobile */
+      min-height: 250px;
+  }
   .split-right { flex-grow: 1; padding: 20px; }
-  .login-form-container { box-shadow: none; padding: 20px; min-height: 0; }
+  .login-form-container { box-shadow: none; padding: 20px; }
 }
