@@ -221,13 +221,13 @@
                     if (!response.ok) { throw new Error('Falha na API ao salvar projeto'); }
                     closeModal();
                     await fetchAndRenderProjects();
-                } catch (error) {
-                    console.error('Erro ao salvar projeto:', error);
-                    alert('Não foi possível salvar o projeto.');
-                } finally {
-                    saveButton.textContent = 'Salvar Projeto';
-                    saveButton.disabled = false;
-                }
+                        } catch (error) {
+                            console.error('Erro ao salvar projeto:', error);
+                            alert('Não foi possível salvar o projeto.');
+                        } finally {
+                            saveButton.textContent = 'Salvar Projeto';
+                            saveButton.disabled = false;
+                        }
             }
 
             async function handleDeleteProject() {
