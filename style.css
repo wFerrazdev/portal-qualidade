@@ -415,7 +415,7 @@ body.menu-open .main-content { filter: blur(4px); }
 .login-form-container {
     background-color: white;
     padding: 50px;
-    border-radius: 8px;
+    border-radius: 15px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 400px;
@@ -426,7 +426,7 @@ body.menu-open .main-content { filter: blur(4px); }
 .login-form-container h3 {
     margin: 0 0 10px 0;
     font-size: 1.8em;
-    color: #333;
+    color: #071f70;
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
 }
