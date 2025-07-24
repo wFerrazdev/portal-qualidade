@@ -377,7 +377,7 @@ body.menu-open .main-content { filter: blur(4px); }
 }
 
 .split-left {
-    width: 25%;
+    width: 30%;
     /* A MÁGICA ESTÁ AQUI: Usando sua imagem como fundo */
     background-image: url('menulogin.png');
     background-size: contain; /* Garante que a imagem cubra todo o espaço */
@@ -391,7 +391,7 @@ body.menu-open .main-content { filter: blur(4px); }
 }
 
 .split-right {
-    width: 75%;
+    width: 70%;
     display: flex;
     justify-content: center;
     align-items: center;
