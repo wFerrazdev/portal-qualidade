@@ -70,6 +70,15 @@
     </div>
         
     <script>
+        // Script de Proteção de Página
+        if (window.netlifyIdentity) {
+            const user = netlifyIdentity.currentUser();
+            // Se NÃO houver um usuário logado...
+            if (!user) {
+                // ...redireciona para a página de login.
+                window.location.href = '/login.html';
+            }
+        }
         // ADICIONE ESTE BLOCO NO INÍCIO DO SEU SCRIPT
         // Redirecionador Inteligente para o Netlify Identity
         if (window.location.hash.includes('_token=')) {

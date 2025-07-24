@@ -90,6 +90,15 @@
     </div>
 
     <script type="module">
+        // Script de Proteção de Página
+        if (window.netlifyIdentity) {
+            const user = netlifyIdentity.currentUser();
+            // Se NÃO houver um usuário logado...
+            if (!user) {
+                // ...redireciona para a página de login.
+                window.location.href = '/login.html';
+            }
+        }
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 

@@ -105,6 +105,15 @@
     </div>
 
     <script>
+        // Script de Proteção de Página
+        if (window.netlifyIdentity) {
+            const user = netlifyIdentity.currentUser();
+            // Se NÃO houver um usuário logado...
+            if (!user) {
+                // ...redireciona para a página de login.
+                window.location.href = '/login.html';
+            }
+        }
         document.addEventListener('DOMContentLoaded', () => {
             // --- LÓGICA DO MENU ---
             const body = document.body;
