@@ -260,19 +260,21 @@
                 });
             }
 
-            // Script de Proteção de Página (Anti-Loop e com Suporte a Tokens)
-            // Primeiro, verificamos se a URL contém um token do Netlify
-            const hasToken = window.location.hash.includes('_token=');
-
-            // Se NÃO tiver um token, nós checamos se o usuário está logado.
-            // Se TIVER um token, não fazemos nada e deixamos o widget do Netlify trabalhar.
-            if (!hasToken && window.netlifyIdentity) {
-                netlifyIdentity.on('init', user => {
-                    if (!user) {
-                        // Se o widget inicializou e não encontrou um usuário, redireciona
-                        window.location.href = '/login.html';
-                    }
-                });
+            // Script de Proteção de Página (Final e com Suporte a Tokens)
+            // Primeiro, verificamos se a URL contém um token do Netlify Identity
+            if (window.location.hash.includes('_token=')) {
+                // Se tiver um token, redireciona para a página de login para que o widget possa processá-lo
+                window.location.href = '/login.html' + window.location.hash;
+            } else {
+                // Se NÃO tiver um token, fazemos a verificação de segurança normal
+                if (window.netlifyIdentity) {
+                    netlifyIdentity.on('init', user => {
+                        if (!user) {
+                            // Se, após a inicialização, não houver usuário, redireciona
+                            window.location.href = '/login.html';
+                        }
+                    });
+                }
             }
         });
     </script>
