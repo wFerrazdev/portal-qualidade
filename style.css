@@ -363,7 +363,7 @@ body.menu-open .main-content { filter: blur(4px); }
   cursor: not-allowed;
 }
 
-/* --- ESTILOS DA PÁGINA DE LOGIN (DESIGN CURVADO) --- */
+/* --- ESTILOS DA PÁGINA DE LOGIN (DESIGN FINAL v2) --- */
 .login-page-background {
   background-color: #fff;
 }
@@ -382,30 +382,30 @@ body.menu-open .main-content { filter: blur(4px); }
   color: white;
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Centraliza o conteúdo principal verticalmente */
+  justify-content: center;
   padding: 50px;
   box-sizing: border-box;
   position: relative;
   overflow: hidden;
 }
 
-/* A MÁGICA DA CURVA: Usamos um pseudo-elemento gigante e redondo */
+/* Curva mais suave (metade) */
 .split-left::after {
   content: '';
   position: absolute;
   top: 50%;
-  right: -450px; /* Puxa o círculo para a direita, revelando a curva */
+  right: -600px; /* Movido mais para a direita para uma curva mais suave */
   transform: translateY(-50%);
-  width: 600px;
-  height: 120vh; /* Um círculo bem alto */
-  background-color: #f4f7fc; /* Mesma cor do fundo da direita */
+  width: 800px;  /* Círculo maior */
+  height: 120vh;
+  background-color: #f4f7fc;
   border-radius: 50%;
   z-index: 2;
 }
 
 .split-left .left-content, .split-left .sidebar-footer-logo {
   position: relative;
-  z-index: 3; /* Garante que o conteúdo fique na frente da curva */
+  z-index: 3;
   text-align: left;
   width: 100%;
 }
@@ -417,12 +417,12 @@ body.menu-open .main-content { filter: blur(4px); }
   justify-content: center;
 }
 
-/* O "oblongo" branco para a logo */
+/* Oblongo da logo redesenhado */
 .logo-container {
   background-color: white;
-  border-radius: 20px;
-  padding: 20px;
-  display: inline-block; /* Faz o fundo se ajustar ao conteúdo */
+  border-radius: 999px; /* Raio máximo para ficar bem curvado */
+  padding: 25px 35px; /* Mais altura (padding vertical) */
+  display: inline-block;
   margin-bottom: 30px;
   box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
@@ -455,6 +455,19 @@ body.menu-open .main-content { filter: blur(4px); }
   justify-content: center;
   align-items: center;
   position: relative;
+  background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/intersection.png');
+  background-repeat: repeat;
+}
+
+.split-right::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(244, 247, 252, 0.6);
+  z-index: 1;
 }
 
 .login-form-container {
@@ -468,18 +481,44 @@ body.menu-open .main-content { filter: blur(4px); }
   z-index: 2;
 }
 
-.login-form-container h3 { /* ... sem alteração aqui ... */ }
-.login-form-container p { /* ... sem alteração aqui ... */ }
-#loginBtn { /* ... sem alteração aqui ... */ }
-#netlify-identity-widget-container .modal { /* ... sem alteração aqui ... */ }
+.login-form-container h3 {
+  margin: 0 0 10px 0;
+  font-size: 1.8em;
+  color: #333;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+}
+
+.login-form-container p {
+  margin-bottom: 30px;
+  color: #777;
+}
+
+/* Estilo do botão 'Acessar' (restaurado) */
+#loginBtn {
+  background-color: #003366;
+  border: 2px solid #003366;
+  color: white;
+  padding: 12px 30px;
+  font-size: 1em;
+  font-weight: 600;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  width: 100%;
+}
+#loginBtn:hover {
+  background-color: #004488;
+  border-color: #004488;
+}
 
 /* Media query para telas pequenas (mobile) */
 @media (max-width: 900px) {
   .split-container { flex-direction: column; }
   .split-left, .split-right { width: 100%; }
   .split-left { height: auto; padding: 40px 20px; text-align: center; }
-  .split-left::after { display: none; } /* Esconde a curva no mobile */
+  .split-left::after { display: none; }
   .split-left .left-content, .split-left .sidebar-footer-logo { text-align: center; }
   .split-right { flex-grow: 1; padding: 20px; }
-  .login-form-container { box-shadow: none; padding: 20px; }
+  .login-form-container { box-shadow: none; padding: 20px; min-height: 0; }
 }
