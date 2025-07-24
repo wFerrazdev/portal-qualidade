@@ -372,7 +372,7 @@ body.menu-open .main-content { filter: blur(4px); }
   display: flex;
   height: 100vh;
   width: 100vw;
-  overflow: hidden;
+  overflow-x: hidden;
   background-color: #f4f7fc;
 }
 
@@ -394,10 +394,16 @@ body.menu-open .main-content { filter: blur(4px); }
   content: '';
   position: absolute;
   top: 50%;
-  right: -600px; /* Movido mais para a direita para uma curva mais suave */
   transform: translateY(-50%);
-  width: 800px;  /* Círculo maior */
+
+  /* Para uma curva MAIS SUAVE, aumente este valor (ex: -650px) */
+  /* Para uma curva MAIS FECHADA, diminua este valor (ex: -550px) */
+  right: -900px;
+
+  /* Para mudar o tamanho geral da curva, altere a largura e altura */
+  width: 800px;
   height: 120vh;
+
   background-color: #f4f7fc;
   border-radius: 50%;
   z-index: 2;
@@ -419,11 +425,17 @@ body.menu-open .main-content { filter: blur(4px); }
 
 /* Oblongo da logo redesenhado */
 .logo-container {
+  /* Para aumentar a ALTURA, aumente o primeiro valor (25px) */
+  /* Para aumentar a LARGURA, aumente o segundo valor (35px) */
+  padding: 25px 15px;
+
+  /* Para mover para CIMA/BAIXO, altere este valor */
+  margin-bottom: 50px;
+
+  /* O resto controla a aparência */
   background-color: white;
-  border-radius: 999px; /* Raio máximo para ficar bem curvado */
-  padding: 25px 35px; /* Mais altura (padding vertical) */
+  border-radius: 999px;
   display: inline-block;
-  margin-bottom: 30px;
   box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
@@ -441,10 +453,15 @@ body.menu-open .main-content { filter: blur(4px); }
 }
 
 .split-left .sidebar-footer-logo {
+  /* Para alinhar, você pode mudar de 'left' para 'center' ou 'right' */
+  text-align: center;
+
+  /* Para dar mais espaço acima, aumente o 'padding-top' */
   padding: 20px 0 0 0;
   flex-shrink: 0;
 }
 .split-left .sidebar-footer-logo img {
+  /* Para mudar o tamanho da logo, altere este valor */
   max-width: 80px;
   opacity: 0.7;
 }
@@ -455,8 +472,11 @@ body.menu-open .main-content { filter: blur(4px); }
   justify-content: center;
   align-items: center;
   position: relative;
-  background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/intersection.png');
+  background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/triangle-mosaic.png');
   background-repeat: repeat;
+  /* ADICIONE ESTA LINHA. Valores menores = textura menor/mais fina. */
+  /* Valores maiores = textura maior/mais grossa. */
+  background-size: 80px; /* Experimente valores como 30px, 50px, 80px */
 }
 
 .split-right::before {
