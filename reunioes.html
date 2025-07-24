@@ -90,15 +90,6 @@
     </div>
 
     <script type="module">
-        // Script de Proteção de Página
-        if (window.netlifyIdentity) {
-            const user = netlifyIdentity.currentUser();
-            // Se NÃO houver um usuário logado...
-            if (!user) {
-                // ...redireciona para a página de login.
-                window.location.href = '/login.html';
-            }
-        }
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
@@ -108,11 +99,16 @@
             projectId: "portal-qualidade",
             storageBucket: "portal-qualidade.firebasestorage.app",
             messagingSenderId: "390611459292",
-            appId: "1:390611459292:web:34e_0f7232c4d1d8db92819",
+            appId: "1:390611459292:web:34e0f7232c4d1d8db92819",
             measurementId: "G-5E0E47DWE0"
         };
         const app = initializeApp(firebaseConfig);
         const storage = getStorage(app);
+
+        if (window.netlifyIdentity) {
+            const user = netlifyIdentity.currentUser();
+            if (!user) { window.location.href = '/login.html'; }
+        }
 
         document.addEventListener('DOMContentLoaded', () => {
             const body = document.body;
@@ -175,7 +171,7 @@
                 meetingForm.querySelector('#data_reuniao').value = reuniao.data_reuniao ? reuniao.data_reuniao.split('T')[0] : '';
                 meetingForm.querySelector('#participantes').value = (reuniao.participantes || []).join('\n');
                 meetingForm.querySelector('#pauta').value = reuniao.pauta;
-                meetingForm.querySelector('#link_ata').value = reuniao.link_ata;
+                meetingForm.querySelector('#link_ata').value = reuniao.link_ata || '';
                 meetingForm.querySelector('#file_ata').value = '';
                 modalTitle.textContent = 'Editar Reunião';
                 meetingForm.dataset.editingId = reuniao.id;

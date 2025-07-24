@@ -14,22 +14,39 @@
         <h2 class="login-title-mobile">Portal da Qualidade</h2>
     </div>
 
-    <div class="login-form-container">
-        <h3>Acessar a Plataforma</h3>
-        <p>Insira suas credenciais para continuar.</p>
-        <button id="loginBtn">Acessar</button>
+    <div class="split-container">
+        <div class="split-left">
+        </div>
+
+        <div class="split-right">
+            <div class="login-form-container">
+                <h3>Acessar a Plataforma</h3>
+                <p>Insira suas credenciais para continuar.</p>
+                <button id="loginBtn">Acessar</button>
+            </div>
+        </div>
     </div>
 
     <script>
         // Script para abrir o widget e redirecionar após o login
         if (window.netlifyIdentity) {
             const loginButton = document.getElementById('loginBtn');
-            if(loginButton) {
+            if (loginButton) {
                 loginButton.addEventListener('click', () => {
                     netlifyIdentity.open();
                 });
             }
+
+            // Garante que o botão mobile (se existir na tela) também possa abrir o login
+            const mobileLoginButton = document.querySelector('.mobile-login-header');
+            if (mobileLoginButton) {
+                mobileLoginButton.addEventListener('click', () => {
+                    netlifyIdentity.open();
+                });
+            }
+
             netlifyIdentity.on('login', user => {
+                // Redireciona para o dashboard após o login
                 document.location.href = '/index.html';
             });
         }

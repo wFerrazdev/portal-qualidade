@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard | Portal da Qualidade</title>
     <link rel="stylesheet" href="style.css">
+    <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
 </head>
@@ -34,18 +35,15 @@
         <div class="main-content">
             <header class="content-header">
                 <button class="mobile-menu-button" id="mobileMenuButton">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="3" y1="12" x2="21" y2="12"></line>
-                        <line x1="3" y1="6" x2="21" y2="6"></line>
-                        <line x1="3" y1="18" x2="21" y2="18"></line>
-                    </svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
                 </button>
                 <div>
                     <h1>Dashboard de Indicadores</h1>
                     <p>Visão geral dos indicadores de qualidade do mês.</p>
                 </div>
                 <button id="refreshChartsBtn" class="refresh-button" title="Atualizar dados">
-                    Atualizar
+                    <svg class="refresh-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 1.03a9 9 0 11-10.302-3.812"></path><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 2.25v5.25h-5.25"></path></svg>
+                    <span>Atualizar</span>
                 </button>
             </header>
 
@@ -68,26 +66,16 @@
             </footer>
         </div>
     </div>
-        
+    
     <script>
-        // Script de Proteção de Página
         if (window.netlifyIdentity) {
             const user = netlifyIdentity.currentUser();
-            // Se NÃO houver um usuário logado...
             if (!user) {
-                // ...redireciona para a página de login.
                 window.location.href = '/login.html';
             }
         }
-        // ADICIONE ESTE BLOCO NO INÍCIO DO SEU SCRIPT
-        // Redirecionador Inteligente para o Netlify Identity
-        if (window.location.hash.includes('_token=')) {
-            window.location.href = '/login.html' + window.location.hash;
-        }
-
 
         document.addEventListener('DOMContentLoaded', () => {
-            // --- LÓGICA DO MENU ---
             const body = document.body;
             const sidebar = document.querySelector('.sidebar');
             const mobileMenuButton = document.getElementById('mobileMenuButton');
@@ -98,29 +86,17 @@
             if (overlay) { overlay.addEventListener('click', closeMenu); }
             window.addEventListener('load', () => { if (sidebar) { sidebar.classList.remove('preload'); } });
             
-            // =================== LÓGICA DO DASHBOARD ===================
-    
             const SPREADSHEET_ID = '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4';
             const API_BASE_URL = '/.netlify/functions';
             const refreshBtn = document.getElementById('refreshChartsBtn');
             const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'];
-    
-            // VARIÁVEL QUE ESTAVA FALTANDO
-            const optionsPadrao = {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { display: false }, datalabels: { display: false } },
-            };
-            
-            // --- GRÁFICOS ESTÁTICOS ORIGINAIS (1 a 6) ---
+
             function createStaticCharts(){
                 const ctx1 = document.getElementById('grafico1').getContext('2d');
                 const gradienteAzul = ctx1.createLinearGradient(0, 0, 0, ctx1.canvas.height);
                 gradienteAzul.addColorStop(0, 'rgba(0, 51, 102, 0.5)');
                 gradienteAzul.addColorStop(1, 'rgba(0, 51, 102, 0)');
-                new Chart(ctx1, { 
-                    type: 'line', 
-                    data: { labels: meses, datasets: [{ label: 'Custo R$', data: [12500, 19200, 14300, 17800, 15500, 16234], borderColor: '#003366', backgroundColor: gradienteAzul, fill: true, tension: 0.4, pointBackgroundColor: '#003366' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } } });
+                new Chart(ctx1, { type: 'line', data: { labels: meses, datasets: [{ label: 'Custo R$', data: [12500, 19200, 14300, 17800, 15500, 16234], borderColor: '#003366', backgroundColor: gradienteAzul, fill: true, tension: 0.4, pointBackgroundColor: '#003366' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } } });
                 const ctx2 = document.getElementById('grafico2').getContext('2d');
                 const gradienteAzulClaro = ctx2.createLinearGradient(0, 0, 0, ctx2.canvas.height);
                 gradienteAzulClaro.addColorStop(0, 'rgba(41, 171, 226, 0.5)');
@@ -135,8 +111,7 @@
                 const ctx6 = document.getElementById('grafico6').getContext('2d');
                 new Chart(ctx6, { type: 'bar', data: { labels: meses, datasets: [{ label: 'Quantidade', data: [3, 2, 2, 1, 0, 1], backgroundColor: '#fd7e14', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } } });
             }
-    
-            // --- LÓGICA OTIMIZADA PARA GRÁFICOS DINÂMICOS ---
+
             let chart7, chart8, chart9;
             async function updateDynamicCharts() {
                 if (refreshBtn) { refreshBtn.disabled = true; refreshBtn.textContent = 'Atualizando...'; }
@@ -145,7 +120,6 @@
                     const response = await fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID}&sheets=${sheetNames}`);
                     const allData = await response.json();
                     if (chart7) chart7.destroy(); if (chart8) chart8.destroy(); if (chart9) chart9.destroy();
-                    
                     const dataCliente = allData.nc_por_cliente || [];
                     const dataClienteFiltrado = dataCliente.filter(item => parseInt(item.quantidadecliente_nc) > 0);
                     if (dataClienteFiltrado.length > 0) {
@@ -155,7 +129,6 @@
                         const ctx7 = document.getElementById('grafico7').getContext('2d');
                         chart7 = new Chart(ctx7, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade de NC', data: values, backgroundColor: '#003366', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: true, anchor: 'end', align: 'end', color: 'black', font: { weight: 'bold' } } }, scales: { y: { beginAtZero: true, max: 20, grid: { display: false } }, x: { grid: { display: false } } } }, plugins: [ChartDataLabels] });
                     }
-                    
                     const dataProjeto = allData.nc_por_projeto || [];
                     const dataProjetoFiltrado = dataProjeto.filter(item => parseInt(item.quantidadeprojeto_nc) > 0);
                     if (dataProjetoFiltrado.length > 0) {
@@ -165,44 +138,27 @@
                         const ctx8 = document.getElementById('grafico8').getContext('2d');
                         chart8 = new Chart(ctx8, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade de NC', data: values, backgroundColor: '#29abe2', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: true, anchor: 'end', align: 'end', color: 'black', font: { weight: 'bold' } } }, scales: { y: { beginAtZero: true, max: 20, grid: { display: false } }, x: { grid: { display: false } } } }, plugins: [ChartDataLabels] });
                     }
-                    
                     const dataDetalhado = allData.nc_detalhado || [];
                     if (dataDetalhado.length > 0) {
                         const tiposDeNC = Object.keys(dataDetalhado[0]).filter(key => key !== 'cliente');
-                        const dataDetalhadoFiltrado = dataDetalhado.filter(item => {
-                            const totalNc = tiposDeNC.reduce((soma, tipo) => soma + (parseInt(item[tipo]) || 0), 0);
-                            return totalNc > 0;
-                        });
+                        const dataDetalhadoFiltrado = dataDetalhado.filter(item => { const totalNc = tiposDeNC.reduce((soma, tipo) => soma + (parseInt(item[tipo]) || 0), 0); return totalNc > 0; });
                         if (dataDetalhadoFiltrado.length > 0) {
                             const topData = dataDetalhadoFiltrado.slice(0, 6);
                             const labels = topData.map(item => item.cliente);
                             const colors = ['#003366', '#29abe2', '#fd7e14', '#28a745', '#dc3545', '#6c757d', '#ffc107'];
-                            const datasets = tiposDeNC.map((tipo, index) => ({
-                                label: tipo.replace(/_/g, ' ').replace(/(^\w{1})|(\s+\w{1})/g, letra => letra.toUpperCase()),
-                                data: topData.map(item => parseInt(item[tipo]) || 0),
-                                backgroundColor: colors[index % colors.length]
-                            }));
+                            const datasets = tiposDeNC.map((tipo, index) => ({ label: tipo.replace(/_/g, ' ').replace(/(^\w{1})|(\s+\w{1})/g, letra => letra.toUpperCase()), data: topData.map(item => parseInt(item[tipo]) || 0), backgroundColor: colors[index % colors.length] }));
                             const ctx9 = document.getElementById('grafico9').getContext('2d');
-                            chart9 = new Chart(ctx9, {
-                                type: 'bar', data: { labels: labels, datasets: datasets }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom', labels: { font: { size: 10 }, boxWidth: 15 } }, datalabels: { display: true, anchor: 'center', align: 'center', color: 'white', font: { weight: 'bold' }, formatter: (value) => { return value > 0 ? value : null; } } }, scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, beginAtZero: true, max: 7, ticks: { stepSize: 2 }, grid: { display: false } } } },
-                                plugins: [ChartDataLabels]
-                            });
+                            chart9 = new Chart(ctx9, { type: 'bar', data: { labels: labels, datasets: datasets }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom', labels: { font: { size: 10 }, boxWidth: 15 } }, datalabels: { display: true, anchor: 'center', align: 'center', color: 'white', font: { weight: 'bold' }, formatter: (value) => { return value > 0 ? value : null; } } }, scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, beginAtZero: true, max: 7, ticks: { stepSize: 2 }, grid: { display: false } } } }, plugins: [ChartDataLabels] });
                         }
                     }
                 } catch (error) {
                     console.error("Erro ao atualizar gráficos dinâmicos:", error);
                 } finally {
-                    if (refreshBtn) {
-                        refreshBtn.disabled = false;
-                        refreshBtn.textContent = 'Atualizar';
-                    }
+                    if (refreshBtn) { refreshBtn.disabled = false; refreshBtn.textContent = 'Atualizar'; }
                 }
             }
-            
-            // Execução inicial
             createStaticCharts();
             updateDynamicCharts();
-    
             if (refreshBtn) {
                 refreshBtn.addEventListener('click', updateDynamicCharts);
             }
