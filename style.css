@@ -381,7 +381,7 @@ body.menu-open .main-content { filter: blur(4px); }
     /* A MÁGICA ESTÁ AQUI: Usando sua imagem como fundo */
     background-image: url('menulogin.png');
     background-size: contain; /* Garante que a imagem cubra todo o espaço */
-    background-position: center; /* Centraliza a imagem */
+    background-position: left; /* Centraliza a imagem */
     background-repeat: no-repeat;
     
     /* Removemos a cor de fundo e outras propriedades que não precisamos mais */
