@@ -394,16 +394,16 @@ body.menu-open .main-content { filter: blur(4px); }
     justify-content: center;
     align-items: center;
     position: relative;
-    background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/vintage-wallpaper.png');
+    background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/cubes.png');
     background-repeat: repeat;
-    background-size: 80px;
+    background-size: 1500px;
 }
 .split-right::before {
     content: '';
     position: absolute;
     top: 0; left: 0;
     width: 100%; height: 100%;
-    background-color: rgba(7, 40, 97, 0.404);
+    background-color: rgba(255, 255, 255, 0);
     z-index: 1;
 }
 .login-form-container {
@@ -424,23 +424,28 @@ body.menu-open .main-content { filter: blur(4px); }
 /* =================================== */
 /* --- NOVO DESIGN PARA LOGIN MOBILE --- */
 /* =================================== */
+/* =================================== */
+/* --- NOVO DESIGN PARA LOGIN MOBILE --- */
+/* =================================== */
 @media (max-width: 900px) {
+    /* ... (suas outras regras de mobile para o sidebar, etc. continuam aqui) ... */
+
     /* Esconde o layout de desktop */
     .split-container {
         display: none;
     }
     
-    /* Aplica a textura no fundo da página inteira */
-    .login-page-background {
+    /* Aplica a NOVA textura de cubos no fundo do body no mobile */
+    body.login-page-background {
+        background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/cubes.png');
         background-color: #f4f7fc;
-        background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/vintage-wallpaper.png');
-        background-size: 80px;
         display: flex;
         flex-direction: column;
-        justify-content: center; /* Centraliza verticalmente */
-        align-items: center; /* Centraliza horizontalmente */
+        justify-content: center;
+        align-items: center;
         padding: 20px;
         box-sizing: border-box;
+        min-height: 100vh;
     }
 
     /* Mostra e estiliza o cabeçalho mobile */
@@ -448,23 +453,27 @@ body.menu-open .main-content { filter: blur(4px); }
         display: block;
         text-align: center;
         margin-bottom: 30px;
+        flex-shrink: 0;
     }
     .login-logo-mobile {
         max-width: 80px;
     }
     .login-title-mobile {
-        color: #003366; /* Texto em azul */
+        color: #003366;
         font-family: 'Poppins', sans-serif;
         font-weight: 600;
         font-size: 2em;
         margin-top: 15px;
     }
 
-    /* Ajusta o container do formulário para o mobile */
+    /* Restaura o fundo branco e a sombra do formulário */
     .login-form-container {
-        width: 90%; /* Ocupa 90% da largura da tela */
+        background-color: white; /* RESTAURA O RETÂNGULO BRANCO */
+        width: 100%;             /* Ocupa 100% do espaço do padding da página */
         max-width: 400px;
-        margin: 0 auto; /* Centraliza horizontalmente */
-        box-shadow: 0 5px 20px rgba(0, 71, 137, 0.15); /* Adiciona a sombra */
+        margin: 0 auto;
+        box-shadow: 0 5px 20px rgba(0, 71, 137, 0.15); /* ADICIONA A SOMBRA */
+        padding: 30px 25px;
+        border-radius: 15px;
     }
 }
