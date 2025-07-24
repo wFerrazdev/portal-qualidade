@@ -363,54 +363,52 @@ body.menu-open .main-content { filter: blur(4px); }
   cursor: not-allowed;
 }
 
-/* --- ESTILOS DA PÁGINA DE LOGIN (DESIGN FINAL v3) --- */
+/* --- ESTILOS DA PÁGINA DE LOGIN (DESKTOP E MOBILE) --- */
 .login-page-background {
     background-color: #fff;
 }
 
+/* O cabeçalho mobile começa escondido no desktop */
+.mobile-login-header {
+    display: none;
+}
+
+/* Layout Desktop */
 .split-container {
     display: flex;
     height: 100vh;
     width: 100vw;
     overflow: hidden;
-    background-color: #f4f7fc;
 }
-
 .split-left {
     width: 30%;
     background-image: url('menulogin.png');
     background-size: cover;
     background-position: center;
-    display: flex;
     position: relative;
 }
-
 .split-right {
     width: 70%;
-    margin-left: -1px; /* CORRIGE A LINHA BRANCA */
+    margin-left: -1px;
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
-    background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/cubes.png');
+    background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/vintage-wallpaper.png');
     background-repeat: repeat;
     background-size: 80px;
 }
-
 .split-right::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(226, 226, 228, 0.192);
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(7, 40, 97, 0.404);
     z-index: 1;
 }
-
 .login-form-container {
     background-color: white;
-    padding: 50px;
+    padding: 40px; /* Padding um pouco menor */
     border-radius: 15px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     width: 100%;
@@ -418,95 +416,55 @@ body.menu-open .main-content { filter: blur(4px); }
     text-align: center;
     z-index: 2;
 }
-
-.login-form-container h3 {
-    margin: 0 0 10px 0;
-    font-size: 1.8em;
-    color: #071f70;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 600;
-}
-
-.login-form-container p {
-    margin-bottom: 30px;
-    color: #777;
-}
-
-#loginBtn {
-    background-color: transparent;
-    border: 2px solid #003366;
-    color: #003366;
-    padding: 12px 30px;
-    font-size: 1em;
-    font-weight: 600;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
-    width: 100%;
-}
-#loginBtn:hover {
-    background-color: #003366;
-    color: white;
-}
+.login-form-container h3 { margin: 0 0 10px 0; font-size: 1.8em; color: #071f70; font-family: 'Poppins', sans-serif; font-weight: 600; }
+.login-form-container p { margin-bottom: 30px; color: #777; }
+#loginBtn { background-color: transparent; border: 2px solid #003366; color: #003366; padding: 12px 30px; font-size: 1em; font-weight: 600; border-radius: 5px; cursor: pointer; transition: all 0.2s ease-in-out; width: 100%; }
+#loginBtn:hover { background-color: #003366; color: white; }
 
 /* =================================== */
-/* --- NOVO DESIGN PARA MOBILE --- */
+/* --- NOVO DESIGN PARA LOGIN MOBILE --- */
 /* =================================== */
 @media (max-width: 900px) {
-    /* Aplica a textura tech no fundo do body no mobile */
-    /* Aplica a textura no fundo do body no mobile */
-    body.login-page-background {
-        background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/cubes.png');
+    /* Esconde o layout de desktop */
+    .split-container {
+        display: none;
+    }
+    
+    /* Aplica a textura no fundo da página inteira */
+    .login-page-background {
         background-color: #f4f7fc;
+        background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/vintage-wallpaper.png');
+        background-size: 80px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center; /* Centraliza verticalmente */
+        align-items: center; /* Centraliza horizontalmente */
+        padding: 20px;
+        box-sizing: border-box;
     }
 
-    .split-container { 
-        flex-direction: column; 
-        background: transparent; /* Remove o fundo do container principal */
-    }
-
-    /* Reestiliza a antiga faixa azul para ser o cabeçalho mobile */
-    .split-left { 
-        width: 100%; 
-        height: auto; 
-        padding: 40px 20px 20px 20px;
-        background: none; /* Remove a imagem e a cor da faixa */
-        justify-content: center;
-        align-items: center;
+    /* Mostra e estiliza o cabeçalho mobile */
+    .mobile-login-header {
+        display: block;
         text-align: center;
-        display: block; 
+        margin-bottom: 30px;
     }
-
-    .split-left .login-logo {
+    .login-logo-mobile {
         max-width: 80px;
-        /* Truque de CSS para colorir a imagem branca para azul */
-        filter: invert(15%) sepia(80%) saturate(5000%) hue-rotate(200deg) brightness(90%);
     }
-
-    .split-left .login-title {
+    .login-title-mobile {
         color: #003366; /* Texto em azul */
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
         font-size: 2em;
-    }
-    
-    .split-left .sidebar-footer-logo {
-        display: none; /* Esconde a logo do rodapé para um visual mais limpo */
-    }
-    
-    /* Reestiliza a parte da direita para abrigar o formulário */
-    .split-right { 
-        width: 100%;
-        flex-grow: 1; 
-        padding: 0 20px 40px 20px; /* Ajusta o padding */
-        background: none; /* Remove a textura do desktop */
-        align-items: flex-start; /* Alinha o formulário no topo */
-    }
-    .split-right::before {
-        display: none; /* Remove a camada de sobreposição */
+        margin-top: 15px;
     }
 
-    .login-form-container { 
-        box-shadow: 0 5px 15px rgba(0, 71, 137, 0.1); /* Adiciona a sombra de volta */
-        padding: 30px 25px; /* Diminui um pouco o padding para ficar mais responsivo */
-        min-height: 0; 
+    /* Ajusta o container do formulário para o mobile */
+    .login-form-container {
+        width: 90%; /* Ocupa 90% da largura da tela */
+        max-width: 400px;
+        margin: 0 auto; /* Centraliza horizontalmente */
+        box-shadow: 0 5px 20px rgba(0, 71, 137, 0.15); /* Adiciona a sombra */
     }
 }
