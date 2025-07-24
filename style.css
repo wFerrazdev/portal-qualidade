@@ -365,102 +365,102 @@ body.menu-open .main-content { filter: blur(4px); }
 
 /* --- ESTILOS DA PÁGINA DE LOGIN (COM IMAGEM PERSONALIZADA) --- */
 .login-page-background {
-  background-color: #fff;
+    background-color: #fff;
 }
 
 .split-container {
-  display: flex;
-  height: 100vh;
-  width: 100vw;
-  overflow: hidden;
-  background-color: #f4f7fc;
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    background-color: #f4f7fc;
 }
 
 .split-left {
-  width: 40%;
-  /* A MÁGICA ESTÁ AQUI: Usando sua imagem como fundo */
-  background-image: url('menulogin.png');
-  background-size: cover; /* Garante que a imagem cubra todo o espaço */
-  background-position: center; /* Centraliza a imagem */
-  
-  /* Removemos a cor de fundo e outras propriedades que não precisamos mais */
-  display: flex;
-  position: relative;
+    width: 40%;
+    /* A MÁGICA ESTÁ AQUI: Usando sua imagem como fundo */
+    background-image: url('menulogin.png');
+    background-size: contain; /* Garante que a imagem cubra todo o espaço */
+    background-position: center; /* Centraliza a imagem */
+    background-repeat: no-repeat;
+    
+    /* Removemos a cor de fundo e outras propriedades que não precisamos mais */
+    display: flex;
+    position: relative;
 }
 
 .split-right {
-  width: 60%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/triangle-mosaic.png');
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
+    width: 60%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/triangle-mosaic.png');
+    background-repeat: repeat;
+    background-size: 80px;
 }
 
 .split-right::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(244, 247, 252, 0.6);
-  z-index: 1;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(244, 247, 252, 0.6);
+    z-index: 1;
 }
 
 .login-form-container {
-  background-color: white;
-  padding: 50px;
-  border-radius: 8px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 400px;
-  text-align: center;
-  z-index: 2;
+    background-color: white;
+    padding: 50px;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    z-index: 2;
 }
 
 .login-form-container h3 {
-  margin: 0 0 10px 0;
-  font-size: 1.8em;
-  color: #333;
-  font-family: 'Poppins', sans-serif;
-  font-weight: 600;
+    margin: 0 0 10px 0;
+    font-size: 1.8em;
+    color: #333;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
 }
 
 .login-form-container p {
-  margin-bottom: 30px;
-  color: #777;
+    margin-bottom: 30px;
+    color: #777;
 }
 
 /* Botão "Acessar" com o mesmo estilo do "Atualizar" */
 #loginBtn {
-  background-color: transparent;
-  border: 2px solid #003366;
-  color: #003366;
-  padding: 12px 30px;
-  font-size: 1em;
-  font-weight: 600;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  width: 100%;
+    background-color: transparent;
+    border: 2px solid #003366;
+    color: #003366;
+    padding: 12px 30px;
+    font-size: 1em;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    width: 100%;
 }
 #loginBtn:hover {
-  background-color: #003366;
-  color: white;
+    background-color: #003366;
+    color: white;
 }
 
 /* Media query para telas pequenas (mobile) */
 @media (max-width: 900px) {
-  .split-container { flex-direction: column; }
-  .split-left, .split-right { width: 100%; }
-  .split-left { 
-      height: 250px; /* Altura fixa para a faixa no mobile */
-      min-height: 250px;
-  }
-  .split-right { flex-grow: 1; padding: 20px; }
-  .login-form-container { box-shadow: none; padding: 20px; }
+    .split-container { flex-direction: column; }
+    .split-left, .split-right { width: 100%; }
+    .split-left { 
+        height: 250px; /* Altura fixa para a faixa no mobile */
+        min-height: 250px;
+    }
+    .split-right { flex-grow: 1; padding: 20px; }
+    .login-form-container { box-shadow: none; padding: 20px; }
 }
