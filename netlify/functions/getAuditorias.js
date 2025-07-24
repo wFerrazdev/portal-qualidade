@@ -7,6 +7,15 @@ const corsHeaders = {
 };
 
 exports.handler = async function (event, context) {
+  // --- BLOCO DE SEGURANÇA DE LEITURA ---
+    const { user } = context.clientContext;
+    // Apenas verifica se existe um usuário. Não precisa ser admin para ver.
+    if (!user) {
+        return {
+            statusCode: 401, // Unauthorized (Não Autorizado)
+            body: JSON.stringify({ error: 'Voce precisa estar logado para ver estes dados.' })
+        };
+    }
   // Resposta para a requisição de preflight OPTIONS
   if (event.httpMethod === 'OPTIONS') {
     return { statusCode: 200, headers: corsHeaders, body: 'Preflight OK' };

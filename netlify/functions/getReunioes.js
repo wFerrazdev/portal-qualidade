@@ -3,6 +3,15 @@ const { Pool } = require('pg');
 const corsHeaders = { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Content-Type', 'Access-Control-Allow-Methods': 'GET, OPTIONS' };
 
 exports.handler = async function (event, context) {
+  // --- BLOCO DE SEGURANÇA DE LEITURA ---
+    const { user } = context.clientContext;
+    // Apenas verifica se existe um usuário. Não precisa ser admin para ver.
+    if (!user) {
+        return {
+            statusCode: 401, // Unauthorized (Não Autorizado)
+            body: JSON.stringify({ error: 'Voce precisa estar logado para ver estes dados.' })
+        };
+    }
   if (event.httpMethod === 'OPTIONS') { return { statusCode: 200, headers: corsHeaders }; }
   const pool = new Pool({ connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: false } });
   try {
