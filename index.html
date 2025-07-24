@@ -69,10 +69,9 @@
     
     <script>
         if (window.netlifyIdentity) {
-            const user = netlifyIdentity.currentUser();
-            if (!user) {
-                window.location.href = '/login.html';
-            }
+            netlifyIdentity.on('init', user => {
+                if (!user) { window.location.href = '/login.html'; }
+            });
         }
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -90,7 +89,7 @@
             const API_BASE_URL = '/.netlify/functions';
             const refreshBtn = document.getElementById('refreshChartsBtn');
             const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'];
-
+            
             function createStaticCharts(){
                 const ctx1 = document.getElementById('grafico1').getContext('2d');
                 const gradienteAzul = ctx1.createLinearGradient(0, 0, 0, ctx1.canvas.height);
@@ -120,6 +119,7 @@
                     const response = await fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID}&sheets=${sheetNames}`);
                     const allData = await response.json();
                     if (chart7) chart7.destroy(); if (chart8) chart8.destroy(); if (chart9) chart9.destroy();
+                    
                     const dataCliente = allData.nc_por_cliente || [];
                     const dataClienteFiltrado = dataCliente.filter(item => parseInt(item.quantidadecliente_nc) > 0);
                     if (dataClienteFiltrado.length > 0) {
@@ -129,6 +129,7 @@
                         const ctx7 = document.getElementById('grafico7').getContext('2d');
                         chart7 = new Chart(ctx7, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade de NC', data: values, backgroundColor: '#003366', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: true, anchor: 'end', align: 'end', color: 'black', font: { weight: 'bold' } } }, scales: { y: { beginAtZero: true, max: 20, grid: { display: false } }, x: { grid: { display: false } } } }, plugins: [ChartDataLabels] });
                     }
+                    
                     const dataProjeto = allData.nc_por_projeto || [];
                     const dataProjetoFiltrado = dataProjeto.filter(item => parseInt(item.quantidadeprojeto_nc) > 0);
                     if (dataProjetoFiltrado.length > 0) {
@@ -138,6 +139,7 @@
                         const ctx8 = document.getElementById('grafico8').getContext('2d');
                         chart8 = new Chart(ctx8, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade de NC', data: values, backgroundColor: '#29abe2', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: true, anchor: 'end', align: 'end', color: 'black', font: { weight: 'bold' } } }, scales: { y: { beginAtZero: true, max: 20, grid: { display: false } }, x: { grid: { display: false } } } }, plugins: [ChartDataLabels] });
                     }
+                    
                     const dataDetalhado = allData.nc_detalhado || [];
                     if (dataDetalhado.length > 0) {
                         const tiposDeNC = Object.keys(dataDetalhado[0]).filter(key => key !== 'cliente');
@@ -157,6 +159,7 @@
                     if (refreshBtn) { refreshBtn.disabled = false; refreshBtn.textContent = 'Atualizar'; }
                 }
             }
+            
             createStaticCharts();
             updateDynamicCharts();
             if (refreshBtn) {

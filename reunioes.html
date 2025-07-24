@@ -106,8 +106,9 @@
         const storage = getStorage(app);
 
         if (window.netlifyIdentity) {
-            const user = netlifyIdentity.currentUser();
-            if (!user) { window.location.href = '/login.html'; }
+            netlifyIdentity.on('init', user => {
+                if (!user) { window.location.href = '/login.html'; }
+            });
         }
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -120,7 +121,7 @@
             if (mobileMenuButton) { mobileMenuButton.addEventListener('click', openMenu); }
             if (overlay) { overlay.addEventListener('click', closeMenu); }
             window.addEventListener('load', () => { if (sidebar) { sidebar.classList.remove('preload'); } });
-
+            
             const API_BASE_URL = '/.netlify/functions';
             const addMeetingBtn = document.getElementById('addMeetingBtn');
             const meetingModal = document.getElementById('meetingModal');
