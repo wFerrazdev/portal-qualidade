@@ -100,8 +100,6 @@
     </div>
 
     <script type="module">
-        // Importa o 'fetch' especial do Netlify
-        import { useFetch } from 'https://cdn.jsdelivr.net/npm/netlify-auth-providers@1.0.0-alpha.13/dist/shared.js';
         document.addEventListener('DOMContentLoaded', () => {
             // --- LÓGICA DE SEGURANÇA E MENU ---
             if (window.netlifyIdentity) {
@@ -148,7 +146,7 @@
 
             async function fetchAndRenderProjects() {
                 try {
-                    const response = await useFetch(`${API_BASE_URL}/getProjetos`);
+                    const response = await fetch(`${API_BASE_URL}/getProjetos`);
                     if (!response.ok) { throw new Error(`HTTP error! status: ${response.status}`); }
                     const projects = await response.json();
                     projectsGrid.innerHTML = '';
@@ -188,7 +186,7 @@
                         const formData = new FormData();
                         formData.append('file', imageFile);
                         formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
-                        const response = await useFetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, { method: 'POST', body: formData });
+                        const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, { method: 'POST', body: formData });
                         const data = await response.json();
                         if (data.secure_url) { imageUrl = data.secure_url; } else { throw new Error('Upload para Cloudinary falhou.'); }
                     } catch (error) {
@@ -212,13 +210,13 @@
                     let response;
                     if (editingId) {
                         if (!imageUrl) {
-                            const oldProjectResponse = await useFetch(`${API_BASE_URL}/getUmItem?type=projetos&id=${editingId}`);
+                            const oldProjectResponse = await fetch(`${API_BASE_URL}/getUmItem?type=projetos&id=${editingId}`);
                             const oldProject = await oldProjectResponse.json();
                             projectData.imagem_url = oldProject.imagem_url;
                         }
-                        response = await useFetch(`${API_BASE_URL}/updateProjeto?id=${editingId}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(projectData) });
+                        response = await fetch(`${API_BASE_URL}/updateProjeto?id=${editingId}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(projectData) });
                     } else {
-                        response = await useFetch(`${API_BASE_URL}/addProjeto`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(projectData) });
+                        response = await fetch(`${API_BASE_URL}/addProjeto`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(projectData) });
                     }
                     if (!response.ok) { throw new Error('Falha na API ao salvar projeto'); }
                     closeModal();
@@ -237,7 +235,7 @@
                 if (!editingId) return;
                 if (confirm('Tem certeza que deseja excluir este projeto? Esta ação não pode ser desfeita.')) {
                     try {
-                        const response = await useFetch(`${API_BASE_URL}/deleteProjeto?id=${editingId}`, { method: 'DELETE' });
+                        const response = await fetch(`${API_BASE_URL}/deleteProjeto?id=${editingId}`, { method: 'DELETE' });
                         if (!response.ok) { throw new Error('Falha ao excluir o projeto.'); }
                         closeModal();
                         await fetchAndRenderProjects();
@@ -272,7 +270,7 @@
                 if (editButton) {
                     const projectId = editButton.dataset.id;
                     try {
-                        const response = await useFetch(`${API_BASE_URL}/getUmItem?type=projetos&id=${projectId}`);
+                        const response = await fetch(`${API_BASE_URL}/getUmItem?type=projetos&id=${projectId}`);
                         if (!response.ok) { throw new Error('Falha ao buscar dados do projeto'); }
                         const project = await response.json();
                         populateFormForEdit(project);

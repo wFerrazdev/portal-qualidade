@@ -110,8 +110,6 @@
     </div>
 
     <script type="module">
-        // Importa o 'fetch' especial do Netlify
-        import { useFetch } from 'https://cdn.jsdelivr.net/npm/netlify-auth-providers@1.0.0-alpha.13/dist/shared.js';
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
@@ -212,7 +210,7 @@
 
             async function fetchAndRenderMeetings() {
                 try {
-                    const response = await useFetch(`${API_BASE_URL}/getReunioes`);
+                    const response = await fetch(`${API_BASE_URL}/getReunioes`);
                     const reunioes = await response.json();
                     listBody.innerHTML = '';
                     if (reunioes.length === 0) {
@@ -268,7 +266,7 @@
                 try {
                     const url = editingId ? `${API_BASE_URL}/updateReuniao?id=${editingId}` : `${API_BASE_URL}/addReuniao`;
                     const method = editingId ? 'PUT' : 'POST';
-                    const response = await useFetch(url, { method: method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(meetingData) });
+                    const response = await fetch(url, { method: method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(meetingData) });
                     if (!response.ok) { throw new Error('Falha na API'); }
                     closeModal();
                     await fetchAndRenderMeetings();
@@ -282,7 +280,7 @@
             async function handleDeleteFromList(reuniaoId) {
                 if (confirm('Tem certeza que deseja excluir esta reunião?')) {
                     try {
-                        await usefetch(`${API_BASE_URL}/deleteReuniao?id=${reuniaoId}`, { method: 'DELETE' });
+                        await fetch(`${API_BASE_URL}/deleteReuniao?id=${reuniaoId}`, { method: 'DELETE' });
                         await fetchAndRenderMeetings();
                     } catch (error) {
                         alert('Não foi possível excluir a reunião.');
@@ -322,7 +320,7 @@
                 if (editButton) {
                     const reuniaoId = editButton.dataset.id;
                     try {
-                        const response = await useFetch(`${API_BASE_URL}/getUmItem?type=reunioes&id=${reuniaoId}`);
+                        const response = await fetch(`${API_BASE_URL}/getUmItem?type=reunioes&id=${reuniaoId}`);
                         const reuniao = await response.json();
                         populateFormForEdit(reuniao);
                     } catch (error) {
