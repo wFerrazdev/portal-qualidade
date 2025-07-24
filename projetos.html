@@ -167,6 +167,18 @@
                 if (project.progresso == 100) { progressBarColor = '#28a745'; }
                 else if (project.progresso >= 70) { progressBarColor = '#ffc107'; }
                 else if (project.progresso >= 50) { progressBarColor = '#fd7e14'; }
+                // --- LÓGICA DE PERMISSÃO ADICIONADA AQUI ---
+                let editButtonHtml = ''; // Por padrão, o botão de editar é vazio
+                const user = window.netlifyIdentity.currentUser();
+                if (user && user.app_metadata.roles && user.app_metadata.roles.includes('admin')) {
+                    // Se o usuário for um admin, nós criamos o HTML do botão
+                    editButtonHtml = `
+                        <button class="edit-button" data-id="${project.id}">
+                            <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.536L16.732 3.732z"></path></svg>
+                        </button>
+                    `;
+                }
+                // --- FIM DA LÓGICA DE PERMISSÃO ---
                 return `<div class="project-card"><div class="card-image-container"><img src="${project.imagem_url || 'https://via.placeholder.com/600x400/CCCCCC/FFFFFF?text=Sem+Imagem'}" alt="Imagem do Projeto ${project.titulo}"></div><div class="card-project-body"><button class="edit-button" data-id="${project.id}"><svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.536L16.732 3.732z"></path></svg></button><h3>${project.titulo}</h3><p><strong>Status:</strong> ${project.status}</p><hr><div class="card-project-details"><h4>Principais Feitos:</h4><ul>${feitosHtml}</ul></div><div class="card-progress-container"><div class="progress-bar-info"><span>Progresso</span><span>${project.progresso}%</span></div><div class="progress-bar-background"><div class="progress-bar-fill" style="width: ${project.progresso}%; background-color: ${progressBarColor};"></div></div></div></div></div>`;
             }
 
