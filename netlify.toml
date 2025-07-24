@@ -1,8 +1,9 @@
-[functions]
-  directory = "netlify/functions/"
-# Redirecionamento para a página de login
 [[redirects]]
   from = "/"
   to = "/login.html"
   status = 200
-  
+
+[functions]
+  directory = "netlify/functions/"
+# Redirecionamento para a página de login
+
