@@ -1,40 +1,40 @@
+// Arquivo: netlify/functions/getProjetos.js
 const { Pool } = require('pg');
-
-// Reutilizando os mesmos headers para consistência
 const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'Content-Type',
-  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': 'GET, OPTIONS'
 };
 
 exports.handler = async function (event, context) {
-  const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-      rejectUnauthorized: false
+    // --- BLOCO DE SEGURANÇA DE LEITURA ---
+    const { user } = context.clientContext;
+    if (!user) {
+        return {
+            statusCode: 401, // Unauthorized
+            body: JSON.stringify({ error: 'Voce precisa estar logado para ver estes dados.' })
+        };
     }
-  });
+    // --- FIM DO BLOCO DE SEGURANÇA ---
 
-  try {
-    const result = await pool.query('SELECT * FROM projetos ORDER BY created_at ASC;');
+    if (event.httpMethod === 'OPTIONS') { return { statusCode: 200, headers: corsHeaders }; }
     
-    return {
-      statusCode: 200,
-      // Adicionamos os headers na resposta de sucesso
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      body: JSON.stringify(result.rows)
-    };
-
-  } catch (error) {
-    console.error('Erro ao buscar projetos:', error);
-    return {
-      statusCode: 500,
-       // Adicionamos os headers também na resposta de erro
-      headers: corsHeaders,
-      body: JSON.stringify({ error: 'Falha ao buscar dados do banco de dados.' })
-    };
-
-  } finally {
-    await pool.end();
-  }
+    const pool = new Pool({ connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: false } });
+    try {
+        const result = await pool.query('SELECT * FROM projetos ORDER BY created_at ASC;');
+        return { 
+            statusCode: 200, 
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' }, 
+            body: JSON.stringify(result.rows) 
+        };
+    } catch (error) {
+        console.error("Erro na funcao getProjetos:", error);
+        return { 
+            statusCode: 500, 
+            headers: corsHeaders, 
+            body: JSON.stringify({ error: 'Falha ao buscar projetos.' }) 
+        };
+    } finally {
+        await pool.end();
+    }
 };
