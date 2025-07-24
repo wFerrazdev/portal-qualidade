@@ -454,12 +454,14 @@ body.menu-open .main-content { filter: blur(4px); }
 /* =================================== */
 @media (max-width: 900px) {
     /* Aplica a textura tech no fundo do body no mobile */
+    /* Aplica a textura no fundo do body no mobile */
     body.login-page-background {
-        background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/double-bubble-outline.png');
+        background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/cubes.png');
+        background-color: #f4f7fc;
     }
 
     .split-container { 
-        flex-direction: column;
+        flex-direction: column; 
         background: transparent; /* Remove o fundo do container principal */
     }
 
@@ -468,17 +470,16 @@ body.menu-open .main-content { filter: blur(4px); }
         width: 100%; 
         height: auto; 
         padding: 40px 20px 20px 20px;
-        background-image: none; /* Remove a imagem de fundo da faixa */
-        background-color: transparent;
+        background: none; /* Remove a imagem e a cor da faixa */
         justify-content: center;
         align-items: center;
         text-align: center;
-        display: block; /* Garante que os elementos fiquem um abaixo do outro */
+        display: block; 
     }
 
     .split-left .login-logo {
         max-width: 80px;
-        /* Truque de CSS para tentar colorir a imagem branca para azul */
+        /* Truque de CSS para colorir a imagem branca para azul */
         filter: invert(15%) sepia(80%) saturate(5000%) hue-rotate(200deg) brightness(90%);
     }
 
@@ -495,18 +496,17 @@ body.menu-open .main-content { filter: blur(4px); }
     .split-right { 
         width: 100%;
         flex-grow: 1; 
-        padding: 20px;
+        padding: 0 20px 40px 20px; /* Ajusta o padding */
         background: none; /* Remove a textura do desktop */
         align-items: flex-start; /* Alinha o formulário no topo */
     }
     .split-right::before {
-        display: none; /* Remove a camada escura */
+        display: none; /* Remove a camada de sobreposição */
     }
 
     .login-form-container { 
-        box-shadow: none; 
-        padding: 20px; 
-        background: rgba(255, 255, 255, 0.8); /* Fundo semi-transparente para o form */
-        backdrop-filter: blur(5px);
+        box-shadow: 0 5px 15px rgba(0, 71, 137, 0.1); /* Adiciona a sombra de volta */
+        padding: 30px 25px; /* Diminui um pouco o padding para ficar mais responsivo */
+        min-height: 0; 
     }
 }
