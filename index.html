@@ -70,6 +70,13 @@
     </div>
         
     <script>
+        // ADICIONE ESTE BLOCO NO INÍCIO DO SEU SCRIPT
+        // Redirecionador Inteligente para o Netlify Identity
+        if (window.location.hash.includes('_token=')) {
+            window.location.href = '/login.html' + window.location.hash;
+        }
+
+
         document.addEventListener('DOMContentLoaded', () => {
             // --- LÓGICA DO MENU ---
             const body = document.body;
