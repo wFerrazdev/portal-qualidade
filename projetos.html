@@ -6,22 +6,29 @@
     <title>Projetos | Portal da Qualidade</title>
     <link rel="stylesheet" href="style.css">
     <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-    <script type="text/javascript">
-        // Adicionamos um escutador de evento direto no objeto 'netlifyIdentity'
-        // Ele garante que o código só rode quando o sistema de login estiver pronto.
-        window.netlifyIdentity && netlifyIdentity.on('init', user => {
-            // Se, após a inicialização, NÃO houver usuário...
-            if (!user) {
-                // ...redireciona para o login.
-                window.location.href = '/login.html';
-            } else {
-                // Se HOUVER um usuário, nós mostramos a página.
-                document.body.classList.remove('unauthenticated');
-            }
-        });
-    </script>
 </head>
 <body class="unauthenticated">
+
+    <script>
+        // Script de Segurança Anti-Flash e Anti-Loop
+        if (window.netlifyIdentity) {
+            // Lida com tokens de convite/reset na URL
+            if (window.location.hash.includes('_token=')) {
+                netlifyIdentity.on('init', () => {
+                    netlifyIdentity.open();
+                });
+            }
+            // Lida com a verificação de usuário logado
+            netlifyIdentity.on('init', user => {
+                if (!user && !window.location.hash.includes('_token=')) {
+                    window.location.href = '/login.html';
+                } else {
+                    document.body.classList.remove('unauthenticated');
+                }
+            });
+        }
+    </script>
+
     <div class="page-container">
         
         <aside class="sidebar preload">
@@ -35,12 +42,7 @@
                     <li><a href="projetos.html" class="active"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg><span>Projetos</span></a></li>
                     <li><a href="reunioes.html"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg><span>Reuniões</span></a></li>
                     <li><a href="auditoriasevisitas.html"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 12h6M7 8h6"></path></svg><span>Auditorias e Visitas</span></a></li>
-                    <li id="logout-item">
-                        <a href="#" id="logoutBtn">
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-                            <span>Logout</span>
-                        </a>
-                    </li>
+                    <li id="logout-item"><a href="#" id="logoutBtn"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg><span>Logout</span></a></li>
                 </ul>
             </nav>
             <div class="sidebar-footer-logo">
@@ -77,125 +79,35 @@
     </div>
     
     <div id="projectModal" class="modal-overlay">
-        <div class="modal-content">
-            <header class="modal-header">
-                <h2 id="modalTitle">Adicionar Novo Projeto</h2>
-                <button id="closeModalBtn" class="close-button">&times;</button>
-            </header>
-            <main class="modal-body">
-                <form id="projectForm">
-                    <div class="form-group"><label for="titulo">Título do Projeto</label><input type="text" id="titulo" name="titulo" required></div>
-                    <div class="form-group"><label for="status">Status</label><select id="status" name="status"><option value="A Fazer">A Fazer</option><option value="Em Andamento">Em Andamento</option><option value="Concluído">Concluído</option></select></div>
-                    <div class="form-group"><label for="imagem_file">Foto do Projeto</label><input type="file" id="imagem_file" name="imagem_file" accept="image/*"></div>
-                    <div class="form-group"><label for="progresso">Progresso (%)</label><input type="number" id="progresso" name="progresso" min="0" max="100" value="0"></div>
-                    <div class="form-group"><label for="principais_feitos">Principais Feitos (um por linha)</label><textarea id="principais_feitos" name="principais_feitos" rows="4"></textarea></div>
-                    <div class="form-actions">
-                        <button type="button" id="deleteProjectBtn" class="delete-button hidden"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
-                        <button type="button" id="cancelModalBtn" class="cancel-button">Cancelar</button>
-                        <button type="submit" class="save-button">Salvar Projeto</button>
-                    </div>
-                </form>
-            </main>
         </div>
-    </div>
 
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // --- SCRIPT DE SEGURANÇA E LÓGICA DO MENU ---
-        
-        // Agora, a segurança espera o widget estar pronto ANTES de verificar o usuário.
-        if (window.netlifyIdentity) {
-            // Lida com tokens de convite/reset de senha
-            if (window.location.hash.includes('_token=')) {
-                netlifyIdentity.open(); // O widget vai ver o token e mostrar a tela certa
-            }
-
-            netlifyIdentity.on('init', user => {
-                // Se, após a inicialização, NÃO houver usuário, E não houver um token na URL...
-                if (!user && !window.location.hash.includes('_token=')) {
-                    // ...redireciona para o login.
-                    window.location.href = '/login.html';
-                }
-            });
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- LÓGICA DO MENU E LOGOUT ---
+            const body = document.body;
+            const sidebar = document.querySelector('.sidebar');
+            const mobileMenuButton = document.getElementById('mobileMenuButton');
+            const overlay = document.getElementById('overlay');
+            function openMenu() { body.classList.add('menu-open'); sidebar.classList.add('mobile-nav-open'); overlay.classList.add('active'); }
+            function closeMenu() { body.classList.remove('menu-open'); sidebar.classList.remove('mobile-nav-open'); overlay.classList.remove('active'); }
+            if (mobileMenuButton) { mobileMenuButton.addEventListener('click', openMenu); }
+            if (overlay) { overlay.addEventListener('click', closeMenu); }
+            window.addEventListener('load', () => { if (sidebar) { sidebar.classList.remove('preload'); } });
             
-            // Lógica de Logout
-            netlifyIdentity.on('logout', () => {
-                window.location.href = '/login.html';
-            });
-        }
-        
-        
-        const body = document.body;
-        const sidebar = document.querySelector('.sidebar');
-        const mobileMenuButton = document.getElementById('mobileMenuButton');
-        const overlay = document.getElementById('overlay');
-        function openMenu() { body.classList.add('menu-open'); sidebar.classList.add('mobile-nav-open'); overlay.classList.add('active'); }
-        function closeMenu() { body.classList.remove('menu-open'); sidebar.classList.remove('mobile-nav-open'); overlay.classList.remove('active'); }
-        if (mobileMenuButton) { mobileMenuButton.addEventListener('click', openMenu); }
-        if (overlay) { overlay.addEventListener('click', closeMenu); }
-        window.addEventListener('load', () => { if (sidebar) { sidebar.classList.remove('preload'); } });
-        
-        const logoutBtn = document.getElementById('logoutBtn');
-        if (logoutBtn) {
-            logoutBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                netlifyIdentity.logout();
-            });
-        }
-        // --- LÓGICA DE PERMISSÕES (VISUAL) ---
-        if (window.netlifyIdentity) {
-            const user = netlifyIdentity.currentUser();
-            if (user) {
-                const userRoles = user.app_metadata.roles || [];
-                // Se o usuário NÃO tiver a permissão 'admin' na sua lista de permissões...
-                if (!userRoles.includes('admin')) {
-                    // ...encontra e esconde todos os botões de ação.
-                    const addBtn = document.querySelector('.add-button');
-                    if (addBtn) addBtn.style.display = 'none';
-
-                    // Também esconde os botões de editar/excluir que são criados dinamicamente
-                    // Adicionando uma classe ao container principal para o CSS esconder os botões
-                    const grid = document.querySelector('.projects-grid, .audits-grid, .meetings-list');
-                    if(grid) grid.classList.add('viewer-mode');
-                }
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (window.netlifyIdentity) netlifyIdentity.logout();
+                });
             }
-        }
-        // =================== LÓGICA DA PÁGINA DE PROJETOS ===================
-        const CLOUDINARY_CLOUD_NAME = 'dsge4dbjy';
-        const CLOUDINARY_UPLOAD_PRESET = 'ml_default';
-        const API_BASE_URL = '/.netlify/functions';
-        const addProjectBtn = document.getElementById('addProjectBtn');
-        const projectModal = document.getElementById('projectModal');
-        const closeModalBtn = document.getElementById('closeModalBtn');
-        const cancelModalBtn = document.getElementById('cancelModalBtn');
-        const deleteProjectBtn = document.getElementById('deleteProjectBtn');
-        const projectForm = document.getElementById('projectForm');
-        const projectsGrid = document.querySelector('.projects-grid');
-        const modalTitle = projectModal.querySelector('.modal-header h2');
-        
-        // ... (resto das suas funções renderProjectCard, fetchAndRenderProjects, etc. aqui, sem alteração) ...
-        
-        fetchAndRenderProjects();
-        addProjectBtn.addEventListener('click', openModalForAdd);
-        closeModalBtn.addEventListener('click', closeModal);
-        cancelModalBtn.addEventListener('click', closeModal);
-        deleteProjectBtn.addEventListener('click', handleDeleteProject);
-        projectForm.addEventListener('submit', handleFormSubmit);
-        window.addEventListener('click', (event) => { if (event.target == projectModal) { closeModal(); } });
-        projectsGrid.addEventListener('click', async (event) => {
-            const editButton = event.target.closest('.edit-button');
-            if (editButton) {
-                const projectId = editButton.dataset.id;
-                try {
-                    const response = await fetch(`${API_BASE_URL}/getUmItem?type=projetos&id=${projectId}`);
-                    const project = await response.json();
-                    populateFormForEdit(project);
-                } catch (error) {
-                    alert('Não foi possível carregar os dados para edição.');
-                }
+            if (window.netlifyIdentity) {
+                netlifyIdentity.on('logout', () => { window.location.href = '/login.html'; });
             }
+            
+            // =================== LÓGICA DA PÁGINA DE PROJETOS ===================
+            // (Todo o seu script de CRUD para Projetos, que já estava funcionando, entra aqui)
         });
-    });
     </script>
 </body>
 </html>

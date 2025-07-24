@@ -22,26 +22,23 @@
 
     <script>
         if (window.netlifyIdentity) {
-            // Escuta o evento de inicialização do widget
             netlifyIdentity.on('init', user => {
-                // Se, ao inicializar, ele já encontrou um usuário logado...
                 if (user) {
-                    // ...manda ele direto para o dashboard.
                     window.location.href = '/index.html';
                 }
+            });
+            netlifyIdentity.on('login', () => {
+                window.location.href = '/index.html';
             });
 
             const loginButton = document.getElementById('loginBtn');
             if(loginButton) {
-                loginButton.addEventListener('click', () => {
-                    netlifyIdentity.open(); // Abre o modal de login
-                });
+                loginButton.addEventListener('click', () => netlifyIdentity.open());
             }
-
-            // Escuta o evento de login bem-sucedido para redirecionar
-            netlifyIdentity.on('login', user => {
-                window.location.href = '/index.html';
-            });
+            const mobileLoginButton = document.querySelector('.mobile-login-header');
+            if (mobileLoginButton) {
+                mobileLoginButton.addEventListener('click', () => netlifyIdentity.open());
+            }
         }
     </script>
 </body>
