@@ -3,6 +3,16 @@ const { Pool } = require('pg');
 const corsHeaders = { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Content-Type', 'Access-Control-Allow-Methods': 'PUT, OPTIONS' };
 
 exports.handler = async function (event, context) {
+  // --- BLOCO DE SEGURANÇA DE PERMISSÃO ---
+    const { user } = context.clientContext;
+    // Verifica se não há usuário OU se o usuário não tem a role 'admin'
+    if (!user || !user.app_metadata.roles.includes('admin')) {
+        return {
+            statusCode: 403, // Forbidden (Proibido)
+            body: JSON.stringify({ error: 'Acesso negado. Apenas administradores podem realizar esta acao.' })
+        };
+    }
+    // --- FIM DO BLOCO DE SEGURANÇA ---
   if (event.httpMethod === 'OPTIONS') { return { statusCode: 200, headers: corsHeaders }; }
   if (event.httpMethod !== 'PUT') { return { statusCode: 405, headers: corsHeaders, body: 'Metodo nao permitido.' }; }
   const reuniaoId = event.queryStringParameters.id;

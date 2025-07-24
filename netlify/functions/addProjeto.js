@@ -8,6 +8,16 @@ const corsHeaders = {
 };
 
 exports.handler = async function (event, context) {
+  // --- BLOCO DE SEGURANÇA DE PERMISSÃO ---
+    const { user } = context.clientContext;
+    // Verifica se não há usuário OU se o usuário não tem a role 'admin'
+    if (!user || !user.app_metadata.roles.includes('admin')) {
+        return {
+            statusCode: 403, // Forbidden (Proibido)
+            body: JSON.stringify({ error: 'Acesso negado. Apenas administradores podem realizar esta acao.' })
+        };
+    }
+    // --- FIM DO BLOCO DE SEGURANÇA ---
   // O navegador primeiro envia uma requisição 'OPTIONS' para "pedir permissão".
   // Precisamos responder a ela com sucesso para que ele prossiga.
   if (event.httpMethod === 'OPTIONS') {

@@ -504,3 +504,10 @@ body.menu-open .main-content { filter: blur(4px); }
 .sidebar-nav li a#logoutBtn:hover {
     background-color: #c82333; /* Vermelho escuro no hover */
 }
+
+/* Esconde os botões de ação para usuários que não são admin */
+.viewer-mode .edit-button,
+.viewer-mode .delete-button,
+.viewer-mode .card-actions a.ata-button + .edit-button /* ajuste fino para a lista de reuniões */ {
+    display: none !important;
+}

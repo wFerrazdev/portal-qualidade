@@ -128,6 +128,24 @@
             const logoutBtn = document.getElementById('logoutBtn');
             if (logoutBtn) { logoutBtn.addEventListener('click', (e) => { e.preventDefault(); netlifyIdentity.logout(); }); }
             netlifyIdentity.on('logout', () => { window.location.href = '/login.html'; });
+            // --- LÓGICA DE PERMISSÕES (VISUAL) ---
+            if (window.netlifyIdentity) {
+                const user = netlifyIdentity.currentUser();
+                if (user) {
+                    const userRoles = user.app_metadata.roles || [];
+                    // Se o usuário NÃO tiver a permissão 'admin' na sua lista de permissões...
+                    if (!userRoles.includes('admin')) {
+                        // ...encontra e esconde todos os botões de ação.
+                        const addBtn = document.querySelector('.add-button');
+                        if (addBtn) addBtn.style.display = 'none';
+
+                        // Também esconde os botões de editar/excluir que são criados dinamicamente
+                        // Adicionando uma classe ao container principal para o CSS esconder os botões
+                        const grid = document.querySelector('.projects-grid, .audits-grid, .meetings-list');
+                        if(grid) grid.classList.add('viewer-mode');
+                    }
+                }
+            }
             
             const API_BASE_URL = '/.netlify/functions';
             const addAuditBtn = document.getElementById('addAuditBtn');
