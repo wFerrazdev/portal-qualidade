@@ -1,6 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
 
 /* --- GERAL E LAYOUT DA PÁGINA --- */
+/* Esconde o corpo da página para evitar o "flash" de conteúdo */
+body.unauthenticated {
+    visibility: hidden;
+}
 html, body {
   height: 100%;
   margin: 0;
@@ -490,4 +494,13 @@ body.menu-open .main-content { filter: blur(4px); }
         padding: 10px 20px;
         font-size: 0.9em;
     }
+}
+
+/* --- ESTILOS DO BOTÃO DE LOGOUT --- */
+.sidebar-nav li#logout-item {
+    margin-top: auto; /* Empurra o botão para o final da lista */
+}
+
+.sidebar-nav li a#logoutBtn:hover {
+    background-color: #c82333; /* Vermelho escuro no hover */
 }
