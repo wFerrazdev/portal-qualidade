@@ -391,7 +391,7 @@ body.menu-open .main-content { filter: blur(4px); }
 }
 
 .split-right {
-    width: 70%;
+    width: 75%;
     display: flex;
     justify-content: center;
     align-items: center;
