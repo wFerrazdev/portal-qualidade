@@ -14,56 +14,34 @@
         <h2 class="login-title-mobile">Portal da Qualidade</h2>
     </div>
 
-    <div class="split-container">
-        <div class="split-left">
-        </div>
-
-        <div class="split-right">
-            <div class="login-form-container">
-                <h3>Acessar a Plataforma</h3>
-                <p>Insira suas credenciais para continuar.</p>
-                <button id="loginBtnDesktop">Acessar</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="login-form-container-mobile">
+    <div class="login-form-container">
         <h3>Acessar a Plataforma</h3>
         <p>Insira suas credenciais para continuar.</p>
-        <button id="loginBtnMobile">Acessar</button>
+        <button id="loginBtn">Acessar</button>
     </div>
 
-
     <script>
-        // SCRIPT FINAL E CORRIGIDO PARA LOGIN
         if (window.netlifyIdentity) {
-            // Se o usuário já estiver logado, manda para o index
+            // Escuta o evento de inicialização do widget
             netlifyIdentity.on('init', user => {
+                // Se, ao inicializar, ele já encontrou um usuário logado...
                 if (user) {
+                    // ...manda ele direto para o dashboard.
                     window.location.href = '/index.html';
                 }
             });
 
-            // Lida com o evento de login para redirecionar
-            netlifyIdentity.on('login', () => {
+            const loginButton = document.getElementById('loginBtn');
+            if(loginButton) {
+                loginButton.addEventListener('click', () => {
+                    netlifyIdentity.open(); // Abre o modal de login
+                });
+            }
+
+            // Escuta o evento de login bem-sucedido para redirecionar
+            netlifyIdentity.on('login', user => {
                 window.location.href = '/index.html';
             });
-
-            // Abre o widget ao clicar nos botões
-            const loginBtnDesktop = document.getElementById('loginBtnDesktop');
-            if(loginBtnDesktop) {
-                loginBtnDesktop.addEventListener('click', () => netlifyIdentity.open());
-            }
-            
-            const loginBtnMobile = document.getElementById('loginBtnMobile');
-            if(loginBtnMobile) {
-                loginBtnMobile.addEventListener('click', () => netlifyIdentity.open());
-            }
-
-            const mobileHeader = document.querySelector('.mobile-login-header');
-            if (mobileHeader) {
-                mobileHeader.addEventListener('click', () => netlifyIdentity.open());
-            }
         }
     </script>
 </body>
