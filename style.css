@@ -396,7 +396,7 @@ body.menu-open .main-content { filter: blur(4px); }
     position: relative;
     background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/cubes.png');
     background-repeat: repeat;
-    background-size: 1500px;
+    background-size: 80px;
 }
 .split-right::before {
     content: '';
