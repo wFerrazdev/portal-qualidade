@@ -8,7 +8,6 @@ const corsHeaders = {
 };
 
 exports.handler = async function (event, context) {
-  
   if (event.httpMethod === 'OPTIONS') {
     return { statusCode: 200, headers: corsHeaders };
   }
