@@ -404,7 +404,7 @@ body.menu-open .main-content { filter: blur(4px); }
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(226, 226, 228, 0.575);
+    background-color: rgba(226, 226, 228, 0.192);
     z-index: 1;
 }
 
