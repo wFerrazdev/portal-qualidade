@@ -398,7 +398,7 @@ body.menu-open .main-content { filter: blur(4px); }
     position: relative;
     background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/vintage-wallpaper.png');
     background-repeat: no-repeat;
-    background-size: 200px;
+    background-size: 35px;
 }
 
 .split-right::before {
