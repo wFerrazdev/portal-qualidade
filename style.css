@@ -363,7 +363,7 @@ body.menu-open .main-content { filter: blur(4px); }
   cursor: not-allowed;
 }
 
-/* --- ESTILOS DA PÁGINA DE LOGIN (COM IMAGEM PERSONALIZADA) --- */
+/* --- ESTILOS DA PÁGINA DE LOGIN (DESIGN FINAL v3) --- */
 .login-page-background {
     background-color: #fff;
 }
@@ -378,27 +378,23 @@ body.menu-open .main-content { filter: blur(4px); }
 
 .split-left {
     width: 30%;
-    /* A MÁGICA ESTÁ AQUI: Usando sua imagem como fundo */
     background-image: url('menulogin.png');
-    background-size: contain; /* Garante que a imagem cubra todo o espaço */
-    background-position: left; /* Centraliza a imagem */
-    background-repeat: no-repeat;
-    
-    /* Removemos a cor de fundo e outras propriedades que não precisamos mais */
+    background-size: cover;
+    background-position: center;
     display: flex;
     position: relative;
-    
 }
 
 .split-right {
-    width: 75%;
+    width: 70%;
+    margin-left: -1px; /* CORRIGE A LINHA BRANCA */
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
     background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/vintage-wallpaper.png');
-    background-repeat: no-repeat;
-    background-size: 1500px;
+    background-repeat: repeat;
+    background-size: 80px;
 }
 
 .split-right::before {
@@ -436,7 +432,6 @@ body.menu-open .main-content { filter: blur(4px); }
     color: #777;
 }
 
-/* Botão "Acessar" com o mesmo estilo do "Atualizar" */
 #loginBtn {
     background-color: transparent;
     border: 2px solid #003366;
@@ -454,14 +449,64 @@ body.menu-open .main-content { filter: blur(4px); }
     color: white;
 }
 
-/* Media query para telas pequenas (mobile) */
+/* =================================== */
+/* --- NOVO DESIGN PARA MOBILE --- */
+/* =================================== */
 @media (max-width: 900px) {
-    .split-container { flex-direction: column; }
-    .split-left, .split-right { width: 100%; }
-    .split-left { 
-        height: 250px; /* Altura fixa para a faixa no mobile */
-        min-height: 250px;
+    /* Aplica a textura tech no fundo do body no mobile */
+    body.login-page-background {
+        background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/double-bubble-outline.png');
     }
-    .split-right { flex-grow: 1; padding: 20px; }
-    .login-form-container { box-shadow: none; padding: 20px; }
+
+    .split-container { 
+        flex-direction: column;
+        background: transparent; /* Remove o fundo do container principal */
+    }
+
+    /* Reestiliza a antiga faixa azul para ser o cabeçalho mobile */
+    .split-left { 
+        width: 100%; 
+        height: auto; 
+        padding: 40px 20px 20px 20px;
+        background-image: none; /* Remove a imagem de fundo da faixa */
+        background-color: transparent;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        display: block; /* Garante que os elementos fiquem um abaixo do outro */
+    }
+
+    .split-left .login-logo {
+        max-width: 80px;
+        /* Truque de CSS para tentar colorir a imagem branca para azul */
+        filter: invert(15%) sepia(80%) saturate(5000%) hue-rotate(200deg) brightness(90%);
+    }
+
+    .split-left .login-title {
+        color: #003366; /* Texto em azul */
+        font-size: 2em;
+    }
+    
+    .split-left .sidebar-footer-logo {
+        display: none; /* Esconde a logo do rodapé para um visual mais limpo */
+    }
+    
+    /* Reestiliza a parte da direita para abrigar o formulário */
+    .split-right { 
+        width: 100%;
+        flex-grow: 1; 
+        padding: 20px;
+        background: none; /* Remove a textura do desktop */
+        align-items: flex-start; /* Alinha o formulário no topo */
+    }
+    .split-right::before {
+        display: none; /* Remove a camada escura */
+    }
+
+    .login-form-container { 
+        box-shadow: none; 
+        padding: 20px; 
+        background: rgba(255, 255, 255, 0.8); /* Fundo semi-transparente para o form */
+        backdrop-filter: blur(5px);
+    }
 }
