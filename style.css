@@ -363,9 +363,14 @@ body.menu-open .main-content { filter: blur(4px); }
   cursor: not-allowed;
 }
 
-/* --- ESTILOS DA PÁGINA DE LOGIN (DESKTOP E MOBILE) --- */
+/* --- ESTILOS DA PÁGINA DE LOGIN (FINAL RESPONSIVO) --- */
+
+/* ESTILO PADRÃO (DESKTOP) */
 .login-page-background {
-    background-color: #fff;
+    display: flex; /* Usa flexbox para criar o layout dividido */
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
 }
 
 /* O cabeçalho mobile começa escondido no desktop */
@@ -373,49 +378,28 @@ body.menu-open .main-content { filter: blur(4px); }
     display: none;
 }
 
-/* Layout Desktop */
-.split-container {
-    display: flex;
-    height: 100vh;
-    width: 100vw;
-    overflow: hidden;
-}
-.split-left {
+/* A faixa azul do lado esquerdo (que não existe mais no HTML, mas será criada aqui) */
+.login-page-background::before {
+    content: '';
+    display: block;
     width: 30%;
+    height: 100%;
     background-image: url('menulogin.png');
     background-size: cover;
     background-position: center;
-    position: relative;
 }
-.split-right {
-    width: 70%;
-    margin-left: -1px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/cubes.png');
-    background-repeat: repeat;
-    background-size: 80px;
-}
-.split-right::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background-color: rgba(255, 255, 255, 0);
-    z-index: 1;
-}
+
 .login-form-container {
     background-color: white;
-    padding: 40px; /* Padding um pouco menor */
+    padding: 40px;
     border-radius: 15px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 400px;
     text-align: center;
-    z-index: 2;
+    margin: auto; /* Centraliza o container */
 }
+
 .login-form-container h3 { margin: 0 0 10px 0; font-size: 1.8em; color: #071f70; font-family: 'Poppins', sans-serif; font-weight: 600; }
 .login-form-container p { margin-bottom: 30px; color: #777; }
 #loginBtn { background-color: transparent; border: 2px solid #003366; color: #003366; padding: 12px 30px; font-size: 1em; font-weight: 600; border-radius: 5px; cursor: pointer; transition: all 0.2s ease-in-out; width: 100%; }
@@ -424,36 +408,29 @@ body.menu-open .main-content { filter: blur(4px); }
 /* =================================== */
 /* --- NOVO DESIGN PARA LOGIN MOBILE --- */
 /* =================================== */
-/* =================================== */
-/* --- NOVO DESIGN PARA LOGIN MOBILE --- */
-/* =================================== */
 @media (max-width: 900px) {
-    /* ... (suas outras regras de mobile para o sidebar, etc. continuam aqui) ... */
-
-    /* Esconde o layout de desktop */
-    .split-container {
-        display: none;
-    }
-    
-    /* Aplica a NOVA textura de cubos no fundo do body no mobile */
-    body.login-page-background {
-        background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/cubes.png');
-        background-color: #f4f7fc;
+    .login-page-background {
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        align-items: center;
+        justify-content: center; /* Centraliza verticalmente */
+        align-items: center;   /* Centraliza horizontalmente */
         padding: 20px;
         box-sizing: border-box;
+        height: auto;
         min-height: 100vh;
+        background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/cubes.png');
+    }
+    
+    /* Esconde a faixa lateral do desktop */
+    .login-page-background::before {
+        display: none;
     }
 
     /* Mostra e estiliza o cabeçalho mobile */
     .mobile-login-header {
         display: block;
         text-align: center;
-        margin-bottom: 30px;
-        flex-shrink: 0;
+        margin-bottom: 40px;
     }
     .login-logo-mobile {
         max-width: 80px;
@@ -466,14 +443,10 @@ body.menu-open .main-content { filter: blur(4px); }
         margin-top: 15px;
     }
 
-    /* Restaura o fundo branco e a sombra do formulário */
+    /* Ajusta o container do formulário para o mobile */
     .login-form-container {
-        background-color: white; /* RESTAURA O RETÂNGULO BRANCO */
-        width: 100%;             /* Ocupa 100% do espaço do padding da página */
-        max-width: 400px;
-        margin: 0 auto;
-        box-shadow: 0 5px 20px rgba(0, 71, 137, 0.15); /* ADICIONA A SOMBRA */
-        padding: 30px 25px;
-        border-radius: 15px;
+        width: 90%; /* Ocupa 90% da largura da tela */
+        margin: 0 auto; /* Garante a centralização */
+        box-shadow: 0 5px 20px rgba(0, 71, 137, 0.15); /* Adiciona a sombra */
     }
 }
