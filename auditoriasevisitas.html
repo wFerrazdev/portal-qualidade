@@ -101,6 +101,32 @@
     </div>
 
     <script type="module">
+        // Função ajudante para fazer chamadas autenticadas
+        async function authFetch(url, options = {}) {
+            const user = window.netlifyIdentity.currentUser();
+            
+            // Se não houver usuário, a chamada nem acontece (já fomos redirecionados)
+            if (!user) {
+                console.error("Tentativa de chamada de API sem usuário.");
+                return Promise.reject(new Error("Usuário não autenticado"));
+            }
+            
+            // Pega o token JWT do usuário
+            const token = await user.jwt();
+
+            // Prepara os cabeçalhos
+            const defaultHeaders = {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`, // Anexa o "crachá" aqui!
+                ...options.headers,
+            };
+
+            // Executa o fetch original, mas com os cabeçalhos de autorização
+            return authFetch(url, {
+                ...options,
+                headers: defaultHeaders,
+            });
+        }
         // Script de Proteção de Página (Final e com Suporte a Tokens)
         if (window.location.hash.includes('_token=')) {
             window.location.href = '/login.html' + window.location.hash;
@@ -170,7 +196,7 @@
 
             async function fetchAndRenderAudits() {
                 try {
-                    const response = await fetch(`${API_BASE_URL}/getAuditorias`);
+                    const response = await authFetch(`${API_BASE_URL}/getAuditorias`);
                     if (!response.ok) { throw new Error('Falha ao buscar auditorias'); }
                     const audits = await response.json();
                     auditsGrid.innerHTML = '';
@@ -215,7 +241,7 @@
                 try {
                     const url = editingId ? `${API_BASE_URL}/updateAuditoria?id=${editingId}` : `${API_BASE_URL}/addAuditoria`;
                     const method = editingId ? 'PUT' : 'POST';
-                    const response = await fetch(url, { method: method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(auditData) });
+                    const response = await authFetch(url, { method: method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(auditData) });
                     if (!response.ok) { throw new Error('Falha na API'); }
                     closeModal();
                     await fetchAndRenderAudits();
@@ -233,7 +259,7 @@
                 if (!editingId) return;
                 if (confirm('Tem certeza que deseja excluir este evento?')) {
                     try {
-                        const response = await fetch(`${API_BASE_URL}/deleteAuditoria?id=${editingId}`, { method: 'DELETE' });
+                        const response = await authFetch(`${API_BASE_URL}/deleteAuditoria?id=${editingId}`, { method: 'DELETE' });
                         if (!response.ok) { throw new Error('Falha na API'); }
                         closeModal();
                         await fetchAndRenderAudits();
@@ -268,7 +294,7 @@
                 if (editButton) {
                     const auditId = editButton.dataset.id;
                     try {
-                        const response = await fetch(`${API_BASE_URL}/getUmItem?type=auditorias&id=${auditId}`);
+                        const response = await authFetch(`${API_BASE_URL}/getUmItem?type=auditorias&id=${auditId}`);
                         if (!response.ok) { throw new Error('Falha ao buscar dados da auditoria'); }
                         const audit = await response.json();
                         populateFormForEdit(audit);
