@@ -167,6 +167,7 @@
                 if (project.progresso == 100) { progressBarColor = '#28a745'; }
                 else if (project.progresso >= 70) { progressBarColor = '#ffc107'; }
                 else if (project.progresso >= 50) { progressBarColor = '#fd7e14'; }
+
                 // --- LÓGICA DE PERMISSÃO ADICIONADA AQUI ---
                 let editButtonHtml = ''; // Por padrão, o botão de editar é vazio
                 const user = window.netlifyIdentity.currentUser();
