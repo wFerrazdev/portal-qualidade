@@ -70,8 +70,8 @@
             <main class="content-area">
                 <div class="dashboard-tabs">
                     <button class="tab-button active" data-tab="principais">Principais</button>
-                    <button class="tab-button" data-tab="calibracao">Calibração</button>
-                    <button class="tab-button" data-tab="fornecedores">Fornecedores</button>
+                    <button class="tab-button" data-tab="sheets_externos">Indicadores Externos</button>
+                    <button class="tab-button" data-tab="nc_interna">NC Interna</button>
                 </div>
                 <div class="indicators-grid">
                     <div class="indicator-card"><div class="card-info"><h3>Custos de Não-Qualidade</h3><p><strong>Valor Atual:</strong> R$ 16.234,00</p><p><strong>Meta:</strong> R$ 0,00</p></div><div class="card-graph"><canvas id="grafico1"></canvas></div></div>
@@ -82,7 +82,22 @@
                     <div class="indicator-card"><div class="card-info"><h3>Quantidade de NC Procedente</h3><p><strong>Quantidade Atual:</strong> 1</p><p><strong>Meta:</strong> 0</p></div><div class="card-graph"><canvas id="grafico6"></canvas></div></div>
                     <div class="indicator-card"><div class="card-info"><h3>NC por Cliente</h3><p>Quantidade de Não Conformidades por Cliente.</p></div><div class="card-graph"><canvas id="grafico7"></canvas></div></div>
                     <div class="indicator-card"><div class="card-info"><h3>NC por Projeto</h3><p>Quantidade de Não Conformidades por Projeto.</p></div><div class="card-graph"><canvas id="grafico8"></canvas></div></div>
-                    <div class="indicator-card"><div class="card-info"><h3>Tipos de NC por Cliente</h3><p>Detalhamento das Não Conformidades por tipo.</p></div><div class="card-graph"><canvas id="grafico9"></canvas></div></div>
+                    <div class="indicator-card"><div class="card-info"><h3>Tipos de NC por Cliente</h3><p>Detalhamento das Não Conformidades por tipo.</p></div><div class="card-graph"><canvas id="grafico9"></canvas></div></div><div class="indicator-card">
+                    <div class="card-info"><h3>RIF por Setor</h3></div>
+                    <div class="card-graph"><canvas id="grafico10"></canvas></div>
+                    </div>
+                    <div class="indicator-card">
+                        <div class="card-info"><h3>Pareto Mensal</h3></div>
+                        <div class="card-graph"><canvas id="grafico11"></canvas></div>
+                    </div>
+                    <div class="indicator-card">
+                        <div class="card-info"><h3>Pareto Anual</h3></div>
+                        <div class="card-graph"><canvas id="grafico12"></canvas></div>
+                    </div>
+                    <div class="indicator-card">
+                        <div class="card-info"><h3>RIF Anual</h3></div>
+                        <div class="card-graph"><canvas id="grafico13"></canvas></div>
+                    </div>
                 </div>
             </main>
 
@@ -137,9 +152,9 @@
             // Mapeamento de quais cards pertencem a cada aba
             // Usamos os IDs das canvases para identificar os gráficos
             const tabMapping = {
-                'principais': ['grafico1', 'grafico2', 'grafico3', 'grafico4', 'grafico5', 'grafico6'],
-                'calibracao': ['grafico7', 'grafico8'], // Exemplo: Gráficos 7 e 8
-                'fornecedores': ['grafico9'] // Exemplo: Gráfico 9
+            'principais': ['grafico1', 'grafico2', 'grafico3', 'grafico4', 'grafico5', 'grafico6'],
+            'sheets_externos': ['grafico7', 'grafico8', 'grafico9'],
+            'nc_interna': ['grafico10', 'grafico11', 'grafico12', 'grafico13']
             };
 
             function filterCharts(activeTab) {
@@ -246,6 +261,90 @@
                 refreshBtn.addEventListener('click', updateDynamicCharts);
             }
             
+            // GRÁFICO 10: RIF por Setor (Empilhado com cores por status)
+        async function loadRifPorSetorChart() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_INTERNO}&sheet=rif_por_setor`);
+                const data = await response.json();
+                if (data.length === 0) return;
+                
+                const labels = data.map(item => item.setor);
+                const statusTypes = ['nao_iniciado', 'em_andamento', 'atrasado', 'concluido'];
+                const statusColors = { 'nao_iniciado': '#6c757d', 'em_andamento': '#ffc107', 'atrasado': '#dc3545', 'concluido': '#28a745' };
+
+                const datasets = statusTypes.map(status => ({
+                    label: status.replace('_', ' ').toUpperCase(),
+                    data: data.map(item => parseInt(item[status]) || 0),
+                    backgroundColor: statusColors[status]
+                }));
+
+                const ctx10 = document.getElementById('grafico10').getContext('2d');
+                new Chart(ctx10, {
+                    type: 'bar',
+                    data: { labels: labels, datasets: datasets },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom' }, datalabels: { color: 'black', font: { weight: 'bold' } } }, scales: { x: { stacked: true }, y: { stacked: true } } },
+                    plugins: [ChartDataLabels]
+                });
+            } catch (error) { console.error("Erro Gráfico 10:", error); }
+        }
+
+        // FUNÇÃO AJUDANTE PARA GRÁFICOS DE PARETO
+        function criarGraficoPareto(canvasId, data, labelX, labelY) {
+            data.sort((a, b) => parseInt(b[labelY]) - parseInt(a[labelY]));
+            const labels = data.map(item => item[labelX]);
+            const values = data.map(item => parseInt(item[labelY]));
+            const total = values.reduce((sum, value) => sum + value, 0);
+            let cumulativePercentage = 0;
+            const paretoData = values.map(value => {
+                cumulativePercentage += (value / total) * 100;
+                return cumulativePercentage.toFixed(2);
+            });
+
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        { type: 'bar', label: 'Quantidade', data: values, backgroundColor: '#003366', borderRadius: 5, yAxisID: 'y' },
+                        { type: 'line', label: 'Cumulativo %', data: paretoData, borderColor: '#dc3545', tension: 0.3, yAxisID: 'y1' }
+                    ]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom' }, datalabels: { color: 'black', font: { weight: 'bold' }, anchor: 'end', align: 'end' } }, scales: { y: { type: 'linear', position: 'left' }, y1: { type: 'linear', position: 'right', grid: { drawOnChartArea: false }, ticks: { callback: value => value + '%' } } } },
+                plugins: [ChartDataLabels]
+            });
+        }
+
+        // GRÁFICO 11: Pareto Mensal
+        async function loadParetoMesChart() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_INTERNO}&sheet=pareto_mes`);
+                const data = await response.json();
+                if (data.length > 0) criarGraficoPareto('grafico11', data, 'defeito', 'quantidade');
+            } catch (error) { console.error("Erro Gráfico 11:", error); }
+        }
+
+        // GRÁFICO 12: Pareto Anual
+        async function loadParetoAnoChart() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_INTERNO}&sheet=pareto_ano`);
+                const data = await response.json();
+                if (data.length > 0) criarGraficoPareto('grafico12', data, 'defeito', 'quantidade');
+            } catch (error) { console.error("Erro Gráfico 12:", error); }
+        }
+        
+        // GRÁFICO 13: RIF Anual
+        async function loadRifAnualChart() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_INTERNO}&sheet=rif_anual`);
+                const data = await response.json();
+                if (data.length === 0) return;
+                const labels = data.map(item => item.mes);
+                const values = data.map(item => parseInt(item.quantidade));
+                const ctx13 = document.getElementById('grafico13').getContext('2d');
+                new Chart(ctx13, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade', data: values, backgroundColor: '#003366', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { color: 'black', font: { weight: 'bold' }, anchor: 'end', align: 'end' } } }, plugins: [ChartDataLabels] });
+            } catch (error) { console.error("Erro Gráfico 13:", error); }
+        }
 
         });
     </script>
