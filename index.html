@@ -201,6 +201,7 @@
                 try {
                     [chart7, chart8, chart9, chart10, chart11, chart12, chart13].forEach(c => { if(c) c.destroy(); });
 
+                    // Busca dados das DUAS planilhas em paralelo
                     const [responseExterno, responseInterno] = await Promise.all([
                         fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_EXTERNO}&sheets=nc_por_cliente,nc_por_projeto,nc_detalhado`),
                         fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_INTERNO}&sheets=rif_por_setor,pareto_mes,pareto_ano,rif_anual`)
@@ -208,9 +209,19 @@
                     const allDataExterno = await responseExterno.json();
                     const allDataInterno = await responseInterno.json();
 
+                    renderizarGraficosExternos(allDataExterno);
+                    renderizarGraficosInternos(allDataInterno);
+                    
+                } catch (error) {
+                    console.error("Erro ao atualizar gráficos dinâmicos:", error);
+                } finally {
+                    if (refreshBtn) { refreshBtn.disabled = false; refreshBtn.textContent = 'Atualizar'; }
+                }
+            }
+            function renderizarGraficosExternos(allData) {
                     // GRÁFICO 7: NC por Cliente
-                    const dataCliente = allDataExterno.nc_por_cliente || [];
-                    const dataClienteFiltrado = dataCliente.filter(item => parseInt(item.quantidadecliente_nc) > 0);
+                const dataCliente = allDataExterno.nc_por_cliente || [];
+                const dataClienteFiltrado = dataCliente.filter(item => parseInt(item.quantidadecliente_nc) > 0);
                     if (dataClienteFiltrado.length > 0) {
                         const topData = dataClienteFiltrado.slice(0, 6);
                         const labels = topData.map(item => item.cliente);
@@ -244,15 +255,16 @@
                             chart9 = new Chart(ctx9, { type: 'bar', data: { labels: labels, datasets: datasets }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom', labels: { font: { size: 10 }, boxWidth: 15 } }, datalabels: { display: true, anchor: 'center', align: 'center', color: 'white', font: { weight: 'bold' }, formatter: (value) => { return value > 0 ? value : null; } } }, scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, beginAtZero: true, max: 7, ticks: { stepSize: 2 }, grid: { display: false } } } }, plugins: [ChartDataLabels] });
                         }
                     }
-                    
+            }   
+            function renderizarGraficosInternos(allData) {        
                     // GRÁFICO 10: RIF por Setor (Empilhado com cores por status)
-                    const dataRifSetor = allDataInterno.rif_por_setor || [];
+                    const dataRifSetor = allData.rif_por_setor || [];
                     if (dataRifSetor.length > 0) {
-                        const labels = dataRifSetor.map(item => item.setor);
-                        const statusTypes = ['nao_iniciado', 'em_andamento', 'atrasado', 'concluido'];
-                        const statusColors = { 'nao_iniciado': '#6c757d', 'em_andamento': '#ffc107', 'atrasado': '#dc3545', 'concluido': '#28a745' };
+                        const labels = dataRifSetor.map(item => item.SETOR);
+                        const statusTypes = ['ATRASADO', 'EM ANDAMENTO', 'CONCLUÍDO', 'Não iniciado'];
+                        const statusColors = { 'ATRASADO': '#dc3545', 'EM ANDAMENTO': '#ffc107', 'CONCLUÍDO': '#28a745', 'Não iniciado': '#6c757d' };
                         const datasets = statusTypes.map(status => ({
-                            label: status.replace('_', ' ').toUpperCase(),
+                            label: status,
                             data: dataRifSetor.map(item => parseInt(item[status]) || 0),
                             backgroundColor: statusColors[status]
                         }));
@@ -260,26 +272,21 @@
                         chart10 = new Chart(ctx10, { type: 'bar', data: { labels: labels, datasets: datasets }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom' }, datalabels: { color: 'black', font: { weight: 'bold' } } }, scales: { x: { stacked: true }, y: { stacked: true } } }, plugins: [ChartDataLabels] });
                     }
 
-                    // GRÁFICOS 11 e 12: Pareto
-                    const dataParetoMes = allDataInterno.pareto_mes || [];
-                    if (dataParetoMes.length > 0) criarGraficoPareto('grafico11', dataParetoMes, 'defeito', 'quantidade');
-                    const dataParetoAno = allDataInterno.pareto_ano || [];
-                    if (dataParetoAno.length > 0) criarGraficoPareto('grafico12', dataParetoAno, 'defeito', 'quantidade');
+                        // GRÁFICOS 11 e 12: Pareto
+                    const dataParetoMes = allData.pareto_mes || [];
+                    if (dataParetoMes.length > 0) criarGraficoPareto('grafico11', dataParetoMes, 'DEFEITO', 'QTD');
+                    const dataParetoAno = allData.pareto_ano || [];
+                    if (dataParetoAno.length > 0) criarGraficoPareto('grafico12', dataParetoAno, 'DEFEITO', 'QTD');
                     
                     // GRÁFICO 13: RIF Anual
-                    const dataRifAnual = allDataInterno.rif_anual || [];
+                    const dataRifAnual = allData.rif_anual || [];
                     if (dataRifAnual.length > 0) {
-                        const labels = dataRifAnual.map(item => item.mes);
-                        const values = dataRifAnual.map(item => parseInt(item.quantidade));
+                        const labels = dataRifAnual.map(item => item.MÊS);
+                        const values = dataRifAnual.map(item => parseInt(item.QUANTIDADE));
                         const ctx13 = document.getElementById('grafico13').getContext('2d');
                         chart13 = new Chart(ctx13, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade', data: values, backgroundColor: '#003366', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { color: 'black', font: { weight: 'bold' }, anchor: 'end', align: 'end' } } }, plugins: [ChartDataLabels] });
                     }
 
-                } catch (error) {
-                    console.error("Erro ao atualizar gráficos dinâmicos:", error);
-                } finally {
-                    if (refreshBtn) { refreshBtn.disabled = false; refreshBtn.textContent = 'Atualizar'; }
-                }
             }
             
             function criarGraficoPareto(canvasId, data, labelX, labelY) {
@@ -310,7 +317,7 @@
                 if (canvasId === 'grafico12') chart12 = chartInstance;
             }
 
-            // Execução inicial
+            // --- EXECUÇÃO INICIAL ---
             createStaticCharts();
             updateAllDynamicCharts();
             filterCharts('principais');
