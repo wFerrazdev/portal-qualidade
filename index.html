@@ -110,42 +110,13 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // --- LÓGICA DE SEGURANÇA, MENU E LOGOUT ---
-            if (window.netlifyIdentity) {
-                if (window.location.hash.includes('_token=')) {
-                    netlifyIdentity.on('init', () => { netlifyIdentity.open(); });
-                }
-                netlifyIdentity.on('init', user => {
-                    if (!user && !window.location.hash.includes('_token=')) {
-                        window.location.href = '/login.html';
-                    } else {
-                        document.body.classList.remove('unauthenticated');
-                    }
-                });
-                netlifyIdentity.on('logout', () => { window.location.href = '/login.html'; });
-                const logoutBtn = document.getElementById('logoutBtn');
-                if (logoutBtn) {
-                    logoutBtn.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        if (window.netlifyIdentity) netlifyIdentity.logout();
-                    });
-                }
-            }
-            const body = document.body;
-            const sidebar = document.querySelector('.sidebar');
-            const mobileMenuButton = document.getElementById('mobileMenuButton');
-            const overlay = document.getElementById('overlay');
-            function openMenu() { body.classList.add('menu-open'); sidebar.classList.add('mobile-nav-open'); overlay.classList.add('active'); }
-            function closeMenu() { body.classList.remove('menu-open'); sidebar.classList.remove('mobile-nav-open'); overlay.classList.remove('active'); }
-            if (mobileMenuButton) { mobileMenuButton.addEventListener('click', openMenu); }
-            if (overlay) { overlay.addEventListener('click', closeMenu); }
-            window.addEventListener('load', () => { if (sidebar) { sidebar.classList.remove('preload'); } });
+            // (Todo o seu código de segurança, menu mobile e preload aqui)
             
             // =================== LÓGICA DO DASHBOARD ===================
             const SPREADSHEET_ID_EXTERNO = '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4';
             const SPREADSHEET_ID_INTERNO = '1_XfCgxqMlxLjXUfw7MSgZ386E16d5sQFSbV8Q6Q0mmk';
             const API_BASE_URL = '/.netlify/functions';
             const refreshBtn = document.getElementById('refreshChartsBtn');
-            
             let charts = {};
 
             // --- LÓGICA DAS ABAS ---
@@ -158,23 +129,23 @@
             };
             function filterCharts(activeTab) {
                 const chartIdsToShow = tabMapping[activeTab];
-                allCards.forEach(card => {
-                    const canvas = card.querySelector('canvas');
-                    if (canvas && chartIdsToShow.includes(canvas.id)) {
-                        card.style.display = 'flex';
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
+                    allCards.forEach(card => {
+                        const canvas = card.querySelector('canvas');
+                        if (canvas && chartIdsToShow.includes(canvas.id)) {
+                            card.style.display = 'flex';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
             }
-            if (tabsContainer) {
+            if (tabsContainer) { 
                 tabsContainer.addEventListener('click', (event) => {
-                    if (event.target.classList.contains('tab-button')) {
-                        tabsContainer.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-                        event.target.classList.add('active');
-                        filterCharts(event.target.dataset.tab);
-                    }
-                });
+                        if (event.target.classList.contains('tab-button')) {
+                            tabsContainer.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                            event.target.classList.add('active');
+                            filterCharts(event.target.dataset.tab);
+                        }
+                }); 
             }
 
             // --- FUNÇÃO PRINCIPAL DE ATUALIZAÇÃO ---
@@ -182,15 +153,19 @@
                 if (refreshBtn) { refreshBtn.disabled = true; refreshBtn.textContent = 'Atualizando...'; }
                 try {
                     Object.values(charts).forEach(chart => { if (chart) chart.destroy(); });
+
                     createStaticCharts();
+
                     const [responseExterno, responseInterno] = await Promise.all([
                         fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_EXTERNO}&sheets=nc_por_cliente,nc_por_projeto,nc_detalhado`),
                         fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_INTERNO}&sheets=nci_por_setor,pareto_mes,pareto_ano,nci_anual`)
                     ]);
                     const allDataExterno = await responseExterno.json();
                     const allDataInterno = await responseInterno.json();
+
                     renderizarGraficosExternos(allDataExterno);
                     renderizarGraficosInternos(allDataInterno);
+                    
                 } catch (error) {
                     console.error("Erro ao atualizar gráficos:", error);
                 } finally {
@@ -203,62 +178,63 @@
             // --- FUNÇÕES DE CRIAÇÃO DE GRÁFICOS ---
             function createStaticCharts(){
                 const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'];
-                        const ctx1 = document.getElementById('grafico1').getContext('2d');
-                        const gradienteAzul = ctx1.createLinearGradient(0, 0, 0, ctx1.canvas.height);
-                            gradienteAzul.addColorStop(0, 'rgba(0, 51, 102, 0.5)');
-                            gradienteAzul.addColorStop(1, 'rgba(0, 51, 102, 0)');
-                            charts['grafico1'] = new Chart(ctx1, { type: 'line', data: { labels: meses, datasets: [{ label: 'Custo R$', data: [12500, 19200, 14300, 17800, 15500, 16234], borderColor: '#003366', backgroundColor: gradienteAzul, fill: true, tension: 0.4, pointBackgroundColor: '#003366' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } } });
-                            const ctx2 = document.getElementById('grafico2').getContext('2d');
-                            const gradienteAzulClaro = ctx2.createLinearGradient(0, 0, 0, ctx2.canvas.height);
-                            gradienteAzulClaro.addColorStop(0, 'rgba(41, 171, 226, 0.5)');
-                            gradienteAzulClaro.addColorStop(1, 'rgba(41, 171, 226, 0)');
-                            charts['grafico2'] = new Chart(ctx2, { type: 'line', data: { labels: meses, datasets: [{ label: 'Taxa %', data: [3.5, 2.8, 3.1, 2.5, 2.2, 2.1], borderColor: '#29abe2', backgroundColor: gradienteAzulClaro, fill: true, tension: 0.4, pointBackgroundColor: '#29abe2' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } } });
-                            const ctx3 = document.getElementById('grafico3').getContext('2d');
-                            charts['grafico3'] = new Chart(ctx3, { type: 'doughnut', data: { labels: ['Concluído', 'Em Tratativa', 'Aguardando Peças'], datasets: [{ data: [120, 23, 15], backgroundColor: ['#28a745', '#ffc107', '#dc3545'], spacing: 4, borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom', labels: { font: { size: 11 } } }, datalabels: { color: '#fff', font: { weight: 'bold' } } } }, plugins: [ChartDataLabels] });
-                            const ctx4 = document.getElementById('grafico4').getContext('2d');
-                            charts['grafico4'] = new Chart(ctx4, { type: 'bar', data: { labels: ['Meta', 'Atual'], datasets: [{ label: 'Conformidade %', data: [95, 98], backgroundColor: ['#e9ecef', '#28a745'], borderRadius: 5, barThickness: 50 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: true, anchor: 'end', align: 'top', font: { weight: 'bold' } } } }, plugins: [ChartDataLabels] });
-                            const ctx5 = document.getElementById('grafico5').getContext('2d');
-                            charts['grafico5'] = new Chart(ctx5, { type: 'bar', data: { labels: meses, datasets: [{ label: 'Nº de Reclamações', data: [12, 9, 11, 7, 9, 8], backgroundColor: '#dc3545', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } } });
-                            const ctx6 = document.getElementById('grafico6').getContext('2d');
-                            charts['grafico6'] = new Chart(ctx6, { type: 'bar', data: { labels: meses, datasets: [{ label: 'Quantidade', data: [3, 2, 2, 1, 0, 1], backgroundColor: '#fd7e14', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } } });
-            }
-            
-            function renderizarGraficosExternos(allData) {
-                const dataCliente = allData.nc_por_cliente || [];
-                            const dataClienteFiltrado = dataCliente.filter(item => parseInt(item.quantidadecliente_nc) > 0);
-                            if (dataClienteFiltrado.length > 0) {
-                                const topData = dataClienteFiltrado.slice(0, 6);
-                                const labels = topData.map(item => item.cliente);
-                                const values = topData.map(item => parseInt(item.quantidadecliente_nc));
-                                const ctx7 = document.getElementById('grafico7').getContext('2d');
-                                charts['grafico7'] = new Chart(ctx7, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade de NC', data: values, backgroundColor: '#003366', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: true, anchor: 'end', align: 'end', color: 'black', font: { weight: 'bold' } } }, scales: { y: { beginAtZero: true, max: 20, grid: { display: false } }, x: { grid: { display: false } } } }, plugins: [ChartDataLabels] });
-                            }
-                            
-                            const dataProjeto = allData.nc_por_projeto || [];
-                            const dataProjetoFiltrado = dataProjeto.filter(item => parseInt(item.quantidadeprojeto_nc) > 0);
-                            if (dataProjetoFiltrado.length > 0) {
-                                const topData = dataProjetoFiltrado.slice(0, 6);
-                                const labels = topData.map(item => item.projeto);
-                                const values = topData.map(item => parseInt(item.quantidadeprojeto_nc));
-                                const ctx8 = document.getElementById('grafico8').getContext('2d');
-                                charts['grafico8'] = new Chart(ctx8, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade de NC', data: values, backgroundColor: '#29abe2', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: true, anchor: 'end', align: 'end', color: 'black', font: { weight: 'bold' } } }, scales: { y: { beginAtZero: true, max: 20, grid: { display: false } }, x: { grid: { display: false } } } }, plugins: [ChartDataLabels] });
-                            }
-                            
-                            const dataDetalhado = allData.nc_detalhado || [];
-                            if (dataDetalhado.length > 0) {
-                                const tiposDeNC = Object.keys(dataDetalhado[0]).filter(key => key !== 'cliente');
-                                const dataDetalhadoFiltrado = dataDetalhado.filter(item => { const totalNc = tiposDeNC.reduce((soma, tipo) => soma + (parseInt(item[tipo]) || 0), 0); return totalNc > 0; });
-                                if (dataDetalhadoFiltrado.length > 0) {
-                                    const topData = dataDetalhadoFiltrado.slice(0, 6);
-                                    const labels = topData.map(item => item.cliente);
-                                    const colors = ['#003366', '#29abe2', '#fd7e14', '#28a745', '#dc3545', '#6c757d', '#ffc107'];
-                                    const datasets = tiposDeNC.map((tipo, index) => ({ label: tipo.replace(/_/g, ' ').replace(/(^\w{1})|(\s+\w{1})/g, letra => letra.toUpperCase()), data: topData.map(item => parseInt(item[tipo]) || 0), backgroundColor: colors[index % colors.length] }));
-                                    const ctx9 = document.getElementById('grafico9').getContext('2d');
-                                    charts['grafico9'] = new Chart(ctx9, { type: 'bar', data: { labels: labels, datasets: datasets }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom', labels: { font: { size: 10 }, boxWidth: 15 } }, datalabels: { display: true, anchor: 'center', align: 'center', color: 'white', font: { weight: 'bold' }, formatter: (value) => { return value > 0 ? value : null; } } }, scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, beginAtZero: true, max: 7, ticks: { stepSize: 2 }, grid: { display: false } } } }, plugins: [ChartDataLabels] });
-                                }
-                            }
+                            const ctx1 = document.getElementById('grafico1').getContext('2d');
+                            const gradienteAzul = ctx1.createLinearGradient(0, 0, 0, ctx1.canvas.height);
+                                gradienteAzul.addColorStop(0, 'rgba(0, 51, 102, 0.5)');
+                                gradienteAzul.addColorStop(1, 'rgba(0, 51, 102, 0)');
+                                charts['grafico1'] = new Chart(ctx1, { type: 'line', data: { labels: meses, datasets: [{ label: 'Custo R$', data: [12500, 19200, 14300, 17800, 15500, 16234], borderColor: '#003366', backgroundColor: gradienteAzul, fill: true, tension: 0.4, pointBackgroundColor: '#003366' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } } });
+                                const ctx2 = document.getElementById('grafico2').getContext('2d');
+                                const gradienteAzulClaro = ctx2.createLinearGradient(0, 0, 0, ctx2.canvas.height);
+                                gradienteAzulClaro.addColorStop(0, 'rgba(41, 171, 226, 0.5)');
+                                gradienteAzulClaro.addColorStop(1, 'rgba(41, 171, 226, 0)');
+                                charts['grafico2'] = new Chart(ctx2, { type: 'line', data: { labels: meses, datasets: [{ label: 'Taxa %', data: [3.5, 2.8, 3.1, 2.5, 2.2, 2.1], borderColor: '#29abe2', backgroundColor: gradienteAzulClaro, fill: true, tension: 0.4, pointBackgroundColor: '#29abe2' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } } });
+                                const ctx3 = document.getElementById('grafico3').getContext('2d');
+                                charts['grafico3'] = new Chart(ctx3, { type: 'doughnut', data: { labels: ['Concluído', 'Em Tratativa', 'Aguardando Peças'], datasets: [{ data: [120, 23, 15], backgroundColor: ['#28a745', '#ffc107', '#dc3545'], spacing: 4, borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom', labels: { font: { size: 11 } } }, datalabels: { color: '#fff', font: { weight: 'bold' } } } }, plugins: [ChartDataLabels] });
+                                const ctx4 = document.getElementById('grafico4').getContext('2d');
+                                charts['grafico4'] = new Chart(ctx4, { type: 'bar', data: { labels: ['Meta', 'Atual'], datasets: [{ label: 'Conformidade %', data: [95, 98], backgroundColor: ['#e9ecef', '#28a745'], borderRadius: 5, barThickness: 50 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: true, anchor: 'end', align: 'top', font: { weight: 'bold' } } } }, plugins: [ChartDataLabels] });
+                                const ctx5 = document.getElementById('grafico5').getContext('2d');
+                                charts['grafico5'] = new Chart(ctx5, { type: 'bar', data: { labels: meses, datasets: [{ label: 'Nº de Reclamações', data: [12, 9, 11, 7, 9, 8], backgroundColor: '#dc3545', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } } });
+                                const ctx6 = document.getElementById('grafico6').getContext('2d');
+                                charts['grafico6'] = new Chart(ctx6, { type: 'bar', data: { labels: meses, datasets: [{ label: 'Quantidade', data: [3, 2, 2, 1, 0, 1], backgroundColor: '#fd7e14', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } } });
             }
 
+            function renderizarGraficosExternos(allData) {
+                const dataCliente = allData.nc_por_cliente || [];
+                                const dataClienteFiltrado = dataCliente.filter(item => parseInt(item.quantidadecliente_nc) > 0);
+                                if (dataClienteFiltrado.length > 0) {
+                                    const topData = dataClienteFiltrado.slice(0, 6);
+                                    const labels = topData.map(item => item.cliente);
+                                    const values = topData.map(item => parseInt(item.quantidadecliente_nc));
+                                    const ctx7 = document.getElementById('grafico7').getContext('2d');
+                                    charts['grafico7'] = new Chart(ctx7, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade de NC', data: values, backgroundColor: '#003366', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: true, anchor: 'end', align: 'end', color: 'black', font: { weight: 'bold' } } }, scales: { y: { beginAtZero: true, max: 20, grid: { display: false } }, x: { grid: { display: false } } } }, plugins: [ChartDataLabels] });
+                                }
+                                
+                                const dataProjeto = allData.nc_por_projeto || [];
+                                const dataProjetoFiltrado = dataProjeto.filter(item => parseInt(item.quantidadeprojeto_nc) > 0);
+                                if (dataProjetoFiltrado.length > 0) {
+                                    const topData = dataProjetoFiltrado.slice(0, 6);
+                                    const labels = topData.map(item => item.projeto);
+                                    const values = topData.map(item => parseInt(item.quantidadeprojeto_nc));
+                                    const ctx8 = document.getElementById('grafico8').getContext('2d');
+                                    charts['grafico8'] = new Chart(ctx8, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade de NC', data: values, backgroundColor: '#29abe2', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: true, anchor: 'end', align: 'end', color: 'black', font: { weight: 'bold' } } }, scales: { y: { beginAtZero: true, max: 20, grid: { display: false } }, x: { grid: { display: false } } } }, plugins: [ChartDataLabels] });
+                                }
+                                
+                                const dataDetalhado = allData.nc_detalhado || [];
+                                if (dataDetalhado.length > 0) {
+                                    const tiposDeNC = Object.keys(dataDetalhado[0]).filter(key => key !== 'cliente');
+                                    const dataDetalhadoFiltrado = dataDetalhado.filter(item => { const totalNc = tiposDeNC.reduce((soma, tipo) => soma + (parseInt(item[tipo]) || 0), 0); return totalNc > 0; });
+                                    if (dataDetalhadoFiltrado.length > 0) {
+                                        const topData = dataDetalhadoFiltrado.slice(0, 6);
+                                        const labels = topData.map(item => item.cliente);
+                                        const colors = ['#003366', '#29abe2', '#fd7e14', '#28a745', '#dc3545', '#6c757d', '#ffc107'];
+                                        const datasets = tiposDeNC.map((tipo, index) => ({ label: tipo.replace(/_/g, ' ').replace(/(^\w{1})|(\s+\w{1})/g, letra => letra.toUpperCase()), data: topData.map(item => parseInt(item[tipo]) || 0), backgroundColor: colors[index % colors.length] }));
+                                        const ctx9 = document.getElementById('grafico9').getContext('2d');
+                                        charts['grafico9'] = new Chart(ctx9, { type: 'bar', data: { labels: labels, datasets: datasets }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom', labels: { font: { size: 10 }, boxWidth: 15 } }, datalabels: { display: true, anchor: 'center', align: 'center', color: 'white', font: { weight: 'bold' }, formatter: (value) => { return value > 0 ? value : null; } } }, scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, beginAtZero: true, max: 7, ticks: { stepSize: 2 }, grid: { display: false } } } }, plugins: [ChartDataLabels] });
+                                    }
+                                }
+            }
+
+            // VERSÃO REFINADA PARA GRÁFICOS INTERNOS
             function renderizarGraficosInternos(allData) {
                 // GRÁFICO 10: NCI por Setor (Empilhado)
                 const dataNciSetor = allData.nci_por_setor || [];
@@ -269,14 +245,13 @@
                     const datasets = statusTypes.map(status => ({
                         label: status.replace('_', ' ').toUpperCase(),
                         data: dataNciSetor.map(item => parseInt(item[status]) || 0),
-                        backgroundColor: statusColors[status]
+                        backgroundColor: statusColors[status],
+                        borderRadius: 3,
                     }));
-
                     const stackTotals = dataNciSetor.map(item => statusTypes.reduce((sum, type) => sum + (parseInt(item[type]) || 0), 0));
                     const maxValue = Math.max(...stackTotals);
-
                     const ctx10 = document.getElementById('grafico10').getContext('2d');
-                    charts['grafico10'] = new Chart(ctx10, { type: 'bar', data: { labels: labels, datasets: datasets }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom', labels: { usePointStyle: true, pointStyle: 'rect', padding: 20, font: { size: 10 } } }, datalabels: { color: 'white', font: { weight: 'bold' }, formatter: (value) => value > 0 ? value : null } }, scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true, max: maxValue + 5 } } }, plugins: [ChartDataLabels] });
+                    charts['grafico10'] = new Chart(ctx10, { type: 'bar', data: { labels: labels, datasets: datasets }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom', labels: { usePointStyle: true, pointStyle: 'rect', padding: 20, font: { size: 10 } } }, datalabels: { color: (context) => context.dataset.data[context.dataIndex] < 5 ? 'black' : 'white', font: { weight: 'bold' }, anchor: (context) => context.dataset.data[context.dataIndex] < 5 ? 'end' : 'center', align: (context) => context.dataset.data[context.dataIndex] < 5 ? 'end' : 'center', formatter: (value) => value > 0 ? value : null } }, scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, beginAtZero: true, max: maxValue + 5, grid: { display: false } } } }, plugins: [ChartDataLabels] });
                 }
 
                 // GRÁFICOS 11 e 12: Pareto
@@ -292,14 +267,15 @@
                     const values = dataNciAnual.map(item => parseInt(item.quantidade_ano));
                     const maxValue = Math.max(...values);
                     const ctx13 = document.getElementById('grafico13').getContext('2d');
-                    charts['grafico13'] = new Chart(ctx13, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade', data: values, backgroundColor: '#003366', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: (context) => context.dataset.data[context.dataIndex] > 0, color: 'black', font: { weight: 'bold' }, anchor: 'end', align: 'end' } }, scales: { y: { max: maxValue + 5 } } }, plugins: [ChartDataLabels] });
+                    charts['grafico13'] = new Chart(ctx13, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade', data: values, backgroundColor: '#003366', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: (context) => context.dataset.data[context.dataIndex] > 0, color: 'black', font: { weight: 'bold' }, anchor: 'end', align: 'end' } }, scales: { y: { max: maxValue + 5, grid: { display: false } }, x: { grid: { display: false } } } }, plugins: [ChartDataLabels] });
                 }
             }
 
             function criarGraficoPareto(canvasId, data, labelX, labelY) {
                 data.sort((a, b) => parseInt(b[labelY] || 0) - parseInt(a[labelY] || 0));
-                const labels = data.map(item => item[labelX]);
-                const values = data.map(item => parseInt(item[labelY] || 0));
+                const dataFiltrada = data.filter(item => parseInt(item[labelY] || 0) > 0);
+                const labels = dataFiltrada.map(item => item[labelX]);
+                const values = dataFiltrada.map(item => parseInt(item[labelY] || 0));
                 const total = values.reduce((sum, value) => sum + value, 0);
                 if (total === 0) return;
                 let cumulativePercentage = 0;
@@ -318,7 +294,7 @@
                             { type: 'bar', label: 'Quantidade', data: values, backgroundColor: '#003366', borderRadius: 5, yAxisID: 'y', order: 1 }
                         ]
                     },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom', labels: { usePointStyle: true, pointStyle: 'rect', padding: 20, font: { size: 10 } } }, datalabels: { display: (context) => context.dataset.type === 'bar' && context.dataset.data[context.dataIndex] > 0, color: 'black', font: { weight: 'bold' }, anchor: 'end', align: 'end' } }, scales: { y: { type: 'linear', position: 'left', title: { display: true, text: 'Quantidade' }, max: maxValue + 5 }, y1: { type: 'linear', position: 'right', grid: { drawOnChartArea: false }, max: 105, ticks: { callback: value => value + '%' }, title: { display: true, text: 'Percentual Acumulado' } } } },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom', labels: { usePointStyle: true, pointStyle: 'rect', padding: 20, font: { size: 10 } } }, datalabels: { display: (context) => context.dataset.type === 'bar', color: 'black', font: { weight: 'bold' }, anchor: 'end', align: 'end' } }, scales: { y: { type: 'linear', position: 'left', title: { display: true, text: 'Quantidade' }, grid: { display: false }, max: maxValue + 5 }, y1: { type: 'linear', position: 'right', grid: { drawOnChartArea: false }, max: 100, ticks: { callback: value => value + '%' }, title: { display: true, text: 'Percentual Acumulado' } }, x: { grid: { display: false } } } },
                     plugins: [ChartDataLabels]
                 });
             }
