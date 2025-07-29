@@ -535,7 +535,7 @@ body.menu-open .main-content { filter: blur(4px); }
 
 .tab-button:hover {
     color: #003366;
-    background-color: #f8f9fa;
+    background-color: #6073a7;
 }
 
 .tab-button.active {
