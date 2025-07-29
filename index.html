@@ -185,9 +185,9 @@
             });
 
             // Filtra para a aba "principais" no carregamento inicial
-            //filterCharts('principais');
+            filterCharts('principais');
             
-            let chart1, chart2, chart3, chart4, chart5, chart6, chart7, chart8, chart9, chart10, chart11, chart12, chart13;
+            let chart1, chart2, chart3, chart4, chart5, chart6;
             
             function createStaticCharts(){
                 const ctx1 = document.getElementById('grafico1').getContext('2d');
@@ -210,7 +210,7 @@
                 new Chart(ctx6, { type: 'bar', data: { labels: meses, datasets: [{ label: 'Quantidade', data: [3, 2, 2, 1, 0, 1], backgroundColor: '#fd7e14', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } } });
             }
 
-            //let chart7, chart8, chart9;
+            let chart7, chart8, chart9, chart10, chart11, chart12, chart13;
             async function updateDynamicCharts() {
                 if (refreshBtn) { refreshBtn.disabled = true; refreshBtn.textContent = 'Atualizando...'; }
                 try {
@@ -269,8 +269,8 @@
             if (refreshBtn) {
                 refreshBtn.addEventListener('click', updateDynamicCharts);
             }
-            //createStaticCharts();
-            //updateDynamicCharts();
+            createStaticCharts();
+            updateDynamicCharts();
             // GRÁFICO 10: RIF por Setor (Empilhado com cores por status)
             async function loadRifPorSetorChart() {
                 try {
@@ -355,9 +355,9 @@
                     new Chart(ctx13, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade', data: values, backgroundColor: '#003366', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { color: 'black', font: { weight: 'bold' }, anchor: 'end', align: 'end' } } }, plugins: [ChartDataLabels] });
                 } catch (error) { console.error("Erro Gráfico 13:", error); }
             }
-            createStaticCharts();
-            updateDynamicCharts();
-            filterCharts('principais');
+            //createStaticCharts();
+            //updateDynamicCharts();
+            //ilterCharts('principais');
             loadRifPorSetorChart();
             loadParetoMesChart();
             loadParetoAnoChart();
