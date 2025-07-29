@@ -279,8 +279,8 @@
                         data: {
                             labels: labels,
                             datasets: [
-                                { type: 'bar', label: 'Quantidade', data: values, backgroundColor: '#003366', borderRadius: 5, yAxisID: 'y' },
-                                { type: 'line', label: 'Cumulativo %', data: paretoData, borderColor: '#dc3545', tension: 0.3, yAxisID: 'y1' }
+                                { type: 'bar', label: 'Quantidade', data: values, backgroundColor: '#003366', borderRadius: 5, yAxisID: 'y1' },
+                                { type: 'line', label: 'Cumulativo %', data: paretoData, borderColor: '#dc3545', tension: 0.3, yAxisID: 'y' }
                             ]
                         },
                         options: { 
@@ -318,7 +318,7 @@
                         backgroundColor: statusColors[status]
                     }));
                     const ctx10 = document.getElementById('grafico10').getContext('2d');
-                    charts['grafico10'] = new Chart(ctx10, { type: 'bar', data: { labels, datasets }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom' }, datalabels: { color: 'white', font: { weight: 'bold' }, formatter: (value) => value > 0 ? value : null } }, scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true } } }, plugins: [ChartDataLabels] });
+                    charts['grafico10'] = new Chart(ctx10, { type: 'bar', data: { labels, datasets }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom' }, datalabels: { color: 'black', font: { weight: 'bold' }, formatter: (value) => value > 0 ? value : null } }, scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true } } }, plugins: [ChartDataLabels] });
                 }
 
                 // GRÁFICOS 11 e 12: Pareto
