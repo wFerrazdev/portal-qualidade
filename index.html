@@ -201,7 +201,6 @@
                 try {
                     [chart7, chart8, chart9, chart10, chart11, chart12, chart13].forEach(c => { if(c) c.destroy(); });
 
-                    // Busca dados das DUAS planilhas em paralelo
                     const [responseExterno, responseInterno] = await Promise.all([
                         fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_EXTERNO}&sheets=nc_por_cliente,nc_por_projeto,nc_detalhado`),
                         fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_INTERNO}&sheets=rif_por_setor,pareto_mes,pareto_ano,rif_anual`)
@@ -209,19 +208,9 @@
                     const allDataExterno = await responseExterno.json();
                     const allDataInterno = await responseInterno.json();
 
-                    renderizarGraficosExternos(allDataExterno);
-                    renderizarGraficosInternos(allDataInterno);
-                    
-                } catch (error) {
-                    console.error("Erro ao atualizar gráficos dinâmicos:", error);
-                } finally {
-                    if (refreshBtn) { refreshBtn.disabled = false; refreshBtn.textContent = 'Atualizar'; }
-                }
-            }
-            function renderizarGraficosExternos(allData) {
                     // GRÁFICO 7: NC por Cliente
-                const dataCliente = allDataExterno.nc_por_cliente || [];
-                const dataClienteFiltrado = dataCliente.filter(item => parseInt(item.quantidadecliente_nc) > 0);
+                    const dataCliente = allDataExterno.nc_por_cliente || [];
+                    const dataClienteFiltrado = dataCliente.filter(item => parseInt(item.quantidadecliente_nc) > 0);
                     if (dataClienteFiltrado.length > 0) {
                         const topData = dataClienteFiltrado.slice(0, 6);
                         const labels = topData.map(item => item.cliente);
@@ -255,8 +244,7 @@
                             chart9 = new Chart(ctx9, { type: 'bar', data: { labels: labels, datasets: datasets }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom', labels: { font: { size: 10 }, boxWidth: 15 } }, datalabels: { display: true, anchor: 'center', align: 'center', color: 'white', font: { weight: 'bold' }, formatter: (value) => { return value > 0 ? value : null; } } }, scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, beginAtZero: true, max: 7, ticks: { stepSize: 2 }, grid: { display: false } } } }, plugins: [ChartDataLabels] });
                         }
                     }
-            }   
-            function renderizarGraficosInternos(allData) {        
+                    
                     // GRÁFICO 10: RIF por Setor (Empilhado com cores por status)
                     const dataRifSetor = allData.rif_por_setor || [];
                     if (dataRifSetor.length > 0) {
@@ -272,7 +260,7 @@
                         chart10 = new Chart(ctx10, { type: 'bar', data: { labels: labels, datasets: datasets }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom' }, datalabels: { color: 'black', font: { weight: 'bold' } } }, scales: { x: { stacked: true }, y: { stacked: true } } }, plugins: [ChartDataLabels] });
                     }
 
-                        // GRÁFICOS 11 e 12: Pareto
+                    // GRÁFICOS 11 e 12: Pareto
                     const dataParetoMes = allData.pareto_mes || [];
                     if (dataParetoMes.length > 0) criarGraficoPareto('grafico11', dataParetoMes, 'DEFEITO', 'QTD');
                     const dataParetoAno = allData.pareto_ano || [];
@@ -287,6 +275,11 @@
                         chart13 = new Chart(ctx13, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade', data: values, backgroundColor: '#003366', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { color: 'black', font: { weight: 'bold' }, anchor: 'end', align: 'end' } } }, plugins: [ChartDataLabels] });
                     }
 
+                } catch (error) {
+                    console.error("Erro ao atualizar gráficos dinâmicos:", error);
+                } finally {
+                    if (refreshBtn) { refreshBtn.disabled = false; refreshBtn.textContent = 'Atualizar'; }
+                }
             }
             
             function criarGraficoPareto(canvasId, data, labelX, labelY) {
@@ -317,7 +310,7 @@
                 if (canvasId === 'grafico12') chart12 = chartInstance;
             }
 
-            // --- EXECUÇÃO INICIAL ---
+            // Execução inicial
             createStaticCharts();
             updateAllDynamicCharts();
             filterCharts('principais');
