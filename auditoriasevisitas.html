@@ -128,13 +128,20 @@
             });
         }
         // Script de Proteção de Página (Final e com Suporte a Tokens)
+        // Script de Proteção de Página (Anti-Loop e com Suporte a Tokens)
         if (window.location.hash.includes('_token=')) {
+            // Se tiver um token, redireciona para a página de login para que o widget possa processá-lo
             window.location.href = '/login.html' + window.location.hash;
         } else {
+            // Se NÃO tiver um token, fazemos a verificação de segurança normal
             if (window.netlifyIdentity) {
                 netlifyIdentity.on('init', user => {
                     if (!user) {
+                        // Se, após a inicialização, não houver usuário, redireciona
                         window.location.href = '/login.html';
+                    } else {
+                        // Se houver um usuário, removemos a classe que esconde o corpo da página
+                        document.body.classList.remove('unauthenticated');
                     }
                 });
             }
