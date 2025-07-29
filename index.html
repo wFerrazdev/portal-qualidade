@@ -345,7 +345,11 @@
                 new Chart(ctx13, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade', data: values, backgroundColor: '#003366', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { color: 'black', font: { weight: 'bold' }, anchor: 'end', align: 'end' } } }, plugins: [ChartDataLabels] });
             } catch (error) { console.error("Erro Gráfico 13:", error); }
         }
-
+        loadRifPorSetorChart();
+        loadParetoMesChart();
+        loadParetoAnoChart();
+        loadRifAnualChart();
+        
         });
     </script>
 </body>
