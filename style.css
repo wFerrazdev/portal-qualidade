@@ -511,3 +511,34 @@ body.menu-open .main-content { filter: blur(4px); }
 .viewer-mode .card-actions a.ata-button + .edit-button /* ajuste fino para a lista de reuniões */ {
     display: none !important;
 }
+
+/* --- ESTILOS DAS ABAS DO DASHBOARD --- */
+.dashboard-tabs {
+    display: flex;
+    gap: 10px;
+    border-bottom: 2px solid #dee2e6;
+    margin-bottom: 30px;
+}
+
+.tab-button {
+    padding: 10px 20px;
+    font-size: 1em;
+    font-weight: 600;
+    color: #6c757d;
+    background-color: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-bottom: -2px; /* Alinha a borda de baixo com a borda do container */
+}
+
+.tab-button:hover {
+    color: #003366;
+    background-color: #f8f9fa;
+}
+
+.tab-button.active {
+    color: #003366;
+    border-bottom-color: #003366;
+}

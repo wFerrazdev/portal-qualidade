@@ -68,6 +68,11 @@
             </header>
 
             <main class="content-area">
+                <div class="dashboard-tabs">
+                    <button class="tab-button active" data-tab="principais">Principais</button>
+                    <button class="tab-button" data-tab="calibracao">Calibração</button>
+                    <button class="tab-button" data-tab="fornecedores">Fornecedores</button>
+                </div>
                 <div class="indicators-grid">
                     <div class="indicator-card"><div class="card-info"><h3>Custos de Não-Qualidade</h3><p><strong>Valor Atual:</strong> R$ 16.234,00</p><p><strong>Meta:</strong> R$ 0,00</p></div><div class="card-graph"><canvas id="grafico1"></canvas></div></div>
                     <div class="indicator-card"><div class="card-info"><h3>Taxa de Retrabalho</h3><p><strong>Valor Atual:</strong> 2.1%</p><p><strong>Meta:</strong> &lt; 3%</p></div><div class="card-graph"><canvas id="grafico2"></canvas></div></div>
@@ -123,6 +128,47 @@
             const API_BASE_URL = '/.netlify/functions';
             const refreshBtn = document.getElementById('refreshChartsBtn');
             const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'];
+
+            // =================== LÓGICA DAS ABAS DO DASHBOARD ===================
+            const tabsContainer = document.querySelector('.dashboard-tabs');
+            const indicatorsGrid = document.querySelector('.indicators-grid');
+            const allCards = Array.from(indicatorsGrid.querySelectorAll('.indicator-card'));
+
+            // Mapeamento de quais cards pertencem a cada aba
+            // Usamos os IDs das canvases para identificar os gráficos
+            const tabMapping = {
+                'principais': ['grafico1', 'grafico2', 'grafico3', 'grafico4', 'grafico5', 'grafico6'],
+                'calibracao': ['grafico7', 'grafico8'], // Exemplo: Gráficos 7 e 8
+                'fornecedores': ['grafico9'] // Exemplo: Gráfico 9
+            };
+
+            function filterCharts(activeTab) {
+                const chartIdsToShow = tabMapping[activeTab];
+
+                allCards.forEach(card => {
+                    const canvas = card.querySelector('canvas');
+                    if (canvas && chartIdsToShow.includes(canvas.id)) {
+                        card.style.display = 'flex'; // Mostra o card
+                    } else {
+                        card.style.display = 'none'; // Esconde o card
+                    }
+                });
+            }
+
+            tabsContainer.addEventListener('click', (event) => {
+                if (event.target.classList.contains('tab-button')) {
+                    // Remove a classe 'active' de todos os botões
+                    tabsContainer.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                    // Adiciona a classe 'active' ao botão clicado
+                    event.target.classList.add('active');
+
+                    const tabName = event.target.dataset.tab;
+                    filterCharts(tabName);
+                }
+            });
+
+            // Filtra para a aba "principais" no carregamento inicial
+            filterCharts('principais');
             
             function createStaticCharts(){
                 const ctx1 = document.getElementById('grafico1').getContext('2d');
