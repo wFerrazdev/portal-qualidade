@@ -395,19 +395,17 @@
                     refreshBtn.addEventListener('click', updateAllCharts);
                 }
 
-                // --- LÓGICA PARA REDIMENSIONAR GRÁFICOS AO GIRAR A TELA ---
-                let resizeTimeout;
-                window.addEventListener('orientationchange', () => {
-                    // Adicionamos um pequeno delay para dar tempo ao navegador de ajustar o layout
-                    clearTimeout(resizeTimeout);
-                    resizeTimeout = setTimeout(() => {
-                        // Passa por todos os gráficos que criamos e força o redimensionamento
+                // --- LÓGICA PARA REDIMENSIONAR GRÁFICOS AO MUDAR TAMANHO DA TELA ---
+                let resizeTimer;
+                window.addEventListener('resize', () => {
+                    clearTimeout(resizeTimer);
+                    resizeTimer = setTimeout(() => {
                         Object.values(charts).forEach(chart => {
                             if (chart) {
                                 chart.resize();
                             }
                         });
-                    }, 200); // 200 milissegundos de delay
+                    }, 250); // Delay de 250ms
                 });
             
             });
