@@ -394,6 +394,21 @@
             if (refreshBtn) {
                 refreshBtn.addEventListener('click', updateAllCharts);
             }
+
+            // --- LÓGICA PARA REDIMENSIONAR GRÁFICOS AO GIRAR A TELA ---
+            let resizeTimeout;
+            window.addEventListener('orientationchange', () => {
+                // Adicionamos um pequeno delay para dar tempo ao navegador de ajustar o layout
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(() => {
+                    // Passa por todos os gráficos que criamos e força o redimensionamento
+                    Object.values(charts).forEach(chart => {
+                        if (chart) {
+                            chart.resize();
+                        }
+                    });
+                }, 200); // 200 milissegundos de delay
+            });
         });
     </script>
 </body>
