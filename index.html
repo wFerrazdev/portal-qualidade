@@ -409,12 +409,26 @@
 
             // --- LÓGICA FINAL PARA REDIMENSIONAR GRÁFICOS ---
             // --- LÓGICA FINAL PARA REDIMENSIONAR GRÁFICOS ---
+            // --- LÓGICA FINAL PARA REDIMENSIONAR GRÁFICOS (COM SUAVIDADE) ---
             let resizeTimer;
             window.addEventListener('resize', () => {
+                // Adiciona a classe para esconder os gráficos imediatamente
+                document.body.classList.add('is-resizing');
+                
                 clearTimeout(resizeTimer);
                 resizeTimer = setTimeout(() => {
-                    // Apenas redesenha os gráficos com os dados já existentes
-                    renderAllCharts();
+                    Object.values(charts).forEach(chart => {
+                        if (chart && typeof chart.resize === 'function') {
+                            chart.resize();
+                        }
+                    });
+
+                    // Um pequeno delay extra antes de mostrar novamente para garantir que tudo foi renderizado
+                    setTimeout(() => {
+                        // Remove a classe para mostrar os gráficos com fade-in
+                        document.body.classList.remove('is-resizing');
+                    }, 50);
+
                 }, 250);
             });
         });
