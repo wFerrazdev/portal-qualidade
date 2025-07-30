@@ -158,7 +158,11 @@
             const API_BASE_URL = '/.netlify/functions';
             const refreshBtn = document.getElementById('refreshChartsBtn');
             
-            const charts = {};
+            let charts = {};
+            //const charts = {};
+            let lastDataExterno = {};
+            let lastDataInterno = {};
+            let lastDataRifs = {};
 
             // --- LÓGICA DAS ABAS ---
             const tabsContainer = document.querySelector('.dashboard-tabs');
@@ -193,20 +197,18 @@
             async function updateAllCharts() {
                 if (refreshBtn) { refreshBtn.disabled = true; refreshBtn.textContent = 'Atualizando...'; }
                 try {
-                    Object.values(charts).forEach(chart => { if (chart) chart.destroy(); });
-
                     const [responseExterno, responseInterno, responseRifs] = await Promise.all([
                         fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_EXTERNO}&sheets=nc_por_cliente,nc_por_projeto,nc_detalhado`),
                         fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_INTERNO}&sheets=nci_por_setor,pareto_mes,pareto_ano,nci_anual`),
                         fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_RIFS}&sheets=status_por_fornecedor_ano,status_por_fornecedor_mes,pareto_rifs`)
                     ]);
-                    const allDataExterno = await responseExterno.json();
-                    const allDataInterno = await responseInterno.json();
-                    const allDataRifs = await responseRifs.json();
+                    lastDataExterno = await responseExterno.json();
+                    lastDataInterno = await responseInterno.json();
+                    lastDataRifs = await responseRifs.json();
 
-                    renderizarGraficosPrincipais(allDataRifs);
-                    renderizarGraficosExternos(allDataExterno);
-                    renderizarGraficosInternos(allDataInterno);
+                    // Agora, renderiza os gráficos estáticos e os dinâmicos
+                    createStaticCharts();
+                    renderAllCharts();
                     
                 } catch (error) {
                     console.error("Erro ao atualizar gráficos:", error);
@@ -319,6 +321,22 @@
                     plugins: [ChartDataLabels]
                 });
             }
+            function renderAllCharts() {
+                Object.values(charts).forEach(chart => { if (chart) chart.destroy(); });
+
+                // Renderiza os gráficos principais (RIFs)
+                const dataRifAnual = lastDataRifs.status_por_fornecedor_ano || [];
+                criarGraficoRifStatus('grafico1', dataRifAnual);
+                const dataRifMensal = lastDataRifs.status_por_fornecedor_mes || [];
+                criarGraficoRifStatus('grafico2', dataRifMensal);
+                const dataParetoRifs = lastDataRifs.pareto_rifs || [];
+                if (dataParetoRifs.length > 0) criarGraficoPareto('grafico3', dataParetoRifs, 'fornecedor', 'quantidade_pareto');
+
+                // Renderiza os gráficos de NC Interna
+                renderizarGraficosInternos(lastDataInterno);
+                // Renderiza os gráficos Externos
+                renderizarGraficosExternos(lastDataExterno);
+            }
             function renderizarGraficosExternos(allData) {
                 const dataCliente = allData.nc_por_cliente || [];
                 const dataClienteFiltrado = dataCliente.filter(item => parseInt(item.quantidadecliente_nc) > 0);
@@ -390,20 +408,14 @@
             }
 
             // --- LÓGICA FINAL PARA REDIMENSIONAR GRÁFICOS ---
+            // --- LÓGICA FINAL PARA REDIMENSIONAR GRÁFICOS ---
             let resizeTimer;
             window.addEventListener('resize', () => {
-                // Limpa o timer anterior para evitar execuções múltiplas
                 clearTimeout(resizeTimer);
-                // Configura um novo timer para executar a função após 250ms
                 resizeTimer = setTimeout(() => {
-                    // Passa por todos os gráficos que criamos
-                    Object.values(charts).forEach(chart => {
-                        // Verifica se o gráfico existe e tem a função de redimensionar
-                        if (chart && typeof chart.resize === 'function') {
-                            chart.resize();
-                        }
-                    });
-                }, 250); // Um pequeno delay para garantir que o layout se estabilizou
+                    // Apenas redesenha os gráficos com os dados já existentes
+                    renderAllCharts();
+                }, 250);
             });
         });
     </script>
