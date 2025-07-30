@@ -542,3 +542,13 @@ body.menu-open .main-content { filter: blur(4px); }
     color: #003366;
     border-bottom-color: #003366;
 }
+
+/* Transição suave para os gráficos */
+.card-graph canvas {
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* Esconde o gráfico enquanto o body tem a classe 'is-resizing' */
+body.is-resizing .card-graph canvas {
+    opacity: 0;
+}
