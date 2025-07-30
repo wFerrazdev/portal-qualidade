@@ -225,7 +225,6 @@
                 }
             }
             
-            // --- FUNÇÕES DE CRIAÇÃO DE GRÁFICOS ---
             function renderizarGraficosPrincipais(allData) {
                 // GRÁFICO 1 e 2: RIFs por Fornecedor (Anual e Mensal)
                 criarGraficoRifStatus('grafico1', allData.status_por_fornecedor_ano || []);
@@ -233,23 +232,70 @@
 
                 // GRÁFICO 3: Pareto de RIFs
                 const dataParetoRifs = allData.pareto_rifs || [];
-                if (dataParetoRifs.length > 0) criarGraficoPareto('grafico3', dataParetoRifs, 'fornecedor', 'quantidade_pareto');
+                if (dataParetoRifs.length > 0) {
+                    // Passando o nome exato da coluna da sua planilha: 'quantidade_pareto'
+                    criarGraficoPareto('grafico3', dataParetoRifs, 'fornecedor', 'quantidade_pareto');
+                }
             }
-
+        
             function criarGraficoRifStatus(canvasId, data) {
                 if (data.length === 0) return;
+                
                 const labels = data.map(item => item.fornecedor);
+                // Usando os nomes exatos das suas colunas: 'concluido' e 'em_tratativa'
                 const statusTypes = ['concluido', 'em_tratativa'];
                 const statusColors = { 'concluido': '#28a745', 'em_tratativa': '#ffc107' };
-                const datasets = statusTypes.map(status => ({
-                    label: status.replace('_', ' ').toUpperCase(),
-                    data: data.map(item => parseInt(item[status]) || 0),
-                    backgroundColor: statusColors[status]
-                }));
+                
+                const datasets = statusTypes.map(status => {
+                    const ctx = document.getElementById(canvasId).getContext('2d');
+                    const gradiente = ctx.createLinearGradient(0, 0, 0, 200);
+                    if (status === 'concluido') {
+                        gradiente.addColorStop(0, 'rgba(40, 167, 69, 1)');
+                        gradiente.addColorStop(1, 'rgba(40, 167, 69, 0.7)');
+                    } else {
+                        gradiente.addColorStop(0, 'rgba(255, 193, 7, 1)');
+                        gradiente.addColorStop(1, 'rgba(255, 193, 7, 0.7)');
+                    }
+
+                    return {
+                        label: status.replace('_', ' ').toUpperCase(),
+                        data: data.map(item => parseInt(item[status]) || 0),
+                        backgroundColor: gradiente,
+                        borderRadius: 5,
+                    }
+                });
+
                 const stackTotals = data.map(item => statusTypes.reduce((sum, type) => sum + (parseInt(item[type]) || 0), 0));
                 const maxValue = Math.max(...stackTotals);
+                
                 const ctx = document.getElementById(canvasId).getContext('2d');
-                charts[canvasId] = new Chart(ctx, { type: 'bar', data: { labels, datasets }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom', labels:{ usePointStyle:true, pointStyle:'rect', padding: 20, font:{size:10} } }, datalabels: { color: 'black', font: { weight: 'bold' } } }, scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true, max: maxValue + 5 } } }, plugins: [ChartDataLabels] });
+                charts[canvasId] = new Chart(ctx, { 
+                    type: 'bar', 
+                    data: { labels: labels, datasets: datasets }, 
+                    options: { 
+                        responsive: true, 
+                        maintainAspectRatio: false, 
+                        plugins: { 
+                            legend: { 
+                                display: true, 
+                                position: 'bottom', 
+                                labels:{ usePointStyle:true, pointStyle:'rect', padding: 20, font:{size:10} } 
+                            }, 
+                            datalabels: { 
+                                color: 'white', 
+                                font: { weight: 'bold' }, 
+                                anchor: 'center', 
+                                align: 'center', 
+                                formatter: (value) => value > 0 ? value : null 
+                            } 
+                        }, 
+                        scales: { 
+                            x: { stacked: true, grid: { display: false } }, 
+                            y: { stacked: true, beginAtZero: true, max: maxValue + 5, grid: { display: false } } 
+                        } 
+                    }, 
+                    plugins: [ChartDataLabels] 
+                });
             }
 
             function criarGraficoPareto(canvasId, data, labelX, labelY) {
