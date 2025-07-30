@@ -207,7 +207,6 @@
                     lastDataRifs = await responseRifs.json();
 
                     // Agora, renderiza os gráficos estáticos e os dinâmicos
-                    createStaticCharts();
                     renderAllCharts();
                     
                 } catch (error) {
@@ -402,6 +401,7 @@
             
             // --- EXECUÇÃO INICIAL E EVENT LISTENERS ---
             updateAllCharts();
+
             if (tabsContainer) { filterCharts('principais'); }
             if (refreshBtn) {
                 refreshBtn.addEventListener('click', updateAllCharts);
