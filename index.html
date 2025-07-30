@@ -389,17 +389,21 @@
                 refreshBtn.addEventListener('click', updateAllCharts);
             }
 
-            // --- LÓGICA PARA REDIMENSIONAR GRÁFICOS AO MUDAR TAMANHO DA TELA ---
+            // --- LÓGICA FINAL PARA REDIMENSIONAR GRÁFICOS ---
             let resizeTimer;
             window.addEventListener('resize', () => {
+                // Limpa o timer anterior para evitar execuções múltiplas
                 clearTimeout(resizeTimer);
+                // Configura um novo timer para executar a função após 250ms
                 resizeTimer = setTimeout(() => {
+                    // Passa por todos os gráficos que criamos
                     Object.values(charts).forEach(chart => {
-                        if (chart) {
+                        // Verifica se o gráfico existe e tem a função de redimensionar
+                        if (chart && typeof chart.resize === 'function') {
                             chart.resize();
                         }
                     });
-                }, 250); // Delay de 250ms
+                }, 250); // Um pequeno delay para garantir que o layout se estabilizou
             });
         });
     </script>
