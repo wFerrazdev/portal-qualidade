@@ -8,25 +8,22 @@
     <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <script type="text/javascript">
+        // Adicionamos um escutador de evento direto no objeto 'netlifyIdentity'
+        // Ele garante que o código só rode quando o sistema de login estiver pronto.
+        window.netlifyIdentity && netlifyIdentity.on('init', user => {
+            // Se, após a inicialização, NÃO houver usuário...
+            if (!user) {
+                // ...redireciona para o login.
+                window.location.href = '/login.html';
+            } else {
+                // Se HOUVER um usuário, nós mostramos a página.
+                document.body.classList.remove('unauthenticated');
+            }
+        });
+    </script>
 </head>
 <body class="unauthenticated">
-
-    <script>
-        // Script de Segurança Anti-Flash e Anti-Loop
-        if (window.netlifyIdentity) {
-            if (window.location.hash.includes('_token=')) {
-                netlifyIdentity.on('init', () => { netlifyIdentity.open(); });
-            }
-            netlifyIdentity.on('init', user => {
-                if (!user && !window.location.hash.includes('_token=')) {
-                    window.location.href = '/login.html';
-                } else {
-                    document.body.classList.remove('unauthenticated');
-                }
-            });
-        }
-    </script>
-
     <div class="page-container">
         
         <aside class="sidebar preload">
@@ -40,7 +37,12 @@
                     <li><a href="projetos.html"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg><span>Projetos</span></a></li>
                     <li><a href="reunioes.html"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg><span>Reuniões</span></a></li>
                     <li><a href="auditoriasevisitas.html"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 12h6M7 8h6"></path></svg><span>Auditorias e Visitas</span></a></li>
-                    <li id="logout-item"><a href="#" id="logoutBtn"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg><span>Logout</span></a></li>
+                    <li id="logout-item">
+                        <a href="#" id="logoutBtn">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                            <span>Logout</span>
+                        </a>
+                    </li>
                 </ul>
             </nav>
             <div class="sidebar-footer-logo">
@@ -68,16 +70,40 @@
             <main class="content-area">
                 <div class="dashboard-tabs">
                     <button class="tab-button active" data-tab="principais">Principais</button>
+                    <button class="tab-button" data-tab="sheets_externos">Indicadores Externos</button>
                     <button class="tab-button" data-tab="nc_interna">NC Interna</button>
                 </div>
                 <div class="indicators-grid">
-                    <div class="indicator-card"><div class="card-info"><h3>RIFs por Fornecedor - Anual</h3></div><div class="card-graph"><canvas id="grafico1"></canvas></div></div>
-                    <div class="indicator-card"><div class="card-info"><h3>RIFs por Fornecedor - Mensal</h3></div><div class="card-graph"><canvas id="grafico2"></canvas></div></div>
-                    <div class="indicator-card"><div class="card-info"><h3>Pareto - Fornecedor</h3></div><div class="card-graph"><canvas id="grafico3"></canvas></div></div>
-                    <div class="indicator-card"><div class="card-info"><h3>NCI por Setor</h3></div><div class="card-graph"><canvas id="grafico10"></canvas></div></div>
-                    <div class="indicator-card"><div class="card-info"><h3>Pareto Mensal</h3></div><div class="card-graph"><canvas id="grafico11"></canvas></div></div>
-                    <div class="indicator-card"><div class="card-info"><h3>Pareto Anual</h3></div><div class="card-graph"><canvas id="grafico12"></canvas></div></div>
-                    <div class="indicator-card"><div class="card-info"><h3>NCI Anual</h3></div><div class="card-graph"><canvas id="grafico13"></canvas></div></div>
+                        <div class="indicator-card">
+                            <div class="card-info"><h3>RIFs por Fornecedor - Anual</h3></div>
+                            <div class="card-graph"><canvas id="grafico1"></canvas></div>
+                        </div>
+                        <div class="indicator-card">
+                            <div class="card-info"><h3>RIFs por Fornecedor - Mensal</h3></div>
+                            <div class="card-graph"><canvas id="grafico2"></canvas></div>
+                        </div>
+                        <div class="indicator-card">
+                            <div class="card-info"><h3>Pareto - Fornecedor</h3></div>
+                            <div class="card-graph"><canvas id="grafico3"></canvas></div>
+                        </div>
+                    <div class="indicator-card"><div class="card-info"><h3>NC por Cliente</h3><p>Quantidade de Não Conformidades por Cliente.</p></div><div class="card-graph"><canvas id="grafico7"></canvas></div></div>
+                    <div class="indicator-card"><div class="card-info"><h3>NC por Projeto</h3><p>Quantidade de Não Conformidades por Projeto.</p></div><div class="card-graph"><canvas id="grafico8"></canvas></div></div>
+                    <div class="indicator-card"><div class="card-info"><h3>Tipos de NC por Cliente</h3><p>Detalhamento das Não Conformidades por tipo.</p></div><div class="card-graph"><canvas id="grafico9"></canvas></div></div><div class="indicator-card">
+                    <div class="card-info"><h3>NC Interna por Setor</h3></div>
+                    <div class="card-graph"><canvas id="grafico10"></canvas></div>
+                    </div>
+                    <div class="indicator-card">
+                        <div class="card-info"><h3>Pareto Mensal</h3></div>
+                        <div class="card-graph"><canvas id="grafico11"></canvas></div>
+                    </div>
+                    <div class="indicator-card">
+                        <div class="card-info"><h3>Pareto Anual</h3></div>
+                        <div class="card-graph"><canvas id="grafico12"></canvas></div>
+                    </div>
+                    <div class="indicator-card">
+                        <div class="card-info"><h3>NC Interna Anual</h3></div>
+                        <div class="card-graph"><canvas id="grafico13"></canvas></div>
+                    </div>
                 </div>
             </main>
 
@@ -88,7 +114,22 @@
     </div>
     
     <script>
+        // Script de Segurança Anti-Flash e Anti-Loop
+        if (window.netlifyIdentity) {
+            if (window.location.hash.includes('_token=')) {
+                netlifyIdentity.on('init', () => { netlifyIdentity.open(); });
+            }
+            netlifyIdentity.on('init', user => {
+                if (!user && !window.location.hash.includes('_token=')) {
+                    window.location.href = '/login.html';
+                } else {
+                    document.body.classList.remove('unauthenticated');
+                }
+            });
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
+            // --- LÓGICA DO MENU E LOGOUT ---
             const body = document.body;
             const sidebar = document.querySelector('.sidebar');
             const mobileMenuButton = document.getElementById('mobileMenuButton');
@@ -109,54 +150,64 @@
             if (window.netlifyIdentity) {
                 netlifyIdentity.on('logout', () => { window.location.href = '/login.html'; });
             }
-
+            
+            // =================== LÓGICA DO DASHBOARD ===================
+            const SPREADSHEET_ID_EXTERNO = '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4';
             const SPREADSHEET_ID_INTERNO = '1_XfCgxqMlxLjXUfw7MSgZ386E16d5sQFSbV8Q6Q0mmk';
             const SPREADSHEET_ID_RIFS = '17F0DVUFu-cscmMnJsezkuCc_3SzuUehD_dSiPGOOz2A';
             const API_BASE_URL = '/.netlify/functions';
             const refreshBtn = document.getElementById('refreshChartsBtn');
+            
             const charts = {};
 
+            // --- LÓGICA DAS ABAS ---
             const tabsContainer = document.querySelector('.dashboard-tabs');
             const allCards = Array.from(document.querySelectorAll('.indicator-card'));
             const tabMapping = {
                 'principais': ['grafico1', 'grafico2', 'grafico3'],
+                'sheets_externos': ['grafico7', 'grafico8', 'grafico9'],
                 'nc_interna': ['grafico10', 'grafico11', 'grafico12', 'grafico13']
             };
-
+            // ... (resto da lógica das abas, sem alteração) ...
             function filterCharts(activeTab) {
-                const chartIdsToShow = tabMapping[activeTab];
-                allCards.forEach(card => {
-                    const canvas = card.querySelector('canvas');
-                    if (canvas && chartIdsToShow.includes(canvas.id)) {
-                        card.style.display = 'flex';
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
+                    const chartIdsToShow = tabMapping[activeTab];
+                    allCards.forEach(card => {
+                        const canvas = card.querySelector('canvas');
+                        if (canvas && chartIdsToShow.includes(canvas.id)) {
+                            card.style.display = 'flex';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
             }
-
             if (tabsContainer) {
-                tabsContainer.addEventListener('click', (event) => {
-                    if (event.target.classList.contains('tab-button')) {
-                        tabsContainer.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-                        event.target.classList.add('active');
-                        filterCharts(event.target.dataset.tab);
-                    }
-                });
+                    tabsContainer.addEventListener('click', (event) => {
+                        if (event.target.classList.contains('tab-button')) {
+                            tabsContainer.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                            event.target.classList.add('active');
+                            filterCharts(event.target.dataset.tab);
+                        }
+                    });
             }
-
+            // --- FUNÇÃO PRINCIPAL DE ATUALIZAÇÃO ---
             async function updateAllCharts() {
                 if (refreshBtn) { refreshBtn.disabled = true; refreshBtn.textContent = 'Atualizando...'; }
                 try {
                     Object.values(charts).forEach(chart => { if (chart) chart.destroy(); });
-                    const [responseInterno, responseRifs] = await Promise.all([
+
+                    const [responseExterno, responseInterno, responseRifs] = await Promise.all([
+                        fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_EXTERNO}&sheets=nc_por_cliente,nc_por_projeto,nc_detalhado`),
                         fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_INTERNO}&sheets=nci_por_setor,pareto_mes,pareto_ano,nci_anual`),
                         fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_RIFS}&sheets=status_por_fornecedor_ano,status_por_fornecedor_mes,pareto_rifs`)
                     ]);
+                    const allDataExterno = await responseExterno.json();
                     const allDataInterno = await responseInterno.json();
                     const allDataRifs = await responseRifs.json();
+
                     renderizarGraficosPrincipais(allDataRifs);
+                    renderizarGraficosExternos(allDataExterno);
                     renderizarGraficosInternos(allDataInterno);
+                    
                 } catch (error) {
                     console.error("Erro ao atualizar gráficos:", error);
                 } finally {
@@ -166,51 +217,79 @@
                 }
             }
             
+            // --- FUNÇÕES DE CRIAÇÃO DE GRÁFICOS ---
+            // (Todas as suas funções de criar gráficos aqui, sem alteração)
             function renderizarGraficosPrincipais(allData) {
+                // GRÁFICO 1 e 2: RIFs por Fornecedor (Anual e Mensal)
                 criarGraficoRifStatus('grafico1', allData.status_por_fornecedor_ano || []);
                 criarGraficoRifStatus('grafico2', allData.status_por_fornecedor_mes || []);
+
+                // GRÁFICO 3: Pareto de RIFs
                 const dataParetoRifs = allData.pareto_rifs || [];
-                if (dataParetoRifs.length > 0) criarGraficoPareto('grafico3', dataParetoRifs, 'fornecedor', 'quantidade_pareto');
+                if (dataParetoRifs.length > 0) {
+                    // Passando o nome exato da coluna da sua planilha: 'quantidade_pareto'
+                    criarGraficoPareto('grafico3', dataParetoRifs, 'fornecedor', 'quantidade_pareto');
+                }
             }
-            
+        
             function criarGraficoRifStatus(canvasId, data) {
                 if (data.length === 0) return;
+                
                 const labels = data.map(item => item.fornecedor);
+                // Usando os nomes exatos das suas colunas: 'concluido' e 'em_tratativa'
                 const statusTypes = ['concluido', 'em_tratativa'];
                 const statusColors = { 'concluido': '#28a745', 'em_tratativa': '#ffc107' };
-                const datasets = statusTypes.map(status => ({ label: status.replace('_', ' ').toUpperCase(), data: data.map(item => parseInt(item[status]) || 0), backgroundColor: statusColors[status] }));
+                
+                const datasets = statusTypes.map(status => {
+                    const ctx = document.getElementById(canvasId).getContext('2d');
+                    const gradiente = ctx.createLinearGradient(0, 0, 0, 200);
+                    if (status === 'concluido') {
+                        gradiente.addColorStop(0, 'rgba(40, 167, 69, 1)');
+                        gradiente.addColorStop(1, 'rgba(40, 167, 69, 0.7)');
+                    } else {
+                        gradiente.addColorStop(0, 'rgba(255, 193, 7, 1)');
+                        gradiente.addColorStop(1, 'rgba(255, 193, 7, 0.7)');
+                    }
+
+                    return {
+                        label: status.replace('_', ' ').toUpperCase(),
+                        data: data.map(item => parseInt(item[status]) || 0),
+                        backgroundColor: gradiente,
+                        borderRadius: 5,
+                    }
+                });
+
                 const stackTotals = data.map(item => statusTypes.reduce((sum, type) => sum + (parseInt(item[type]) || 0), 0));
                 const maxValue = Math.max(...stackTotals);
-                const ctx = document.getElementById(canvasId).getContext('2d');
-                charts[canvasId] = new Chart(ctx, { type: 'bar', data: { labels: labels, datasets: datasets }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom', labels:{ usePointStyle:true, pointStyle:'rect', padding: 20, font:{size:10} } }, datalabels: { color: 'black', font: { weight: 'bold' } } }, scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true, max: maxValue + 5 } } }, plugins: [ChartDataLabels] });
-            }
-
-            function renderizarGraficosInternos(allData) {
-                const dataNciSetor = allData.nci_por_setor || [];
-                if (dataNciSetor.length > 0) {
-                    const labels = dataNciSetor.map(item => item.setor);
-                    const statusTypes = ['nao_iniciado', 'em_andamento', 'atrasado', 'concluido'];
-                    const statusColors = { 'nao_iniciado': '#6c757d', 'em_andamento': '#ffc107', 'atrasado': '#dc3545', 'concluido': '#28a745' };
-                    const datasets = statusTypes.map(status => ({ label: status.replace('_', ' ').toUpperCase(), data: dataNciSetor.map(item => parseInt(item[status]) || 0), backgroundColor: statusColors[status], borderRadius: 3 }));
-                    const stackTotals = dataNciSetor.map(item => statusTypes.reduce((sum, type) => sum + (parseInt(item[type]) || 0), 0));
-                    const maxValue = Math.max(...stackTotals);
-                    const ctx10 = document.getElementById('grafico10').getContext('2d');
-                    charts['grafico10'] = new Chart(ctx10, { type: 'bar', data: { labels: labels, datasets: datasets }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom', labels: { usePointStyle: true, pointStyle: 'rect', padding: 20, font: { size: 10 } } }, datalabels: { color: (context) => context.dataset.data[context.dataIndex] < 5 ? 'black' : 'white', font: { weight: 'bold' }, anchor: (context) => context.dataset.data[context.dataIndex] < 5 ? 'end' : 'center', align: (context) => context.dataset.data[context.dataIndex] < 5 ? 'end' : 'center', formatter: (value) => value > 0 ? value : null } }, scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, beginAtZero: true, max: maxValue + 5, grid: { display: false } } } }, plugins: [ChartDataLabels] });
-                }
-
-                const dataParetoMes = allData.pareto_mes || [];
-                if (dataParetoMes.length > 0) criarGraficoPareto('grafico11', dataParetoMes, 'topicos', 'nao_iniciado');
-                const dataParetoAno = allData.pareto_ano || [];
-                if (dataParetoAno.length > 0) criarGraficoPareto('grafico12', dataParetoAno, 'topicos', 'nao_iniciado');
                 
-                const dataNciAnual = allData.nci_anual || [];
-                if (dataNciAnual.length > 0) {
-                    const labels = dataNciAnual.map(item => item.mes);
-                    const values = dataNciAnual.map(item => parseInt(item.quantidade_ano));
-                    const maxValue = Math.max(...values);
-                    const ctx13 = document.getElementById('grafico13').getContext('2d');
-                    charts['grafico13'] = new Chart(ctx13, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade', data: values, backgroundColor: '#003366', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: (context) => context.dataset.data[context.dataIndex] > 0, color: 'black', font: { weight: 'bold' }, anchor: 'end', align: 'end' } }, scales: { y: { max: maxValue + 5, grid: { display: false } }, x: { grid: { display: false } } } }, plugins: [ChartDataLabels] });
-                }
+                const ctx = document.getElementById(canvasId).getContext('2d');
+                charts[canvasId] = new Chart(ctx, { 
+                    type: 'bar', 
+                    data: { labels: labels, datasets: datasets }, 
+                    options: { 
+                        responsive: true, 
+                        maintainAspectRatio: false, 
+                        plugins: { 
+                            legend: { 
+                                display: true, 
+                                position: 'bottom', 
+                                labels:{ usePointStyle:true, pointStyle:'rect', padding: 20, font:{size:10} } 
+                            }, 
+                            datalabels: { 
+                                color: 'black', 
+                                font: { weight: 'bold' }, 
+                                anchor: 'center', 
+                                align: 'center', 
+                                formatter: (value) => value > 0 ? value : null 
+                            } 
+                        }, 
+                        scales: { 
+                            x: { stacked: true, grid: { display: false } }, 
+                            y: { stacked: true, beginAtZero: true, max: maxValue + 5, grid: { display: false } } 
+                        } 
+                    }, 
+                    plugins: [ChartDataLabels] 
+                });
             }
 
             function criarGraficoPareto(canvasId, data, labelX, labelY) {
@@ -240,23 +319,91 @@
                     plugins: [ChartDataLabels]
                 });
             }
+            function renderizarGraficosExternos(allData) {
+                const dataCliente = allData.nc_por_cliente || [];
+                const dataClienteFiltrado = dataCliente.filter(item => parseInt(item.quantidadecliente_nc) > 0);
+                if (dataClienteFiltrado.length > 0) {
+                    const topData = dataClienteFiltrado.slice(0, 6);
+                    const labels = topData.map(item => item.cliente);
+                    const values = topData.map(item => parseInt(item.quantidadecliente_nc));
+                    const ctx7 = document.getElementById('grafico7').getContext('2d');
+                    charts['grafico7'] = new Chart(ctx7, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade de NC', data: values, backgroundColor: '#003366', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: true, anchor: 'end', align: 'end', color: 'black', font: { weight: 'bold' } } }, scales: { y: { beginAtZero: true, max: 20, grid: { display: false } }, x: { grid: { display: false } } } }, plugins: [ChartDataLabels] });
+                }
+                    
+                const dataProjeto = allData.nc_por_projeto || [];
+                const dataProjetoFiltrado = dataProjeto.filter(item => parseInt(item.quantidadeprojeto_nc) > 0);
+                if (dataProjetoFiltrado.length > 0) {
+                    const topData = dataProjetoFiltrado.slice(0, 6);
+                    const labels = topData.map(item => item.projeto);
+                    const values = topData.map(item => parseInt(item.quantidadeprojeto_nc));
+                    const ctx8 = document.getElementById('grafico8').getContext('2d');
+                    charts['grafico8'] = new Chart(ctx8, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade de NC', data: values, backgroundColor: '#29abe2', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: true, anchor: 'end', align: 'end', color: 'black', font: { weight: 'bold' } } }, scales: { y: { beginAtZero: true, max: 20, grid: { display: false } }, x: { grid: { display: false } } } }, plugins: [ChartDataLabels] });
+                }
+                    
+                const dataDetalhado = allData.nc_detalhado || [];
+                if (dataDetalhado.length > 0) {
+                    const tiposDeNC = Object.keys(dataDetalhado[0]).filter(key => key !== 'cliente');
+                    const dataDetalhadoFiltrado = dataDetalhado.filter(item => { const totalNc = tiposDeNC.reduce((soma, tipo) => soma + (parseInt(item[tipo]) || 0), 0); return totalNc > 0; });
+                    if (dataDetalhadoFiltrado.length > 0) {
+                        const topData = dataDetalhadoFiltrado.slice(0, 6);
+                        const labels = topData.map(item => item.cliente);
+                        const colors = ['#003366', '#29abe2', '#fd7e14', '#28a745', '#dc3545', '#6c757d', '#ffc107'];
+                        const datasets = tiposDeNC.map((tipo, index) => ({ label: tipo.replace(/_/g, ' ').replace(/(^\w{1})|(\s+\w{1})/g, letra => letra.toUpperCase()), data: topData.map(item => parseInt(item[tipo]) || 0), backgroundColor: colors[index % colors.length] }));
+                        const ctx9 = document.getElementById('grafico9').getContext('2d');
+                        charts['grafico9'] = new Chart(ctx9, { type: 'bar', data: { labels: labels, datasets: datasets }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom', labels: { usePointStyle: true, pointStyle: 'rect', padding: 20, font: { size: 10 } } }, datalabels: { display: true, anchor: 'center', align: 'center', color: 'white', font: { weight: 'bold' }, formatter: (value) => { return value > 0 ? value : null; } } }, scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, beginAtZero: true, max: 7, ticks: { stepSize: 2 }, grid: { display: false } } } }, plugins: [ChartDataLabels] });
+                    }
+                }
+            }
+            function renderizarGraficosInternos(allData) {
+                const dataNciSetor = allData.nci_por_setor || [];
+                if (dataNciSetor.length > 0) {
+                    const labels = dataNciSetor.map(item => item.setor);
+                    const statusTypes = ['nao_iniciado', 'em_andamento', 'atrasado', 'concluido'];
+                    const statusColors = { 'nao_iniciado': '#6c757d', 'em_andamento': '#ffc107', 'atrasado': '#dc3545', 'concluido': '#28a745' };
+                    const datasets = statusTypes.map(status => ({ label: status.replace('_', ' ').toUpperCase(), data: dataNciSetor.map(item => parseInt(item[status]) || 0), backgroundColor: statusColors[status], borderRadius: 3 }));
+                    const stackTotals = dataNciSetor.map(item => statusTypes.reduce((sum, type) => sum + (parseInt(item[type]) || 0), 0));
+                    const maxValue = Math.max(...stackTotals);
+                    const ctx10 = document.getElementById('grafico10').getContext('2d');
+                    charts['grafico10'] = new Chart(ctx10, { type: 'bar', data: { labels: labels, datasets: datasets }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom', labels: { usePointStyle: true, pointStyle: 'rect', padding: 20, font: { size: 10 } } }, datalabels: { color: (context) => context.dataset.data[context.dataIndex] < 5 ? 'black' : 'white', font: { weight: 'bold' }, anchor: (context) => context.dataset.data[context.dataIndex] < 5 ? 'end' : 'center', align: (context) => context.dataset.data[context.dataIndex] < 5 ? 'end' : 'center', formatter: (value) => value > 0 ? value : null } }, scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, beginAtZero: true, max: maxValue + 5, grid: { display: false } } } }, plugins: [ChartDataLabels] });
+                }
+
+                const dataParetoMes = allData.pareto_mes || [];
+                if (dataParetoMes.length > 0) criarGraficoPareto('grafico11', dataParetoMes, 'topicos', 'nao_iniciado');
+                const dataParetoAno = allData.pareto_ano || [];
+                if (dataParetoAno.length > 0) criarGraficoPareto('grafico12', dataParetoAno, 'topicos', 'nao_iniciado');
+                    
+                const dataNciAnual = allData.nci_anual || [];
+                if (dataNciAnual.length > 0) {
+                    const labels = dataNciAnual.map(item => item.mes);
+                    const values = dataNciAnual.map(item => parseInt(item.quantidade_ano));
+                    const maxValue = Math.max(...values);
+                    const ctx13 = document.getElementById('grafico13').getContext('2d');
+                    charts['grafico13'] = new Chart(ctx13, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade', data: values, backgroundColor: '#003366', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: (context) => context.dataset.data[context.dataIndex] > 0, color: 'black', font: { weight: 'bold' }, anchor: 'end', align: 'end' } }, scales: { y: { max: maxValue + 5, grid: { display: false } }, x: { grid: { display: false } } } }, plugins: [ChartDataLabels] });
+                }
+            }        
             
+            // --- EXECUÇÃO INICIAL E EVENT LISTENERS ---
             updateAllCharts();
             if (tabsContainer) { filterCharts('principais'); }
             if (refreshBtn) {
                 refreshBtn.addEventListener('click', updateAllCharts);
             }
 
+            // --- LÓGICA FINAL PARA REDIMENSIONAR GRÁFICOS ---
             let resizeTimer;
             window.addEventListener('resize', () => {
+                // Limpa o timer anterior para evitar execuções múltiplas
                 clearTimeout(resizeTimer);
+                // Configura um novo timer para executar a função após 250ms
                 resizeTimer = setTimeout(() => {
+                    // Passa por todos os gráficos que criamos
                     Object.values(charts).forEach(chart => {
+                        // Verifica se o gráfico existe e tem a função de redimensionar
                         if (chart && typeof chart.resize === 'function') {
                             chart.resize();
                         }
                     });
-                }, 250);
+                }, 250); // Um pequeno delay para garantir que o layout se estabilizou
             });
         });
     </script>
