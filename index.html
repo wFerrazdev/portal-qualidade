@@ -69,8 +69,8 @@
 
             <main class="content-area">
                 <div class="dashboard-tabs">
-                    <button class="tab-button active" data-tab="principais">Principais</button>
-                    <button class="tab-button" data-tab="sheets_externos">Indicadores Externos</button>
+                    <button class="tab-button active" data-tab="rifs">RIF's</button>
+                    <button class="tab-button" data-tab="opt">OPT</button>
                     <button class="tab-button" data-tab="nc_interna">NC Interna</button>
                 </div>
                 <div class="indicators-grid">
@@ -168,8 +168,8 @@
             const tabsContainer = document.querySelector('.dashboard-tabs');
             const allCards = Array.from(document.querySelectorAll('.indicator-card'));
             const tabMapping = {
-                'principais': ['grafico1', 'grafico2', 'grafico3'],
-                'sheets_externos': ['grafico7', 'grafico8', 'grafico9'],
+                'rifs': ['grafico1', 'grafico2', 'grafico3'],
+                'opt': ['grafico7', 'grafico8', 'grafico9'],
                 'nc_interna': ['grafico10', 'grafico11', 'grafico12', 'grafico13']
             };
             // ... (resto da lógica das abas, sem alteração) ...
@@ -213,7 +213,7 @@
                     console.error("Erro ao atualizar gráficos:", error);
                 } finally {
                     if (refreshBtn) { refreshBtn.disabled = false; refreshBtn.textContent = 'Atualizar'; }
-                    const activeTab = tabsContainer?.querySelector('.tab-button.active')?.dataset.tab || 'principais';
+                    const activeTab = tabsContainer?.querySelector('.tab-button.active')?.dataset.tab || 'rifs';
                     filterCharts(activeTab);
                 }
             }
@@ -402,7 +402,7 @@
             // --- EXECUÇÃO INICIAL E EVENT LISTENERS ---
             updateAllCharts();
 
-            if (tabsContainer) { filterCharts('principais'); }
+            if (tabsContainer) { filterCharts('rifs'); }
             if (refreshBtn) {
                 refreshBtn.addEventListener('click', updateAllCharts);
             }
