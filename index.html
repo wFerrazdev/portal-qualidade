@@ -161,255 +161,256 @@
                 if (window.netlifyIdentity) {
                     netlifyIdentity.on('logout', () => { window.location.href = '/login.html'; });
                 }
-            // =================== LÓGICA DO DASHBOARD ===================
-            const SPREADSHEET_ID_EXTERNO = '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4';
-            const SPREADSHEET_ID_INTERNO = '1_XfCgxqMlxLjXUfw7MSgZ386E16d5sQFSbV8Q6Q0mmk';
-            const SPREADSHEET_ID_RIFS = '17F0DVUFu-cscmMnJsezkuCc_3SzuUehD_dSiPGOOz2A'; // Novo ID
-            const API_BASE_URL = '/.netlify/functions';
-            const refreshBtn = document.getElementById('refreshChartsBtn');
+                // =================== LÓGICA DO DASHBOARD ===================
+                const SPREADSHEET_ID_EXTERNO = '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4';
+                const SPREADSHEET_ID_INTERNO = '1_XfCgxqMlxLjXUfw7MSgZ386E16d5sQFSbV8Q6Q0mmk';
+                const SPREADSHEET_ID_RIFS = '17F0DVUFu-cscmMnJsezkuCc_3SzuUehD_dSiPGOOz2A'; // Novo ID
+                const API_BASE_URL = '/.netlify/functions';
+                const refreshBtn = document.getElementById('refreshChartsBtn');
+                
+                let charts = {};
+
+                // --- LÓGICA DAS ABAS (ATUALIZADA) ---
+                const tabsContainer = document.querySelector('.dashboard-tabs');
+                const allCards = Array.from(document.querySelectorAll('.indicator-card'));
+                const tabMapping = {
+                    'principais': ['grafico1', 'grafico2', 'grafico3'], // Apenas os 3 novos gráficos de RIFs
+                    'sheets_externos': ['grafico7', 'grafico8', 'grafico9'],
+                    'nc_interna': ['grafico10', 'grafico11', 'grafico12', 'grafico13']
+                };
+                function filterCharts(activeTab) {
+                        const chartIdsToShow = tabMapping[activeTab];
+                        allCards.forEach(card => {
+                            const canvas = card.querySelector('canvas');
+                            if (canvas && chartIdsToShow.includes(canvas.id)) {
+                                card.style.display = 'flex';
+                            } else {
+                                card.style.display = 'none';
+                            }
+                        });
+                }
+                if (tabsContainer) {
+                        tabsContainer.addEventListener('click', (event) => {
+                            if (event.target.classList.contains('tab-button')) {
+                                tabsContainer.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                                event.target.classList.add('active');
+                                filterCharts(event.target.dataset.tab);
+                            }
+                        });
+                }
+                // --- FUNÇÃO PRINCIPAL DE ATUALIZAÇÃO ---
+                async function updateAllCharts() {
+                    if (refreshBtn) { refreshBtn.disabled = true; refreshBtn.textContent = 'Atualizando...'; }
+                    try {
+                        Object.values(charts).forEach(chart => { if (chart) chart.destroy(); });
+
+                        const [responseExterno, responseInterno, responseRifs] = await Promise.all([
+                            fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_EXTERNO}&sheets=nc_por_cliente,nc_por_projeto,nc_detalhado`),
+                            fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_INTERNO}&sheets=nci_por_setor,pareto_mes,pareto_ano,nci_anual`),
+                            fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_RIFS}&sheets=status_por_fornecedor_ano,status_por_fornecedor_mes,pareto_rifs`)
+                        ]);
+                        const allDataExterno = await responseExterno.json();
+                        const allDataInterno = await responseInterno.json();
+                        const allDataRifs = await responseRifs.json();
+
+                        renderizarGraficosPrincipais(allDataRifs);
+                        renderizarGraficosExternos(allDataExterno);
+                        renderizarGraficosInternos(allDataInterno);
+                        
+                    } catch (error) {console.error("Erro ao atualizar gráficos:", error);} 
+                    finally {
+                        if (refreshBtn) { refreshBtn.disabled = false; refreshBtn.textContent = 'Atualizar'; }
+                        const activeTab = tabsContainer?.querySelector('.tab-button.active')?.dataset.tab || 'principais';
+                        filterCharts(activeTab);
+                    }
+                }
+                
+                function renderizarGraficosPrincipais(allData) {
+                    // GRÁFICO 1 e 2: RIFs por Fornecedor (Anual e Mensal)
+                    criarGraficoRifStatus('grafico1', allData.status_por_fornecedor_ano || []);
+                    criarGraficoRifStatus('grafico2', allData.status_por_fornecedor_mes || []);
+
+                    // GRÁFICO 3: Pareto de RIFs
+                    const dataParetoRifs = allData.pareto_rifs || [];
+                    if (dataParetoRifs.length > 0) {
+                        // Passando o nome exato da coluna da sua planilha: 'quantidade_pareto'
+                        criarGraficoPareto('grafico3', dataParetoRifs, 'fornecedor', 'quantidade_pareto');
+                    }
+                }
             
-            let charts = {};
-
-            // --- LÓGICA DAS ABAS (ATUALIZADA) ---
-            const tabsContainer = document.querySelector('.dashboard-tabs');
-            const allCards = Array.from(document.querySelectorAll('.indicator-card'));
-            const tabMapping = {
-                'principais': ['grafico1', 'grafico2', 'grafico3'], // Apenas os 3 novos gráficos de RIFs
-                'sheets_externos': ['grafico7', 'grafico8', 'grafico9'],
-                'nc_interna': ['grafico10', 'grafico11', 'grafico12', 'grafico13']
-            };
-            function filterCharts(activeTab) {
-                    const chartIdsToShow = tabMapping[activeTab];
-                    allCards.forEach(card => {
-                        const canvas = card.querySelector('canvas');
-                        if (canvas && chartIdsToShow.includes(canvas.id)) {
-                            card.style.display = 'flex';
-                        } else {
-                            card.style.display = 'none';
-                        }
-                    });
-            }
-            if (tabsContainer) {
-                    tabsContainer.addEventListener('click', (event) => {
-                        if (event.target.classList.contains('tab-button')) {
-                            tabsContainer.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-                            event.target.classList.add('active');
-                            filterCharts(event.target.dataset.tab);
-                        }
-                    });
-            }
-            // --- FUNÇÃO PRINCIPAL DE ATUALIZAÇÃO ---
-            async function updateAllCharts() {
-                if (refreshBtn) { refreshBtn.disabled = true; refreshBtn.textContent = 'Atualizando...'; }
-                try {
-                    Object.values(charts).forEach(chart => { if (chart) chart.destroy(); });
-
-                    const [responseExterno, responseInterno, responseRifs] = await Promise.all([
-                        fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_EXTERNO}&sheets=nc_por_cliente,nc_por_projeto,nc_detalhado`),
-                        fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_INTERNO}&sheets=nci_por_setor,pareto_mes,pareto_ano,nci_anual`),
-                        fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_RIFS}&sheets=status_por_fornecedor_ano,status_por_fornecedor_mes,pareto_rifs`)
-                    ]);
-                    const allDataExterno = await responseExterno.json();
-                    const allDataInterno = await responseInterno.json();
-                    const allDataRifs = await responseRifs.json();
-
-                    renderizarGraficosPrincipais(allDataRifs);
-                    renderizarGraficosExternos(allDataExterno);
-                    renderizarGraficosInternos(allDataInterno);
+                function criarGraficoRifStatus(canvasId, data) {
+                    if (data.length === 0) return;
                     
-                } catch (error) {console.error("Erro ao atualizar gráficos:", error);} 
-                finally {
-                    if (refreshBtn) { refreshBtn.disabled = false; refreshBtn.textContent = 'Atualizar'; }
-                    const activeTab = tabsContainer?.querySelector('.tab-button.active')?.dataset.tab || 'principais';
-                    filterCharts(activeTab);
-                }
-            }
-            
-            function renderizarGraficosPrincipais(allData) {
-                // GRÁFICO 1 e 2: RIFs por Fornecedor (Anual e Mensal)
-                criarGraficoRifStatus('grafico1', allData.status_por_fornecedor_ano || []);
-                criarGraficoRifStatus('grafico2', allData.status_por_fornecedor_mes || []);
+                    const labels = data.map(item => item.fornecedor);
+                    // Usando os nomes exatos das suas colunas: 'concluido' e 'em_tratativa'
+                    const statusTypes = ['concluido', 'em_tratativa'];
+                    const statusColors = { 'concluido': '#28a745', 'em_tratativa': '#ffc107' };
+                    
+                    const datasets = statusTypes.map(status => {
+                        const ctx = document.getElementById(canvasId).getContext('2d');
+                        const gradiente = ctx.createLinearGradient(0, 0, 0, 200);
+                        if (status === 'concluido') {
+                            gradiente.addColorStop(0, 'rgba(40, 167, 69, 1)');
+                            gradiente.addColorStop(1, 'rgba(40, 167, 69, 0.7)');
+                        } else {
+                            gradiente.addColorStop(0, 'rgba(255, 193, 7, 1)');
+                            gradiente.addColorStop(1, 'rgba(255, 193, 7, 0.7)');
+                        }
 
-                // GRÁFICO 3: Pareto de RIFs
-                const dataParetoRifs = allData.pareto_rifs || [];
-                if (dataParetoRifs.length > 0) {
-                    // Passando o nome exato da coluna da sua planilha: 'quantidade_pareto'
-                    criarGraficoPareto('grafico3', dataParetoRifs, 'fornecedor', 'quantidade_pareto');
-                }
-            }
-        
-            function criarGraficoRifStatus(canvasId, data) {
-                if (data.length === 0) return;
-                
-                const labels = data.map(item => item.fornecedor);
-                // Usando os nomes exatos das suas colunas: 'concluido' e 'em_tratativa'
-                const statusTypes = ['concluido', 'em_tratativa'];
-                const statusColors = { 'concluido': '#28a745', 'em_tratativa': '#ffc107' };
-                
-                const datasets = statusTypes.map(status => {
+                        return {
+                            label: status.replace('_', ' ').toUpperCase(),
+                            data: data.map(item => parseInt(item[status]) || 0),
+                            backgroundColor: gradiente,
+                            borderRadius: 5,
+                        }
+                    });
+
+                    const stackTotals = data.map(item => statusTypes.reduce((sum, type) => sum + (parseInt(item[type]) || 0), 0));
+                    const maxValue = Math.max(...stackTotals);
+                    
                     const ctx = document.getElementById(canvasId).getContext('2d');
-                    const gradiente = ctx.createLinearGradient(0, 0, 0, 200);
-                    if (status === 'concluido') {
-                        gradiente.addColorStop(0, 'rgba(40, 167, 69, 1)');
-                        gradiente.addColorStop(1, 'rgba(40, 167, 69, 0.7)');
-                    } else {
-                        gradiente.addColorStop(0, 'rgba(255, 193, 7, 1)');
-                        gradiente.addColorStop(1, 'rgba(255, 193, 7, 0.7)');
-                    }
-
-                    return {
-                        label: status.replace('_', ' ').toUpperCase(),
-                        data: data.map(item => parseInt(item[status]) || 0),
-                        backgroundColor: gradiente,
-                        borderRadius: 5,
-                    }
-                });
-
-                const stackTotals = data.map(item => statusTypes.reduce((sum, type) => sum + (parseInt(item[type]) || 0), 0));
-                const maxValue = Math.max(...stackTotals);
-                
-                const ctx = document.getElementById(canvasId).getContext('2d');
-                charts[canvasId] = new Chart(ctx, { 
-                    type: 'bar', 
-                    data: { labels: labels, datasets: datasets }, 
-                    options: { 
-                        responsive: true, 
-                        maintainAspectRatio: false, 
-                        plugins: { 
-                            legend: { 
-                                display: true, 
-                                position: 'bottom', 
-                                labels:{ usePointStyle:true, pointStyle:'rect', padding: 20, font:{size:10} } 
+                    charts[canvasId] = new Chart(ctx, { 
+                        type: 'bar', 
+                        data: { labels: labels, datasets: datasets }, 
+                        options: { 
+                            responsive: true, 
+                            maintainAspectRatio: false, 
+                            plugins: { 
+                                legend: { 
+                                    display: true, 
+                                    position: 'bottom', 
+                                    labels:{ usePointStyle:true, pointStyle:'rect', padding: 20, font:{size:10} } 
+                                }, 
+                                datalabels: { 
+                                    color: 'black', 
+                                    font: { weight: 'bold' }, 
+                                    anchor: 'center', 
+                                    align: 'center', 
+                                    formatter: (value) => value > 0 ? value : null 
+                                } 
                             }, 
-                            datalabels: { 
-                                color: 'black', 
-                                font: { weight: 'bold' }, 
-                                anchor: 'center', 
-                                align: 'center', 
-                                formatter: (value) => value > 0 ? value : null 
+                            scales: { 
+                                x: { stacked: true, grid: { display: false } }, 
+                                y: { stacked: true, beginAtZero: true, max: maxValue + 5, grid: { display: false } } 
                             } 
                         }, 
-                        scales: { 
-                            x: { stacked: true, grid: { display: false } }, 
-                            y: { stacked: true, beginAtZero: true, max: maxValue + 5, grid: { display: false } } 
-                        } 
-                    }, 
-                    plugins: [ChartDataLabels] 
-                });
-            }
+                        plugins: [ChartDataLabels] 
+                    });
+                }
 
-            function criarGraficoPareto(canvasId, data, labelX, labelY) {
-                data.sort((a, b) => parseInt(b[labelY] || 0) - parseInt(a[labelY] || 0));
-                const dataFiltrada = data.filter(item => parseInt(item[labelY] || 0) > 0);
-                const labels = dataFiltrada.map(item => item[labelX]);
-                const values = dataFiltrada.map(item => parseInt(item[labelY] || 0));
-                const total = values.reduce((sum, value) => sum + value, 0);
-                if (total === 0) return;
-                let cumulativePercentage = 0;
-                const paretoData = values.map(value => {
-                    cumulativePercentage += (value / total) * 100;
-                    return cumulativePercentage.toFixed(2);
-                });
-                const maxValue = Math.max(...values);
-                const ctx = document.getElementById(canvasId).getContext('2d');
-                charts[canvasId] = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: labels,
-                        datasets: [
-                            { type: 'line', label: 'Cumulativo %', data: paretoData, borderColor: '#dc3545', tension: 0.4, yAxisID: 'y1', order: 0 },
-                            { type: 'bar', label: 'Quantidade', data: values, backgroundColor: '#003366', borderRadius: 5, yAxisID: 'y', order: 1 }
-                        ]
-                    },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom', labels: { usePointStyle: true, pointStyle: 'rect', padding: 20, font: { size: 10 } } }, datalabels: { display: (context) => context.dataset.type === 'bar', color: 'black', font: { weight: 'bold' }, anchor: 'end', align: 'end' } }, scales: { y: { type: 'linear', position: 'left', title: { display: true, text: 'Quantidade' }, grid: { display: false }, max: maxValue + 5 }, y1: { type: 'linear', position: 'right', grid: { drawOnChartArea: false }, max: 100, ticks: { callback: value => value + '%' }, title: { display: true, text: 'Percentual Acumulado' } }, x: { grid: { display: false } } } },
-                    plugins: [ChartDataLabels]
-                });
-            }
-            function renderizarGraficosExternos(allData) {
-                const dataCliente = allData.nc_por_cliente || [];
-                const dataClienteFiltrado = dataCliente.filter(item => parseInt(item.quantidadecliente_nc) > 0);
-                if (dataClienteFiltrado.length > 0) {
-                    const topData = dataClienteFiltrado.slice(0, 6);
-                    const labels = topData.map(item => item.cliente);
-                    const values = topData.map(item => parseInt(item.quantidadecliente_nc));
-                    const ctx7 = document.getElementById('grafico7').getContext('2d');
-                    charts['grafico7'] = new Chart(ctx7, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade de NC', data: values, backgroundColor: '#003366', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: true, anchor: 'end', align: 'end', color: 'black', font: { weight: 'bold' } } }, scales: { y: { beginAtZero: true, max: 20, grid: { display: false } }, x: { grid: { display: false } } } }, plugins: [ChartDataLabels] });
+                function criarGraficoPareto(canvasId, data, labelX, labelY) {
+                    data.sort((a, b) => parseInt(b[labelY] || 0) - parseInt(a[labelY] || 0));
+                    const dataFiltrada = data.filter(item => parseInt(item[labelY] || 0) > 0);
+                    const labels = dataFiltrada.map(item => item[labelX]);
+                    const values = dataFiltrada.map(item => parseInt(item[labelY] || 0));
+                    const total = values.reduce((sum, value) => sum + value, 0);
+                    if (total === 0) return;
+                    let cumulativePercentage = 0;
+                    const paretoData = values.map(value => {
+                        cumulativePercentage += (value / total) * 100;
+                        return cumulativePercentage.toFixed(2);
+                    });
+                    const maxValue = Math.max(...values);
+                    const ctx = document.getElementById(canvasId).getContext('2d');
+                    charts[canvasId] = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [
+                                { type: 'line', label: 'Cumulativo %', data: paretoData, borderColor: '#dc3545', tension: 0.4, yAxisID: 'y1', order: 0 },
+                                { type: 'bar', label: 'Quantidade', data: values, backgroundColor: '#003366', borderRadius: 5, yAxisID: 'y', order: 1 }
+                            ]
+                        },
+                        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom', labels: { usePointStyle: true, pointStyle: 'rect', padding: 20, font: { size: 10 } } }, datalabels: { display: (context) => context.dataset.type === 'bar', color: 'black', font: { weight: 'bold' }, anchor: 'end', align: 'end' } }, scales: { y: { type: 'linear', position: 'left', title: { display: true, text: 'Quantidade' }, grid: { display: false }, max: maxValue + 5 }, y1: { type: 'linear', position: 'right', grid: { drawOnChartArea: false }, max: 100, ticks: { callback: value => value + '%' }, title: { display: true, text: 'Percentual Acumulado' } }, x: { grid: { display: false } } } },
+                        plugins: [ChartDataLabels]
+                    });
                 }
-                    
-                const dataProjeto = allData.nc_por_projeto || [];
-                const dataProjetoFiltrado = dataProjeto.filter(item => parseInt(item.quantidadeprojeto_nc) > 0);
-                if (dataProjetoFiltrado.length > 0) {
-                    const topData = dataProjetoFiltrado.slice(0, 6);
-                    const labels = topData.map(item => item.projeto);
-                    const values = topData.map(item => parseInt(item.quantidadeprojeto_nc));
-                    const ctx8 = document.getElementById('grafico8').getContext('2d');
-                    charts['grafico8'] = new Chart(ctx8, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade de NC', data: values, backgroundColor: '#29abe2', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: true, anchor: 'end', align: 'end', color: 'black', font: { weight: 'bold' } } }, scales: { y: { beginAtZero: true, max: 20, grid: { display: false } }, x: { grid: { display: false } } } }, plugins: [ChartDataLabels] });
-                }
-                    
-                const dataDetalhado = allData.nc_detalhado || [];
-                if (dataDetalhado.length > 0) {
-                    const tiposDeNC = Object.keys(dataDetalhado[0]).filter(key => key !== 'cliente');
-                    const dataDetalhadoFiltrado = dataDetalhado.filter(item => { const totalNc = tiposDeNC.reduce((soma, tipo) => soma + (parseInt(item[tipo]) || 0), 0); return totalNc > 0; });
-                    if (dataDetalhadoFiltrado.length > 0) {
-                        const topData = dataDetalhadoFiltrado.slice(0, 6);
+                function renderizarGraficosExternos(allData) {
+                    const dataCliente = allData.nc_por_cliente || [];
+                    const dataClienteFiltrado = dataCliente.filter(item => parseInt(item.quantidadecliente_nc) > 0);
+                    if (dataClienteFiltrado.length > 0) {
+                        const topData = dataClienteFiltrado.slice(0, 6);
                         const labels = topData.map(item => item.cliente);
-                        const colors = ['#003366', '#29abe2', '#fd7e14', '#28a745', '#dc3545', '#6c757d', '#ffc107'];
-                        const datasets = tiposDeNC.map((tipo, index) => ({ label: tipo.replace(/_/g, ' ').replace(/(^\w{1})|(\s+\w{1})/g, letra => letra.toUpperCase()), data: topData.map(item => parseInt(item[tipo]) || 0), backgroundColor: colors[index % colors.length] }));
-                        const ctx9 = document.getElementById('grafico9').getContext('2d');
-                        charts['grafico9'] = new Chart(ctx9, { type: 'bar', data: { labels: labels, datasets: datasets }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom', labels: { usePointStyle: true, pointStyle: 'rect', padding: 20, font: { size: 10 } } }, datalabels: { display: true, anchor: 'center', align: 'center', color: 'white', font: { weight: 'bold' }, formatter: (value) => { return value > 0 ? value : null; } } }, scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, beginAtZero: true, max: 7, ticks: { stepSize: 2 }, grid: { display: false } } } }, plugins: [ChartDataLabels] });
+                        const values = topData.map(item => parseInt(item.quantidadecliente_nc));
+                        const ctx7 = document.getElementById('grafico7').getContext('2d');
+                        charts['grafico7'] = new Chart(ctx7, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade de NC', data: values, backgroundColor: '#003366', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: true, anchor: 'end', align: 'end', color: 'black', font: { weight: 'bold' } } }, scales: { y: { beginAtZero: true, max: 20, grid: { display: false } }, x: { grid: { display: false } } } }, plugins: [ChartDataLabels] });
+                    }
+                        
+                    const dataProjeto = allData.nc_por_projeto || [];
+                    const dataProjetoFiltrado = dataProjeto.filter(item => parseInt(item.quantidadeprojeto_nc) > 0);
+                    if (dataProjetoFiltrado.length > 0) {
+                        const topData = dataProjetoFiltrado.slice(0, 6);
+                        const labels = topData.map(item => item.projeto);
+                        const values = topData.map(item => parseInt(item.quantidadeprojeto_nc));
+                        const ctx8 = document.getElementById('grafico8').getContext('2d');
+                        charts['grafico8'] = new Chart(ctx8, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade de NC', data: values, backgroundColor: '#29abe2', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: true, anchor: 'end', align: 'end', color: 'black', font: { weight: 'bold' } } }, scales: { y: { beginAtZero: true, max: 20, grid: { display: false } }, x: { grid: { display: false } } } }, plugins: [ChartDataLabels] });
+                    }
+                        
+                    const dataDetalhado = allData.nc_detalhado || [];
+                    if (dataDetalhado.length > 0) {
+                        const tiposDeNC = Object.keys(dataDetalhado[0]).filter(key => key !== 'cliente');
+                        const dataDetalhadoFiltrado = dataDetalhado.filter(item => { const totalNc = tiposDeNC.reduce((soma, tipo) => soma + (parseInt(item[tipo]) || 0), 0); return totalNc > 0; });
+                        if (dataDetalhadoFiltrado.length > 0) {
+                            const topData = dataDetalhadoFiltrado.slice(0, 6);
+                            const labels = topData.map(item => item.cliente);
+                            const colors = ['#003366', '#29abe2', '#fd7e14', '#28a745', '#dc3545', '#6c757d', '#ffc107'];
+                            const datasets = tiposDeNC.map((tipo, index) => ({ label: tipo.replace(/_/g, ' ').replace(/(^\w{1})|(\s+\w{1})/g, letra => letra.toUpperCase()), data: topData.map(item => parseInt(item[tipo]) || 0), backgroundColor: colors[index % colors.length] }));
+                            const ctx9 = document.getElementById('grafico9').getContext('2d');
+                            charts['grafico9'] = new Chart(ctx9, { type: 'bar', data: { labels: labels, datasets: datasets }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom', labels: { usePointStyle: true, pointStyle: 'rect', padding: 20, font: { size: 10 } } }, datalabels: { display: true, anchor: 'center', align: 'center', color: 'white', font: { weight: 'bold' }, formatter: (value) => { return value > 0 ? value : null; } } }, scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, beginAtZero: true, max: 7, ticks: { stepSize: 2 }, grid: { display: false } } } }, plugins: [ChartDataLabels] });
+                        }
                     }
                 }
-            }
-            function renderizarGraficosInternos(allData) {
-                const dataNciSetor = allData.nci_por_setor || [];
-                if (dataNciSetor.length > 0) {
-                    const labels = dataNciSetor.map(item => item.setor);
-                    const statusTypes = ['nao_iniciado', 'em_andamento', 'atrasado', 'concluido'];
-                    const statusColors = { 'nao_iniciado': '#6c757d', 'em_andamento': '#ffc107', 'atrasado': '#dc3545', 'concluido': '#28a745' };
-                    const datasets = statusTypes.map(status => ({ label: status.replace('_', ' ').toUpperCase(), data: dataNciSetor.map(item => parseInt(item[status]) || 0), backgroundColor: statusColors[status], borderRadius: 3 }));
-                    const stackTotals = dataNciSetor.map(item => statusTypes.reduce((sum, type) => sum + (parseInt(item[type]) || 0), 0));
-                    const maxValue = Math.max(...stackTotals);
-                    const ctx10 = document.getElementById('grafico10').getContext('2d');
-                    charts['grafico10'] = new Chart(ctx10, { type: 'bar', data: { labels: labels, datasets: datasets }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom', labels: { usePointStyle: true, pointStyle: 'rect', padding: 20, font: { size: 10 } } }, datalabels: { color: (context) => context.dataset.data[context.dataIndex] < 5 ? 'black' : 'white', font: { weight: 'bold' }, anchor: (context) => context.dataset.data[context.dataIndex] < 5 ? 'end' : 'center', align: (context) => context.dataset.data[context.dataIndex] < 5 ? 'end' : 'center', formatter: (value) => value > 0 ? value : null } }, scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, beginAtZero: true, max: maxValue + 5, grid: { display: false } } } }, plugins: [ChartDataLabels] });
+                function renderizarGraficosInternos(allData) {
+                    const dataNciSetor = allData.nci_por_setor || [];
+                    if (dataNciSetor.length > 0) {
+                        const labels = dataNciSetor.map(item => item.setor);
+                        const statusTypes = ['nao_iniciado', 'em_andamento', 'atrasado', 'concluido'];
+                        const statusColors = { 'nao_iniciado': '#6c757d', 'em_andamento': '#ffc107', 'atrasado': '#dc3545', 'concluido': '#28a745' };
+                        const datasets = statusTypes.map(status => ({ label: status.replace('_', ' ').toUpperCase(), data: dataNciSetor.map(item => parseInt(item[status]) || 0), backgroundColor: statusColors[status], borderRadius: 3 }));
+                        const stackTotals = dataNciSetor.map(item => statusTypes.reduce((sum, type) => sum + (parseInt(item[type]) || 0), 0));
+                        const maxValue = Math.max(...stackTotals);
+                        const ctx10 = document.getElementById('grafico10').getContext('2d');
+                        charts['grafico10'] = new Chart(ctx10, { type: 'bar', data: { labels: labels, datasets: datasets }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom', labels: { usePointStyle: true, pointStyle: 'rect', padding: 20, font: { size: 10 } } }, datalabels: { color: (context) => context.dataset.data[context.dataIndex] < 5 ? 'black' : 'white', font: { weight: 'bold' }, anchor: (context) => context.dataset.data[context.dataIndex] < 5 ? 'end' : 'center', align: (context) => context.dataset.data[context.dataIndex] < 5 ? 'end' : 'center', formatter: (value) => value > 0 ? value : null } }, scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, beginAtZero: true, max: maxValue + 5, grid: { display: false } } } }, plugins: [ChartDataLabels] });
+                    }
+
+                    const dataParetoMes = allData.pareto_mes || [];
+                    if (dataParetoMes.length > 0) criarGraficoPareto('grafico11', dataParetoMes, 'topicos', 'nao_iniciado');
+                    const dataParetoAno = allData.pareto_ano || [];
+                    if (dataParetoAno.length > 0) criarGraficoPareto('grafico12', dataParetoAno, 'topicos', 'nao_iniciado');
+                        
+                    const dataNciAnual = allData.nci_anual || [];
+                    if (dataNciAnual.length > 0) {
+                        const labels = dataNciAnual.map(item => item.mes);
+                        const values = dataNciAnual.map(item => parseInt(item.quantidade_ano));
+                        const maxValue = Math.max(...values);
+                        const ctx13 = document.getElementById('grafico13').getContext('2d');
+                        charts['grafico13'] = new Chart(ctx13, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade', data: values, backgroundColor: '#003366', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: (context) => context.dataset.data[context.dataIndex] > 0, color: 'black', font: { weight: 'bold' }, anchor: 'end', align: 'end' } }, scales: { y: { max: maxValue + 5, grid: { display: false } }, x: { grid: { display: false } } } }, plugins: [ChartDataLabels] });
+                    }
                 }
 
-                const dataParetoMes = allData.pareto_mes || [];
-                if (dataParetoMes.length > 0) criarGraficoPareto('grafico11', dataParetoMes, 'topicos', 'nao_iniciado');
-                const dataParetoAno = allData.pareto_ano || [];
-                if (dataParetoAno.length > 0) criarGraficoPareto('grafico12', dataParetoAno, 'topicos', 'nao_iniciado');
-                    
-                const dataNciAnual = allData.nci_anual || [];
-                if (dataNciAnual.length > 0) {
-                    const labels = dataNciAnual.map(item => item.mes);
-                    const values = dataNciAnual.map(item => parseInt(item.quantidade_ano));
-                    const maxValue = Math.max(...values);
-                    const ctx13 = document.getElementById('grafico13').getContext('2d');
-                    charts['grafico13'] = new Chart(ctx13, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade', data: values, backgroundColor: '#003366', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: (context) => context.dataset.data[context.dataIndex] > 0, color: 'black', font: { weight: 'bold' }, anchor: 'end', align: 'end' } }, scales: { y: { max: maxValue + 5, grid: { display: false } }, x: { grid: { display: false } } } }, plugins: [ChartDataLabels] });
+                // --- EXECUÇÃO INICIAL ---
+                updateAllCharts();
+                if (tabsContainer) { filterCharts('principais'); }
+                if (refreshBtn) {
+                    refreshBtn.addEventListener('click', updateAllCharts);
                 }
-            }
 
-            // --- EXECUÇÃO INICIAL ---
-            updateAllCharts();
-            if (tabsContainer) { filterCharts('principais'); }
-            if (refreshBtn) {
-                refreshBtn.addEventListener('click', updateAllCharts);
-            }
-
-            // --- LÓGICA PARA REDIMENSIONAR GRÁFICOS AO GIRAR A TELA ---
-            let resizeTimeout;
-            window.addEventListener('orientationchange', () => {
-                // Adicionamos um pequeno delay para dar tempo ao navegador de ajustar o layout
-                clearTimeout(resizeTimeout);
-                resizeTimeout = setTimeout(() => {
-                    // Passa por todos os gráficos que criamos e força o redimensionamento
-                    Object.values(charts).forEach(chart => {
-                        if (chart) {
-                            chart.resize();
-                        }
-                    });
-                }, 200); // 200 milissegundos de delay
+                // --- LÓGICA PARA REDIMENSIONAR GRÁFICOS AO GIRAR A TELA ---
+                let resizeTimeout;
+                window.addEventListener('orientationchange', () => {
+                    // Adicionamos um pequeno delay para dar tempo ao navegador de ajustar o layout
+                    clearTimeout(resizeTimeout);
+                    resizeTimeout = setTimeout(() => {
+                        // Passa por todos os gráficos que criamos e força o redimensionamento
+                        Object.values(charts).forEach(chart => {
+                            if (chart) {
+                                chart.resize();
+                            }
+                        });
+                    }, 200); // 200 milissegundos de delay
+                });
+            
             });
-        });
     </script>
 </body>
 </html>
