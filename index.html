@@ -91,7 +91,7 @@
                         <div class="indicator-card"><div class="card-info"><h3>Tipos de NC por Cliente</h3><p>Detalhamento das Não Conformidades por tipo.</p></div><div class="card-graph"><canvas id="grafico9"></canvas></div></div><div class="indicator-card">
                         <div class="indicator-card">
                             <div class="card-info"><h3>Total de OPT's no Mês</h3><p>Mostra a quantidade de OPT's realizadas no mês.</p></div>
-                            <div class="card-graph"><canvas id="grafico4"></canvas></div>
+                            <div class="card-graph"><canvas id="grafico14"></canvas></div>
                         </div>
                                             
                         <div class="card-info"><h3>NC Interna por Setor</h3><p>Quantidade de NC's de cada setor no mês.</p></div>
@@ -174,7 +174,7 @@
             const allCards = Array.from(document.querySelectorAll('.indicator-card'));
             const tabMapping = {
                 'rifs': ['grafico1', 'grafico2', 'grafico3',],
-                'opt': ['grafico4', 'grafico7', 'grafico8', 'grafico9'],
+                'opt': ['grafico14', 'grafico7', 'grafico8', 'grafico9'],
                 'nc_interna': ['grafico10', 'grafico11', 'grafico12', 'grafico13']
             };
             // ... (resto da lógica das abas, sem alteração) ...
@@ -381,8 +381,8 @@
                     const topData = dataInteiroFiltrado.slice(0, 6);
                     const labels = topData.map(item => item.status);
                     const values = topData.map(item => parseInt(item.quantidadeopt_total));
-                    const ctx4 = document.getElementById('grafico4').getContext('2d');
-                    charts['grafico4'] = new Chart(ctx4, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade Total', data: values, backgroundColor: '#29abe2', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: true, anchor: 'end', align: 'end', color: 'black', font: { weight: 'bold' } } }, scales: { y: { beginAtZero: true, max: 20, grid: { display: false } }, x: { grid: { display: false } } } }, plugins: [ChartDataLabels] });
+                    const ctx14 = document.getElementById('grafico4').getContext('2d');
+                    charts['grafico14'] = new Chart(ctx14, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade Total', data: values, backgroundColor: '#29abe2', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: true, anchor: 'end', align: 'end', color: 'black', font: { weight: 'bold' } } }, scales: { y: { beginAtZero: true, max: 20, grid: { display: false } }, x: { grid: { display: false } } } }, plugins: [ChartDataLabels] });
                 }
             }
             function renderizarGraficosInternos(allData) {
