@@ -89,6 +89,12 @@
                     <div class="indicator-card"><div class="card-info"><h3>NC por Cliente</h3><p>Quantidade de Não Conformidades por Cliente.</p></div><div class="card-graph"><canvas id="grafico7"></canvas></div></div>
                     <div class="indicator-card"><div class="card-info"><h3>NC por Projeto</h3><p>Quantidade de Não Conformidades por Projeto.</p></div><div class="card-graph"><canvas id="grafico8"></canvas></div></div>
                     <div class="indicator-card"><div class="card-info"><h3>Tipos de NC por Cliente</h3><p>Detalhamento das Não Conformidades por tipo.</p></div><div class="card-graph"><canvas id="grafico9"></canvas></div></div><div class="indicator-card">
+                    <div class="indicator-card">
+                        <div class="card-info"><h3>Total de OPT's no Mês</h3><p>Mostra a quantidade de OPT's realizadas no mês.</p></div>
+                        <div class="card-graph"><canvas id="grafico4"></canvas></div>
+                    </div>
+                        
+                    
                     <div class="card-info"><h3>NC Interna por Setor</h3><p>Quantidade de NC's de cada setor no mês.</p></div>
                     <div class="card-graph"><canvas id="grafico10"></canvas></div>
                     </div>
@@ -168,7 +174,7 @@
             const tabsContainer = document.querySelector('.dashboard-tabs');
             const allCards = Array.from(document.querySelectorAll('.indicator-card'));
             const tabMapping = {
-                'rifs': ['grafico1', 'grafico2', 'grafico3'],
+                'rifs': ['grafico1', 'grafico2', 'grafico3', 'grafico4'],
                 'opt': ['grafico7', 'grafico8', 'grafico9'],
                 'nc_interna': ['grafico10', 'grafico11', 'grafico12', 'grafico13']
             };
@@ -198,7 +204,7 @@
                 if (refreshBtn) { refreshBtn.disabled = true; refreshBtn.textContent = 'Atualizando...'; }
                 try {
                     const [responseExterno, responseInterno, responseRifs] = await Promise.all([
-                        fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_EXTERNO}&sheets=nc_por_cliente,nc_por_projeto,nc_detalhado`),
+                        fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_EXTERNO}&sheets=opt_por_cliente,opt_por_projeto,opt_detalhado,opt_inteiro`),
                         fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_INTERNO}&sheets=nci_por_setor,pareto_mes,pareto_ano,nci_anual`),
                         fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_RIFS}&sheets=status_por_fornecedor_ano,status_por_fornecedor_mes,pareto_rifs`)
                     ]);
@@ -337,7 +343,7 @@
                 renderizarGraficosExternos(lastDataExterno);
             }
             function renderizarGraficosExternos(allData) {
-                const dataCliente = allData.nc_por_cliente || [];
+                const dataCliente = allData.opt_por_cliente || [];
                 const dataClienteFiltrado = dataCliente.filter(item => parseInt(item.quantidadecliente_nc) > 0);
                 if (dataClienteFiltrado.length > 0) {
                     const topData = dataClienteFiltrado.slice(0, 6);
@@ -347,7 +353,7 @@
                     charts['grafico7'] = new Chart(ctx7, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade de NC', data: values, backgroundColor: '#003366', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: true, anchor: 'end', align: 'end', color: 'black', font: { weight: 'bold' } } }, scales: { y: { beginAtZero: true, max: 20, grid: { display: false } }, x: { grid: { display: false } } } }, plugins: [ChartDataLabels] });
                 }
                     
-                const dataProjeto = allData.nc_por_projeto || [];
+                const dataProjeto = allData.opt_por_projeto || [];
                 const dataProjetoFiltrado = dataProjeto.filter(item => parseInt(item.quantidadeprojeto_nc) > 0);
                 if (dataProjetoFiltrado.length > 0) {
                     const topData = dataProjetoFiltrado.slice(0, 6);
@@ -357,7 +363,7 @@
                     charts['grafico8'] = new Chart(ctx8, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade de NC', data: values, backgroundColor: '#29abe2', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: true, anchor: 'end', align: 'end', color: 'black', font: { weight: 'bold' } } }, scales: { y: { beginAtZero: true, max: 20, grid: { display: false } }, x: { grid: { display: false } } } }, plugins: [ChartDataLabels] });
                 }
                     
-                const dataDetalhado = allData.nc_detalhado || [];
+                const dataDetalhado = allData.opt_detalhado || [];
                 if (dataDetalhado.length > 0) {
                     const tiposDeNC = Object.keys(dataDetalhado[0]).filter(key => key !== 'cliente');
                     const dataDetalhadoFiltrado = dataDetalhado.filter(item => { const totalNc = tiposDeNC.reduce((soma, tipo) => soma + (parseInt(item[tipo]) || 0), 0); return totalNc > 0; });
@@ -369,6 +375,15 @@
                         const ctx9 = document.getElementById('grafico9').getContext('2d');
                         charts['grafico9'] = new Chart(ctx9, { type: 'bar', data: { labels: labels, datasets: datasets }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom', labels: { usePointStyle: true, pointStyle: 'rect', padding: 20, font: { size: 10 } } }, datalabels: { display: true, anchor: 'center', align: 'center', color: 'white', font: { weight: 'bold' }, formatter: (value) => { return value > 0 ? value : null; } } }, scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, beginAtZero: true, max: 7, ticks: { stepSize: 2 }, grid: { display: false } } } }, plugins: [ChartDataLabels] });
                     }
+                }
+                const dataInteiro = allData.opt_inteiro || [];
+                const dataInteiroFiltrado = dataInteiro.filter(item => parseInt(item.quantidadeopt_total) > 0);
+                if (dataInteiroFiltrado.length > 0) {
+                    const topData = dataInteiroFiltrado.slice(0, 6);
+                    const labels = topData.map(item => item.status);
+                    const values = topData.map(item => parseInt(item.quantidadeopt_total));
+                    const ctx4 = document.getElementById('grafico4').getContext('2d');
+                    charts['grafico4'] = new Chart(ctx4, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade Total', data: values, backgroundColor: '#29abe2', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: true, anchor: 'end', align: 'end', color: 'black', font: { weight: 'bold' } } }, scales: { y: { beginAtZero: true, max: 20, grid: { display: false } }, x: { grid: { display: false } } } }, plugins: [ChartDataLabels] });
                 }
             }
             function renderizarGraficosInternos(allData) {
