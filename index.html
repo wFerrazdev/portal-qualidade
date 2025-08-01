@@ -74,41 +74,41 @@
                     <button class="tab-button" data-tab="nc_interna">NC Interna</button>
                 </div>
                 <div class="indicators-grid">
-                        <div class="indicator-card">
-                            <div class="card-info"><h3>RIFs por Fornecedor - Anual</h3><p>Mostra os status e quantas rifs cada fornecedor teve no ano.</p></div>
-                            <div class="card-graph"><canvas id="grafico1"></canvas></div>
-                        </div>
-                        <div class="indicator-card">
-                            <div class="card-info"><h3>RIFs por Fornecedor - Mensal</h3><p>Mostra os status e quantas rifs cada fornecedor teve no mês.</p></div>
-                            <div class="card-graph"><canvas id="grafico2"></canvas></div>
-                        </div>
-                        <div class="indicator-card">
-                            <div class="card-info"><h3>Pareto - Fornecedor</h3><p>Mostra o fornecedor com mais impacto para a empresa.</p></div>
-                            <div class="card-graph"><canvas id="grafico3"></canvas></div>
-                        </div>
-                        <div class="indicator-card"><div class="card-info"><h3>NC por Cliente</h3><p>Quantidade de Não Conformidades por Cliente.</p></div><div class="card-graph"><canvas id="grafico7"></canvas></div></div>
-                        <div class="indicator-card"><div class="card-info"><h3>NC por Projeto</h3><p>Quantidade de Não Conformidades por Projeto.</p></div><div class="card-graph"><canvas id="grafico8"></canvas></div></div>
-                        <div class="indicator-card"><div class="card-info"><h3>Tipos de NC por Cliente</h3><p>Detalhamento das Não Conformidades por tipo.</p></div><div class="card-graph"><canvas id="grafico9"></canvas></div></div><div class="indicator-card">
-                        <div class="indicator-card">
-                            <div class="card-info"><h3>Total de OPT's no Mês</h3><p>Mostra a quantidade de OPT's realizadas no mês.</p></div>
-                            <div class="card-graph"><canvas id="grafico14"></canvas></div>
-                        </div>
-                                            
+                    <div class="indicator-card">
+                        <div class="card-info"><h3>RIFs por Fornecedor - Anual</h3><p>Mostra os status e quantas rifs cada fornecedor teve no ano.</p></div>
+                        <div class="card-graph"><canvas id="grafico1"></canvas></div>
+                    </div>
+                    <div class="indicator-card">
+                        <div class="card-info"><h3>RIFs por Fornecedor - Mensal</h3><p>Mostra os status e quantas rifs cada fornecedor teve no mês.</p></div>
+                        <div class="card-graph"><canvas id="grafico2"></canvas></div>
+                    </div>
+                    <div class="indicator-card">
+                        <div class="card-info"><h3>Pareto - Fornecedor</h3><p>Mostra o fornecedor com mais impacto para a empresa.</p></div>
+                        <div class="card-graph"><canvas id="grafico3"></canvas></div>
+                    </div>
+                    <div class="indicator-card"><div class="card-info"><h3>NC por Cliente</h3><p>Quantidade de Não Conformidades por Cliente.</p></div><div class="card-graph"><canvas id="grafico7"></canvas></div></div>
+                    <div class="indicator-card"><div class="card-info"><h3>NC por Projeto</h3><p>Quantidade de Não Conformidades por Projeto.</p></div><div class="card-graph"><canvas id="grafico8"></canvas></div></div>
+                    <div class="indicator-card"><div class="card-info"><h3>Tipos de NC por Cliente</h3><p>Detalhamento das Não Conformidades por tipo.</p></div><div class="card-graph"><canvas id="grafico9"></canvas></div></div><div class="indicator-card">
+                    <div class="indicator-card">
+                        <div class="card-info"><h3>Total de OPT's no Mês</h3><p>Mostra a quantidade de OPT's realizadas no mês.</p></div>
+                        <div class="card-graph"><canvas id="grafico14"></canvas></div>
+                    </div>
+                    <div class="indicator-card"></div>
                         <div class="card-info"><h3>NC Interna por Setor</h3><p>Quantidade de NC's de cada setor no mês.</p></div>
                         <div class="card-graph"><canvas id="grafico10"></canvas></div>
-                        </div>
-                        <div class="indicator-card">
-                            <div class="card-info"><h3>Pareto Mensal</h3><p>Quantidade do tópico com mais impacto no mês.</p></div>
-                            <div class="card-graph"><canvas id="grafico11"></canvas></div>
-                        </div>
-                        <div class="indicator-card">
-                            <div class="card-info"><h3>Pareto Anual</h3><p>Quantidade do tópico com mais impacto no ano.</p></div>
-                            <div class="card-graph"><canvas id="grafico12"></canvas></div>
-                        </div>
-                        <div class="indicator-card">
-                            <div class="card-info"><h3>NC Interna Anual</h3><p>Acompanhamento do número de NC's internas no decorrer do ano.</p></div>
-                            <div class="card-graph"><canvas id="grafico13"></canvas></div>
-                        </div>
+                    </div>
+                    <div class="indicator-card">
+                        <div class="card-info"><h3>Pareto Mensal</h3><p>Quantidade do tópico com mais impacto no mês.</p></div>
+                        <div class="card-graph"><canvas id="grafico11"></canvas></div>
+                    </div>
+                    <div class="indicator-card">
+                        <div class="card-info"><h3>Pareto Anual</h3><p>Quantidade do tópico com mais impacto no ano.</p></div>
+                        <div class="card-graph"><canvas id="grafico12"></canvas></div>
+                    </div>
+                    <div class="indicator-card">
+                        <div class="card-info"><h3>NC Interna Anual</h3><p>Acompanhamento do número de NC's internas no decorrer do ano.</p></div>
+                        <div class="card-graph"><canvas id="grafico13"></canvas></div>
+                    </div>
                 </div>
             </main>
 
@@ -381,7 +381,7 @@
                     const topData = dataInteiroFiltrado.slice(0, 6);
                     const labels = topData.map(item => item.status);
                     const values = topData.map(item => parseInt(item.quantidadeopt_total));
-                    const ctx14 = document.getElementById('grafico4').getContext('2d');
+                    const ctx14 = document.getElementById('grafico14').getContext('2d');
                     charts['grafico14'] = new Chart(ctx14, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade Total', data: values, backgroundColor: '#29abe2', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: true, anchor: 'end', align: 'end', color: 'black', font: { weight: 'bold' } } }, scales: { y: { beginAtZero: true, max: 20, grid: { display: false } }, x: { grid: { display: false } } } }, plugins: [ChartDataLabels] });
                 }
             }
