@@ -650,9 +650,9 @@ body.is-resizing .card-graph canvas {
     padding-top: 25px;
 }
 
-/* 5. Responsividade para o cabeçalho do card especial */
-/* Responsividade FINAL para o card especial */
-@media (max-width: 992px) {
+
+/* Responsividade FINAL para o card especial - AGORA INCLUINDO TABLETS */
+@media (max-width: 992px) { /* <-- VALOR AUMENTADO PARA COBRIR TABLETS */
     /* Força o card especial a ser um container flex no mobile */
     .kpi-card {
         display: flex !important;
@@ -665,9 +665,9 @@ body.is-resizing .card-graph canvas {
 
     /* Força os boxes para o final e remove o posicionamento absoluto */
     .kpi-card .dynamic-info-boxes {
-        position: static !important;  /* FORÇA a remoção do 'absolute' */
-        order: 3 !important;          /* FORÇA a posição no final */
-        margin: 1rem auto 0 auto;     /* Adiciona espaço acima e centraliza */
+        position: static !important;
+        order: 3 !important;
+        margin: 1rem auto 0 auto;
         flex-direction: row;
         width: 100%;
         justify-content: space-around;
