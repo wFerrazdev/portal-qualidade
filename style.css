@@ -616,23 +616,40 @@ body.is-resizing .card-graph canvas {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* 1. O card especial é a nossa "âncora" de posicionamento. */
+/* ======================================================= */
+/* --- LAYOUT FINAL E ROBUSTO PARA O CARD COM KPI --- */
+/* ======================================================= */
+
+/* 1. O card especial é um container flex que permite quebra de linha. */
 .kpi-card {
-    position: relative;
-}
-
-/* 2. Posiciona os boxes no canto superior direito do card. */
-.kpi-card .dynamic-info-boxes {
-    position: absolute;
-    top: 25px;
-    right: 25px;
     display: flex;
-    flex-direction: column; /* Um em cima do outro, como pedido */
-    gap: 0.5rem;
-    z-index: 10;
+    flex-wrap: wrap; /* A propriedade mais importante aqui */
+    align-items: flex-start;
 }
 
-/* 3. Estilo dos boxes individuais. */
+/* 2. O título ocupa sempre a primeira linha inteira. */
+.kpi-card .card-info {
+    flex-basis: 100%;
+    /* A borda inferior já está nesta classe, o que é ótimo. */
+}
+
+/* 3. O gráfico é flexível e ocupa a maior parte do espaço na segunda linha. */
+.kpi-card .card-graph {
+    flex: 2 1 60%; /* Cresce mais rápido, pode encolher, base de 60% */
+    min-width: 300px; /* Não deixa o gráfico ser esmagado */
+}
+
+/* 4. Os boxes ocupam um espaço menor ao lado do gráfico no desktop. */
+.kpi-card .dynamic-info-boxes {
+    flex: 1 1 220px; /* Cresce, pode encolher, base de 220px */
+    display: flex;
+    flex-direction: column; /* Caixas empilhadas no desktop */
+    gap: 0.5rem;
+    align-self: center; /* Alinha os boxes verticalmente com o centro do gráfico */
+    padding: 25px;
+}
+
+/* 5. Estilo dos boxes individuais. */
 .kpi-card .info-box {
     background-color: #003366;
     color: white;
@@ -641,34 +658,18 @@ body.is-resizing .card-graph canvas {
     font-size: 0.8rem;
     font-weight: 500;
     text-align: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    white-space: nowrap;
 }
 
 
-/* --- LAYOUT RESPONSIVO (MOBILE E TABLET NA HORIZONTAL) --- */
-
+/* --- RESPONSIVIDADE SIMPLIFICADA --- */
 @media (max-width: 992px) {
-
-    /* 1. Força o card a ser um container de empilhamento vertical */
-    .kpi-card {
-        display: flex !important;
-        flex-direction: column !important;
-    }
-
-    /* 2. Define a ordem dos elementos: Título -> Gráfico -> Boxes */
-    .kpi-card .card-info { order: 1; }
-    .kpi-card .card-graph { order: 2; }
-    .kpi-card .dynamic-info-boxes { order: 3; }
-
-    /* 3. Regra FORÇADA para os boxes no rodapé */
+    /* Em telas menores, os boxes simplesmente ocupam 100% da largura,
+       o que força a quebra de linha e os joga para baixo do gráfico. */
     .kpi-card .dynamic-info-boxes {
-        position: static !important; /* Remove o posicionamento absoluto */
-        flex-direction: row !important; /* Ficam lado a lado */
-        justify-content: center !important; /* Centraliza o conjunto (corrige o espaçamento) */
-        width: 100%;
-        padding: 25px !important; /* Espaçamento igual em todos os lados (corrige "colado na borda") */
-        margin-top: 0; /* Reseta a margem para usar o padding */
-        border-top: 1px solid #eef2f7; /* Adiciona a linha separadora do rodapé */
+        flex-basis: 100%;
+        flex-direction: row; /* Ficam lado a lado no mobile */
+        justify-content: center;
+        align-self: initial; /* Reseta o alinhamento vertical */
+        padding-top: 0;
     }
 }
