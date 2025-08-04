@@ -600,45 +600,7 @@
             
             // Função definitiva para controlar o layout do KPI card
             // Função definitiva para controlar o layout do KPI card
-            function forceKpiCardLayout() {
-                const kpiCard = document.querySelector('.kpi-card');
-                if (!kpiCard) return;
-
-                const cardInfo = kpiCard.querySelector('.card-info');
-                const cardGraph = kpiCard.querySelector('.card-graph');
-                const infoBoxes = kpiCard.querySelector('.dynamic-info-boxes');
-
-                // --- LÓGICA DE DETECÇÃO CORRIGIDA E FINAL ---
-                const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-                const isNarrowScreen = window.innerWidth <= 1024; // Aumentamos o breakpoint para cobrir mais tablets
-
-                // A condição final: A tela é considerada 'mobile' se for um dispositivo de toque
-                // OU se a janela do navegador for estreita.
-                if (isTouchDevice || isNarrowScreen) {
-                    // --- APLICA O LAYOUT DE RODAPÉ (MOBILE / TABLET) ---
-                    kpiCard.style.cssText = 'display: flex; flex-direction: column; position: static;';
-                    cardInfo.style.order = '1';
-                    cardGraph.style.order = '2';
-                    infoBoxes.style.cssText = `
-                        position: static;
-                        order: 3;
-                        display: flex;
-                        flex-direction: row;
-                        justify-content: center;
-                        width: 100%;
-                        padding: 25px;
-                        margin-top: 0;
-                        border-top: 1px solid #eef2f7;
-                        gap: 1rem;
-                    `;
-                } else {
-                    // --- RESETA PARA O LAYOUT DE TÍTULO (DESKTOP) ---
-                    kpiCard.style.cssText = '';
-                    cardInfo.style.order = '';
-                    cardGraph.style.order = '';
-                    infoBoxes.style.cssText = '';
-                }
-            }
+            
 
             // --- EXECUÇÃO INICIAL E REDIMENSIONAMENTO ---
             if (tabsContainer) {
