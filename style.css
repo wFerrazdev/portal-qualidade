@@ -651,15 +651,27 @@ body.is-resizing .card-graph canvas {
 }
 
 /* 5. Responsividade para o cabeçalho do card especial */
+/* Responsividade FINAL para o card especial */
 @media (max-width: 768px) {
-    .kpi-card .kpi-card-header {
-        flex-direction: column;
-        align-items: stretch;
+    /* Força o card especial a ser um container flex no mobile */
+    .kpi-card {
+        display: flex !important;
+        flex-direction: column !important;
     }
+
+    /* Define a ordem dos elementos */
+    .kpi-card .card-info { order: 1; }
+    .kpi-card .card-graph { order: 2; }
+
+    /* Força os boxes para o final e remove o posicionamento absoluto */
     .kpi-card .dynamic-info-boxes {
-        margin-top: 1rem;
+        position: static !important;  /* FORÇA a remoção do 'absolute' */
+        order: 3 !important;          /* FORÇA a posição no final */
+        margin: 1rem auto 0 auto;     /* Adiciona espaço acima e centraliza */
         flex-direction: row;
+        width: 100%;
         justify-content: space-around;
+        padding: 0 1rem;
     }
 }
 
