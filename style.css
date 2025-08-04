@@ -107,20 +107,49 @@ body.menu-open .main-content { filter: blur(4px); }
 .add-button:hover { background-color: #004488; }
 
 /* --- PÁGINA DASHBOARD --- */
-.indicators-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; position: relative; }
-.indicator-card { background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 71, 137, 0.07); display: flex; flex-direction: column; min-height: 400px; transition: transform 0.2s ease, box-shadow 0.2s ease; }
-.indicator-card:hover { transform: translateY(-5px); box-shadow: 0 8px 16px rgba(0, 71, 137, 0.07); }
-.card-info { padding: 25px; border-bottom: 1px solid #eef2f7; }
-.card-info h3 { margin: 0 0 15px 0; color: #003366; font-size: 1.4em; }
-.card-info p { margin: 5px 0; color: #555; }
-.card-info strong { color: #333; }
+.indicators-grid { 
+    display: grid; 
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 40px; 
+}
+
+/* Estilo base para TODOS os cards do dashboard */
+.indicator-card { 
+    background-color: #ffffff; 
+    border-radius: 8px; 
+    box-shadow: 0 4px 12px rgba(0, 71, 137, 0.07); 
+    display: flex; /* Usamos flex para alinhar o conteúdo verticalmente */
+    flex-direction: column;
+    transition: transform 0.2s ease, box-shadow 0.2s ease; 
+}
+.indicator-card:hover { 
+    transform: translateY(-5px); 
+    box-shadow: 0 8px 16px rgba(0, 71, 137, 0.07); 
+}
+
+/* Estilo base para o header de TODOS os cards */
+.card-info { 
+    padding: 25px; 
+    border-bottom: 1px solid #eef2f7; 
+}
+.card-info h3 { 
+    margin: 0 0 15px 0; 
+    color: #003366; 
+    font-size: 1.4em; 
+}
+.card-info p { 
+    margin: 5px 0; 
+    color: #555; 
+}
+
+/* Estilo base para a área do gráfico de TODOS os cards */
 .card-graph {
-    flex-grow: 1;
+    flex-grow: 1; /* Faz a área do gráfico ocupar o espaço restante */
     padding: 25px;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 350px; /* <-- ADICIONE ESTA LINHA */
+    height: 350px; /* Altura fixa para evitar o bug de crescimento infinito */
 }
 
 /* --- PÁGINA PROJETOS --- */
@@ -583,29 +612,23 @@ body.is-resizing .card-graph canvas {
 
 /* --- ESTILOS FINAIS E ISOLADOS PARA O CARD COM KPI --- */
 
-/* 1. O card especial é um container flex com direção de coluna */
-.kpi-card {
-    display: flex;
-    flex-direction: column;
-}
-
-/* 2. O cabeçalho que alinha título (esquerda) e boxes (direita) */
+/* 1. O cabeçalho do card especial usa flex para alinhar itens lado a lado */
 .kpi-card .kpi-card-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     padding: 25px;
-    border-bottom: 1px solid #eef2f7; /* <-- A LINHA SEPARADORA DE VOLTA */
+    border-bottom: 1px solid #eef2f7;
     gap: 1rem;
 }
 
-/* 3. Garante que o card-info dentro do kpi-card não tenha padding ou borda extra */
-.kpi-card .card-info {
+/* 2. Removemos o padding e a borda do .card-info DENTRO do cabeçalho especial */
+.kpi-card .kpi-card-header .card-info {
     padding: 0;
     border: none;
 }
 
-/* 4. Estilo dos boxes, que já estava bom */
+/* 3. Estilos para o container dos boxes DENTRO do cabeçalho especial */
 .kpi-card .dynamic-info-boxes {
     display: flex;
     flex-direction: column;
@@ -622,12 +645,12 @@ body.is-resizing .card-graph canvas {
     text-align: center;
 }
 
-/* 5. Garante que a área do gráfico não tenha padding superior desnecessário */
+/* 4. A área do gráfico DENTRO do card especial */
 .kpi-card .card-graph {
     padding-top: 25px;
 }
 
-/* 6. Responsividade para o cabeçalho do card especial */
+/* 5. Responsividade para o cabeçalho do card especial */
 @media (max-width: 768px) {
     .kpi-card .kpi-card-header {
         flex-direction: column;
