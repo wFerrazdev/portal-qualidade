@@ -662,3 +662,58 @@ body.is-resizing .card-graph canvas {
         justify-content: space-around;
     }
 }
+
+/* ======================================================= */
+/* --- CORREÇÃO FINAL E DEFINITIVA PARA O CARD COM KPI --- */
+/* ======================================================= */
+
+/* 1. Define o card especial como a "âncora" de posicionamento. */
+.kpi-card {
+    position: relative;
+}
+
+/* 2. Posiciona os boxes no canto superior direito do kpi-card. */
+.kpi-card .dynamic-info-boxes {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    z-index: 10; /* Garante que fique na frente de outros elementos */
+}
+
+/* 3. Estilo do box individual (mantendo o que já tínhamos) */
+.kpi-card .info-box {
+    background-color: #003366;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-align: center;
+}
+
+/* 4. Responsividade: No mobile, os boxes vão para baixo do gráfico. */
+@media (max-width: 768px) {
+    /* O card vira um container flex no mobile para reordenar os filhos */
+    .kpi-card {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    /* Define a ordem: 1º o título, 2º o gráfico */
+    .kpi-card .card-info { order: 1; }
+    .kpi-card .card-graph { order: 2; }
+
+    /* Os boxes perdem o posicionamento absoluto e vão para o final */
+    .kpi-card .dynamic-info-boxes {
+        position: static; /* Chave da correção: remove o 'absolute' */
+        order: 3; /* Força para o final da lista */
+        margin: 0 auto 1rem auto; /* Centraliza e adiciona margem inferior */
+        flex-direction: row; /* Ficam lado a lado no mobile */
+        width: 100%;
+        justify-content: space-around;
+        padding: 0 1rem; /* Adiciona espaçamento lateral */
+    }
+}
