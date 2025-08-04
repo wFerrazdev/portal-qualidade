@@ -642,3 +642,7 @@ body.is-resizing .card-graph canvas {
     white-space: nowrap;
 }
 
+/* Classe Mestra para esconder cards, resolve o conflito com !important */
+.card-hidden {
+    display: none !important;
+}

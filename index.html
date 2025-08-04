@@ -236,24 +236,26 @@
             };
             // ... (resto da lógica das abas, sem alteração) ...
             function filterCharts(activeTab) {
-                    const chartIdsToShow = tabMapping[activeTab];
-                    allCards.forEach(card => {
-                        const canvas = card.querySelector('canvas');
-                        if (canvas && chartIdsToShow.includes(canvas.id)) {
-                            card.style.display = 'flex';
-                        } else {
-                            card.style.display = 'none';
-                        }
-                    });
-            }
-            if (tabsContainer) {
-                    tabsContainer.addEventListener('click', (event) => {
-                        if (event.target.classList.contains('tab-button')) {
-                            tabsContainer.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-                            event.target.classList.add('active');
-                            filterCharts(event.target.dataset.tab);
-                        }
-                    });
+                const chartIdsToShow = tabMapping[activeTab];
+                if (!chartIdsToShow) return; // Segurança extra
+
+                allCards.forEach(card => {
+                    const canvas = card.querySelector('canvas');
+                    // Se o card não tiver um canvas, esconde por segurança
+                    if (!canvas) {
+                        card.classList.add('card-hidden');
+                        return;
+                    }
+
+                    // Verifica se o ID do canvas está na lista de IDs para mostrar
+                    if (chartIdsToShow.includes(canvas.id)) {
+                        // Se estiver na lista, GARANTE que a classe de esconderijo seja removida
+                        card.classList.remove('card-hidden');
+                    } else {
+                        // Se NÃO estiver na lista, ADICIONA a classe para esconder
+                        card.classList.add('card-hidden');
+                    }
+                });
             }
             // --- FUNÇÃO PRINCIPAL DE ATUALIZAÇÃO ---
             async function updateAllCharts() {
