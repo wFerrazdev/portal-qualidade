@@ -574,23 +574,13 @@ body.is-resizing .card-graph canvas {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Responsividade para telas menores 
-@media (max-width: 768px) {
-    .card-content-wrapper {
-        flex-direction: column; /* Empilha o gráfico e os boxes 
-    }
-    .card-content-wrapper .card-graph {
-        width: 100%;
-        height: 250px; /* Garante altura mínima em telas pequenas 
-    }
-}*/
-
-/* Media Query para responsividade dos Info Boxes */
-@media (max-width: 992px) { /* Afeta tablets e celulares */
-    .indicator-card .dynamic-info-boxes {
-        position: static; /* Deixa de ser 'absoluto' */
-        flex-direction: row; /* Coloca os boxes lado a lado */
-        justify-content: center; /* Centraliza eles */
-        padding: 0 1rem 1rem 1rem; /* Adiciona espaçamento inferior */
-    }
+/* Nova classe para forçar o layout mobile dos Info Boxes */
+.info-boxes-mobile-layout {
+    position: static !important; /* !important garante que esta regra vença */
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 0 1rem 1rem 1rem;
+    width: 100%;
+    margin-top: 1rem;
 }

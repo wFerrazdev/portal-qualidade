@@ -617,6 +617,16 @@
                 // highlight-end
             }
             
+            function handleInfoBoxLayout() {
+                const infoBoxesContainer = document.querySelector('.indicator-card .dynamic-info-boxes');
+                if (!infoBoxesContainer) return;
+
+                if (window.innerWidth <= 992) {
+                    infoBoxesContainer.classList.add('info-boxes-mobile-layout');
+                } else {
+                    infoBoxesContainer.classList.remove('info-boxes-mobile-layout');
+                }
+            }
             // --- EXECUÇÃO INICIAL E EVENT LISTENERS ---
             updateAllCharts();
 
@@ -643,10 +653,14 @@
                     // Atrasamos um pouco a remoção da classe para dar tempo da renderização ocorrer.
                     setTimeout(() => {
                         document.body.classList.remove('is-resizing');
+                        handleInfoBoxLayout(); 
                     }, 100);
 
                 }, 250); // Espera 250ms após o usuário parar de redimensionar.
             });
+
+            handleInfoBoxLayout(); 
+
         });
     </script>
 </body>
