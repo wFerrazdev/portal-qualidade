@@ -536,6 +536,7 @@ body.menu-open .main-content { filter: blur(4px); }
 .tab-button:hover {
     color: #003366;
     background-color: rgba(223, 227, 235, 0.651);
+    /*background-color: rgba(207, 92, 15, 0.5);*/
 }
 
 .tab-button.active {
@@ -552,3 +553,4 @@ body.menu-open .main-content { filter: blur(4px); }
 body.is-resizing .card-graph canvas {
     opacity: 0;
 }
+

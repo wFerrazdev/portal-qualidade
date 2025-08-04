@@ -465,38 +465,40 @@
                         type: tipoGrafico2024,
                         label: '2024',
                         data: dados2024,
-                        backgroundColor: 'rgba(253, 126, 20, 0.5)', // Laranja com 50% de opacidade
-                        borderColor: 'rgba(253, 126, 20, 0.5)',
+                        backgroundColor: 'rgba(207, 92, 15, 0.5)',
+                        borderColor: 'rgba(207, 92, 15, 0.5)',
                         borderRadius: 5,
+                        order: 0,
                         datalabels: {
-                            color: '#adb5bd', // Cinza claro
+                            color: '#adb5bd',
                             font: { size: 10 },
                             anchor: 'end',
-                            align: 'start',
-                            formatter: (value) => value > 0 ? value : null
+                            align: 'end',
+                             formatter: (value) => value > 0 ? value : null
                         }
                     },
                     {
                         type: tipoGrafico2025,
                         label: '2025',
                         data: dados2025,
-                        backgroundColor: '#003366', // Azul marinho
+                        backgroundColor: '#003366',
                         borderColor: '#003366',
                         borderRadius: 5,
                         tension: 0.4,
+                        order: 1,
                         datalabels: {
-                            color: '#000', // Preto
+                            color: '#000',
                             font: { weight: 'bold', size: 12 },
                             anchor: 'end',
                             align: 'end',
-                            formatter: (value) => value > 0 ? value : null
+                             formatter: (value) => value > 0 ? value : null
                         }
                     }
                 ];
 
                 const ctx = document.getElementById(canvasId).getContext('2d');
                 charts[canvasId] = new Chart(ctx, {
-                    type: 'bar', // Tipo base, mas os datasets definem o tipo real
+                    type: 'bar',
                     data: { labels, datasets },
                     options: {
                         responsive: true,
@@ -552,18 +554,10 @@
                 });
             }
 
-
             function renderizarGraficosNCExterna(allData) {
-                // Gráfico 1 - Procedentes (Combinação: Coluna 2024 / Linha 2025)
                 criarGraficoCombinadoAnual('graficoNCEProcedentes', allData.nce_procedentes_anos, 'line', 'bar');
-
-                // Gráfico 2 - Revertidas (Barras simples)
                 criarGraficoBarrasSimplesAnual('graficoNCERevertidas', allData.nce_naoprocedentes_anos);
-
-                // Gráfico 3 - Total (Combinação: Linha 2024 / Linha 2025)
                 criarGraficoCombinadoAnual('graficoNCETotal', allData.total_nce_anos, 'line', 'line');
-
-                // Gráfico 4 - Pareto
                 const dataPareto = allData.nce_pareto_defeitos || [];
                 if (dataPareto.length > 0) {
                     criarGraficoPareto('graficoNCEPareto', dataPareto, 'defeito', 'quantidade_pareto');
