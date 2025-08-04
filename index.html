@@ -237,23 +237,19 @@
             // ... (resto da lógica das abas, sem alteração) ...
             function filterCharts(activeTab) {
                 const chartIdsToShow = tabMapping[activeTab];
-                if (!chartIdsToShow) return; // Segurança extra
+                if (!chartIdsToShow) return;
 
                 allCards.forEach(card => {
                     const canvas = card.querySelector('canvas');
-                    // Se o card não tiver um canvas, esconde por segurança
-                    if (!canvas) {
-                        card.classList.add('card-hidden');
+                    if (!canvas) { 
+                        card.style.display = 'none'; // Esconde cards sem canvas
                         return;
                     }
-
-                    // Verifica se o ID do canvas está na lista de IDs para mostrar
+                    
                     if (chartIdsToShow.includes(canvas.id)) {
-                        // Se estiver na lista, GARANTE que a classe de esconderijo seja removida
-                        card.classList.remove('card-hidden');
+                        card.style.display = 'flex'; // MOSTRA o card
                     } else {
-                        // Se NÃO estiver na lista, ADICIONA a classe para esconder
-                        card.classList.add('card-hidden');
+                        card.style.display = 'none'; // ESCONDE o card
                     }
                 });
             }
@@ -583,7 +579,6 @@
             }
 
             function renderizarGraficosNCExterna(allData) {
-                // --- Lógica dos Gráficos (sem alteração) ---
                 criarGraficoCombinadoAnual('graficoNCEProcedentes', allData.nce_procedentes_anos, 'line', 'bar');
                 criarGraficoBarrasSimplesAnual('graficoNCERevertidas', allData.nce_naoprocedentes_anos);
                 criarGraficoCombinadoAnual('graficoNCETotal', allData.total_nce_anos, 'line', 'line');
@@ -591,30 +586,16 @@
                 if (dataPareto.length > 0) {
                     criarGraficoPareto('graficoNCEPareto', dataPareto, 'defeito', 'quantidade_pareto');
                 }
-
-                // --- LÓGICA DOS NOVOS INFO BOXES ---
                 const kpiData = allData.kpi_revertidos;
-
                 if (kpiData && kpiData.length > 0) {
                     const totalRevertido = parseFloat(kpiData[0].total_revertido) || 0;
                     const mesRevertido = parseFloat(kpiData[0].mes_revertido) || 0;
-
-                    const formatarMoeda = (valor) => {
-                        return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-                    };
-
+                    const formatarMoeda = (valor) => valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
                     const totalBox = document.getElementById('total-revertido-box');
                     const mesBox = document.getElementById('mes-revertido-box');
-
                     if (totalBox) totalBox.textContent = `Total Revertido: ${formatarMoeda(totalRevertido)}`;
                     if (mesBox) mesBox.textContent = `Mês: ${formatarMoeda(mesRevertido)}`;
                 }
-                
-                // highlight-start
-                // --- CORREÇÃO FINAL DE LAYOUT ---
-                // Força a reavaliação do layout APÓS o conteúdo (e tamanho) dos boxes ser atualizado.
-                forceKpiCardLayout();
-                // highlight-end
             }
             
             // Função definitiva para controlar o layout do KPI card
@@ -660,49 +641,37 @@
                 }
             }
 
-            // --- EXECUÇÃO INICIAL E EVENT LISTENERS ---
-
-            // Pega a aba que já está ativa no HTML ou assume 'rifs' como padrão
+            // --- EXECUÇÃO INICIAL E REDIMENSIONAMENTO ---
+            if (tabsContainer) {
+                tabsContainer.addEventListener('click', (event) => {
+                    if (event.target.classList.contains('tab-button')) {
+                        tabsContainer.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                        event.target.classList.add('active');
+                        filterCharts(event.target.dataset.tab);
+                    }
+                });
+            }
+            
+            // CORREÇÃO FINAL: Executa o filtro ANTES e DEPOIS de buscar os dados
             const initialTab = document.querySelector('.dashboard-tabs .tab-button.active')?.dataset.tab || 'rifs';
-
-            // 1. APLICA O FILTRO IMEDIATAMENTE
-            // Isso esconde todos os cards errados ANTES de buscar os dados, eliminando o "flash".
-            filterCharts(initialTab); 
-
-            // 2. AGORA SIM, COMEÇA A BUSCAR OS DADOS
-            updateAllCharts();
-
-            // 3. Adiciona o listener ao botão de refresh
+            filterCharts(initialTab); // Filtro imediato para evitar "flash"
+            updateAllCharts(); // Busca os dados, e a filtragem roda de novo no 'finally'
+            
             if (refreshBtn) {
                 refreshBtn.addEventListener('click', updateAllCharts);
             }
 
-            // --- LÓGICA FINAL PARA REDIMENSIONAR GRÁFICOS (VERSÃO CORRIGIDA) ---
             let resizeTimer;
             window.addEventListener('resize', () => {
-                // Adiciona a classe para uma transição visual suave
                 document.body.classList.add('is-resizing');
-                
-                // Usamos o 'debounce' para não executar o código muitas vezes durante o redimensionamento
                 clearTimeout(resizeTimer);
                 resizeTimer = setTimeout(() => {
-                    
-                    // A função renderAllCharts já destrói e recria os gráficos,
-                    // o que os torna responsivos (incluindo nossa lógica de tamanho da fonte).
-                    // Remover a chamada 'chart.resize()' separada resolve o conflito.
                     renderAllCharts();
-
-                    // Atrasamos um pouco a remoção da classe para dar tempo da renderização ocorrer.
                     setTimeout(() => {
                         document.body.classList.remove('is-resizing');
-                        forceKpiCardLayout(); 
                     }, 100);
-
-                }, 250); // Espera 250ms após o usuário parar de redimensionar.
+                }, 250);
             });
-
-            forceKpiCardLayout(); 
-
         });
     </script>
 </body>
