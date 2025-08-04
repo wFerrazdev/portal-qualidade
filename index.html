@@ -593,27 +593,28 @@
                     criarGraficoPareto('graficoNCEPareto', dataPareto, 'defeito', 'quantidade_pareto');
                 }
 
-                // highlight-start
                 // --- LÓGICA DOS NOVOS INFO BOXES ---
                 const kpiData = allData.kpi_revertidos;
 
                 if (kpiData && kpiData.length > 0) {
-                    // Pega os valores da primeira linha de dados
                     const totalRevertido = parseFloat(kpiData[0].total_revertido) || 0;
                     const mesRevertido = parseFloat(kpiData[0].mes_revertido) || 0;
 
-                    // Função para formatar como moeda brasileira
                     const formatarMoeda = (valor) => {
                         return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
                     };
 
-                    // Atualiza os elementos HTML
                     const totalBox = document.getElementById('total-revertido-box');
                     const mesBox = document.getElementById('mes-revertido-box');
 
                     if (totalBox) totalBox.textContent = `Total Revertido: ${formatarMoeda(totalRevertido)}`;
                     if (mesBox) mesBox.textContent = `Mês: ${formatarMoeda(mesRevertido)}`;
                 }
+                
+                // highlight-start
+                // --- CORREÇÃO FINAL DE LAYOUT ---
+                // Força a reavaliação do layout APÓS o conteúdo (e tamanho) dos boxes ser atualizado.
+                handleInfoBoxLayout();
                 // highlight-end
             }
             
