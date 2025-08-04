@@ -584,3 +584,13 @@ body.is-resizing .card-graph canvas {
         height: 250px; /* Garante altura mínima em telas pequenas 
     }
 }*/
+
+/* Media Query para responsividade dos Info Boxes */
+@media (max-width: 992px) { /* Afeta tablets e celulares */
+    .indicator-card .dynamic-info-boxes {
+        position: static; /* Deixa de ser 'absoluto' */
+        flex-direction: row; /* Coloca os boxes lado a lado */
+        justify-content: center; /* Centraliza eles */
+        padding: 0 1rem 1rem 1rem; /* Adiciona espaçamento inferior */
+    }
+}

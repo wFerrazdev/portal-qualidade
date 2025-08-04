@@ -122,9 +122,17 @@
                         <div class="card-info"><h3>NC Interna Anual</h3><p>Acompanhamento do número de NC's internas no decorrer do ano.</p></div>
                         <div class="card-graph"><canvas id="grafico13"></canvas></div>
                     </div>
+                    
+                    <hr style="width:100%; grid-column: 1 / -1; border-color: #eee; margin: 1rem 0;">
+
                     <div class="indicator-card">
-                        <div class="card-info"><h3>NC's Procedentes 2025</h3><p>Comparativo anual de NC's procedentes.</p></div>
-                        <div class="card-graph"><canvas id="graficoNCEProcedentes"></canvas></div>
+                        <div class="card-info">
+                            <h3>NC's Procedentes 2025</h3>
+                            <p>Comparativo anual de NC's procedentes.</p>
+                        </div>
+                        <div class="card-graph">
+                            <canvas id="graficoNCEProcedentes"></canvas>
+                        </div>
                     </div>
 
                     <div class="indicator-card">
@@ -135,7 +143,6 @@
                         <div class="card-graph">
                             <canvas id="graficoNCERevertidas"></canvas>
                         </div>
-                        
                         <div class="dynamic-info-boxes">
                             <div class="info-box" id="total-revertido-box">Total Revertido: R$ 0,00</div>
                             <div class="info-box" id="mes-revertido-box">Mês: R$ 0,00</div>
@@ -143,13 +150,23 @@
                     </div>
 
                     <div class="indicator-card">
-                        <div class="card-info"><h3>Total NC's 2025</h3><p>Total de NC's recebidas (procedentes + não procedentes).</p></div>
-                        <div class="card-graph"><canvas id="graficoNCETotal"></canvas></div>
+                        <div class="card-info">
+                            <h3>Total NC's 2025</h3>
+                            <p>Total de NC's recebidas (procedentes + não procedentes).</p>
+                        </div>
+                        <div class="card-graph">
+                            <canvas id="graficoNCETotal"></canvas>
+                        </div>
                     </div>
 
                     <div class="indicator-card">
-                        <div class="card-info"><h3>Pareto de Defeitos 2025</h3><p>Principais defeitos encontrados nas NC's.</p></div>
-                        <div class="card-graph"><canvas id="graficoNCEPareto"></canvas></div>
+                        <div class="card-info">
+                            <h3>Pareto de Defeitos 2025</h3>
+                            <p>Principais defeitos encontrados nas NC's.</p>
+                        </div>
+                        <div class="card-graph">
+                            <canvas id="graficoNCEPareto"></canvas>
+                        </div>
                     </div>
                 </div>
             </main>
@@ -465,7 +482,8 @@
             // ADICIONE TODO ESTE BLOCO DE CÓDIGO
             function criarGraficoCombinadoAnual(canvasId, data, tipoGrafico2025, tipoGrafico2024) {
                 if (!data || data.length === 0) return;
-
+                
+                const isMobile = window.innerWidth < 768;
                 const labels = data.map(item => item.mes);
                 const dados2025 = data.map(item => parseInt(item.quantidade_2025) || 0);
                 const dados2024 = data.map(item => parseInt(item.quantidade_2024) || 0);
@@ -518,7 +536,7 @@
                         plugins: { legend: { display: true, position: 'bottom' }, datalabels: { display: true } },
                         scales: {
                             y: { beginAtZero: true, grid: { display: false } , max: maxValue + 5 },
-                            x: { grid: { display: false } }
+                            x: { grid: { display: false }, ticks: { font: { size: isMobile ? 9 : 12 } } }
                         }
                     },
                     plugins: [ChartDataLabels]
@@ -528,6 +546,7 @@
             function criarGraficoBarrasSimplesAnual(canvasId, data) {
                 if (!data || data.length === 0) return;
 
+                const isMobile = window.innerWidth < 768;
                 const labels = data.map(item => item.mes);
                 const dados2025 = data.map(item => parseInt(item.quantidade_2025) || 0);
                 const maxValue = Math.max(...dados2025);
@@ -559,7 +578,7 @@
                         },
                         scales: {
                             y: { beginAtZero: true, max: maxValue + 5, grid: { display: false } },
-                            x: { grid: { display: false } }
+                            x: { grid: { display: false }, ticks: { font: { size: isMobile ? 9 : 12 } } }
                         }
                     },
                     plugins: [ChartDataLabels]
