@@ -625,28 +625,27 @@
                 refreshBtn.addEventListener('click', updateAllCharts);
             }
 
-            // --- LÓGICA FINAL PARA REDIMENSIONAR GRÁFICOS (COM SUAVIDADE) ---
+            // --- LÓGICA FINAL PARA REDIMENSIONAR GRÁFICOS (VERSÃO CORRIGIDA) ---
             let resizeTimer;
             window.addEventListener('resize', () => {
-                // Adiciona a classe para esconder os gráficos imediatamente
+                // Adiciona a classe para uma transição visual suave
                 document.body.classList.add('is-resizing');
                 
+                // Usamos o 'debounce' para não executar o código muitas vezes durante o redimensionamento
                 clearTimeout(resizeTimer);
                 resizeTimer = setTimeout(() => {
-                    Object.values(charts).forEach(chart => {
-                        if (chart && typeof chart.resize === 'function') {
-                            chart.resize();
-                        }
-                    });
-
-                    // Um pequeno delay extra antes de mostrar novamente para garantir que tudo foi renderizado
-                    setTimeout(() => {
-                        // Remove a classe para mostrar os gráficos com fade-in
-                        document.body.classList.remove('is-resizing');
-                    }, 50);
+                    
+                    // A função renderAllCharts já destrói e recria os gráficos,
+                    // o que os torna responsivos (incluindo nossa lógica de tamanho da fonte).
+                    // Remover a chamada 'chart.resize()' separada resolve o conflito.
                     renderAllCharts();
 
-                }, 250);
+                    // Atrasamos um pouco a remoção da classe para dar tempo da renderização ocorrer.
+                    setTimeout(() => {
+                        document.body.classList.remove('is-resizing');
+                    }, 100);
+
+                }, 250); // Espera 250ms após o usuário parar de redimensionar.
             });
         });
     </script>
