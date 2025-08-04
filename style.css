@@ -642,31 +642,3 @@ body.is-resizing .card-graph canvas {
     white-space: nowrap;
 }
 
-
-/* --- LAYOUT FORÇADO (MOBILE/TABLET < 992px, AMBAS ORIENTAÇÕES) --- */
-
-@media (max-width: 992px) {
-
-    .kpi-card {
-        /* Força o layout de empilhamento e remove a âncora de posição */
-        position: static !important; 
-        display: flex !important;
-        flex-direction: column !important;
-    }
-    
-    /* Define a ordem dos elementos: Título -> Gráfico -> Boxes */
-    .kpi-card .card-info { order: 1; }
-    .kpi-card .card-graph { order: 2; }
-    .kpi-card .dynamic-info-boxes { order: 3; }
-
-    /* Regra INQUESTIONÁVEL para os boxes no rodapé */
-    .kpi-card .dynamic-info-boxes {
-        position: static !important; /* GARANTE que não é absoluto */
-        flex-direction: row !important; /* GARANTE que fiquem lado a lado */
-        justify-content: center !important;
-        width: 100%;
-        padding: 25px !important;
-        margin-top: 0;
-        border-top: 1px solid #eef2f7;
-    }
-}
