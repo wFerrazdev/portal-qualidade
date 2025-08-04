@@ -536,7 +536,7 @@ body.menu-open .main-content { filter: blur(4px); }
 .tab-button:hover {
     color: #003366;
     background-color: rgba(223, 227, 235, 0.651);
-    /*background-color: rgba(207, 92, 15, 0.5);*/
+    /*background-color: rgba(233, 123, 50, 0.918);*/
 }
 
 .tab-button.active {
