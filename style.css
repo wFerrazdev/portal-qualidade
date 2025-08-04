@@ -114,8 +114,9 @@ body.menu-open .main-content { filter: blur(4px); }
 }
 
 .indicators-grid .indicator-card.kpi-card {
-    display: flex !important;
-    flex-direction: column !important;
+    display: flex;
+    flex-direction: column;
+    position: relative !important;
 }
 
 /* Estilo base para TODOS os cards do dashboard */
