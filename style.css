@@ -107,36 +107,14 @@ body.menu-open .main-content { filter: blur(4px); }
 .add-button:hover { background-color: #004488; }
 
 /* --- PÁGINA DASHBOARD --- */
-.indicators-grid { 
-    display: grid; 
-    grid-template-columns: repeat(2, 1fr); 
-    gap: 40px; 
-}
-
-/* Estilo base para TODOS os cards do dashboard */
-.indicator-card { 
-    background-color: #ffffff; 
-    border-radius: 8px; 
-    box-shadow: 0 4px 12px rgba(0, 71, 137, 0.07); 
-    display: flex;
-    flex-direction: column; /* Empilha o conteúdo: título, depois gráfico */
-}
-
-.card-info { 
-    padding: 25px; 
-    border-bottom: 1px solid #eef2f7; 
-}
+.indicators-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; position: relative; }
+.indicator-card { background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 71, 137, 0.07); display: flex; flex-direction: column; min-height: 400px; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.indicator-card:hover { transform: translateY(-5px); box-shadow: 0 8px 16px rgba(0, 71, 137, 0.07); }
+.card-info { padding: 25px; border-bottom: 1px solid #eef2f7; }
 .card-info h3 { margin: 0 0 15px 0; color: #003366; font-size: 1.4em; }
 .card-info p { margin: 5px 0; color: #555; }
-
-.card-graph {
-    flex-grow: 1; /* Faz a área do gráfico ocupar o espaço restante */
-    padding: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 350px; /* Altura fixa para evitar o bug de crescimento infinito */
-}
+.card-info strong { color: #333; }
+.card-graph { flex-grow: 1; padding: 25px; display: flex; align-items: center; justify-content: center; }
 
 /* --- PÁGINA PROJETOS --- */
 .projects-grid { display: grid; grid-template-columns: 1fr; gap: 25px; }
@@ -576,6 +554,15 @@ body.is-resizing .card-graph canvas {
     opacity: 0;
 }
 
+.dynamic-info-boxes {
+    position: absolute;
+    top: 25px;    /* Distância do topo, igual ao padding do .card-info */
+    right: 25px;  /* Distância da direita, igual ao padding do .card-info */
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
 .info-box {
     background-color: #003366;
     color: white;
@@ -587,63 +574,23 @@ body.is-resizing .card-graph canvas {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* --- ESTILOS HÍBRIDOS E FINAIS PARA O CARD COM KPI --- */
-
-/* ======================================================= */
-/* --- CÓDIGO FINAL E DEFINITIVO PARA O CARD COM KPI --- */
-/* ======================================================= */
-
-/* 1. Garante que o card especial empilhe seu conteúdo: Título -> Gráfico -> Rodapé */
-.kpi-card {
-    display: flex;
-    flex-direction: column;
-}
-
-/* 2. Garante que a área do gráfico ocupe o espaço disponível */
-.kpi-card .card-graph {
-    flex-grow: 1;
-    /* A altura de 350px que já definimos na regra .card-graph geral é crucial */
-}
-
-/* 3. Estilo base do rodapé (MOBILE FIRST) */
-.kpi-card .dynamic-info-boxes {
-    display: flex;
-    justify-content: center; /* Centralizado por padrão (Mobile) */
-    gap: 1rem;
-    padding: 25px;
-    border-top: 1px solid #eef2f7;
-    margin-top: auto; /* Empurra para o fundo do card */
-}
-
-/* 4. Estilo dos boxes individuais */
-.kpi-card .info-box {
-    background-color: #003366;
-    color: white;
-    padding: 0.6rem 1.2rem; /* Um pouco maiores */
-    border-radius: 6px;
-    font-size: 0.8rem;
-    font-weight: 500;
-    text-align: center;
-    white-space: nowrap;
-    transition: transform 0.2s ease;
-}
-.kpi-card .info-box:hover {
-    transform: scale(1.05);
-}
-
-/* 5. Ajuste para telas maiores (DESKTOP) */
-@media (min-width: 993px) {
-    .kpi-card .dynamic-info-boxes {
-        justify-content: flex-end; /* Alinhado à direita no desktop */
+/* Responsividade para telas menores 
+@media (max-width: 768px) {
+    .card-content-wrapper {
+        flex-direction: column; /* Empilha o gráfico e os boxes 
     }
-
-    .kpi-card .info-box {
-        font-size: 0.9rem; /* Fonte um pouco maior no desktop */
+    .card-content-wrapper .card-graph {
+        width: 100%;
+        height: 250px; /* Garante altura mínima em telas pequenas 
     }
-    
-}
+}*/
 
-/* Classe Mestra para esconder cards, resolve o conflito com !important */
-.card-hidden {
-    display: none !important;
+/* Media Query para responsividade dos Info Boxes */
+@media (max-width: 1024px) { /* Afeta tablets e celulares */
+    .indicator-card .dynamic-info-boxes {
+        position: static; /* Deixa de ser 'absoluto' */
+        flex-direction: row; /* Coloca os boxes lado a lado */
+        justify-content: center; /* Centraliza eles */
+        padding: 0 1rem 1rem 1rem; /* Adiciona espaçamento inferior */
+    }
 }

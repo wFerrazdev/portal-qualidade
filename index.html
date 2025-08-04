@@ -88,7 +88,7 @@
                         <div class="card-info"><h3>Pareto - Fornecedor</h3><p>Mostra o fornecedor com mais impacto para a empresa.</p></div>
                         <div class="card-graph"><canvas id="grafico3"></canvas></div>
                     </div>
-
+                    
                     <div class="indicator-card">
                         <div class="card-info"><h3>NC por Cliente</h3><p>Quantidade de Não Conformidades por Cliente.</p></div>
                         <div class="card-graph"><canvas id="grafico7"></canvas></div>
@@ -105,7 +105,7 @@
                         <div class="card-info"><h3>Total de OPT's no Mês</h3><p>Mostra a quantidade de OPT's realizadas no mês.</p></div>
                         <div class="card-graph"><canvas id="grafico14"></canvas></div>
                     </div>
-
+                    
                     <div class="indicator-card">
                         <div class="card-info"><h3>NC Interna por Setor</h3><p>Quantidade de NC's de cada setor no mês.</p></div>
                         <div class="card-graph"><canvas id="grafico10"></canvas></div>
@@ -122,7 +122,7 @@
                         <div class="card-info"><h3>NC Interna Anual</h3><p>Acompanhamento do número de NC's internas no decorrer do ano.</p></div>
                         <div class="card-graph"><canvas id="grafico13"></canvas></div>
                     </div>
-
+                    
                     <div class="indicator-card">
                         <div class="card-info">
                             <h3>NC's Procedentes 2025</h3>
@@ -132,7 +132,8 @@
                             <canvas id="graficoNCEProcedentes"></canvas>
                         </div>
                     </div>
-                    <div class="indicator-card kpi-card">
+
+                    <div class="indicator-card">
                         <div class="card-info">
                             <h3>Total NC's Revertidas 2025</h3>
                             <p>Total de NC's não procedentes em 2025.</p>
@@ -142,9 +143,10 @@
                         </div>
                         <div class="dynamic-info-boxes">
                             <div class="info-box" id="total-revertido-box">Total Revertido: R$ 0,00</div>
-                            <div class="info-box" id="mes-revertido-box">Mês: R$ 2.060,00</div>
+                            <div class="info-box" id="mes-revertido-box">Mês: R$ 0,00</div>
                         </div>
                     </div>
+
                     <div class="indicator-card">
                         <div class="card-info">
                             <h3>Total NC's 2025</h3>
@@ -154,6 +156,7 @@
                             <canvas id="graficoNCETotal"></canvas>
                         </div>
                     </div>
+
                     <div class="indicator-card">
                         <div class="card-info">
                             <h3>Pareto de Defeitos 2025</h3>
@@ -227,7 +230,7 @@
 
             // --- LÓGICA DAS ABAS ---
             const tabsContainer = document.querySelector('.dashboard-tabs');
-            const allCards = Array.from(document.querySelectorAll('.indicators-grid .indicator-card'));
+            const allCards = Array.from(document.querySelectorAll('.indicator-card'));
             const tabMapping = {
                 'rifs': ['grafico1', 'grafico2', 'grafico3',],
                 'opt': ['grafico14', 'grafico7', 'grafico8', 'grafico9'],
@@ -236,22 +239,24 @@
             };
             // ... (resto da lógica das abas, sem alteração) ...
             function filterCharts(activeTab) {
-                const chartIdsToShow = tabMapping[activeTab];
-                if (!chartIdsToShow) return;
-
-                allCards.forEach(card => {
-                    const canvas = card.querySelector('canvas');
-                    if (!canvas) { 
-                        card.style.display = 'none'; // Esconde cards sem canvas
-                        return;
-                    }
-                    
-                    if (chartIdsToShow.includes(canvas.id)) {
-                        card.style.display = 'flex'; // MOSTRA o card
-                    } else {
-                        card.style.display = 'none'; // ESCONDE o card
-                    }
-                });
+                    const chartIdsToShow = tabMapping[activeTab];
+                    allCards.forEach(card => {
+                        const canvas = card.querySelector('canvas');
+                        if (canvas && chartIdsToShow.includes(canvas.id)) {
+                            card.style.display = 'flex';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+            }
+            if (tabsContainer) {
+                    tabsContainer.addEventListener('click', (event) => {
+                        if (event.target.classList.contains('tab-button')) {
+                            tabsContainer.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                            event.target.classList.add('active');
+                            filterCharts(event.target.dataset.tab);
+                        }
+                    });
             }
             // --- FUNÇÃO PRINCIPAL DE ATUALIZAÇÃO ---
             async function updateAllCharts() {
@@ -476,8 +481,8 @@
             function criarGraficoCombinadoAnual(canvasId, data, tipoGrafico2025, tipoGrafico2024) {
                 if (!data || data.length === 0) return;
                 
-                const isMobile = window.innerWidth < 768;
-                const labels = data.map(item => isMobile ? item.mes.substring(0, 3) : item.mes);
+                const isMobile = window.innerWidth < 1024;
+                const labels = data.map(item => item.mes);
                 const dados2025 = data.map(item => parseInt(item.quantidade_2025) || 0);
                 const dados2024 = data.map(item => parseInt(item.quantidade_2024) || 0);
 
@@ -529,10 +534,7 @@
                         plugins: { legend: { display: true, position: 'bottom' }, datalabels: { display: true } },
                         scales: {
                             y: { beginAtZero: true, grid: { display: false } , max: maxValue + 5 },
-                            x: { 
-                                grid: { display: false }, 
-                                stacked: true // <-- ADICIONE ESTA LINHA
-                            }
+                            x: { grid: { display: false }, ticks: { font: { size: isMobile ? 9 : 12 } } }
                         }
                     },
                     plugins: [ChartDataLabels]
@@ -542,8 +544,8 @@
             function criarGraficoBarrasSimplesAnual(canvasId, data) {
                 if (!data || data.length === 0) return;
 
-                const isMobile = window.innerWidth < 768;
-                const labels = data.map(item => isMobile ? item.mes.substring(0, 3) : item.mes);
+                const isMobile = window.innerWidth < 1024;
+                const labels = data.map(item => item.mes);
                 const dados2025 = data.map(item => parseInt(item.quantidade_2025) || 0);
                 const maxValue = Math.max(...dados2025);
 
@@ -574,10 +576,7 @@
                         },
                         scales: {
                             y: { beginAtZero: true, max: maxValue + 5, grid: { display: false } },
-                            x: { 
-                                grid: { display: false }, 
-                                stacked: true // <-- ADICIONE ESTA LINHA
-                            }
+                            x: { grid: { display: false }, ticks: { font: { size: isMobile ? 9 : 12 } } }
                         }
                     },
                     plugins: [ChartDataLabels]
@@ -585,6 +584,7 @@
             }
 
             function renderizarGraficosNCExterna(allData) {
+                // --- Lógica dos Gráficos (sem alteração) ---
                 criarGraficoCombinadoAnual('graficoNCEProcedentes', allData.nce_procedentes_anos, 'line', 'bar');
                 criarGraficoBarrasSimplesAnual('graficoNCERevertidas', allData.nce_naoprocedentes_anos);
                 criarGraficoCombinadoAnual('graficoNCETotal', allData.total_nce_anos, 'line', 'line');
@@ -592,51 +592,60 @@
                 if (dataPareto.length > 0) {
                     criarGraficoPareto('graficoNCEPareto', dataPareto, 'defeito', 'quantidade_pareto');
                 }
+
+                // highlight-start
+                // --- LÓGICA DOS NOVOS INFO BOXES ---
                 const kpiData = allData.kpi_revertidos;
+
                 if (kpiData && kpiData.length > 0) {
+                    // Pega os valores da primeira linha de dados
                     const totalRevertido = parseFloat(kpiData[0].total_revertido) || 0;
                     const mesRevertido = parseFloat(kpiData[0].mes_revertido) || 0;
-                    const formatarMoeda = (valor) => valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+                    // Função para formatar como moeda brasileira
+                    const formatarMoeda = (valor) => {
+                        return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                    };
+
+                    // Atualiza os elementos HTML
                     const totalBox = document.getElementById('total-revertido-box');
                     const mesBox = document.getElementById('mes-revertido-box');
+
                     if (totalBox) totalBox.textContent = `Total Revertido: ${formatarMoeda(totalRevertido)}`;
                     if (mesBox) mesBox.textContent = `Mês: ${formatarMoeda(mesRevertido)}`;
                 }
+                // highlight-end
             }
             
-            // Função definitiva para controlar o layout do KPI card
-            // Função definitiva para controlar o layout do KPI card
-            
+            // --- EXECUÇÃO INICIAL E EVENT LISTENERS ---
+            updateAllCharts();
 
-            // --- EXECUÇÃO INICIAL E REDIMENSIONAMENTO ---
-            if (tabsContainer) {
-                tabsContainer.addEventListener('click', (event) => {
-                    if (event.target.classList.contains('tab-button')) {
-                        tabsContainer.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-                        event.target.classList.add('active');
-                        filterCharts(event.target.dataset.tab);
-                    }
-                });
-            }
-            
-            // CORREÇÃO FINAL: Executa o filtro ANTES e DEPOIS de buscar os dados
-            const initialTab = document.querySelector('.dashboard-tabs .tab-button.active')?.dataset.tab || 'rifs';
-            filterCharts(initialTab); // Filtro imediato para evitar "flash"
-            updateAllCharts(); // Busca os dados, e a filtragem roda de novo no 'finally'
-            
+            if (tabsContainer) { filterCharts('rifs'); }
             if (refreshBtn) {
                 refreshBtn.addEventListener('click', updateAllCharts);
             }
 
+            // --- LÓGICA FINAL PARA REDIMENSIONAR GRÁFICOS (COM SUAVIDADE) ---
             let resizeTimer;
             window.addEventListener('resize', () => {
+                // Adiciona a classe para esconder os gráficos imediatamente
                 document.body.classList.add('is-resizing');
+                
                 clearTimeout(resizeTimer);
                 resizeTimer = setTimeout(() => {
-                    renderAllCharts();
+                    Object.values(charts).forEach(chart => {
+                        if (chart && typeof chart.resize === 'function') {
+                            chart.resize();
+                        }
+                    });
+
+                    // Um pequeno delay extra antes de mostrar novamente para garantir que tudo foi renderizado
                     setTimeout(() => {
+                        // Remove a classe para mostrar os gráficos com fade-in
                         document.body.classList.remove('is-resizing');
-                    }, 100);
+                    }, 50);
+                    renderAllCharts();
+
                 }, 250);
             });
         });
