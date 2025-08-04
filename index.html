@@ -608,12 +608,12 @@
                 const cardGraph = kpiCard.querySelector('.card-graph');
                 const infoBoxes = kpiCard.querySelector('.dynamic-info-boxes');
 
-                // --- LÓGICA DE DETECÇÃO AVANÇADA ---
+                // --- LÓGICA DE DETECÇÃO CORRIGIDA E FINAL ---
                 const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-                const isNarrowScreen = window.innerWidth <= 992;
+                const isNarrowScreen = window.innerWidth <= 1024; // Aumentamos o breakpoint para cobrir mais tablets
 
-                // A condição agora é: se for um dispositivo de toque (celular/tablet de qualquer tamanho)
-                // OU se for uma janela de navegador estreita em um desktop...
+                // A condição final: A tela é considerada 'mobile' se for um dispositivo de toque
+                // OU se a janela do navegador for estreita.
                 if (isTouchDevice || isNarrowScreen) {
                     // --- APLICA O LAYOUT DE RODAPÉ (MOBILE / TABLET) ---
                     kpiCard.style.cssText = 'display: flex; flex-direction: column; position: static;';
@@ -633,7 +633,6 @@
                     `;
                 } else {
                     // --- RESETA PARA O LAYOUT DE TÍTULO (DESKTOP) ---
-                    // Limpa todos os estilos inline para que o CSS do arquivo volte a comandar
                     kpiCard.style.cssText = '';
                     cardInfo.style.order = '';
                     cardGraph.style.order = '';
