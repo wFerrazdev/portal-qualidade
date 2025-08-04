@@ -612,30 +612,16 @@ body.is-resizing .card-graph canvas {
 
 /* --- ESTILOS FINAIS E ISOLADOS PARA O CARD COM KPI --- */
 
-/* ======================================================= */
-/* --- ESTILO FINAL E UNIFICADO PARA O CARD COM KPI --- */
-/* ======================================================= */
-
-/* 1. O wrapper do gráfico vira a nossa "âncora" de posicionamento */
-.kpi-card .graph-wrapper {
-    position: relative; /* Essencial para a sobreposição funcionar */
-    flex-grow: 1;
-    display: flex; /* Para centralizar o canvas que está dentro */
-}
-
-/* 2. O container dos boxes agora "flutua" sobre o wrapper */
+/* 1. Regra para o container dos boxes */
 .kpi-card .dynamic-info-boxes {
-    position: absolute;
-    bottom: 20px;           /* <-- MUDANÇA PRINCIPAL: de 'top' para 'bottom' */
-    left: 50%;              /* Centraliza no meio */
-    transform: translateX(-50%); /* Ajuste fino da centralização */
-    z-index: 10;            /* Garante que fique na frente do gráfico */
-    
     display: flex;
-    gap: 1rem;              /* Espaço entre os dois boxes */
+    flex-direction: row;      /* Coloca os boxes lado a lado */
+    justify-content: center;  /* Centraliza o conjunto de boxes horizontalmente */
+    gap: 1rem;                /* Espaço entre os boxes */
+    padding: 0 25px 25px 25px; /* Espaçamento para alinhar com o gráfico e dar respiro embaixo */
 }
 
-/* 3. Estilo dos boxes individuais */
+/* 2. Estilo do box individual (sem alterações) */
 .kpi-card .info-box {
     background-color: #003366;
     color: white;
@@ -645,5 +631,5 @@ body.is-resizing .card-graph canvas {
     font-weight: 500;
     text-align: center;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    white-space: nowrap; /* Evita que o texto quebre a linha */
+    white-space: nowrap;
 }
