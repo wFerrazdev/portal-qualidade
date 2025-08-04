@@ -608,12 +608,12 @@ body.is-resizing .card-graph canvas {
 }
 
 /* ======================================================= */
-/* --- CÓDIGO HÍBRIDO E DEFINITIVO PARA O CARD COM KPI --- */
+/* --- CÓDIGO FINAL E FORÇADO PARA O CARD COM KPI --- */
 /* ======================================================= */
 
-/* --- LAYOUT PADRÃO (DESKTOP) --- */
+/* --- LAYOUT PADRÃO (DESKTOP > 992px) --- */
 
-/* 1. O card especial é a nossa "âncora" de posicionamento. */
+/* 1. O card especial é a âncora de posicionamento. */
 .kpi-card {
     position: relative;
 }
@@ -624,7 +624,7 @@ body.is-resizing .card-graph canvas {
     top: 25px;
     right: 25px;
     display: flex;
-    flex-direction: column; /* Empilha os boxes verticalmente (um em cima do outro) */
+    flex-direction: column; /* Um em cima do outro */
     gap: 0.5rem;
     z-index: 10;
 }
@@ -643,28 +643,30 @@ body.is-resizing .card-graph canvas {
 }
 
 
-/* --- LAYOUT RESPONSIVO (MOBILE E TABLET) --- */
+/* --- LAYOUT FORÇADO (MOBILE/TABLET < 992px, AMBAS ORIENTAÇÕES) --- */
 
 @media (max-width: 992px) {
-    /* 1. Força o card a ser um container de empilhamento vertical */
+
     .kpi-card {
-        display: flex;
-        flex-direction: column;
+        /* Força o layout de empilhamento e remove a âncora de posição */
+        position: static !important; 
+        display: flex !important;
+        flex-direction: column !important;
     }
     
-    /* 2. Define a ordem dos elementos: Título -> Gráfico -> Boxes */
+    /* Define a ordem dos elementos: Título -> Gráfico -> Boxes */
     .kpi-card .card-info { order: 1; }
     .kpi-card .card-graph { order: 2; }
     .kpi-card .dynamic-info-boxes { order: 3; }
 
-    /* 3. Regra FORÇADA para os boxes no rodapé */
+    /* Regra INQUESTIONÁVEL para os boxes no rodapé */
     .kpi-card .dynamic-info-boxes {
-        position: static; /* Remove o posicionamento absoluto */
-        flex-direction: row; /* Lado a lado no mobile */
-        justify-content: center; /* Centraliza o conjunto */
+        position: static !important; /* GARANTE que não é absoluto */
+        flex-direction: row !important; /* GARANTE que fiquem lado a lado */
+        justify-content: center !important;
         width: 100%;
-        padding: 25px;
+        padding: 25px !important;
         margin-top: 0;
-        border-top: 1px solid #eef2f7; /* Linha separadora do rodapé */
+        border-top: 1px solid #eef2f7;
     }
 }
