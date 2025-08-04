@@ -72,6 +72,7 @@
                     <button class="tab-button active" data-tab="rifs">RIF's</button>
                     <button class="tab-button" data-tab="opt">OPT</button>
                     <button class="tab-button" data-tab="nc_interna">NC Interna</button>
+                    <button class="tab-button" data-tab="nc_externa">NC Externa</button>
                 </div>
 
                 <div class="indicators-grid">
@@ -87,7 +88,7 @@
                         <div class="card-info"><h3>Pareto - Fornecedor</h3><p>Mostra o fornecedor com mais impacto para a empresa.</p></div>
                         <div class="card-graph"><canvas id="grafico3"></canvas></div>
                     </div>
-
+                    
                     <div class="indicator-card">
                         <div class="card-info"><h3>NC por Cliente</h3><p>Quantidade de Não Conformidades por Cliente.</p></div>
                         <div class="card-graph"><canvas id="grafico7"></canvas></div>
@@ -104,7 +105,7 @@
                         <div class="card-info"><h3>Total de OPT's no Mês</h3><p>Mostra a quantidade de OPT's realizadas no mês.</p></div>
                         <div class="card-graph"><canvas id="grafico14"></canvas></div>
                     </div>
-
+                    
                     <div class="indicator-card">
                         <div class="card-info"><h3>NC Interna por Setor</h3><p>Quantidade de NC's de cada setor no mês.</p></div>
                         <div class="card-graph"><canvas id="grafico10"></canvas></div>
@@ -120,6 +121,25 @@
                     <div class="indicator-card">
                         <div class="card-info"><h3>NC Interna Anual</h3><p>Acompanhamento do número de NC's internas no decorrer do ano.</p></div>
                         <div class="card-graph"><canvas id="grafico13"></canvas></div>
+                    </div>
+                    <div class="indicator-card">
+                        <div class="card-info"><h3>NC's Procedentes 2025</h3><p>Comparativo anual de Natais-Cantigas procedentes.</p></div>
+                        <div class="card-graph"><canvas id="graficoNCEProcedentes"></canvas></div>
+                    </div>
+
+                    <div class="indicator-card">
+                        <div class="card-info"><h3>Total NC's Revertidas 2025</h3><p>Total de Natais-Cantigas não procedentes em 2025.</p></div>
+                        <div class="card-graph"><canvas id="graficoNCERevertidas"></canvas></div>
+                    </div>
+
+                    <div class="indicator-card">
+                        <div class="card-info"><h3>Total NC's 2025</h3><p>Total de Natais-Cantigas recebidas (procedentes + não procedentes).</p></div>
+                        <div class="card-graph"><canvas id="graficoNCETotal"></canvas></div>
+                    </div>
+
+                    <div class="indicator-card">
+                        <div class="card-info"><h3>Pareto de Defeitos 2025</h3><p>Principais defeitos encontrados nas Natais-Cantigas.</p></div>
+                        <div class="card-graph"><canvas id="graficoNCEPareto"></canvas></div>
                     </div>
                 </div>
             </main>
@@ -172,6 +192,7 @@
             const SPREADSHEET_ID_EXTERNO = '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4';
             const SPREADSHEET_ID_INTERNO = '1_XfCgxqMlxLjXUfw7MSgZ386E16d5sQFSbV8Q6Q0mmk';
             const SPREADSHEET_ID_RIFS = '17F0DVUFu-cscmMnJsezkuCc_3SzuUehD_dSiPGOOz2A';
+            const SPREADSHEET_ID_NC_EXTERNA = '1kJcw-QMboXMSt2Ueej3kA0qwjZ1abyj4XgyWxf2KtKQ';
             const API_BASE_URL = '/.netlify/functions';
             const refreshBtn = document.getElementById('refreshChartsBtn');
             
@@ -180,6 +201,7 @@
             let lastDataExterno = {};
             let lastDataInterno = {};
             let lastDataRifs = {};
+            let lastDataNCExterna = {};
 
             // --- LÓGICA DAS ABAS ---
             const tabsContainer = document.querySelector('.dashboard-tabs');
@@ -187,7 +209,8 @@
             const tabMapping = {
                 'rifs': ['grafico1', 'grafico2', 'grafico3',],
                 'opt': ['grafico14', 'grafico7', 'grafico8', 'grafico9'],
-                'nc_interna': ['grafico10', 'grafico11', 'grafico12', 'grafico13']
+                'nc_interna': ['grafico10', 'grafico11', 'grafico12', 'grafico13'],
+                'nc_externa': ['graficoNCEProcedentes', 'graficoNCERevertidas', 'graficoNCETotal', 'graficoNCEPareto']
             };
             // ... (resto da lógica das abas, sem alteração) ...
             function filterCharts(activeTab) {
@@ -212,16 +235,19 @@
             }
             // --- FUNÇÃO PRINCIPAL DE ATUALIZAÇÃO ---
             async function updateAllCharts() {
-                if (refreshBtn) { refreshBtn.disabled = true; refreshBtn.textContent = 'Atualizando...'; }
+                //if (refreshBtn) { refreshBtn.disabled = true; refreshBtn.textContent = 'Atualizando...'; }
+                if (refreshBtn) { refreshBtn.disabled = true; refreshBtn.classList.add('loading'); }
                 try {
-                    const [responseExterno, responseInterno, responseRifs] = await Promise.all([
+                    const [responseExterno, responseInterno, responseRifs, responseNCExterna] = await Promise.all([
                         fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_EXTERNO}&sheets=opt_por_cliente,opt_por_projeto,opt_detalhado,opt_inteiro`),
                         fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_INTERNO}&sheets=nci_por_setor,pareto_mes,pareto_ano,nci_anual`),
-                        fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_RIFS}&sheets=status_por_fornecedor_ano,status_por_fornecedor_mes,pareto_rifs`)
+                        fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_RIFS}&sheets=status_por_fornecedor_ano,status_por_fornecedor_mes,pareto_rifs`),
+                        fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_NC_EXTERNA}&sheets=nce_procedentes_anos,nce_nãoprocedentes_anos,total_nce_anos,nce_pareto_defeitos`)
                     ]);
                     lastDataExterno = await responseExterno.json();
                     lastDataInterno = await responseInterno.json();
                     lastDataRifs = await responseRifs.json();
+                    lastDataNCExterna = await responseNCExterna.json();
 
                     // Agora, renderiza os gráficos estáticos e os dinâmicos
                     renderAllCharts();
@@ -229,7 +255,8 @@
                 } catch (error) {
                     console.error("Erro ao atualizar gráficos:", error);
                 } finally {
-                    if (refreshBtn) { refreshBtn.disabled = false; refreshBtn.textContent = 'Atualizar'; }
+                    //if (refreshBtn) { refreshBtn.disabled = false; refreshBtn.textContent = 'Atualizar'; }
+                    if (refreshBtn) { refreshBtn.disabled = false; refreshBtn.classList.remove('loading'); }
                     const activeTab = tabsContainer?.querySelector('.tab-button.active')?.dataset.tab || 'rifs';
                     filterCharts(activeTab);
                 }
@@ -352,6 +379,8 @@
                 renderizarGraficosInternos(lastDataInterno);
                 // Renderiza os gráficos Externos
                 renderizarGraficosExternos(lastDataExterno);
+                // Renderiza os gráficos de NC Externa
+                renderizarGraficosNCExterna(lastDataNCExterna);
             }
             function renderizarGraficosExternos(allData) {
                 const dataCliente = allData.opt_por_cliente || [];
@@ -423,7 +452,125 @@
                     const ctx13 = document.getElementById('grafico13').getContext('2d');
                     charts['grafico13'] = new Chart(ctx13, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade', data: values, backgroundColor: '#003366', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: (context) => context.dataset.data[context.dataIndex] > 0, color: 'black', font: { weight: 'bold' }, anchor: 'end', align: 'end' } }, scales: { y: { max: maxValue + 5, grid: { display: false } }, x: { grid: { display: false } } } }, plugins: [ChartDataLabels] });
                 }
-            }        
+            }
+            
+            // ADICIONE TODO ESTE BLOCO DE CÓDIGO
+            function criarGraficoCombinadoAnual(canvasId, data, tipoGrafico2025, tipoGrafico2024) {
+                if (!data || data.length === 0) return;
+
+                const labels = data.map(item => item.mes);
+                const dados2025 = data.map(item => parseInt(item.quantidade_2025) || 0);
+                const dados2024 = data.map(item => parseInt(item.quantidade_2024) || 0);
+
+                const datasets = [
+                    {
+                        type: tipoGrafico2024,
+                        label: '2024',
+                        data: dados2024,
+                        backgroundColor: 'rgba(253, 126, 20, 0.5)', // Laranja com 50% de opacidade
+                        borderColor: 'rgba(253, 126, 20, 0.5)',
+                        borderRadius: 5,
+                        datalabels: {
+                            color: '#adb5bd', // Cinza claro
+                            font: { size: 10 },
+                            anchor: 'end',
+                            align: 'start',
+                            formatter: (value) => value > 0 ? value : null
+                        }
+                    },
+                    {
+                        type: tipoGrafico2025,
+                        label: '2025',
+                        data: dados2025,
+                        backgroundColor: '#003366', // Azul marinho
+                        borderColor: '#003366',
+                        borderRadius: 5,
+                        tension: 0.4,
+                        datalabels: {
+                            color: '#000', // Preto
+                            font: { weight: 'bold', size: 12 },
+                            anchor: 'end',
+                            align: 'end',
+                            formatter: (value) => value > 0 ? value : null
+                        }
+                    }
+                ];
+
+                const ctx = document.getElementById(canvasId).getContext('2d');
+                charts[canvasId] = new Chart(ctx, {
+                    type: 'bar', // Tipo base, mas os datasets definem o tipo real
+                    data: { labels, datasets },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: true, position: 'bottom' }, datalabels: { display: true } },
+                        scales: {
+                            y: { beginAtZero: true, grid: { display: false } },
+                            x: { grid: { display: false } }
+                        }
+                    },
+                    plugins: [ChartDataLabels]
+                });
+            }
+
+            function criarGraficoBarrasSimplesAnual(canvasId, data) {
+                if (!data || data.length === 0) return;
+
+                const labels = data.map(item => item.mes);
+                const dados2025 = data.map(item => parseInt(item.quantidade_2025) || 0);
+                const maxValue = Math.max(...dados2025);
+
+                const ctx = document.getElementById(canvasId).getContext('2d');
+                charts[canvasId] = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Total Revertidas 2025',
+                            data: dados2025,
+                            backgroundColor: '#003366',
+                            borderRadius: 5
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            datalabels: {
+                                color: '#000',
+                                font: { weight: 'bold', size: 12 },
+                                anchor: 'end',
+                                align: 'end',
+                                formatter: (value) => value > 0 ? value : null
+                            }
+                        },
+                        scales: {
+                            y: { beginAtZero: true, max: maxValue + 2, grid: { display: false } },
+                            x: { grid: { display: false } }
+                        }
+                    },
+                    plugins: [ChartDataLabels]
+                });
+            }
+
+
+            function renderizarGraficosNCExterna(allData) {
+                // Gráfico 1 - Procedentes (Combinação: Coluna 2024 / Linha 2025)
+                criarGraficoCombinadoAnual('graficoNCEProcedentes', allData.nce_procedentes_anos, 'line', 'bar');
+
+                // Gráfico 2 - Revertidas (Barras simples)
+                criarGraficoBarrasSimplesAnual('graficoNCERevertidas', allData.nce_nãoprocedentes_anos);
+
+                // Gráfico 3 - Total (Combinação: Linha 2024 / Linha 2025)
+                criarGraficoCombinadoAnual('graficoNCETotal', allData.total_nce_anos, 'line', 'line');
+
+                // Gráfico 4 - Pareto
+                const dataPareto = allData.nce_pareto_defeitos || [];
+                if (dataPareto.length > 0) {
+                    criarGraficoPareto('graficoNCEPareto', dataPareto, 'defeito', 'quantidade_pareto');
+                }
+            }
             
             // --- EXECUÇÃO INICIAL E EVENT LISTENERS ---
             updateAllCharts();
@@ -433,8 +580,6 @@
                 refreshBtn.addEventListener('click', updateAllCharts);
             }
 
-            // --- LÓGICA FINAL PARA REDIMENSIONAR GRÁFICOS ---
-            // --- LÓGICA FINAL PARA REDIMENSIONAR GRÁFICOS ---
             // --- LÓGICA FINAL PARA REDIMENSIONAR GRÁFICOS (COM SUAVIDADE) ---
             let resizeTimer;
             window.addEventListener('resize', () => {
