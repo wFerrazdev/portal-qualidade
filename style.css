@@ -589,63 +589,56 @@ body.is-resizing .card-graph canvas {
 
 /* --- ESTILOS HÍBRIDOS E FINAIS PARA O CARD COM KPI --- */
 
-/* LAYOUT PADRÃO (DESKTOP) */
+/* ======================================================= */
+/* --- CÓDIGO FINAL E DEFINITIVO PARA O CARD COM KPI --- */
+/* ======================================================= */
+
+/* 1. Garante que o card especial empilhe seu conteúdo: Título -> Gráfico -> Rodapé */
 .kpi-card {
-    position: relative; /* Define como âncora para os boxes */
-}
-
-.kpi-card .dynamic-info-boxes {
-    position: absolute; /* Posição flutuante no desktop */
-    top: 25px;
-    right: 25px;
     display: flex;
-    flex-direction: column; /* Um em cima do outro */
-    gap: 0.5rem;
-    z-index: 10;
+    flex-direction: column;
 }
 
+/* 2. Garante que a área do gráfico ocupe o espaço disponível */
+.kpi-card .card-graph {
+    flex-grow: 1;
+    /* A altura de 350px que já definimos na regra .card-graph geral é crucial */
+}
+
+/* 3. Estilo base do rodapé (MOBILE FIRST) */
+.kpi-card .dynamic-info-boxes {
+    display: flex;
+    justify-content: center; /* Centralizado por padrão (Mobile) */
+    gap: 1rem;
+    padding: 25px;
+    border-top: 1px solid #eef2f7;
+    margin-top: auto; /* Empurra para o fundo do card */
+}
+
+/* 4. Estilo dos boxes individuais */
 .kpi-card .info-box {
     background-color: #003366;
     color: white;
-    padding: 0.5rem 1rem;
+    padding: 0.6rem 1.2rem; /* Um pouco maiores */
     border-radius: 6px;
     font-size: 0.8rem;
     font-weight: 500;
     text-align: center;
     white-space: nowrap;
+    transition: transform 0.2s ease;
+}
+.kpi-card .info-box:hover {
+    transform: scale(1.05);
 }
 
-
-/* --- RESPONSIVIDADE PARA TODAS AS TELAS MENORES (TABLET/CELULAR) --- */
-@media (max-width: 1024px) { /* Breakpoint aumentado para incluir tablets na horizontal */
-    
-    /* Reverte o card especial para o fluxo normal */
-    .kpi-card {
-        position: static;
-    }
-
-    /* Define a ordem: 1º Título, 2º Gráfico, 3º Boxes */
-    .kpi-card .card-info { order: 1; }
-    .kpi-card .card-graph { order: 2; }
-    .kpi-card .dynamic-info-boxes { order: 3; }
-
-    /* Estilo do rodapé para os boxes em telas pequenas */
+/* 5. Ajuste para telas maiores (DESKTOP) */
+@media (min-width: 993px) {
     .kpi-card .dynamic-info-boxes {
-        position: static;
-        flex-direction: row; /* Lado a lado */
-        justify-content: center;
-        width: 100%;
-        padding: 25px;
-        margin-top: auto; /* Empurra para o fundo do card */
-        border-top: 1px solid #eef2f7;
+        justify-content: flex-end; /* Alinhado à direita no desktop */
     }
-}
 
-
-/* --- RESPONSIVIDADE GERAL DO GRID --- */
-@media (max-width: 900px) {
-    .indicators-grid { 
-        grid-template-columns: 1fr;
+    .kpi-card .info-box {
+        font-size: 0.9rem; /* Fonte um pouco maior no desktop */
     }
 }
 
