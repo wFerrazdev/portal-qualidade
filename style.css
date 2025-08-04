@@ -626,13 +626,13 @@ body.is-resizing .card-graph canvas {
 /* 2. O container dos boxes agora "flutua" sobre o wrapper */
 .kpi-card .dynamic-info-boxes {
     position: absolute;
-    top: 35px; /* Distância do topo (abaixo do eixo Y) */
-    left: 50%; /* Centraliza no meio */
+    bottom: 20px;           /* <-- MUDANÇA PRINCIPAL: de 'top' para 'bottom' */
+    left: 50%;              /* Centraliza no meio */
     transform: translateX(-50%); /* Ajuste fino da centralização */
-    z-index: 10; /* Garante que fique na frente do gráfico */
+    z-index: 10;            /* Garante que fique na frente do gráfico */
     
     display: flex;
-    gap: 1rem; /* Espaço entre os dois boxes */
+    gap: 1rem;              /* Espaço entre os dois boxes */
 }
 
 /* 3. Estilo dos boxes individuais */
