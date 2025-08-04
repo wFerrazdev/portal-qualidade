@@ -235,14 +235,13 @@
             }
             // --- FUNÇÃO PRINCIPAL DE ATUALIZAÇÃO ---
             async function updateAllCharts() {
-                //if (refreshBtn) { refreshBtn.disabled = true; refreshBtn.textContent = 'Atualizando...'; }
-                if (refreshBtn) { refreshBtn.disabled = true; refreshBtn.classList.add('loading'); }
+                if (refreshBtn) { refreshBtn.disabled = true; refreshBtn.textContent = 'Atualizando...'; }
                 try {
                     const [responseExterno, responseInterno, responseRifs, responseNCExterna] = await Promise.all([
                         fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_EXTERNO}&sheets=opt_por_cliente,opt_por_projeto,opt_detalhado,opt_inteiro`),
                         fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_INTERNO}&sheets=nci_por_setor,pareto_mes,pareto_ano,nci_anual`),
                         fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_RIFS}&sheets=status_por_fornecedor_ano,status_por_fornecedor_mes,pareto_rifs`),
-                        fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_NC_EXTERNA}&sheets=nce_procedentes_anos,nce_nãoprocedentes_anos,total_nce_anos,nce_pareto_defeitos`)
+                        fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_NC_EXTERNA}&sheets=nce_procedentes_anos,nce_naoprocedentes_anos,total_nce_anos,nce_pareto_defeitos`)
                     ]);
                     lastDataExterno = await responseExterno.json();
                     lastDataInterno = await responseInterno.json();
@@ -255,8 +254,7 @@
                 } catch (error) {
                     console.error("Erro ao atualizar gráficos:", error);
                 } finally {
-                    //if (refreshBtn) { refreshBtn.disabled = false; refreshBtn.textContent = 'Atualizar'; }
-                    if (refreshBtn) { refreshBtn.disabled = false; refreshBtn.classList.remove('loading'); }
+                    if (refreshBtn) { refreshBtn.disabled = false; refreshBtn.textContent = 'Atualizar'; }
                     const activeTab = tabsContainer?.querySelector('.tab-button.active')?.dataset.tab || 'rifs';
                     filterCharts(activeTab);
                 }
