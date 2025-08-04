@@ -113,6 +113,11 @@ body.menu-open .main-content { filter: blur(4px); }
     gap: 40px; 
 }
 
+.indicators-grid .indicator-card.kpi-card {
+    display: flex !important;
+    flex-direction: column !important;
+}
+
 /* Estilo base para TODOS os cards do dashboard */
 .indicator-card { 
     background-color: #ffffff; 
@@ -612,16 +617,25 @@ body.is-resizing .card-graph canvas {
 
 /* --- ESTILOS FINAIS E ISOLADOS PARA O CARD COM KPI --- */
 
-/* 1. Regra para o container dos boxes */
+/* 2. Garante que a área do gráfico possa crescer para preencher o espaço. */
+.kpi-card .card-graph {
+    flex-grow: 1;
+    /* A altura de 350px que já definimos na regra .card-graph geral é crucial. */
+}
+        
+/* 3. Regra definitiva para os info boxes no rodapé */
 .kpi-card .dynamic-info-boxes {
-    display: flex;
-    flex-direction: row;      /* Coloca os boxes lado a lado */
-    justify-content: center;  /* Centraliza o conjunto de boxes horizontalmente */
-    gap: 1rem;                /* Espaço entre os boxes */
-    padding: 0 25px 25px 25px; /* Espaçamento para alinhar com o gráfico e dar respiro embaixo */
+    position: static !important; /* GARANTE que não seja absoluto */
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    gap: 1rem !important;
+    padding: 1.5rem 25px !important; /* Aumenta o espaço vertical para respirar */
+    border-top: 1px solid #eef2f7 !important; /* Linha separadora, como um rodapé real */
+    margin-top: auto; /* TRUQUE MÁGICO: Empurra este item para o fundo do card */
 }
 
-/* 2. Estilo do box individual (sem alterações) */
+/* 4. Estilo dos boxes individuais (sem alterações necessárias, mas incluído para garantir) */
 .kpi-card .info-box {
     background-color: #003366;
     color: white;
@@ -630,6 +644,4 @@ body.is-resizing .card-graph canvas {
     font-size: 0.8rem;
     font-weight: 500;
     text-align: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    white-space: nowrap;
 }
