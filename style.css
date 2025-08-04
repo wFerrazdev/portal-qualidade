@@ -612,90 +612,30 @@ body.is-resizing .card-graph canvas {
 
 /* --- ESTILOS FINAIS E ISOLADOS PARA O CARD COM KPI --- */
 
-/* 1. O cabeçalho do card especial usa flex para alinhar itens lado a lado */
-.kpi-card .kpi-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding: 25px;
-    border-bottom: 1px solid #eef2f7;
-    gap: 1rem;
-}
-
-/* 2. Removemos o padding e a borda do .card-info DENTRO do cabeçalho especial */
-.kpi-card .kpi-card-header .card-info {
-    padding: 0;
-    border: none;
-}
-
-/* 3. Estilos para o container dos boxes DENTRO do cabeçalho especial */
-.kpi-card .dynamic-info-boxes {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    flex-shrink: 0;
-}
-.kpi-card .info-box {
-    background-color: #003366;
-    color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
-    font-size: 0.8rem;
-    font-weight: 500;
-    text-align: center;
-}
-
-/* 4. A área do gráfico DENTRO do card especial */
-.kpi-card .card-graph {
-    padding-top: 25px;
-}
-
-
-/* Responsividade FINAL para o card especial - AGORA INCLUINDO TABLETS */
-@media (max-width: 992px) { /* <-- VALOR AUMENTADO PARA COBRIR TABLETS */
-    /* Força o card especial a ser um container flex no mobile */
-    .kpi-card {
-        display: flex !important;
-        flex-direction: column !important;
-    }
-
-    /* Define a ordem dos elementos */
-    .kpi-card .card-info { order: 1; }
-    .kpi-card .card-graph { order: 2; }
-
-    /* Força os boxes para o final e remove o posicionamento absoluto */
-    .kpi-card .dynamic-info-boxes {
-        position: static !important;
-        order: 3 !important;
-        margin: 1rem auto 0 auto;
-        flex-direction: row;
-        width: 100%;
-        justify-content: space-around;
-        padding: 0 1rem;
-    }
-}
-
 /* ======================================================= */
-/* --- CORREÇÃO FINAL E DEFINITIVA PARA O CARD COM KPI --- */
+/* --- ESTILO FINAL E UNIFICADO PARA O CARD COM KPI --- */
 /* ======================================================= */
 
-/* 1. Define o card especial como a "âncora" de posicionamento. */
-.kpi-card {
-    position: relative;
+/* 1. O wrapper do gráfico vira a nossa "âncora" de posicionamento */
+.kpi-card .graph-wrapper {
+    position: relative; /* Essencial para a sobreposição funcionar */
+    flex-grow: 1;
+    display: flex; /* Para centralizar o canvas que está dentro */
 }
 
-/* 2. Posiciona os boxes no canto superior direito do kpi-card. */
+/* 2. O container dos boxes agora "flutua" sobre o wrapper */
 .kpi-card .dynamic-info-boxes {
     position: absolute;
-    top: 25px;
-    right: 25px;
+    top: 35px; /* Distância do topo (abaixo do eixo Y) */
+    left: 50%; /* Centraliza no meio */
+    transform: translateX(-50%); /* Ajuste fino da centralização */
+    z-index: 10; /* Garante que fique na frente do gráfico */
+    
     display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    z-index: 10; /* Garante que fique na frente de outros elementos */
+    gap: 1rem; /* Espaço entre os dois boxes */
 }
 
-/* 3. Estilo do box individual (mantendo o que já tínhamos) */
+/* 3. Estilo dos boxes individuais */
 .kpi-card .info-box {
     background-color: #003366;
     color: white;
@@ -704,28 +644,6 @@ body.is-resizing .card-graph canvas {
     font-size: 0.8rem;
     font-weight: 500;
     text-align: center;
-}
-
-/* 4. Responsividade: No mobile, os boxes vão para baixo do gráfico. */
-@media (max-width: 768px) {
-    /* O card vira um container flex no mobile para reordenar os filhos */
-    .kpi-card {
-        display: flex;
-        flex-direction: column;
-    }
-    
-    /* Define a ordem: 1º o título, 2º o gráfico */
-    .kpi-card .card-info { order: 1; }
-    .kpi-card .card-graph { order: 2; }
-
-    /* Os boxes perdem o posicionamento absoluto e vão para o final */
-    .kpi-card .dynamic-info-boxes {
-        position: static; /* Chave da correção: remove o 'absolute' */
-        order: 3; /* Força para o final da lista */
-        margin: 0 auto 1rem auto; /* Centraliza e adiciona margem inferior */
-        flex-direction: row; /* Ficam lado a lado no mobile */
-        width: 100%;
-        justify-content: space-around;
-        padding: 0 1rem; /* Adiciona espaçamento lateral */
-    }
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    white-space: nowrap; /* Evita que o texto quebre a linha */
 }
