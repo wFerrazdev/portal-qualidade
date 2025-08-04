@@ -616,6 +616,7 @@
             }
             
             // Função definitiva para controlar o layout do KPI card
+            // Função definitiva para controlar o layout do KPI card
             function forceKpiCardLayout() {
                 const kpiCard = document.querySelector('.kpi-card');
                 if (!kpiCard) return;
@@ -624,10 +625,15 @@
                 const cardGraph = kpiCard.querySelector('.card-graph');
                 const infoBoxes = kpiCard.querySelector('.dynamic-info-boxes');
 
-                // Condição: a tela é considerada "mobile" se a largura for 992px ou menos
-                if (window.innerWidth <= 992) {
+                // --- LÓGICA DE DETECÇÃO AVANÇADA ---
+                const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+                const isNarrowScreen = window.innerWidth <= 992;
+
+                // A condição agora é: se for um dispositivo de toque (celular/tablet de qualquer tamanho)
+                // OU se for uma janela de navegador estreita em um desktop...
+                if (isTouchDevice || isNarrowScreen) {
                     // --- APLICA O LAYOUT DE RODAPÉ (MOBILE / TABLET) ---
-                    kpiCard.style.cssText = 'display: flex; flex-direction: column;';
+                    kpiCard.style.cssText = 'display: flex; flex-direction: column; position: static;';
                     cardInfo.style.order = '1';
                     cardGraph.style.order = '2';
                     infoBoxes.style.cssText = `
