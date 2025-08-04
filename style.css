@@ -617,35 +617,35 @@ body.is-resizing .card-graph canvas {
 }
 
 /* ======================================================= */
-/* --- LAYOUT FINAL E ROBUSTO PARA O CARD COM KPI --- */
+/* --- LAYOUT FINAL, ROBUSTO E CORRIGIDO PARA O CARD KPI --- */
 /* ======================================================= */
 
 /* 1. O card especial é um container flex que permite quebra de linha. */
 .kpi-card {
     display: flex;
-    flex-wrap: wrap; /* A propriedade mais importante aqui */
+    flex-wrap: wrap;
     align-items: flex-start;
 }
 
 /* 2. O título ocupa sempre a primeira linha inteira. */
 .kpi-card .card-info {
     flex-basis: 100%;
-    /* A borda inferior já está nesta classe, o que é ótimo. */
 }
 
-/* 3. O gráfico é flexível e ocupa a maior parte do espaço na segunda linha. */
+/* 3. O gráfico é flexível E TEM ALTURA FIXA. */
 .kpi-card .card-graph {
-    flex: 2 1 60%; /* Cresce mais rápido, pode encolher, base de 60% */
-    min-width: 300px; /* Não deixa o gráfico ser esmagado */
+    flex: 2 1 60%;
+    min-width: 300px;
+    height: 350px; /* <-- A CORREÇÃO ESTÁ AQUI */
 }
 
 /* 4. Os boxes ocupam um espaço menor ao lado do gráfico no desktop. */
 .kpi-card .dynamic-info-boxes {
-    flex: 1 1 220px; /* Cresce, pode encolher, base de 220px */
+    flex: 1 1 220px;
     display: flex;
-    flex-direction: column; /* Caixas empilhadas no desktop */
+    flex-direction: column;
     gap: 0.5rem;
-    align-self: center; /* Alinha os boxes verticalmente com o centro do gráfico */
+    align-self: center;
     padding: 25px;
 }
 
@@ -663,13 +663,11 @@ body.is-resizing .card-graph canvas {
 
 /* --- RESPONSIVIDADE SIMPLIFICADA --- */
 @media (max-width: 992px) {
-    /* Em telas menores, os boxes simplesmente ocupam 100% da largura,
-       o que força a quebra de linha e os joga para baixo do gráfico. */
     .kpi-card .dynamic-info-boxes {
         flex-basis: 100%;
-        flex-direction: row; /* Ficam lado a lado no mobile */
+        flex-direction: row;
         justify-content: center;
-        align-self: initial; /* Reseta o alinhamento vertical */
+        align-self: initial;
         padding-top: 0;
     }
 }
