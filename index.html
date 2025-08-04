@@ -460,6 +460,8 @@
                 const dados2025 = data.map(item => parseInt(item.quantidade_2025) || 0);
                 const dados2024 = data.map(item => parseInt(item.quantidade_2024) || 0);
 
+                const maxValue = Math.max(...dados2025, ...dados2024);
+
                 const datasets = [
                     {
                         type: tipoGrafico2024,
@@ -505,7 +507,7 @@
                         maintainAspectRatio: false,
                         plugins: { legend: { display: true, position: 'bottom' }, datalabels: { display: true } },
                         scales: {
-                            y: { beginAtZero: true, grid: { display: false } },
+                            y: { beginAtZero: true, grid: { display: false } , max: maxValue + 5 },
                             x: { grid: { display: false } }
                         }
                     },
@@ -546,7 +548,7 @@
                             }
                         },
                         scales: {
-                            y: { beginAtZero: true, max: maxValue + 2, grid: { display: false } },
+                            y: { beginAtZero: true, max: maxValue + 5, grid: { display: false } },
                             x: { grid: { display: false } }
                         }
                     },
