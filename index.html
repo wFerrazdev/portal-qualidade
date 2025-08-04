@@ -659,9 +659,18 @@
             }
 
             // --- EXECUÇÃO INICIAL E EVENT LISTENERS ---
+
+            // Pega a aba que já está ativa no HTML ou assume 'rifs' como padrão
+            const initialTab = document.querySelector('.dashboard-tabs .tab-button.active')?.dataset.tab || 'rifs';
+
+            // 1. APLICA O FILTRO IMEDIATAMENTE
+            // Isso esconde todos os cards errados ANTES de buscar os dados, eliminando o "flash".
+            filterCharts(initialTab); 
+
+            // 2. AGORA SIM, COMEÇA A BUSCAR OS DADOS
             updateAllCharts();
 
-            if (tabsContainer) { filterCharts('rifs'); }
+            // 3. Adiciona o listener ao botão de refresh
             if (refreshBtn) {
                 refreshBtn.addEventListener('click', updateAllCharts);
             }
