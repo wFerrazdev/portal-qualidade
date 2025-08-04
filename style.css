@@ -583,36 +583,34 @@ body.is-resizing .card-graph canvas {
 
 /* --- ESTILOS FINAIS E ISOLADOS PARA O CARD COM KPI --- */
 
-/* 1. Transforma o card especial em um container flex */
+/* 1. O card especial é um container flex com direção de coluna */
 .kpi-card {
     display: flex;
-    flex-wrap: wrap; /* Permite que os itens quebrem a linha */
+    flex-direction: column;
+}
+
+/* 2. O cabeçalho que alinha título (esquerda) e boxes (direita) */
+.kpi-card .kpi-card-header {
+    display: flex;
+    justify-content: space-between;
     align-items: flex-start;
-    gap: 0 1rem; /* Espaçamento horizontal entre gráfico e boxes */
+    padding: 25px;
+    border-bottom: 1px solid #eef2f7; /* <-- A LINHA SEPARADORA DE VOLTA */
+    gap: 1rem;
 }
 
-/* 2. O header do card (título) ocupa sempre a largura total */
+/* 3. Garante que o card-info dentro do kpi-card não tenha padding ou borda extra */
 .kpi-card .card-info {
-    flex-basis: 100%;
-    order: 1; /* Garante que ele venha sempre primeiro */
+    padding: 0;
+    border: none;
 }
 
-/* 3. O gráfico ocupa o espaço que cresce */
-.kpi-card .card-graph {
-    flex-grow: 1;
-    min-width: 250px; /* Evita que o gráfico fique muito esmagado */
-    order: 2; /* Vem em segundo na ordem */
-}
-
-/* 4. Os boxes têm um tamanho base e não crescem */
+/* 4. Estilo dos boxes, que já estava bom */
 .kpi-card .dynamic-info-boxes {
-    flex-basis: 200px; /* Largura base dos boxes */
-    flex-grow: 0;
-    order: 3; /* Vem em terceiro na ordem */
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    align-self: center; /* Centraliza os boxes verticalmente ao lado do gráfico */
+    flex-shrink: 0;
 }
 .kpi-card .info-box {
     background-color: #003366;
@@ -624,21 +622,20 @@ body.is-resizing .card-graph canvas {
     text-align: center;
 }
 
+/* 5. Garante que a área do gráfico não tenha padding superior desnecessário */
+.kpi-card .card-graph {
+    padding-top: 25px;
+}
 
-/* --- RESPONSIVIDADE PARA O CARD COM KPI --- */
+/* 6. Responsividade para o cabeçalho do card especial */
 @media (max-width: 768px) {
-    /* Em telas pequenas, o gráfico ocupa a largura toda */
-    .kpi-card .card-graph {
-        flex-basis: 100%;
-        order: 2; /* A ordem se mantém: Título, Gráfico... */
+    .kpi-card .kpi-card-header {
+        flex-direction: column;
+        align-items: stretch;
     }
-
-    /* E os boxes também ocupam a largura toda e vão para o final */
     .kpi-card .dynamic-info-boxes {
-        flex-basis: 100%;
-        order: 3; /* ...e Boxes no final. */
-        flex-direction: row; /* Ficam lado a lado */
-        justify-content: space-around; /* Com espaço entre eles */
         margin-top: 1rem;
+        flex-direction: row;
+        justify-content: space-around;
     }
 }
