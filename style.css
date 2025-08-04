@@ -596,15 +596,6 @@ body.is-resizing .card-graph canvas {
     opacity: 0;
 }
 
-.dynamic-info-boxes {
-    position: absolute;
-    top: 25px;    /* Distância do topo, igual ao padding do .card-info */
-    right: 25px;  /* Distância da direita, igual ao padding do .card-info */
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
 .info-box {
     background-color: #003366;
     color: white;
@@ -617,35 +608,35 @@ body.is-resizing .card-graph canvas {
 }
 
 /* ======================================================= */
-/* --- LAYOUT FINAL, ROBUSTO E CORRIGIDO PARA O CARD KPI --- */
+/* --- CÓDIGO FINAL E DEFINITIVO PARA O CARD COM KPI --- */
 /* ======================================================= */
 
-/* 1. O card especial é um container flex que permite quebra de linha. */
+/* 1. Define o card especial como um container flex que permite quebra de linha. */
 .kpi-card {
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;
 }
 
-/* 2. O título ocupa sempre a primeira linha inteira. */
+/* 2. Garante que o título ocupe a primeira linha inteira. */
 .kpi-card .card-info {
     flex-basis: 100%;
 }
 
-/* 3. O gráfico é flexível E TEM ALTURA FIXA. */
+/* 3. Garante que o gráfico seja flexível E TENHA ALTURA FIXA. */
 .kpi-card .card-graph {
     flex: 2 1 60%;
     min-width: 300px;
-    height: 350px; /* <-- A CORREÇÃO ESTÁ AQUI */
+    height: 350px; /* A solução para o "crescimento infinito" */
 }
 
-/* 4. Os boxes ocupam um espaço menor ao lado do gráfico no desktop. */
+/* 4. Define como os boxes se comportam ao lado do gráfico no desktop. */
 .kpi-card .dynamic-info-boxes {
     flex: 1 1 220px;
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Um em cima do outro no desktop */
     gap: 0.5rem;
-    align-self: center;
+    align-self: center; /* Alinha no meio do gráfico */
     padding: 25px;
 }
 
@@ -661,13 +652,21 @@ body.is-resizing .card-graph canvas {
 }
 
 
-/* --- RESPONSIVIDADE SIMPLIFICADA --- */
+/* --- RESPONSIVIDADE FINAL PARA O KPI CARD --- */
 @media (max-width: 992px) {
+    /* Em telas menores, o gráfico ocupa 100% da largura... */
+    .kpi-card .card-graph {
+        flex-basis: 100%;
+    }
+
+    /* ...e os boxes também, forçando a quebra para baixo e ficando no rodapé. */
     .kpi-card .dynamic-info-boxes {
         flex-basis: 100%;
-        flex-direction: row;
+        flex-direction: row; /* Lado a lado no mobile */
         justify-content: center;
-        align-self: initial;
-        padding-top: 0;
+        align-self: initial; /* Reseta o alinhamento */
+        padding: 0 25px 25px 25px; /* Ajusta o espaçamento */
+        border-top: 1px solid #eef2f7; /* Linha de rodapé */
+        margin-top: 1rem;
     }
 }
