@@ -587,7 +587,7 @@ body.is-resizing .card-graph canvas {
 
 
 /* Media Query para responsividade dos Info Boxes */
-@media (max-width: 1180px) { /* Afeta tablets e celulares */
+@media (max-width: 1500px) { /* Afeta tablets e celulares */
     .indicator-card .dynamic-info-boxes {
         position: static; /* Deixa de ser 'absoluto' */
         flex-direction: row; /* Coloca os boxes lado a lado */
