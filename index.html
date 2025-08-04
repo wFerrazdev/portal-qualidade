@@ -477,7 +477,7 @@
                 if (!data || data.length === 0) return;
                 
                 const isMobile = window.innerWidth < 768;
-                const labels = data.map(item => item.mes);
+                const labels = data.map(item => isMobile ? item.mes.substring(0, 3) : item.mes);
                 const dados2025 = data.map(item => parseInt(item.quantidade_2025) || 0);
                 const dados2024 = data.map(item => parseInt(item.quantidade_2024) || 0);
 
@@ -543,7 +543,7 @@
                 if (!data || data.length === 0) return;
 
                 const isMobile = window.innerWidth < 768;
-                const labels = data.map(item => item.mes);
+                const labels = data.map(item => isMobile ? item.mes.substring(0, 3) : item.mes);
                 const dados2025 = data.map(item => parseInt(item.quantidade_2025) || 0);
                 const maxValue = Math.max(...dados2025);
 
