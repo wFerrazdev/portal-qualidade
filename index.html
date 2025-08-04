@@ -173,7 +173,7 @@
     </div>
     
     <script>
-        // Script de Segurança Anti-Flash e Anti-Loop (sem alterações)
+        // Script de Segurança Anti-Flash e Anti-Loop
         if (window.netlifyIdentity) {
             if (window.location.hash.includes('_token=')) {
                 netlifyIdentity.on('init', () => { netlifyIdentity.open(); });
@@ -188,7 +188,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            // --- LÓGICA DO MENU E LOGOUT --- (sem alterações)
+            // --- LÓGICA DO MENU E LOGOUT ---
             const body = document.body;
             const sidebar = document.querySelector('.sidebar');
             const mobileMenuButton = document.getElementById('mobileMenuButton');
@@ -218,19 +218,23 @@
             const API_BASE_URL = '/.netlify/functions';
             const refreshBtn = document.getElementById('refreshChartsBtn');
             
+            //let charts = {};
             const charts = {};
-            let lastDataExterno = {}, lastDataInterno = {}, lastDataRifs = {}, lastDataNCExterna = {};
+            let lastDataExterno = {};
+            let lastDataInterno = {};
+            let lastDataRifs = {};
+            let lastDataNCExterna = {};
 
-            // --- LÓGICA DAS ABAS (COM CORREÇÃO FINAL) ---
+            // --- LÓGICA DAS ABAS ---
             const tabsContainer = document.querySelector('.dashboard-tabs');
             const allCards = Array.from(document.querySelectorAll('.indicators-grid .indicator-card'));
             const tabMapping = {
-                'rifs': ['grafico1', 'grafico2', 'grafico3'],
+                'rifs': ['grafico1', 'grafico2', 'grafico3',],
                 'opt': ['grafico14', 'grafico7', 'grafico8', 'grafico9'],
                 'nc_interna': ['grafico10', 'grafico11', 'grafico12', 'grafico13'],
                 'nc_externa': ['graficoNCEProcedentes', 'graficoNCERevertidas', 'graficoNCETotal', 'graficoNCEPareto']
             };
-
+            // ... (resto da lógica das abas, sem alteração) ...
             function filterCharts(activeTab) {
                 const chartIdsToShow = tabMapping[activeTab];
                 if (!chartIdsToShow) return;
@@ -249,9 +253,9 @@
                     }
                 });
             }
-            
+            // --- FUNÇÃO PRINCIPAL DE ATUALIZAÇÃO ---
             async function updateAllCharts() {
-                if (refreshBtn) { refreshBtn.disabled = true; refreshBtn.querySelector('span').textContent = 'Atualizando...'; }
+                if (refreshBtn) { refreshBtn.disabled = true; refreshBtn.textContent = 'Atualizando...'; }
                 try {
                     const [responseExterno, responseInterno, responseRifs, responseNCExterna] = await Promise.all([
                         fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_EXTERNO}&sheets=opt_por_cliente,opt_por_projeto,opt_detalhado,opt_inteiro`),
@@ -264,18 +268,33 @@
                     lastDataRifs = await responseRifs.json();
                     lastDataNCExterna = await responseNCExterna.json();
 
+                    // Agora, renderiza os gráficos estáticos e os dinâmicos
                     renderAllCharts();
+                    
                 } catch (error) {
                     console.error("Erro ao atualizar gráficos:", error);
                 } finally {
-                    if (refreshBtn) { refreshBtn.disabled = false; refreshBtn.querySelector('span').textContent = 'Atualizar'; }
+                    if (refreshBtn) { refreshBtn.disabled = false; refreshBtn.textContent = 'Atualizar'; }
                     const activeTab = tabsContainer?.querySelector('.tab-button.active')?.dataset.tab || 'rifs';
                     filterCharts(activeTab);
                 }
             }
+            
+            // --- FUNÇÕES DE CRIAÇÃO DE GRÁFICOS ---
+            // (Todas as suas funções de criar gráficos aqui, sem alteração)
+            function renderizarGraficosPrincipais(allData) {
+                // GRÁFICO 1 e 2: RIFs por Fornecedor (Anual e Mensal)
+                criarGraficoRifStatus('grafico1', allData.status_por_fornecedor_ano || []);
+                criarGraficoRifStatus('grafico2', allData.status_por_fornecedor_mes || []);
 
-            // --- FUNÇÕES DE CRIAÇÃO DE GRÁFICOS (sem alterações) ---
-            // ... (todas as suas funções criarGrafico... e renderizar... permanecem aqui, exatamente como estavam) ...
+                // GRÁFICO 3: Pareto de RIFs
+                const dataParetoRifs = allData.pareto_rifs || [];
+                if (dataParetoRifs.length > 0) {
+                    // Passando o nome exato da coluna da sua planilha: 'quantidade_pareto'
+                    criarGraficoPareto('grafico3', dataParetoRifs, 'fornecedor', 'quantidade_pareto');
+                }
+            }
+        
             function criarGraficoRifStatus(canvasId, data) {
                 if (data.length === 0) return;
                 
@@ -335,6 +354,7 @@
                     plugins: [ChartDataLabels] 
                 });
             }
+
             function criarGraficoPareto(canvasId, data, labelX, labelY) {
                 data.sort((a, b) => parseInt(b[labelY] || 0) - parseInt(a[labelY] || 0));
                 const dataFiltrada = data.filter(item => parseInt(item[labelY] || 0) > 0);
@@ -364,22 +384,21 @@
             }
             function renderAllCharts() {
                 Object.values(charts).forEach(chart => { if (chart) chart.destroy(); });
-                renderizarGraficosPrincipais(lastDataRifs);
-                renderizarGraficosInternos(lastDataInterno);
-                renderizarGraficosExternos(lastDataExterno);
-                renderizarGraficosNCExterna(lastDataNCExterna);
-            }
-            function renderizarGraficosPrincipais(allData) {
-                // GRÁFICO 1 e 2: RIFs por Fornecedor (Anual e Mensal)
-                criarGraficoRifStatus('grafico1', allData.status_por_fornecedor_ano || []);
-                criarGraficoRifStatus('grafico2', allData.status_por_fornecedor_mes || []);
 
-                // GRÁFICO 3: Pareto de RIFs
-                const dataParetoRifs = allData.pareto_rifs || [];
-                if (dataParetoRifs.length > 0) {
-                    // Passando o nome exato da coluna da sua planilha: 'quantidade_pareto'
-                    criarGraficoPareto('grafico3', dataParetoRifs, 'fornecedor', 'quantidade_pareto');
-                }
+                // Renderiza os gráficos principais (RIFs)
+                const dataRifAnual = lastDataRifs.status_por_fornecedor_ano || [];
+                criarGraficoRifStatus('grafico1', dataRifAnual);
+                const dataRifMensal = lastDataRifs.status_por_fornecedor_mes || [];
+                criarGraficoRifStatus('grafico2', dataRifMensal);
+                const dataParetoRifs = lastDataRifs.pareto_rifs || [];
+                if (dataParetoRifs.length > 0) criarGraficoPareto('grafico3', dataParetoRifs, 'fornecedor', 'quantidade_pareto');
+
+                // Renderiza os gráficos de NC Interna
+                renderizarGraficosInternos(lastDataInterno);
+                // Renderiza os gráficos Externos
+                renderizarGraficosExternos(lastDataExterno);
+                // Renderiza os gráficos de NC Externa
+                renderizarGraficosNCExterna(lastDataNCExterna);
             }
             function renderizarGraficosExternos(allData) {
                 const dataCliente = allData.opt_por_cliente || [];
@@ -452,6 +471,8 @@
                     charts['grafico13'] = new Chart(ctx13, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade', data: values, backgroundColor: '#003366', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: (context) => context.dataset.data[context.dataIndex] > 0, color: 'black', font: { weight: 'bold' }, anchor: 'end', align: 'end' } }, scales: { y: { max: maxValue + 5, grid: { display: false } }, x: { grid: { display: false } } } }, plugins: [ChartDataLabels] });
                 }
             }
+            
+            // ADICIONE TODO ESTE BLOCO DE CÓDIGO
             function criarGraficoCombinadoAnual(canvasId, data, tipoGrafico2025, tipoGrafico2024) {
                 if (!data || data.length === 0) return;
                 
@@ -514,6 +535,7 @@
                     plugins: [ChartDataLabels]
                 });
             }
+
             function criarGraficoBarrasSimplesAnual(canvasId, data) {
                 if (!data || data.length === 0) return;
 
@@ -555,6 +577,7 @@
                     plugins: [ChartDataLabels]
                 });
             }
+
             function renderizarGraficosNCExterna(allData) {
                 criarGraficoCombinadoAnual('graficoNCEProcedentes', allData.nce_procedentes_anos, 'line', 'bar');
                 criarGraficoBarrasSimplesAnual('graficoNCERevertidas', allData.nce_naoprocedentes_anos);
@@ -574,7 +597,49 @@
                     if (mesBox) mesBox.textContent = `Mês: ${formatarMoeda(mesRevertido)}`;
                 }
             }
+            
+            // Função definitiva para controlar o layout do KPI card
+            // Função definitiva para controlar o layout do KPI card
+            function forceKpiCardLayout() {
+                const kpiCard = document.querySelector('.kpi-card');
+                if (!kpiCard) return;
 
+                const cardInfo = kpiCard.querySelector('.card-info');
+                const cardGraph = kpiCard.querySelector('.card-graph');
+                const infoBoxes = kpiCard.querySelector('.dynamic-info-boxes');
+
+                // --- LÓGICA DE DETECÇÃO AVANÇADA ---
+                const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+                const isNarrowScreen = window.innerWidth <= 992;
+
+                // A condição agora é: se for um dispositivo de toque (celular/tablet de qualquer tamanho)
+                // OU se for uma janela de navegador estreita em um desktop...
+                if (isTouchDevice || isNarrowScreen) {
+                    // --- APLICA O LAYOUT DE RODAPÉ (MOBILE / TABLET) ---
+                    kpiCard.style.cssText = 'display: flex; flex-direction: column; position: static;';
+                    cardInfo.style.order = '1';
+                    cardGraph.style.order = '2';
+                    infoBoxes.style.cssText = `
+                        position: static;
+                        order: 3;
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: center;
+                        width: 100%;
+                        padding: 25px;
+                        margin-top: 0;
+                        border-top: 1px solid #eef2f7;
+                        gap: 1rem;
+                    `;
+                } else {
+                    // --- RESETA PARA O LAYOUT DE TÍTULO (DESKTOP) ---
+                    // Limpa todos os estilos inline para que o CSS do arquivo volte a comandar
+                    kpiCard.style.cssText = '';
+                    cardInfo.style.order = '';
+                    cardGraph.style.order = '';
+                    infoBoxes.style.cssText = '';
+                }
+            }
 
             // --- EXECUÇÃO INICIAL E REDIMENSIONAMENTO ---
             if (tabsContainer) {
