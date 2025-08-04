@@ -652,7 +652,7 @@ body.is-resizing .card-graph canvas {
 
 /* 5. Responsividade para o cabeçalho do card especial */
 /* Responsividade FINAL para o card especial */
-@media (max-width: 768px) {
+@media (max-width: 992px) {
     /* Força o card especial a ser um container flex no mobile */
     .kpi-card {
         display: flex !important;
