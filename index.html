@@ -129,7 +129,15 @@
 
                     <div class="indicator-card">
                         <div class="card-info"><h3>Total NC's Revertidas 2025</h3><p>Total de NC's não procedentes em 2025.</p></div>
-                        <div class="card-graph"><canvas id="graficoNCERevertidas"></canvas></div>
+                        <div class="card-content-wrapper">
+                            <div class="card-graph">
+                                <canvas id="graficoNCERevertidas"></canvas>
+                            </div>
+                            <div class="dynamic-info-boxes">
+                                <div class="info-box" id="total-revertido-box">Total Revertido: R$ 0,00</div>
+                                <div class="info-box" id="mes-revertido-box">Mês: R$ 0,00</div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="indicator-card">
@@ -241,7 +249,7 @@
                         fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_EXTERNO}&sheets=opt_por_cliente,opt_por_projeto,opt_detalhado,opt_inteiro`),
                         fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_INTERNO}&sheets=nci_por_setor,pareto_mes,pareto_ano,nci_anual`),
                         fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_RIFS}&sheets=status_por_fornecedor_ano,status_por_fornecedor_mes,pareto_rifs`),
-                        fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_NC_EXTERNA}&sheets=nce_procedentes_anos,nce_naoprocedentes_anos,total_nce_anos,nce_pareto_defeitos`)
+                        fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_NC_EXTERNA}&sheets=nce_procedentes_anos,nce_naoprocedentes_anos,total_nce_anos,nce_pareto_defeitos,kpi_revertidos`)
                     ]);
                     lastDataExterno = await responseExterno.json();
                     lastDataInterno = await responseInterno.json();
@@ -557,6 +565,7 @@
             }
 
             function renderizarGraficosNCExterna(allData) {
+                // --- Lógica dos Gráficos (sem alteração) ---
                 criarGraficoCombinadoAnual('graficoNCEProcedentes', allData.nce_procedentes_anos, 'line', 'bar');
                 criarGraficoBarrasSimplesAnual('graficoNCERevertidas', allData.nce_naoprocedentes_anos);
                 criarGraficoCombinadoAnual('graficoNCETotal', allData.total_nce_anos, 'line', 'line');
@@ -564,6 +573,29 @@
                 if (dataPareto.length > 0) {
                     criarGraficoPareto('graficoNCEPareto', dataPareto, 'defeito', 'quantidade_pareto');
                 }
+
+                // highlight-start
+                // --- LÓGICA DOS NOVOS INFO BOXES ---
+                const kpiData = allData.kpi_revertidos;
+
+                if (kpiData && kpiData.length > 0) {
+                    // Pega os valores da primeira linha de dados
+                    const totalRevertido = parseFloat(kpiData[0].total_revertido) || 0;
+                    const mesRevertido = parseFloat(kpiData[0].mes_revertido) || 0;
+
+                    // Função para formatar como moeda brasileira
+                    const formatarMoeda = (valor) => {
+                        return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                    };
+
+                    // Atualiza os elementos HTML
+                    const totalBox = document.getElementById('total-revertido-box');
+                    const mesBox = document.getElementById('mes-revertido-box');
+
+                    if (totalBox) totalBox.textContent = `Total Revertido: ${formatarMoeda(totalRevertido)}`;
+                    if (mesBox) mesBox.textContent = `Mês: ${formatarMoeda(mesRevertido)}`;
+                }
+                // highlight-end
             }
             
             // --- EXECUÇÃO INICIAL E EVENT LISTENERS ---
