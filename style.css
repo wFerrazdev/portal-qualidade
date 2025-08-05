@@ -583,3 +583,41 @@ body.is-resizing .card-graph canvas {
         padding: 0 1rem 1rem 1rem; /* Adiciona espaçamento inferior */
     }
 }
+
+/* --- ESTILOS PARA INFORMAÇÃO DO USUÁRIO LOGADO --- */
+
+.user-info {
+  padding: 15px 38px;
+  margin-top: auto; /* Empurra este item para o fundo do menu, acima da logo */
+  display: flex;
+  align-items: center;
+  font-size: 0.85em; /* Tamanho da fonte um pouco menor */
+  color: #a0b3ce; /* Uma cor mais suave */
+  white-space: nowrap;
+  overflow: hidden; /* Garante que o texto não "vaze" */
+  text-overflow: ellipsis; /* Adiciona "..." se o nome for muito longo */
+  transition: padding 0.3s ease;
+}
+
+.sidebar:hover .user-info {
+  padding: 15px 28px;
+}
+
+.user-info svg {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  margin-right: 20px;
+}
+
+/* Lógica para esconder/mostrar o texto, igual aos outros links */
+.user-info span {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease 0.1s, visibility 0.2s ease 0.1s;
+}
+
+.sidebar:hover .user-info span {
+  opacity: 1;
+  visibility: visible;
+}
