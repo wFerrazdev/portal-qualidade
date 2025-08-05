@@ -592,7 +592,8 @@ body.is-resizing .card-graph canvas {
   display: flex;
   align-items: center;
   font-size: 0.85em; /* Tamanho da fonte um pouco menor */
-  color: #a0b3ce; /* Uma cor mais suave */
+  font-weight: bold;
+  color: #ffffff; /* Uma cor mais suave */
   white-space: nowrap;
   overflow: hidden; /* Garante que o texto não "vaze" */
   text-overflow: ellipsis; /* Adiciona "..." se o nome for muito longo */
