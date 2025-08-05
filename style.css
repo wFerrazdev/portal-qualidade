@@ -592,7 +592,6 @@ body.is-resizing .card-graph canvas {
   display: flex;
   align-items: center;
   font-size: 0.85em; /* Tamanho da fonte um pouco menor */
-  font-weight: bold;
   color: #ffffff; /* Uma cor mais suave */
   white-space: nowrap;
   overflow: hidden; /* Garante que o texto não "vaze" */

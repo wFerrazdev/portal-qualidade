@@ -152,7 +152,7 @@
                 // Tenta pegar o nome completo, se não houver, usa o email.
                 const userName = user.user_metadata.full_name || user.email;
                 if (userInfoSpan) {
-                    userInfoSpan.textContent = `Logado como: ${userName}`;
+                    userInfoSpan.textContent = `Logado como: <strong>${userName}</strong>`;
                 }
             });
 
@@ -162,7 +162,7 @@
                 const userInfoSpan = document.querySelector('.user-info span');
                 const userName = currentUser.user_metadata.full_name || currentUser.email;
                 if (userInfoSpan) {
-                    userInfoSpan.textContent = `${userName}`;
+                    userInfoSpan.textContent = `Logado como: <strong>${userName}</strong>`;
                 }
             }
         }
