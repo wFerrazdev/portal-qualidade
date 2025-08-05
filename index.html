@@ -131,6 +131,9 @@
                         <div class="card-graph">
                             <canvas id="graficoNCEProcedentes"></canvas>
                         </div>
+                        <div class="dynamic-info-boxes">
+                            <div class="info-box" id="melhora_nce_procedentes">% de Melhora: % 0,00</div>
+                        </div>
                     </div>
 
                     <div class="indicator-card">
@@ -601,18 +604,25 @@
                     // Pega os valores da primeira linha de dados
                     const totalRevertido = parseFloat(kpiData[0].total_revertido) || 0;
                     const mesRevertido = parseFloat(kpiData[0].mes_revertido) || 0;
+                    const porcentagemMelhora = parseFloat(kpiData[0].melhora) || 0;
 
                     // Função para formatar como moeda brasileira
                     const formatarMoeda = (valor) => {
                         return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
                     };
 
+                    const porcentagem = (valor) => {
+                        return (valor / 100 ).toLocaleString('pt-BR', {style: 'percent'})
+                    }
+
                     // Atualiza os elementos HTML
                     const totalBox = document.getElementById('total-revertido-box');
                     const mesBox = document.getElementById('mes-revertido-box');
+                    const melhoraBox = document.getElementById('melhora_nce_procedentes')
 
                     if (totalBox) totalBox.textContent = `Total Revertido: ${formatarMoeda(totalRevertido)}`;
                     if (mesBox) mesBox.textContent = `Mês: ${formatarMoeda(mesRevertido)}`;
+                    if (melhoraBox) melhoraBox.textContent = `% de Melhora: ${porcentagem(porcentagemMelhora)}`;
                 }
                 // highlight-end
             }
