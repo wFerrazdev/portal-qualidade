@@ -132,7 +132,7 @@
                             <canvas id="graficoNCEProcedentes"></canvas>
                         </div>
                         <div class="dynamic-info-boxes">
-                            <div class="info-box" id="melhora_nce_procedentes">% de Melhora: % 0,00</div>
+                            <div class="info-box" id="melhora_nce_procedentes">Melhora: % 0,00</div>
                         </div>
                     </div>
 
@@ -610,7 +610,7 @@
                     const formatarMoeda = (valor) => {
                         return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
                     };
-
+                    // transforma em porcentagem a melhora em relação ao ano passado
                     const porcentagem = (valor) => {
                         const normalizado = valor > 1 ? valor / 100 : valor;
                         return normalizado.toLocaleString('pt-BR', { style: 'percent', minimumFractionDigits: 0 });
@@ -623,7 +623,7 @@
 
                     if (totalBox) totalBox.textContent = `Total Revertido: ${formatarMoeda(totalRevertido)}`;
                     if (mesBox) mesBox.textContent = `Mês: ${formatarMoeda(mesRevertido)}`;
-                    if (melhoraBox) melhoraBox.textContent = `% de Melhora: ${porcentagem(porcentagemMelhora)}`;
+                    if (melhoraBox) melhoraBox.textContent = `Melhora: ${porcentagem(porcentagemMelhora)}`;
                 }
                 // highlight-end
             }
