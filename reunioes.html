@@ -163,6 +163,29 @@
             }
         }
 
+        // --- LÓGICA PARA EXIBIR NOME DO USUÁRIO ---
+        if (window.netlifyIdentity) {
+            // Escuta pelo evento de 'login' para garantir que temos os dados do usuário
+            netlifyIdentity.on('login', user => {
+                const userInfoSpan = document.querySelector('.user-info span');
+                // Tenta pegar o nome completo, se não houver, usa o email.
+                const userName = user.user_metadata.full_name || user.email;
+                if (userInfoSpan) {
+                    userInfoSpan.textContent = `Logado como: ${userName}`;
+                }
+            });
+
+            // Também verifica o usuário atual no carregamento da página, caso já esteja logado
+            const currentUser = netlifyIdentity.currentUser();
+            if (currentUser) {
+                const userInfoSpan = document.querySelector('.user-info span');
+                const userName = currentUser.user_metadata.full_name || currentUser.email;
+                if (userInfoSpan) {
+                    userInfoSpan.textContent = `${userName}`;
+                }
+            }
+        }
+
         const firebaseConfig = {
             apiKey: "AIzaSyCoymJyMK4oDbCHuXJluh35G2wgw5Tk2Rs",
             authDomain: "portal-qualidade.firebaseapp.com",
