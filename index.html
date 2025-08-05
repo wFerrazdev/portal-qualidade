@@ -612,7 +612,8 @@
                     };
 
                     const porcentagem = (valor) => {
-                        return (valor / 100 ).toLocaleString('pt-BR', {style: 'percent'})
+                        const normalizado = valor > 1 ? valor / 100 : valor;
+                        return normalizado.toLocaleString('pt-BR', { style: 'percent', minimumFractionDigits: 0 });
                     }
 
                     // Atualiza os elementos HTML
