@@ -736,16 +736,14 @@
             }
 
             // A função principal que monta o relatório
+            // A função principal que monta o relatório (COM ALINHAMENTO CORRIGIDO)
             async function generateFullReport() {
-                pdfOverlay.classList.add('visible'); // Mostra o overlay de carregamento
+                pdfOverlay.classList.add('visible');
                 generatePdfBtn.disabled = true;
 
-                const originalAnimationDuration = Chart.defaults.animation.duration;
-                Chart.defaults.animation.duration = 0; // DESATIVA as animações globalmente
-
-                const tabs = Object.keys(tabMapping);
                 const { jsPDF } = window.jspdf;
                 const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+                const tabs = Object.keys(tabMapping);
                 
                 let totalChartPages = 0;
                 tabs.forEach(tabId => { totalChartPages += tabMapping[tabId].filter(chartId => document.getElementById(chartId)).length; });
@@ -763,39 +761,50 @@
                         if (currentPage > 1) doc.addPage();
                         addCoverPage(doc, `Indicadores: ${tabName}`, currentPage, totalPages);
                         
-                        filterCharts(tabId); // Mostra os gráficos corretos
-                        renderAllCharts();   // Força a re-renderização (agora sem animação)
-                        await new Promise(resolve => setTimeout(resolve, 300)); // Pequena pausa para garantir renderização completa
-
                         const chartIds = tabMapping[tabId];
                         for (const chartId of chartIds) {
                             const chartElement = document.getElementById(chartId)?.closest('.indicator-card');
 
                             if (chartElement) {
-                                const canvas = await html2canvas(chartElement, { 
-                                    scale: 4,
-                                    logging: false, // Desativa logs no console
-                                    useCORS: true,
-                                    allowTaint: true,
-                                    width: 900,  // <-- FORÇA A LARGURA DE DESKTOP
-                                    height: chartElement.offsetHeight // <-- USA A ALTURA ATUAL DO ELEMENTO
-                                });
+                                const clone = chartElement.cloneNode(true);
+                                clone.id = 'pdf-clone-container';
+                                document.body.appendChild(clone);
+                                
+                                const cloneCanvas = clone.querySelector('canvas');
+                                const originalChartInstance = charts[chartId];
+
+                                if (originalChartInstance && cloneCanvas) {
+                                    const chartConfig = {
+                                        type: originalChartInstance.config.type,
+                                        data: originalChartInstance.config.data,
+                                        options: { ...originalChartInstance.config.options, animation: { duration: 0 } }
+                                    };
+                                    const tempChart = new Chart(cloneCanvas, chartConfig);
+                                    await new Promise(resolve => setTimeout(resolve, 100));
+                                }
                                 
                                 currentPage++;
                                 doc.addPage();
                                 addStylishPage(doc, currentPage, totalPages);
                                 
-                                const imgData = canvas.toDataURL('image/jpeg', 0.90);
+                                const canvas = await html2canvas(clone, { scale: 2 });
+                                
+                                document.body.removeChild(clone);
+
+                                const imgData = canvas.toDataURL('image/jpeg', 0.9);
                                 const imgProps = doc.getImageProperties(imgData);
                                 const pdfWidth = doc.internal.pageSize.getWidth();
+                                const pdfHeight = doc.internal.pageSize.getHeight();
                                 const margin = 20;
                                 const usableWidth = pdfWidth - (2 * margin);
                                 const imgWidth = usableWidth;
                                 const imgHeight = imgProps.height * imgWidth / imgProps.width;
-                                const x = margin;
-                                const y = (doc.internal.pageSize.getHeight() - imgHeight) / 2;
                                 
-                                doc.addImage(imgData, 'jpeg', x, y, imgWidth, imgHeight);
+                                // --- AQUI ESTÁ A CORREÇÃO ---
+                                const x = (pdfWidth - imgWidth) / 2;
+                                const y = (pdfHeight - imgHeight) / 2;
+                                
+                                doc.addImage(imgData, 'JPEG', x, y, imgWidth, imgHeight);
                             }
                         }
                     }
@@ -803,17 +812,12 @@
                     console.error("Erro ao gerar PDF:", error);
                     alert("Ocorreu um erro ao gerar o relatório. Por favor, tente novamente.");
                 } finally {
-                    // Bloco de finalização que SEMPRE será executado
-                    Chart.defaults.animation.duration = originalAnimationDuration; // REATIVA as animações
-                    
-                    // Volta para a aba que estava ativa originalmente e re-renderiza com animações
-                    filterCharts(originalActiveTab); 
-                    renderAllCharts();
-                    
                     doc.save(`Relatorio_Qualidade_${new Date().toLocaleDateString('pt-BR').replace(/\//g, '-')}.pdf`);
                     
-                    pdfOverlay.classList.remove('visible'); // Esconde o overlay
+                    pdfOverlay.classList.remove('visible');
                     generatePdfBtn.disabled = false;
+                    
+                    filterCharts(originalActiveTab); 
                 }
             }
 
