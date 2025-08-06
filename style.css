@@ -691,3 +691,42 @@ body.is-resizing .card-graph canvas {
       margin-bottom: 15px;
   }
 }
+
+/*Adicione este bloco de código ao final do seu `style.css` para estilizar o nosso overlay.
+
+```css
+/* --- ESTILOS PARA O OVERLAY DE GERAÇÃO DE PDF --- */
+.pdf-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(255, 255, 255, 0.9);
+    z-index: 9998; /* Z-index muito alto */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.pdf-overlay.visible {
+    opacity: 1;
+    visibility: visible;
+}
+.pdf-overlay p {
+    margin-top: 20px;
+    font-size: 1.2em;
+    color: #003366;
+    font-weight: 500;
+}
+.pdf-spinner {
+    width: 60px;
+    height: 60px;
+    border: 6px solid #f0f0f0;
+    border-top: 6px solid #003366;
+    border-radius: 50%;
+    animation: spin 1.2s linear infinite;
+}
