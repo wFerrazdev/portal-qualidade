@@ -776,7 +776,9 @@
                                     scale: 4,
                                     logging: false, // Desativa logs no console
                                     useCORS: true,
-                                    allowTaint: true
+                                    allowTaint: true,
+                                    width: 900,  // <-- FORÇA A LARGURA DE DESKTOP
+                                    height: chartElement.offsetHeight // <-- USA A ALTURA ATUAL DO ELEMENTO
                                 });
                                 
                                 currentPage++;
