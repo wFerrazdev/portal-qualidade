@@ -655,7 +655,8 @@ body.is-resizing .card-graph canvas {
   align-items: center;
   border-bottom: 2px solid #dee2e6;
   margin-bottom: 30px;
-  gap: 20px; /* Adiciona um espaço entre as abas e o botão */
+  gap: 20px;
+  padding-bottom: 10px; /* <-- ADICIONADO: Folga para o botão no desktop */
 }
 
 /* Remove a borda e a margem do container de abas original para evitar duplicatas */
@@ -669,6 +670,7 @@ body.is-resizing .card-graph canvas {
   .tabs-with-actions-container {
       flex-wrap: wrap; /* Permite que o botão quebre a linha */
       border-bottom: none; /* Remove a borda principal no mobile */
+      padding-bottom: 0; /* Remove a folga extra no mobile */
   }
   .dashboard-tabs {
       width: 100%; /* Ocupa a primeira linha inteira */
@@ -676,8 +678,9 @@ body.is-resizing .card-graph canvas {
       overflow-x: auto; /* Permite rolar as abas se não couberem */
   }
   .pdf-button {
-      width: 100%; /* Ocupa a segunda linha inteira */
-      margin: 15px 0; /* Adiciona espaçamento vertical */
-      justify-content: center; /* Centraliza o texto e ícone do botão */
+      width: auto; /* <-- MUDANÇA: Botão deixa de ser gigante */
+      margin-left: auto; /* <-- MUDANÇA: Alinha o botão à direita */
+      margin-top: 15px;
+      margin-bottom: 15px;
   }
 }
