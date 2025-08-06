@@ -736,7 +736,7 @@
             }
 
             // A função principal que monta o relatório
-            // A função principal que monta o relatório (COM CENTRALIZAÇÃO CORRIGIDA)
+            // A função principal que monta o relatório (VERSÃO FINAL COM RÓTULOS E LAYOUT CORRIGIDOS)
             async function generateFullReport() {
                 pdfOverlay.classList.add('visible');
                 generatePdfBtn.disabled = true;
@@ -774,10 +774,13 @@
                                 const originalChartInstance = charts[chartId];
 
                                 if (originalChartInstance && cloneCanvas) {
+                                    // --- CORREÇÃO 1: ADICIONAR OS PLUGINS ---
+                                    // Copiamos também a chave 'plugins' para ativar os rótulos de dados
                                     const chartConfig = {
                                         type: originalChartInstance.config.type,
                                         data: originalChartInstance.config.data,
-                                        options: { ...originalChartInstance.config.options, animation: { duration: 0 } }
+                                        options: { ...originalChartInstance.config.options, animation: { duration: 0 } },
+                                        plugins: originalChartInstance.config.plugins // <-- LINHA ADICIONADA
                                     };
                                     const tempChart = new Chart(cloneCanvas, chartConfig);
                                     await new Promise(resolve => setTimeout(resolve, 100));
@@ -787,23 +790,36 @@
                                 doc.addPage();
                                 addStylishPage(doc, currentPage, totalPages);
                                 
-                                const canvas = await html2canvas(clone, { scale: 2 });
+                                const canvas = await html2canvas(clone, { scale: 3 }); // Aumentei a escala para máxima qualidade
                                 document.body.removeChild(clone);
 
-                                const imgData = canvas.toDataURL('image/jpeg', 0.9);
+                                const imgData = canvas.toDataURL('image/jpeg', 0.95); // JPEG com qualidade muito alta
                                 const imgProps = doc.getImageProperties(imgData);
                                 const pdfWidth = doc.internal.pageSize.getWidth();
                                 const pdfHeight = doc.internal.pageSize.getHeight();
 
-                                // --- LÓGICA DE CENTRALIZAÇÃO CORRIGIDA ---
-                                // Define a largura da imagem como 90% da largura da página
-                                const imgWidth = pdfWidth * 0.9;
-                                // Calcula a altura proporcionalmente para não distorcer a imagem
-                                const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
-                                // Calcula a posição X para centralizar horizontalmente
+                                // --- CORREÇÃO 2: CÁLCULO DE LAYOUT INTELIGENTE ---
+                                const headerHeight = 25; // Espaço do nosso cabeçalho
+                                const footerHeight = 15; // Espaço do nosso rodapé
+                                const margin = 15;
+
+                                // Calcula a área útil da página
+                                const usableWidth = pdfWidth - (2 * margin);
+                                const usableHeight = pdfHeight - headerHeight - footerHeight;
+
+                                // Calcula as dimensões da imagem, mantendo a proporção
+                                let imgWidth = usableWidth;
+                                let imgHeight = (imgProps.height * imgWidth) / imgProps.width;
+
+                                // Se a imagem for muito alta, recalcula com base na altura máxima
+                                if (imgHeight > usableHeight) {
+                                    imgHeight = usableHeight;
+                                    imgWidth = (imgProps.width * imgHeight) / imgProps.height;
+                                }
+
+                                // Centraliza a imagem na área útil
                                 const x = (pdfWidth - imgWidth) / 2;
-                                // Calcula a posição Y para centralizar verticalmente
-                                const y = (pdfHeight - imgHeight) / 2;
+                                const y = headerHeight + (usableHeight - imgHeight) / 2;
                                 
                                 doc.addImage(imgData, 'JPEG', x, y, imgWidth, imgHeight);
                             }
@@ -814,10 +830,8 @@
                     alert("Ocorreu um erro ao gerar o relatório. Por favor, tente novamente.");
                 } finally {
                     doc.save(`Relatorio_Qualidade_${new Date().toLocaleDateString('pt-BR').replace(/\//g, '-')}.pdf`);
-                    
                     pdfOverlay.classList.remove('visible');
                     generatePdfBtn.disabled = false;
-                    
                     filterCharts(originalActiveTab); 
                 }
             }
