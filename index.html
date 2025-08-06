@@ -794,7 +794,12 @@
                                 doc.addPage();
                                 addStylishPage(doc, currentPage, totalPages);
                                 
-                                const canvas = await html2canvas(clone, { scale: 2 });
+                                const canvas = await html2canvas(clone, { 
+                                    scale: 2,
+                                    logging: false,
+                                    useCORS: true,      // Diz para tentar carregar recursos externos com permissão
+                                    allowTaint: false   // Diz para NÃO permitir recursos sem permissão (mais seguro)
+                                });
                                 
                                 document.body.removeChild(clone); // Remove o clone após a captura
                                 // --- FIM DA MÁGICA DO CLONE ---
