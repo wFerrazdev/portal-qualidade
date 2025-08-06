@@ -702,7 +702,7 @@ body.is-resizing .card-graph canvas {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: rgb(255, 255, 255);
     z-index: 9998; /* Z-index muito alto */
     display: flex;
     flex-direction: column;
@@ -733,12 +733,14 @@ body.is-resizing .card-graph canvas {
 
 /* --- ESTILOS PARA O CLONE DE GERAÇÃO DO PDF --- */
 
-/* Esconde o clone fora da tela e força o seu tamanho */
+/* Esconde o clone fora da tela e força o seu tamanho de desktop */
 #pdf-clone-container {
     position: absolute !important;
     top: -9999px !important;
     left: 0 !important;
     width: 950px !important; /* Largura de desktop fixa */
+    display: flex !important;
+    flex-direction: column !important;
 }
 
 /* Garante que a área do gráfico dentro do clone tenha uma altura de paisagem */
