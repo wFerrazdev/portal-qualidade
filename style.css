@@ -647,3 +647,37 @@ body.is-resizing .card-graph canvas {
   width: 20px;
   height: 20px;
 }
+
+/* Novo container para abas e botão de relatório */
+.tabs-with-actions-container {
+  display: flex;
+  justify-content: space-between; /* Abas para a esquerda, botão para a direita */
+  align-items: center;
+  border-bottom: 2px solid #dee2e6;
+  margin-bottom: 30px;
+  gap: 20px; /* Adiciona um espaço entre as abas e o botão */
+}
+
+/* Remove a borda e a margem do container de abas original para evitar duplicatas */
+.dashboard-tabs {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+/* Responsividade para o novo container */
+@media (max-width: 1366px) {
+  .tabs-with-actions-container {
+      flex-wrap: wrap; /* Permite que o botão quebre a linha */
+      border-bottom: none; /* Remove a borda principal no mobile */
+  }
+  .dashboard-tabs {
+      width: 100%; /* Ocupa a primeira linha inteira */
+      border-bottom: 2px solid #dee2e6; /* A borda agora fica aqui */
+      overflow-x: auto; /* Permite rolar as abas se não couberem */
+  }
+  .pdf-button {
+      width: 100%; /* Ocupa a segunda linha inteira */
+      margin: 15px 0; /* Adiciona espaçamento vertical */
+      justify-content: center; /* Centraliza o texto e ícone do botão */
+  }
+}
