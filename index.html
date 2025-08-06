@@ -773,7 +773,7 @@
 
                             if (chartElement) {
                                 const canvas = await html2canvas(chartElement, { 
-                                    scale: 3,
+                                    scale: 2,
                                     logging: false, // Desativa logs no console
                                     useCORS: true,
                                     allowTaint: true
@@ -783,7 +783,7 @@
                                 doc.addPage();
                                 addStylishPage(doc, currentPage, totalPages);
                                 
-                                const imgData = canvas.toDataURL('image/png');
+                                const imgData = canvas.toDataURL('image/jpeg', 0.90);
                                 const imgProps = doc.getImageProperties(imgData);
                                 const pdfWidth = doc.internal.pageSize.getWidth();
                                 const margin = 20;
@@ -793,7 +793,7 @@
                                 const x = margin;
                                 const y = (doc.internal.pageSize.getHeight() - imgHeight) / 2;
                                 
-                                doc.addImage(imgData, 'PNG', x, y, imgWidth, imgHeight);
+                                doc.addImage(imgData, 'jpeg', x, y, imgWidth, imgHeight);
                             }
                         }
                     }
