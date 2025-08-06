@@ -621,3 +621,29 @@ body.is-resizing .card-graph canvas {
   opacity: 1;
   visibility: visible;
 }
+
+/* botao pdf relatorio*/
+.pdf-button {
+  background-color: #28a745; /* Verde para diferenciar */
+  border: 2px solid #28a745;
+  color: white;
+  padding: 8px 20px;
+  font-size: 0.9em;
+  font-weight: 600;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease-in-out;
+}
+.pdf-button:hover {
+  background-color: #218838;
+  border-color: #218838;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+.pdf-button svg {
+  width: 20px;
+  height: 20px;
+}

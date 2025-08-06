@@ -8,6 +8,9 @@
     <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script type="text/javascript">
         // Adicionamos um escutador de evento direto no objeto 'netlifyIdentity'
         // Ele garante que o código só rode quando o sistema de login estiver pronto.
@@ -65,6 +68,10 @@
                     <h1>Dashboard de Indicadores</h1>
                     <p>Visão geral dos indicadores de qualidade do mês.</p>
                 </div>
+                <button id="generatePdfBtn" class="pdf-button" title="Gerar Relatório em PDF">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                    <span>Relatório</span>
+                </button>
                 <button id="refreshChartsBtn" class="refresh-button" title="Atualizar dados">
                     <svg class="refresh-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 1.03a9 9 0 11-10.302-3.812"></path><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 2.25v5.25h-5.25"></path></svg>
                     <span>Atualizar</span>
@@ -688,6 +695,111 @@
                 }, 250);
             });
         });
+
+        // --- LÓGICA DE GERAÇÃO DE PDF ---
+
+        // Captura o novo botão
+        const generatePdfBtn = document.getElementById('generatePdfBtn');
+
+        // Função auxiliar para criar a nossa "página de slide" estilizada
+        function addStylishPage(doc) {
+            // Fundo cinza claro
+            doc.setFillColor('#F4F7FC');
+            doc.rect(0, 0, doc.internal.pageSize.getWidth(), doc.internal.pageSize.getHeight(), 'F');
+
+            // Faixa do cabeçalho azul
+            doc.setFillColor('#003366');
+            doc.rect(0, 0, doc.internal.pageSize.getWidth(), 20, 'F');
+
+            // Título do Portal no cabeçalho
+            doc.setFontSize(12);
+            doc.setTextColor('#FFFFFF');
+            doc.text('Portal da Qualidade', 15, 13);
+        }
+
+        // Função para criar a "capa" de cada secção
+        function addCoverPage(doc, title) {
+            addStylishPage(doc);
+            doc.setFontSize(28);
+            doc.setTextColor('#003366');
+            // Centraliza o texto da capa
+            const textWidth = doc.getStringUnitWidth(title) * doc.getFontSize() / doc.internal.scaleFactor;
+            const textOffset = (doc.internal.pageSize.getWidth() - textWidth) / 2;
+            doc.text(title, textOffset, 120);
+        }
+
+        // A função principal que monta o relatório
+        async function generateFullReport() {
+            // Mostra um feedback para o usuário e desativa o botão
+            generatePdfBtn.disabled = true;
+            generatePdfBtn.querySelector('span').textContent = 'Gerando...';
+
+            // Pega as abas diretamente do nosso objeto tabMapping
+            const tabs = Object.keys(tabMapping);
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF({
+                orientation: 'landscape', // PDF no formato paisagem
+                unit: 'mm',
+                format: 'a4'
+            });
+
+            for (let i = 0; i < tabs.length; i++) {
+                const tabId = tabs[i];
+                const tabButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
+                const tabName = tabButton ? tabButton.textContent : tabId;
+
+                // 1. Adiciona a "Capa" da secção
+                addCoverPage(doc, `Indicadores: ${tabName}`);
+                
+                // 2. Mostra os gráficos desta aba para poder capturá-los
+                filterCharts(tabId);
+                // Pequena pausa para garantir que o navegador renderizou os gráficos
+                await new Promise(resolve => setTimeout(resolve, 500));
+
+                const chartIds = tabMapping[tabId];
+                for (let j = 0; j < chartIds.length; j++) {
+                    const chartId = chartIds[j];
+                    const chartElement = document.getElementById(chartId)?.closest('.indicator-card');
+
+                    if (chartElement) {
+                        // Adiciona uma nova página estilizada
+                        doc.addPage();
+                        addStylishPage(doc);
+                        
+                        // "Tira a foto" do card do gráfico
+                        const canvas = await html2canvas(chartElement, { scale: 2 });
+                        const imgData = canvas.toDataURL('image/png');
+                        
+                        // Adiciona a imagem ao PDF, centralizada
+                        const imgProps = doc.getImageProperties(imgData);
+                        const pdfWidth = doc.internal.pageSize.getWidth();
+                        const pdfHeight = doc.internal.pageSize.getHeight();
+                        const imgWidth = pdfWidth * 0.8; // Imagem ocupa 80% da largura
+                        const imgHeight = imgProps.height * imgWidth / imgProps.width;
+                        const x = (pdfWidth - imgWidth) / 2;
+                        const y = (pdfHeight - imgHeight) / 2; // Centraliza verticalmente
+                        
+                        doc.addImage(imgData, 'PNG', x, y, imgWidth, imgHeight);
+                    }
+                }
+            }
+
+            // Salva o arquivo PDF
+            doc.save(`Relatorio_Qualidade_${new Date().toLocaleDateString('pt-BR')}.pdf`);
+
+            // Restaura o botão ao estado original
+            generatePdfBtn.disabled = false;
+            generatePdfBtn.querySelector('span').textContent = 'Relatório';
+            // Volta para a primeira aba
+            filterCharts(tabs[0]);
+            document.querySelector('.tab-button.active')?.classList.remove('active');
+            document.querySelector(`.tab-button[data-tab="${tabs[0]}"]`)?.classList.add('active');
+        }
+
+        // Adiciona o "escutador de evento" ao botão
+        if (generatePdfBtn) {
+            generatePdfBtn.addEventListener('click', generateFullReport);
+        }
     </script>
 </body>
 </html>
