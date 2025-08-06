@@ -676,6 +676,13 @@ body.is-resizing .card-graph canvas {
       width: 100%; /* Ocupa a primeira linha inteira */
       border-bottom: 2px solid #dee2e6; /* A borda agora fica aqui */
       overflow-x: auto; /* Permite rolar as abas se não couberem */
+      /* --- CÓDIGO PARA ESCONDER A BARRA DE ROLAGEM --- */
+      -ms-overflow-style: none;  /* Para Internet Explorer e Edge legado */
+      scrollbar-width: none;     /* Para Firefox */
+  }
+
+  .dashboard-tabs::-webkit-scrollbar {
+      display: none;
   }
   .pdf-button {
       width: auto; /* <-- MUDANÇA: Botão deixa de ser gigante */
