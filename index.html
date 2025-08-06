@@ -696,12 +696,11 @@
 
                 }, 250);
             });
-        });
 
             // --- LÓGICA DE GERAÇÃO DE PDF ---
 
-            // Captura o novo botão
-            const generatePdfBtn = document.getElementById('generatePdfBtn');
+                    // Captura o novo botão
+                    const generatePdfBtn = document.getElementById('generatePdfBtn');
 
             // Função auxiliar para criar a nossa "página de slide" estilizada
             function addStylishPage(doc) {
@@ -802,6 +801,7 @@
             if (generatePdfBtn) {
                 generatePdfBtn.addEventListener('click', generateFullReport);
             }
+        });
     </script>
 </body>
 </html>
