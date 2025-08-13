@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calibração | Portal da Qualidade</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" href="style.css">
+    <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    </head>
+<body class="unauthenticated">
+    <div class="page-container">
+        
+        <aside class="sidebar preload">
+            <div class="sidebar-header">
+                <img src="GT Branco - Transparente.png" alt="Logo GT">
+                <h2>Portal da Qualidade</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="index.html"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">...</svg><span>Dashboard</span></a></li>
+                    <li><a href="projetos.html"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">...</svg><span>Projetos</span></a></li>
+                    <li><a href="reunioes.html"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">...</svg><span>Reuniões</span></a></li>
+                    <li><a href="auditoriasevisitas.html"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">...</svg><span>Auditorias e Visitas</span></a></li>
+                    <li><a href="calibracao.html" class="active"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"></path></svg><span>Calibração</span></a></li>
+                    <li id="logout-item">
+                        <a href="#" id="logoutBtn"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">...</svg><span>Logout</span></a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="user-info">
+                </div>
+            <div class="sidebar-footer-logo">
+                <img src="logo.png" alt="Logo WF">
+            </div>
+        </aside>
+
+        <div class="overlay" id="overlay"></div>
+
+        <div class="main-content">
+            <header class="content-header">
+                <button class="mobile-menu-button" id="mobileMenuButton">...</button>
+                <div>
+                    <h1>Gestão de Equipamentos - Calibração</h1>
+                    <p>Adicione, edite e consulte os equipamentos de medição.</p>
+                </div>
+            </header>
+
+            <main class="content-area">
+                <div class="page-actions">
+                    <button class="add-button" id="add-equipment-btn">Adicionar Equipamento</button>
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>CÓDIGO</th>
+                                <th>Equipamento</th>
+                                <th>Fabricante/Modelo</th>
+                                <th>Setor</th>
+                                <th>Status</th>
+                                <th>Situação</th>
+                                <th>Data de Vencimento</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="equipment-table-body">
+                            </tbody>
+                    </table>
+                </div>
+                <div id="loading-spinner" class="loading-spinner" style="display: none;"></div>
+            </main>
+
+            <footer class="footer">
+                <p>&copy; 2025 - Developed by William Ferraz</p>
+            </footer>
+        </div>
+    </div>
+
+    <div id="equipment-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Adicionar Novo Equipamento</h2>
+                <button id="close-modal-btn" class="close-button">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="equipment-form">
+                    <input type="hidden" id="equipment-id">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="codigo">Código*</label>
+                            <input type="text" id="codigo" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="equipamento">Equipamento*</label>
+                            <input type="text" id="equipamento" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="fabricante_modelo">Fabricante / Modelo</label>
+                            <input type="text" id="fabricante_modelo">
+                        </div>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="data_calibracao">Data de Calibração</label>
+                            <input type="date" id="data_calibracao">
+                        </div>
+                        <div class="form-group">
+                            <label for="anos_validade">Anos de Validade</label>
+                            <input type="number" id="anos_validade" value="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="data_vencimento">Data de Vencimento</label>
+                            <input type="date" id="data_vencimento" readonly>
+                        </div>
+                    </div>
+                     <div class="form-grid">
+                        <div class="form-group">
+                            <label for="status">Status</label>
+                            <select id="status">
+                                <option>CALIBRADO</option>
+                                <option>VENCIDO</option>
+                                <option>IRÁ VENCER</option>
+                                <option>EM TRATATIVA</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="situacao">Situação</label>
+                            <select id="situacao">
+                                <option>Em uso</option>
+                                <option>Em manutenção</option>
+                                <option>Fora de uso</option>
+                                <option>Backup</option>
+                            </select>
+                        </div>
+                         <div class="form-group">
+                            <label for="data_situacao">Data da Situação</label>
+                            <input type="date" id="data_situacao">
+                        </div>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="setor">Setor</label>
+                            <input type="text" id="setor">
+                        </div>
+                        <div class="form-group">
+                            <label for="responsavel">Responsável</label>
+                            <input type="text" id="responsavel">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="observacao">Observação</label>
+                        <textarea id="observacao" rows="3"></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" id="delete-btn" class="delete-button hidden">Excluir</button>
+                        <button type="submit" class="save-button">Salvar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/auth.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/calibracao.js"></script>
+</body>
+</html>
