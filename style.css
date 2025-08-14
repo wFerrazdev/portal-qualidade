@@ -808,16 +808,79 @@ body.is-resizing .card-graph canvas {
 }
 
 /* Estilo para as "Badges" de Status */
+/* Estilo para as "Badges" de Status (Com Contraste Corrigido) */
 .status-badge {
     padding: 5px 10px;
     border-radius: 15px;
     font-size: 0.8em;
     font-weight: 600;
-    color: white;
     white-space: nowrap;
 }
 
-.status-calibrado { background-color: #28a745; } /* Verde */
-.status-vencido { background-color: #dc3545; } /* Vermelho */
-.status-irá-vencer { background-color: #ffc107; color: #333; } /* Amarelo */
-.status-em-tratativa { background-color: #007bff; } /* Azul */
+.status-calibrado { background-color: #28a745; color: white; }
+.status-vencido { background-color: #dc3545; color: white; }
+.status-irá-vencer { background-color: #ffc107; color: #343a40; } /* Letra escura para fundo amarelo */
+.status-em-tratativa { background-color: #007bff; color: white; }
+
+/* --- NOVO ESTILO MODERNO PARA A TABELA DE DADOS --- */
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    background-color: #fff;
+    border-radius: 12px; /* Bordas mais arredondadas */
+    box-shadow: 0 6px 20px rgba(0, 71, 137, 0.08);
+    padding: 10px; /* Um padding para a sombra respirar */
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table th, .data-table td {
+    padding: 18px 25px;
+    text-align: left;
+}
+
+/* Estilo do Cabeçalho da Tabela */
+.data-table thead th {
+    background-color: #f1f5f9; /* Um cinza azulado muito claro */
+    color: #475569;
+    font-weight: 600;
+    font-size: 0.9em;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+/* Arredonda os cantos do cabeçalho */
+.data-table thead th:first-child { border-radius: 8px 0 0 8px; }
+.data-table thead th:last-child { border-radius: 0 8px 8px 0; }
+
+/* Estilo das Linhas da Tabela */
+.data-table tbody tr {
+    border-bottom: 1px solid #eef2f7;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+.data-table tbody tr:last-child {
+    border-bottom: none;
+}
+/* Efeito de hover nas linhas */
+.data-table tbody tr:hover {
+    background-color: #f8fafc;
+    transform: scale(1.01);
+}
+
+.edit-button-table {
+    background-color: #e2e8f0;
+    border: none;
+    color: #475569;
+    padding: 8px 15px;
+    border-radius: 20px; /* Botão "pílula" */
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+.edit-button-table:hover {
+    background-color: #003366;
+    color: white;
+}
