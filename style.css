@@ -747,3 +747,11 @@ body.is-resizing .card-graph canvas {
 #pdf-clone-container .card-graph {
     height: 500px !important;
 }
+
+/* Estilo para a mensagem de tabela vazia na página de Calibração */
+.data-table .empty-row td {
+    text-align: center;
+    padding: 50px 0;
+    color: #888;
+    font-style: italic;
+}
