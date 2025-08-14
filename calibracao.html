@@ -90,7 +90,89 @@
     </div>
 
     <div id="equipment-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Adicionar Novo Equipamento</h2>
+                <button id="close-modal-btn" class="close-button">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="equipment-form">
+                    <input type="hidden" id="equipment-id">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="codigo">Código*</label>
+                            <input type="text" id="codigo" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="equipamento">Equipamento*</label>
+                            <input type="text" id="equipamento" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="fabricante_modelo">Fabricante / Modelo</label>
+                            <input type="text" id="fabricante_modelo">
+                        </div>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="data_calibracao">Data de Calibração</label>
+                            <input type="date" id="data_calibracao">
+                        </div>
+                        <div class="form-group">
+                            <label for="anos_validade">Anos de Validade</label>
+                            <input type="number" id="anos_validade" value="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="data_vencimento">Data de Vencimento</label>
+                            <input type="date" id="data_vencimento" readonly>
+                        </div>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="status">Status</label>
+                            <select id="status">
+                                <option>CALIBRADO</option>
+                                <option>VENCIDO</option>
+                                <option>IRÁ VENCER</option>
+                                <option>EM TRATATIVA</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="situacao">Situação</label>
+                            <select id="situacao">
+                                <option>Em uso</option>
+                                <option>Em manutenção</option>
+                                <option>Fora de uso</option>
+                                <option>Backup</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="data_situacao">Data da Situação</label>
+                            <input type="date" id="data_situacao">
+                        </div>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="setor">Setor</label>
+                            <input type="text" id="setor">
+                        </div>
+                        <div class="form-group">
+                            <label for="responsavel">Responsável</label>
+                            <input type="text" id="responsavel">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="observacao">Observação</label>
+                        <textarea id="observacao" rows="3"></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" id="delete-btn" class="delete-button hidden">Excluir</button>
+                        <button type="submit" class="save-button">Salvar</button>
+                    </div>
+                </form>
+            </div>
         </div>
+    </div>
     
     <script src="js/calibracao.js"></script> </body>
 </html>
