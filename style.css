@@ -755,3 +755,69 @@ body.is-resizing .card-graph canvas {
     height: 500px !important;
 }
 
+/* --- ESTILOS PARA A PÁGINA DE CALIBRAÇÃO --- */
+
+/* Garante que a tabela use o espaço disponível e seja rolável em telas pequenas */
+.table-container {
+    width: 100%;
+    overflow-x: auto; /* Adiciona rolagem horizontal apenas se necessário no mobile */
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 71, 137, 0.07);
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse; /* Remove espaços entre as células */
+}
+
+.data-table th, .data-table td {
+    padding: 15px 20px;
+    text-align: left;
+    border-bottom: 1px solid #eef2f7;
+}
+
+/* Estilo do Cabeçalho da Tabela */
+.data-table thead th {
+    background-color: #f8f9fa;
+    color: #6c757d;
+    font-weight: 600;
+    font-size: 0.9em;
+    text-transform: uppercase;
+}
+
+/* Efeito de hover nas linhas */
+.data-table tbody tr:hover {
+    background-color: #f1f5f9;
+}
+
+/* Estilo para os botões de ação na tabela */
+.edit-button-table {
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    color: #555;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+.edit-button-table:hover {
+    background-color: #003366;
+    color: white;
+}
+
+/* Estilo para as "Badges" de Status */
+.status-badge {
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.8em;
+    font-weight: 600;
+    color: white;
+    white-space: nowrap;
+}
+
+.status-calibrado { background-color: #28a745; } /* Verde */
+.status-vencido { background-color: #dc3545; } /* Vermelho */
+.status-irá-vencer { background-color: #ffc107; color: #333; } /* Amarelo */
+.status-em-tratativa { background-color: #007bff; } /* Azul */

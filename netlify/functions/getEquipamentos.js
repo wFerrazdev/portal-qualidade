@@ -1,34 +1,30 @@
-// Importa a biblioteca para conectar ao PostgreSQL.
 const { Pool } = require('pg');
 
 exports.handler = async function(event, context) {
-    // Cria uma nova conexão com o banco de dados usando a URL que está nas variáveis de ambiente do Netlify.
-    const pool = new Pool({
-        connectionString: process.env.DATABASE_URL,
-    });
+    const { codigo } = event.queryStringParameters;
+
+    if (!codigo) {
+        return { statusCode: 400, body: JSON.stringify({ message: 'Código do equipamento é obrigatório.' }) };
+    }
+
+    const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 
     try {
-        // Executa a consulta SQL para buscar todos os equipamentos, ordenados por código.
-        const { rows } = await pool.query('SELECT * FROM equipamentos ORDER BY codigo ASC;');
-
-        // Fecha a conexão com o banco de dados.
+        const { rows } = await pool.query('SELECT * FROM equipamentos WHERE codigo = $1;', [codigo]);
         await pool.end();
 
-        // Retorna os dados encontrados com um status de sucesso.
+        if (rows.length === 0) {
+            return { statusCode: 404, body: JSON.stringify({ message: 'Equipamento não encontrado.' }) };
+        }
+
         return {
             statusCode: 200,
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(rows),
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(rows[0]) // Retorna apenas o primeiro (e único) resultado
         };
     } catch (error) {
-        // Em caso de erro, loga o erro e retorna uma mensagem de falha.
-        console.error('Erro ao buscar equipamentos:', error);
+        console.error('Erro ao buscar equipamento:', error);
         await pool.end();
-        return {
-            statusCode: 500,
-            body: JSON.stringify({ message: 'Erro interno do servidor.' }),
-        };
+        return { statusCode: 500, body: JSON.stringify({ message: 'Erro interno do servidor.' }) };
     }
 };

@@ -12,85 +12,93 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- LÓGICA DE CONTROLO DO MODAL ---
 
-    // Função para abrir o modal
-    const openModal = () => {
-        modal.style.display = 'flex';
-        modalTitle.textContent = 'Adicionar Novo Equipamento';
-        equipmentForm.reset(); // Limpa o formulário
-        deleteBtn.classList.add('hidden'); // Esconde o botão de excluir
-    };
-
-    // Função para fechar o modal
-    const closeModal = () => {
-        modal.style.display = 'none';
-    };
-
-    // Event Listeners para os botões do modal
-    if (addEquipmentBtn) {
-        addEquipmentBtn.addEventListener('click', openModal);
-    }
-    if (closeModalBtn) {
-        closeModalBtn.addEventListener('click', closeModal);
-    }
-    // Fecha o modal se o usuário clicar fora da área do conteúdo
-    if (modal) {
-        modal.addEventListener('click', (event) => {
-            if (event.target === modal) {
-                closeModal();
+    // Função para abrir o modal (agora mais inteligente)
+    const openModal = (equipamento = null) => {
+        equipmentForm.reset(); // Sempre limpa o formulário
+        
+        if (equipamento) {
+            // MODO DE EDIÇÃO
+            modalTitle.textContent = 'Editar Equipamento';
+            // Preenche todos os campos do formulário com os dados do equipamento
+            document.getElementById('equipment-id').value = equipamento.codigo; // Guarda o ID original
+            document.getElementById('codigo').value = equipamento.codigo;
+            document.getElementById('equipamento').value = equipamento.equipamento;
+            document.getElementById('fabricante_modelo').value = equipamento.fabricante_modelo;
+            // ... (adicionar outros campos aqui se necessário)
+            document.getElementById('status').value = equipamento.status;
+            document.getElementById('situacao').value = equipamento.situacao;
+            document.getElementById('setor').value = equipamento.setor;
+            // Formata as datas para o formato YYYY-MM-DD que o input[type=date] espera
+            if (equipamento.data_vencimento) {
+                 document.getElementById('data_vencimento').value = new Date(equipamento.data_vencimento).toISOString().split('T')[0];
             }
-        });
-    }
+            deleteBtn.classList.remove('hidden');
+        } else {
+            // MODO DE ADIÇÃO
+            modalTitle.textContent = 'Adicionar Novo Equipamento';
+            deleteBtn.classList.add('hidden');
+        }
+        modal.style.display = 'flex';
+    };
+
+    const closeModal = () => modal.style.display = 'none';
+
+    addEquipmentBtn.addEventListener('click', () => openModal()); // Chama sem dados para Adicionar
+    closeModalBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
 
     // --- LÓGICA DE BUSCA E RENDERIZAÇÃO DOS DADOS ---
-
-    // Função principal para buscar e exibir os equipamentos
     const fetchAndRenderEquipment = async () => {
-        if (loadingSpinner) loadingSpinner.style.display = 'block';
-        if (tableBody) tableBody.innerHTML = ''; // Limpa a tabela antes de preencher
+        loadingSpinner.style.display = 'block';
+        tableBody.innerHTML = '';
 
         try {
-            // Faz a chamada para a nossa função de backend (que ainda vamos criar)
             const response = await fetch('/.netlify/functions/getEquipamentos');
-            
-            if (!response.ok) {
-                throw new Error('Falha ao buscar os dados dos equipamentos.');
-            }
-
+            if (!response.ok) throw new Error('Falha ao buscar os dados.');
             const equipamentos = await response.json();
 
             if (equipamentos.length === 0) {
-                // DEPOIS:
                 tableBody.innerHTML = '<tr class="empty-row"><td colspan="8">Nenhum equipamento encontrado.</td></tr>';
             } else {
                 equipamentos.forEach(equip => {
                     const tr = document.createElement('tr');
+                    // Simplificando as colunas exibidas para um visual mais limpo
                     tr.innerHTML = `
-                        <td>${equip.codigo}</td>
+                        <td><strong>${equip.codigo}</strong></td>
                         <td>${equip.equipamento}</td>
-                        <td>${equip.fabricante_modelo || ''}</td>
-                        <td>${equip.setor || ''}</td>
-                        <td><span class="status-badge status-${equip.status?.toLowerCase()}">${equip.status || ''}</span></td>
-                        <td>${equip.situacao || ''}</td>
-                        <td>${equip.data_vencimento ? new Date(equip.data_vencimento).toLocaleDateString('pt-BR') : ''}</td>
-                        <td>
-                            <button class="edit-button-table" data-id="${equip.codigo}">Editar</button>
-                        </td>
+                        <td>${equip.setor || 'N/A'}</td>
+                        <td><span class="status-badge status-${equip.status?.toLowerCase().replace(' ', '-')}">${equip.status || 'N/A'}</span></td>
+                        <td>${equip.situacao || 'N/A'}</td>
+                        <td>${equip.data_vencimento ? new Date(equip.data_vencimento).toLocaleDateString('pt-BR') : 'N/A'}</td>
+                        <td><button class="edit-button-table" data-id="${equip.codigo}">Editar</button></td>
                     `;
                     tableBody.appendChild(tr);
                 });
             }
-
         } catch (error) {
             console.error('Erro:', error);
-            if (tableBody) {
-                tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center;">Erro ao carregar os dados. Tente novamente.</td></tr>`;
-            }
+            tableBody.innerHTML = `<tr class="empty-row"><td colspan="8">Erro ao carregar os dados. Tente novamente.</td></tr>`;
         } finally {
-            if (loadingSpinner) loadingSpinner.style.display = 'none';
+            loadingSpinner.style.display = 'none';
         }
     };
 
-    // --- EXECUÇÃO INICIAL ---
-    // Chama a função para carregar os dados assim que a página é carregada
+    // --- EVENT LISTENER PARA OS BOTÕES "EDITAR" ---
+    tableBody.addEventListener('click', async (event) => {
+        if (event.target.classList.contains('edit-button-table')) {
+            const id = event.target.dataset.id;
+            // Busca os dados completos do equipamento específico para preencher o modal
+            try {
+                const response = await fetch(`/.netlify/functions/getEquipamento?codigo=${id}`);
+                if (!response.ok) throw new Error('Equipamento não encontrado.');
+                const equipamento = await response.json();
+                openModal(equipamento); // Abre o modal com os dados
+            } catch (error) {
+                console.error('Erro ao buscar equipamento:', error);
+                alert('Não foi possível carregar os dados para edição.');
+            }
+        }
+    });
+
     fetchAndRenderEquipment();
 });
