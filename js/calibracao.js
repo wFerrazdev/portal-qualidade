@@ -91,11 +91,12 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const response = await fetch(`/.netlify/functions/getEquipamentos?codigo=${id}`);
                 if (!response.ok) throw new Error('Equipamento não encontrado.');
-                const equipamento = await response.json();
+                const equipamentoArray = await response.json();
+                const equipamento = equipamentoArray[0];  
                 openModal(equipamento); // Abre o modal com os dados
 
                 console.log('Dados recebidos do backend:', equipamento);
-                
+
             } catch (error) {
                 console.error('Erro ao buscar equipamento:', error);
                 alert('Não foi possível carregar os dados para edição.');
