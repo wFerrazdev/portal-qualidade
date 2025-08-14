@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
         tableBody.innerHTML = '';
 
         try {
-            const response = await fetch('/.netlify/functions/getEquipamento');
+            const response = await fetch('/.netlify/functions/getEquipamentos');
             if (!response.ok) throw new Error('Falha ao buscar os dados.');
             const equipamentos = await response.json();
 
@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const id = event.target.dataset.id;
             // Busca os dados completos do equipamento específico para preencher o modal
             try {
-                const response = await fetch(`/.netlify/functions/getEquipamento?codigo=${id}`);
+                const response = await fetch(`/.netlify/functions/getEquipamentos?codigo=${id}`);
                 if (!response.ok) throw new Error('Equipamento não encontrado.');
                 const equipamento = await response.json();
                 openModal(equipamento); // Abre o modal com os dados
