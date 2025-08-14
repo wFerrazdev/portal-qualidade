@@ -59,7 +59,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const equipamentos = await response.json();
 
             if (equipamentos.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="8" style="text-align:center;">Nenhum equipamento encontrado.</td></tr>';
+                // DEPOIS:
+                tableBody.innerHTML = '<tr class="empty-row"><td colspan="8">Nenhum equipamento encontrado.</td></tr>';
             } else {
                 equipamentos.forEach(equip => {
                     const tr = document.createElement('tr');
