@@ -115,6 +115,13 @@ body.menu-open .main-content { filter: blur(4px); }
 .card-info p { margin: 5px 0; color: #555; }
 .card-info strong { color: #333; }
 .card-graph { flex-grow: 1; padding: 25px; display: flex; align-items: center; justify-content: center; }
+/* Estilo para a mensagem de tabela vazia na página de Calibração */
+.data-table .empty-row td {
+    text-align: center;
+    padding: 50px 0;
+    color: #888;
+    font-style: italic;
+}
 
 /* --- PÁGINA PROJETOS --- */
 .projects-grid { display: grid; grid-template-columns: 1fr; gap: 25px; }
@@ -748,10 +755,3 @@ body.is-resizing .card-graph canvas {
     height: 500px !important;
 }
 
-/* Estilo para a mensagem de tabela vazia na página de Calibração */
-.data-table .empty-row td {
-    text-align: center;
-    padding: 50px 0;
-    color: #888;
-    font-style: italic;
-}
