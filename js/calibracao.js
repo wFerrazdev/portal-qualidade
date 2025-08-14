@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
         tableBody.innerHTML = '';
 
         try {
-            const response = await fetch('/.netlify/functions/getEquipamentos');
+            const response = await fetch('/.netlify/functions/getEquipamento');
             if (!response.ok) throw new Error('Falha ao buscar os dados.');
             const equipamentos = await response.json();
 
