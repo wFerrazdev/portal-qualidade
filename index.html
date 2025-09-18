@@ -74,6 +74,17 @@
                     <h1>Dashboard de Indicadores</h1>
                     <p>Visão geral dos indicadores de qualidade do mês.</p>
                 </div>
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <label for="periodoMes" style="font-size:0.9em;color:#555;">Mês</label>
+                    <select id="periodoMes" style="padding:6px 10px;border:1px solid #ccc;border-radius:4px;">
+                        <option value="">Todos</option>
+                    </select>
+                    <label for="periodoAno" style="font-size:0.9em;color:#555;">Ano</label>
+                    <select id="periodoAno" style="padding:6px 10px;border:1px solid #ccc;border-radius:4px;">
+                        <option value="">Todos</option>
+                    </select>
+                    <button id="aplicarPeriodoBtn" class="refresh-button" title="Aplicar período">Aplicar</button>
+                </div>
                 <button id="refreshChartsBtn" class="refresh-button" title="Atualizar dados">
                     <svg class="refresh-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 1.03a9 9 0 11-10.302-3.812"></path><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 2.25v5.25h-5.25"></path></svg>
                     <span>Atualizar</span>
@@ -266,6 +277,9 @@
             const SPREADSHEET_ID_NC_EXTERNA = '1kJcw-QMboXMSt2Ueej3kA0qwjZ1abyj4XgyWxf2KtKQ';
             const API_BASE_URL = '/.netlify/functions';
             const refreshBtn = document.getElementById('refreshChartsBtn');
+            const aplicarPeriodoBtn = document.getElementById('aplicarPeriodoBtn');
+            const periodoMesSelect = document.getElementById('periodoMes');
+            const periodoAnoSelect = document.getElementById('periodoAno');
             
             //let charts = {};
             const charts = {};
@@ -273,6 +287,7 @@
             let lastDataInterno = {};
             let lastDataRifs = {};
             let lastDataNCExterna = {};
+            let selectedPeriodo = { mes: '', ano: '' };
 
             // --- LÓGICA DAS ABAS ---
             const tabsContainer = document.querySelector('.dashboard-tabs');
@@ -513,7 +528,7 @@
                 const dataParetoAno = allData.pareto_ano || [];
                 if (dataParetoAno.length > 0) criarGraficoPareto('grafico12', dataParetoAno, 'topicos', 'nao_iniciado');
                     
-                const dataNciAnual = allData.nci_anual || [];
+                const dataNciAnual = filtrarPorPeriodo(allData.nci_anual || []);
                 if (dataNciAnual.length > 0) {
                     const labels = dataNciAnual.map(item => item.mes);
                     const values = dataNciAnual.map(item => parseInt(item.quantidade_ano));
@@ -521,6 +536,53 @@
                     const ctx13 = document.getElementById('grafico13').getContext('2d');
                     charts['grafico13'] = new Chart(ctx13, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade', data: values, backgroundColor: '#003366', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: (context) => context.dataset.data[context.dataIndex] > 0, color: 'black', font: { weight: 'bold' }, anchor: 'end', align: 'end' } }, scales: { y: { max: maxValue + 5, grid: { display: false } }, x: { grid: { display: false } } } }, plugins: [ChartDataLabels] });
                 }
+            }
+
+            // --- UTILITÁRIOS DE PERÍODO ---
+            const MESES = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+            function normalizarMes(valor) {
+                if (!valor) return '';
+                const v = String(valor).toLowerCase().trim();
+                const abreviacoes = {
+                    'jan':'janeiro','fev':'fevereiro','mar':'março','abr':'abril','mai':'maio','jun':'junho',
+                    'jul':'julho','ago':'agosto','set':'setembro','sep':'setembro','out':'outubro','nov':'novembro','dez':'dezembro'
+                };
+                if (MESES.includes(v)) return v;
+                if (abreviacoes[v]) return abreviacoes[v];
+                const num = parseInt(v,10);
+                if (!isNaN(num) && num>=1 && num<=12) return MESES[num-1];
+                return v;
+            }
+            function filtrarPorPeriodo(dados) {
+                if (!Array.isArray(dados) || (!selectedPeriodo.mes && !selectedPeriodo.ano)) return dados;
+                return dados.filter(item => {
+                    const mesOk = selectedPeriodo.mes ? normalizarMes(item.mes) === normalizarMes(selectedPeriodo.mes) : true;
+                    const anoItem = item.ano || item.ano_ref || item.ano_base;
+                    const anoOk = selectedPeriodo.ano ? String(anoItem||'') === String(selectedPeriodo.ano) : true;
+                    return mesOk && anoOk;
+                });
+            }
+            function popularPeriodosUI() {
+                const now = new Date();
+                const anoAtual = now.getFullYear();
+                if (periodoMesSelect && periodoMesSelect.options.length <= 1) {
+                    MESES.forEach((m,idx)=>{
+                        const opt=document.createElement('option');
+                        opt.value = m; opt.textContent = m.charAt(0).toUpperCase()+m.slice(1);
+                        if (idx===now.getMonth()) opt.selected = true;
+                        periodoMesSelect.appendChild(opt);
+                    });
+                }
+                if (periodoAnoSelect && periodoAnoSelect.options.length <= 1) {
+                    for(let a=anoAtual-3; a<=anoAtual+1; a++){
+                        const opt=document.createElement('option');
+                        opt.value=String(a); opt.textContent=String(a);
+                        if (a===anoAtual) opt.selected = true;
+                        periodoAnoSelect.appendChild(opt);
+                    }
+                }
+                selectedPeriodo.mes = periodoMesSelect?.value || '';
+                selectedPeriodo.ano = periodoAnoSelect?.value || '';
             }
             
             // ADICIONE TODO ESTE BLOCO DE CÓDIGO
@@ -677,6 +739,39 @@
             if (tabsContainer) { filterCharts('rifs'); }
             if (refreshBtn) {
                 refreshBtn.addEventListener('click', updateAllCharts);
+            }
+
+            // Controles de Período
+            popularPeriodosUI();
+            if (aplicarPeriodoBtn) {
+                aplicarPeriodoBtn.addEventListener('click', async () => {
+                    selectedPeriodo = { mes: periodoMesSelect?.value || '', ano: periodoAnoSelect?.value || '' };
+                    renderAllCharts();
+
+                    // Integração futura: atualizar parâmetro no Google Sheets
+                    // Descomente e configure TARGETS quando os ranges forem definidos.
+                    // await atualizarPeriodoNoSheets(selectedPeriodo);
+                });
+            }
+
+            async function atualizarPeriodoNoSheets(periodo) {
+                const TARGETS = [];
+                for (const target of TARGETS) {
+                    try {
+                        await fetch(`${API_BASE_URL}/setSheetParam`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                spreadsheetId: target.spreadsheetId,
+                                sheetName: target.sheetName,
+                                cellA1: target.cellA1,
+                                value: target.formatter ? target.formatter(periodo) : `${periodo.mes}/${periodo.ano}`
+                            })
+                        });
+                    } catch (e) {
+                        console.error('Falha ao atualizar período no Sheets:', e);
+                    }
+                }
             }
 
             // --- LÓGICA FINAL PARA REDIMENSIONAR GRÁFICOS (COM SUAVIDADE) ---
