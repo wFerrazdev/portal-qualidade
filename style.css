@@ -659,10 +659,7 @@ body.is-resizing .card-graph canvas {
 .filters-compact {
   display: flex;
   align-items: center;
-  gap: 16px;
-  margin-left: auto;
-  margin-right: 0;
-  padding-right: 0;
+  gap: 12px;
 }
 .filter-group {
   display: flex;
@@ -745,24 +742,7 @@ body.is-resizing .card-graph canvas {
   box-shadow: 0 4px 8px rgba(0, 51, 102, 0.3);
 }
 
-/* Desktop 1366px+ - Filtros na borda direita */
-@media (min-width: 1367px) {
-  .filters-compact {
-    margin-right: -30px; /* Empurra para a borda direita */
-    padding-right: 0;
-  }
-  /* Garante que o container principal não tenha padding que impeça */
-  .content-header {
-    padding: 30px 50px 30px 50px; /* Remove padding direito */
-  }
-}
-
-/* Tablet e Desktop médio */
-@media (max-width: 1920px) and (min-width: 901px) {
-  .filters-compact {
-    margin-right: -10px; /* Aproxima da borda direita */
-  }
-}
+/* Estilos específicos para filtros no novo posicionamento */
 
 /* Mobile e Tablet pequeno */
 @media (max-width: 900px) {
@@ -800,12 +780,17 @@ body.is-resizing .card-graph canvas {
 /* Novo container para abas e botão de relatório */
 .tabs-with-actions-container {
   display: flex;
-  justify-content: space-between; /* Abas para a esquerda, botão para a direita */
+  justify-content: space-between; /* Abas para a esquerda, ações para a direita */
   align-items: center;
   border-bottom: 2px solid #dee2e6;
   margin-bottom: 30px;
   gap: 20px;
   padding-bottom: 10px; /* <-- ADICIONADO: Folga para o botão no desktop */
+}
+.tabs-actions-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
 /* Remove a borda e a margem do container de abas original para evitar duplicatas */
@@ -833,11 +818,19 @@ body.is-resizing .card-graph canvas {
   .dashboard-tabs::-webkit-scrollbar {
       display: none;
   }
+  .tabs-actions-group {
+      margin-top: 15px; /* Adiciona espaço entre as linhas */
+      align-self: flex-start; /* Alinha à esquerda na segunda linha */
+      flex-wrap: wrap;
+      gap: 12px;
+  }
+  .filters-compact {
+      flex-wrap: wrap;
+      gap: 8px;
+  }
   .pdf-button {
       width: auto; /* <-- MUDANÇA: Botão deixa de ser gigante */
       margin-left: auto; /* <-- MUDANÇA: Alinha o botão à direita */
-      margin-top: 15px;
-      margin-bottom: 15px;
   }
 }
 
