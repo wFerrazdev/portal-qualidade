@@ -772,6 +772,8 @@ body.is-resizing .card-graph canvas {
   .apply-btn, .refresh-btn {
     padding: 7px;
     border-radius: 10px;
+    margin-left: 0; 
+    margin-right: 0;
   }
 }
 
