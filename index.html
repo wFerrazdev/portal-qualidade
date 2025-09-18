@@ -371,7 +371,9 @@
             }
         
             function criarGraficoRifStatus(canvasId, data) {
-                if (data.length === 0) return;
+                if (!data || data.length === 0) return;
+                
+                try {
                 
                 const labels = data.map(item => item.fornecedor);
                 // Usando os nomes exatos das suas colunas: 'concluido' e 'em_tratativa'
@@ -428,9 +430,15 @@
                     }, 
                     plugins: [ChartDataLabels] 
                 });
+                } catch (error) {
+                    console.error(`Erro ao criar gráfico ${canvasId}:`, error);
+                }
             }
 
             function criarGraficoPareto(canvasId, data, labelX, labelY) {
+                if (!data || data.length === 0) return;
+                
+                try {
                 data.sort((a, b) => parseInt(b[labelY] || 0) - parseInt(a[labelY] || 0));
                 const dataFiltrada = data.filter(item => parseInt(item[labelY] || 0) > 0);
                 const labels = dataFiltrada.map(item => item[labelX]);
@@ -456,27 +464,34 @@
                     options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom', labels: { usePointStyle: true, pointStyle: 'rect', padding: 20, font: { size: 10 } } }, datalabels: { display: (context) => context.dataset.type === 'bar', color: 'black', font: { weight: 'bold' }, anchor: 'end', align: 'end' } }, scales: { y: { type: 'linear', position: 'left', title: { display: true, text: 'Quantidade' }, grid: { display: false }, max: maxValue + 5 }, y1: { type: 'linear', position: 'right', grid: { drawOnChartArea: false }, max: 100, ticks: { callback: value => value + '%' }, title: { display: true, text: 'Percentual Acumulado' } }, x: { grid: { display: false } } } },
                     plugins: [ChartDataLabels]
                 });
+                } catch (error) {
+                    console.error(`Erro ao criar gráfico Pareto ${canvasId}:`, error);
+                }
             }
             function renderAllCharts() {
-                Object.values(charts).forEach(chart => { if (chart) chart.destroy(); });
+                try {
+                    Object.values(charts).forEach(chart => { if (chart) chart.destroy(); });
 
-                // Renderiza os gráficos principais (RIFs)
-                const dataRifAnual = lastDataRifs.status_por_fornecedor_ano || [];
-                criarGraficoRifStatus('grafico1', dataRifAnual);
-                const dataRifMensal = lastDataRifs.status_por_fornecedor_mes || [];
-                criarGraficoRifStatus('grafico2', dataRifMensal);
-                const dataParetoRifs = lastDataRifs.pareto_rifs || [];
-                if (dataParetoRifs.length > 0) criarGraficoPareto('grafico3', dataParetoRifs, 'fornecedor', 'quantidade_pareto');
+                    // Renderiza os gráficos principais (RIFs) - SEM filtro de período
+                    const dataRifAnual = lastDataRifs.status_por_fornecedor_ano || [];
+                    criarGraficoRifStatus('grafico1', dataRifAnual);
+                    const dataRifMensal = lastDataRifs.status_por_fornecedor_mes || [];
+                    criarGraficoRifStatus('grafico2', dataRifMensal);
+                    const dataParetoRifs = lastDataRifs.pareto_rifs || [];
+                    if (dataParetoRifs.length > 0) criarGraficoPareto('grafico3', dataParetoRifs, 'fornecedor', 'quantidade_pareto');
 
-                // Renderiza os gráficos de NC Interna
-                renderizarGraficosInternos(lastDataInterno);
-                // Renderiza os gráficos Externos
-                renderizarGraficosExternos(lastDataExterno);
-                // Renderiza os gráficos de NC Externa
-                renderizarGraficosNCExterna(lastDataNCExterna);
+                    // Renderiza os gráficos de NC Interna - SEM filtro de período
+                    renderizarGraficosInternos(lastDataInterno);
+                    // Renderiza os gráficos Externos - SEM filtro de período
+                    renderizarGraficosExternos(lastDataExterno);
+                    // Renderiza os gráficos de NC Externa
+                    renderizarGraficosNCExterna(lastDataNCExterna);
+                } catch (error) {
+                    console.error('Erro ao renderizar gráficos:', error);
+                }
             }
             function renderizarGraficosExternos(allData) {
-                const dataCliente = filtrarPorPeriodo(allData.opt_por_cliente || []);
+                const dataCliente = allData.opt_por_cliente || [];
                 const dataClienteFiltrado = dataCliente.filter(item => parseInt(item.quantidadecliente_nc) > 0);
                 if (dataClienteFiltrado.length > 0) {
                     const topData = dataClienteFiltrado.slice(0, 6);
@@ -486,7 +501,7 @@
                     charts['grafico7'] = new Chart(ctx7, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade de NC', data: values, backgroundColor: '#003366', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: true, anchor: 'end', align: 'end', color: 'black', font: { weight: 'bold' } } }, scales: { y: { beginAtZero: true, max: 20, grid: { display: false } }, x: { grid: { display: false } } } }, plugins: [ChartDataLabels] });
                 }
                     
-                const dataProjeto = filtrarPorPeriodo(allData.opt_por_projeto || []);
+                const dataProjeto = allData.opt_por_projeto || [];
                 const dataProjetoFiltrado = dataProjeto.filter(item => parseInt(item.quantidadeprojeto_nc) > 0);
                 if (dataProjetoFiltrado.length > 0) {
                     const topData = dataProjetoFiltrado.slice(0, 6);
@@ -496,7 +511,7 @@
                     charts['grafico8'] = new Chart(ctx8, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade de NC', data: values, backgroundColor: '#29abe2', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: true, anchor: 'end', align: 'end', color: 'black', font: { weight: 'bold' } } }, scales: { y: { beginAtZero: true, max: 20, grid: { display: false } }, x: { grid: { display: false } } } }, plugins: [ChartDataLabels] });
                 }
                     
-                const dataDetalhado = filtrarPorPeriodo(allData.opt_detalhado || []);
+                const dataDetalhado = allData.opt_detalhado || [];
                 if (dataDetalhado.length > 0) {
                     const tiposDeNC = Object.keys(dataDetalhado[0]).filter(key => key !== 'cliente');
                     const dataDetalhadoFiltrado = dataDetalhado.filter(item => { const totalNc = tiposDeNC.reduce((soma, tipo) => soma + (parseInt(item[tipo]) || 0), 0); return totalNc > 0; });
@@ -509,7 +524,7 @@
                         charts['grafico9'] = new Chart(ctx9, { type: 'bar', data: { labels: labels, datasets: datasets }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom', labels: { usePointStyle: true, pointStyle: 'rect', padding: 20, font: { size: 10 } } }, datalabels: { display: true, anchor: 'center', align: 'center', color: 'white', font: { weight: 'bold' }, formatter: (value) => { return value > 0 ? value : null; } } }, scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, beginAtZero: true, max: 7, ticks: { stepSize: 2 }, grid: { display: false } } } }, plugins: [ChartDataLabels] });
                     }
                 }
-                const dataInteiro = filtrarPorPeriodo(allData.opt_inteiro || []);
+                const dataInteiro = allData.opt_inteiro || [];
                 const dataInteiroFiltrado = dataInteiro.filter(item => parseInt(item.quantidadeopt_total) > 0);
                 if (dataInteiroFiltrado.length > 0) {
                     const topData = dataInteiroFiltrado.slice(0, 6);
@@ -520,7 +535,7 @@
                 }
             }
             function renderizarGraficosInternos(allData) {
-                const dataNciSetor = filtrarPorPeriodo(allData.nci_por_setor || []);
+                const dataNciSetor = allData.nci_por_setor || [];
                 if (dataNciSetor.length > 0) {
                     const labels = dataNciSetor.map(item => item.setor);
                     const statusTypes = ['nao_iniciado', 'em_andamento', 'atrasado', 'concluido'];
@@ -532,12 +547,12 @@
                     charts['grafico10'] = new Chart(ctx10, { type: 'bar', data: { labels: labels, datasets: datasets }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom', labels: { usePointStyle: true, pointStyle: 'rect', padding: 20, font: { size: 10 } } }, datalabels: { color: (context) => context.dataset.data[context.dataIndex] < 5 ? 'black' : 'white', font: { weight: 'bold' }, anchor: (context) => context.dataset.data[context.dataIndex] < 5 ? 'end' : 'center', align: (context) => context.dataset.data[context.dataIndex] < 5 ? 'end' : 'center', formatter: (value) => value > 0 ? value : null } }, scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, beginAtZero: true, max: maxValue + 5, grid: { display: false } } } }, plugins: [ChartDataLabels] });
                 }
 
-                const dataParetoMes = filtrarPorPeriodo(allData.pareto_mes || []);
+                const dataParetoMes = allData.pareto_mes || [];
                 if (dataParetoMes.length > 0) criarGraficoPareto('grafico11', dataParetoMes, 'topicos', 'nao_iniciado');
-                const dataParetoAno = filtrarPorPeriodo(allData.pareto_ano || []);
+                const dataParetoAno = allData.pareto_ano || [];
                 if (dataParetoAno.length > 0) criarGraficoPareto('grafico12', dataParetoAno, 'topicos', 'nao_iniciado');
                     
-                const dataNciAnual = filtrarPorPeriodo(allData.nci_anual || []);
+                const dataNciAnual = allData.nci_anual || [];
                 if (dataNciAnual.length > 0) {
                     const labels = dataNciAnual.map(item => item.mes);
                     const values = dataNciAnual.map(item => parseInt(item.quantidade_ano));
@@ -562,8 +577,10 @@
                 if (!isNaN(num) && num>=1 && num<=12) return MESES[num-1];
                 return v;
             }
-            function filtrarPorPeriodo(dados) {
+            function filtrarPorPeriodo(dados, abaAtiva = null) {
                 if (!Array.isArray(dados) || (!selectedPeriodo.mes && !selectedPeriodo.ano)) return dados;
+                
+                // Aplicar filtro apenas se estivermos na aba correta ou se não especificada
                 return dados.filter(item => {
                     const mesOk = selectedPeriodo.mes ? normalizarMes(item.mes) === normalizarMes(selectedPeriodo.mes) : true;
                     const anoItem = item.ano || item.ano_ref || item.ano_base;
@@ -761,8 +778,8 @@
                     // Atualizar parâmetro no Google Sheets primeiro
                     await atualizarPeriodoNoSheets(selectedPeriodo);
                     
-                    // Depois re-renderizar os gráficos
-                    renderAllCharts();
+                    // Depois recarregar os dados do Sheets e re-renderizar os gráficos
+                    await updateAllCharts();
                 });
             }
 
