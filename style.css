@@ -656,11 +656,6 @@ body.is-resizing .card-graph canvas {
 }
 
 /* --- UI de Filtros (Período) - Interface Minimalista --- */
-.filters-compact {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
 .filter-group {
   display: flex;
   align-items: center;
@@ -727,7 +722,7 @@ body.is-resizing .card-graph canvas {
   background: linear-gradient(135deg, #003366 0%, #004488 100%);
   color: white;
   border: none;
-  padding: 0;
+  padding: 8px;
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -735,11 +730,6 @@ body.is-resizing .card-graph canvas {
   align-items: center;
   justify-content: center;
   box-shadow: 0 2px 4px rgba(0, 51, 102, 0.2);
-  width: 40px;
-  height: 40px;
-  min-width: 40px;
-  min-height: 40px;
-  overflow: hidden;
 }
 .refresh-btn:hover {
   background: linear-gradient(135deg, #004488 0%, #0056b3 100%);
@@ -747,8 +737,8 @@ body.is-resizing .card-graph canvas {
   box-shadow: 0 4px 8px rgba(0, 51, 102, 0.3);
 }
 .refresh-btn img {
-  width: 24px;
-  height: 24px;
+  width: 16px;
+  height: 16px;
   object-fit: contain;
   display: block;
 }
@@ -780,21 +770,13 @@ body.is-resizing .card-graph canvas {
     padding: 3px 10px;
     border-radius: 14px;
   }
-  .apply-btn {
+  .apply-btn, .refresh-btn {
     padding: 7px;
     border-radius: 10px;
   }
-  .refresh-btn {
-    width: 36px;
-    height: 36px;
-    min-width: 36px;
-    min-height: 36px;
-    padding: 0;
-    border-radius: 10px;
-  }
   .refresh-btn img {
-    width: 20px;
-    height: 20px;
+    width: 14px;
+    height: 14px;
   }
 }
 
@@ -844,10 +826,6 @@ body.is-resizing .card-graph canvas {
       align-self: flex-start; /* Alinha à esquerda na segunda linha */
       flex-wrap: wrap;
       gap: 12px;
-  }
-  .filters-compact {
-      flex-wrap: wrap;
-      gap: 8px;
   }
   .pdf-button {
       width: auto; /* <-- MUDANÇA: Botão deixa de ser gigante */
