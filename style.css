@@ -745,6 +745,26 @@ body.is-resizing .card-graph canvas {
   box-shadow: 0 4px 8px rgba(0, 51, 102, 0.3);
 }
 
+/* Desktop 1366px+ - Filtros na borda direita */
+@media (min-width: 1367px) {
+  .filters-compact {
+    margin-right: -30px; /* Empurra para a borda direita */
+    padding-right: 0;
+  }
+  /* Garante que o container principal não tenha padding que impeça */
+  .content-header {
+    padding: 30px 50px 30px 50px; /* Remove padding direito */
+  }
+}
+
+/* Tablet e Desktop médio */
+@media (max-width: 1366px) and (min-width: 901px) {
+  .filters-compact {
+    margin-right: -10px; /* Aproxima da borda direita */
+  }
+}
+
+/* Mobile e Tablet pequeno */
 @media (max-width: 900px) {
   .filters-compact { 
     flex-wrap: wrap; 
