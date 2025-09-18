@@ -727,7 +727,7 @@ body.is-resizing .card-graph canvas {
   background: linear-gradient(135deg, #003366 0%, #004488 100%);
   color: white;
   border: none;
-  padding: 10px;
+  padding: 0;
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -739,6 +739,7 @@ body.is-resizing .card-graph canvas {
   height: 40px;
   min-width: 40px;
   min-height: 40px;
+  overflow: hidden;
 }
 .refresh-btn:hover {
   background: linear-gradient(135deg, #004488 0%, #0056b3 100%);
@@ -746,10 +747,10 @@ body.is-resizing .card-graph canvas {
   box-shadow: 0 4px 8px rgba(0, 51, 102, 0.3);
 }
 .refresh-btn img {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   object-fit: contain;
-  filter: brightness(0) invert(1); /* Torna a imagem branca */
+  display: block;
 }
 
 /* Estilos específicos para filtros no novo posicionamento */
@@ -788,12 +789,12 @@ body.is-resizing .card-graph canvas {
     height: 36px;
     min-width: 36px;
     min-height: 36px;
-    padding: 6px;
+    padding: 0;
     border-radius: 10px;
   }
   .refresh-btn img {
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
   }
 }
 

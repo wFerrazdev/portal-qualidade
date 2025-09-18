@@ -345,7 +345,7 @@
             }
             // --- FUNÇÃO PRINCIPAL DE ATUALIZAÇÃO ---
             async function updateAllCharts() {
-                if (refreshBtn) { refreshBtn.disabled = true; refreshBtn.textContent = 'Atualizando...'; }
+                if (refreshBtn) { refreshBtn.disabled = true; }
                 try {
                     const [responseExterno, responseInterno, responseRifs, responseNCExterna] = await Promise.all([
                         fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_EXTERNO}&sheets=opt_por_cliente,opt_por_projeto,opt_detalhado,opt_inteiro`),
@@ -364,7 +364,7 @@
                 } catch (error) {
                     console.error("Erro ao atualizar gráficos:", error);
                 } finally {
-                    if (refreshBtn) { refreshBtn.disabled = false; refreshBtn.textContent = 'Atualizar'; }
+                    if (refreshBtn) { refreshBtn.disabled = false; }
                     const activeTab = tabsContainer?.querySelector('.tab-button.active')?.dataset.tab || 'rifs';
                     filterCharts(activeTab);
                 }
