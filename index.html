@@ -487,11 +487,11 @@
 
         function popularPeriodosUI() {
             const meses = [
-                '', 'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+                '', 'Todos', 'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
                 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
             ];
             
-            const anos = ['', '2023', '2024', '2025', '2026'];
+            const anos = ['', 'Todos', '2023', '2024', '2025', '2026'];
             
             if (periodoMesSelect) {
                 periodoMesSelect.innerHTML = meses.map(mes => 
@@ -616,7 +616,9 @@
         }
 
         function renderizarGraficosRifs() {
-            if (!lastDataRifs || !lastDataRifs.sheets) return;
+            if (!lastDataRifs || !lastDataRifs.sheets) {
+                return;
+            }
 
             try {
                 // Gráfico 1: RIFs por Fornecedor - Anual
