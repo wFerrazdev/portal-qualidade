@@ -735,11 +735,21 @@ body.is-resizing .card-graph canvas {
   align-items: center;
   justify-content: center;
   box-shadow: 0 2px 4px rgba(0, 51, 102, 0.2);
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
 }
 .refresh-btn:hover {
   background: linear-gradient(135deg, #004488 0%, #0056b3 100%);
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 51, 102, 0.3);
+}
+.refresh-btn img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  filter: brightness(0) invert(1); /* Torna a imagem branca */
 }
 
 /* Estilos específicos para filtros no novo posicionamento */
@@ -769,11 +779,21 @@ body.is-resizing .card-graph canvas {
     padding: 3px 10px;
     border-radius: 14px;
   }
-  .apply-btn, .refresh-btn {
+  .apply-btn {
     padding: 7px;
     border-radius: 10px;
-    margin-left: 0; 
-    margin-right: 0;
+  }
+  .refresh-btn {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    min-height: 36px;
+    padding: 6px;
+    border-radius: 10px;
+  }
+  .refresh-btn img {
+    width: 18px;
+    height: 18px;
   }
 }
 
