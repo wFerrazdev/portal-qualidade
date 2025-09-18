@@ -59,17 +59,29 @@
         <div class="main-content">
             <header class="content-header">
                 <button class="mobile-menu-button" id="mobileMenuButton">
-                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
                 </button>
-                <div>
-                    <h1>Auditorias e Visitas</h1>
-                    <p>Acompanhamento de auditorias, visitas técnicas e treinamentos.</p>
+                
+                <div class="header-top">
+                    <div>
+                        <h1 class="header-title">Auditorias e Visitas</h1>
+                        <p class="header-subtitle">Acompanhamento de auditorias, visitas técnicas e treinamentos</p>
+                    </div>
                 </div>
             </header>
 
             <main class="content-area">
                 <div class="page-actions">
-                    <button id="addAuditBtn" class="add-button">+ Adicionar Evento</button>
+                    <button id="addAuditBtn" class="btn btn-primary">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="margin-right: 8px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                        </svg>
+                        Adicionar Evento
+                    </button>
                 </div>
                 <div class="audits-grid">
                     <div class="loading-spinner"></div>

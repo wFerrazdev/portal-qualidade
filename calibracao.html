@@ -53,16 +53,30 @@
 
         <div class="main-content">
             <header class="content-header">
-                <button class="mobile-menu-button" id="mobileMenuButton"></button>
-                <div>
-                    <h1>Gestão de Equipamentos - Calibração</h1>
-                    <p>Adicione, edite e consulte os equipamentos de medição.</p>
+                <button class="mobile-menu-button" id="mobileMenuButton">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+                
+                <div class="header-top">
+                    <div>
+                        <h1 class="header-title">Gestão de Equipamentos - Calibração</h1>
+                        <p class="header-subtitle">Adicione, edite e consulte os equipamentos de medição</p>
+                    </div>
                 </div>
             </header>
 
             <main class="content-area">
                 <div class="page-actions">
-                    <button class="add-button" id="add-equipment-btn">Adicionar Equipamento</button>
+                    <button class="btn btn-primary" id="add-equipment-btn">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="margin-right: 8px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                        </svg>
+                        Adicionar Equipamento
+                    </button>
                 </div>
 
                 <div class="table-container">

@@ -391,8 +391,10 @@
         async function initializeApp() {
             setupEventListeners();
             popularPeriodosUI();
-            await updateAllCharts();
+            // Primeiro filtra os gráficos para mostrar apenas RIFs
             filterCharts('rifs');
+            // Depois carrega os dados
+            await updateAllCharts();
         }
 
         function setupEventListeners() {
@@ -616,10 +618,6 @@
         }
 
         function renderizarGraficosRifs() {
-            if (!lastDataRifs || !lastDataRifs.sheets) {
-                return;
-            }
-
             try {
                 // Gráfico 1: RIFs por Fornecedor - Anual
                 const canvas1 = document.getElementById('grafico1');
@@ -773,15 +771,533 @@
         }
 
         function renderizarGraficosOpt() {
-            console.log('Renderizando gráficos OPT...');
+            try {
+                // Gráfico 4: OPT por Cliente
+                const canvas4 = document.getElementById('grafico4');
+                if (canvas4) {
+                    const ctx4 = canvas4.getContext('2d');
+                    charts.grafico4 = new Chart(ctx4, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Cliente A', 'Cliente B', 'Cliente C', 'Cliente D'],
+                            datasets: [{
+                                label: 'OPTs',
+                                data: [12, 8, 15, 6],
+                                backgroundColor: '#3b82f6',
+                                borderColor: '#2563eb',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'bottom',
+                                    labels: {
+                                        usePointStyle: true,
+                                        padding: 20
+                                    }
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    grid: {
+                                        color: '#e2e8f0'
+                                    }
+                                },
+                                x: {
+                                    grid: {
+                                        display: false
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+
+                // Gráfico 5: OPT por Projeto
+                const canvas5 = document.getElementById('grafico5');
+                if (canvas5) {
+                    const ctx5 = canvas5.getContext('2d');
+                    charts.grafico5 = new Chart(ctx5, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Projeto X', 'Projeto Y', 'Projeto Z'],
+                            datasets: [{
+                                data: [30, 25, 45],
+                                backgroundColor: ['#10b981', '#f59e0b', '#ef4444'],
+                                borderWidth: 0
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'bottom',
+                                    labels: {
+                                        usePointStyle: true,
+                                        padding: 20
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+
+                // Gráfico 6: OPT Detalhado
+                const canvas6 = document.getElementById('grafico6');
+                if (canvas6) {
+                    const ctx6 = canvas6.getContext('2d');
+                    charts.grafico6 = new Chart(ctx6, {
+                        type: 'line',
+                        data: {
+                            labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+                            datasets: [{
+                                label: 'OPTs Resolvidas',
+                                data: [5, 8, 12, 6, 9, 11],
+                                borderColor: '#10b981',
+                                backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                                tension: 0.4
+                            }, {
+                                label: 'OPTs Pendentes',
+                                data: [3, 5, 7, 4, 6, 8],
+                                borderColor: '#f59e0b',
+                                backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                                tension: 0.4
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'bottom',
+                                    labels: {
+                                        usePointStyle: true,
+                                        padding: 20
+                                    }
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    grid: {
+                                        color: '#e2e8f0'
+                                    }
+                                },
+                                x: {
+                                    grid: {
+                                        display: false
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+
+                // Gráfico 7: OPT Inteiro
+                const canvas7 = document.getElementById('grafico7');
+                if (canvas7) {
+                    const ctx7 = canvas7.getContext('2d');
+                    charts.grafico7 = new Chart(ctx7, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Total OPTs', 'Resolvidas', 'Pendentes', 'Em Análise'],
+                            datasets: [{
+                                label: 'Quantidade',
+                                data: [50, 35, 10, 5],
+                                backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444'],
+                                borderWidth: 0
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    display: false
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    grid: {
+                                        color: '#e2e8f0'
+                                    }
+                                },
+                                x: {
+                                    grid: {
+                                        display: false
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            } catch (error) {
+                console.error('Erro ao renderizar gráficos OPT:', error);
+            }
         }
 
         function renderizarGraficosNCInterna() {
-            console.log('Renderizando gráficos NC Interna...');
+            try {
+                // Gráfico 8: NC Interna por Setor
+                const canvas8 = document.getElementById('grafico8');
+                if (canvas8) {
+                    const ctx8 = canvas8.getContext('2d');
+                    charts.grafico8 = new Chart(ctx8, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Produção', 'Qualidade', 'Almoxarifado', 'Manutenção'],
+                            datasets: [{
+                                label: 'NCs',
+                                data: [8, 5, 12, 3],
+                                backgroundColor: '#ef4444',
+                                borderColor: '#dc2626',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'bottom',
+                                    labels: {
+                                        usePointStyle: true,
+                                        padding: 20
+                                    }
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    grid: {
+                                        color: '#e2e8f0'
+                                    }
+                                },
+                                x: {
+                                    grid: {
+                                        display: false
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+
+                // Gráfico 9: Pareto Mensal NC Interna
+                const canvas9 = document.getElementById('grafico9');
+                if (canvas9) {
+                    const ctx9 = canvas9.getContext('2d');
+                    charts.grafico9 = new Chart(ctx9, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Problema A', 'Problema B', 'Problema C', 'Problema D'],
+                            datasets: [{
+                                label: 'Frequência',
+                                data: [15, 10, 8, 5],
+                                backgroundColor: '#3b82f6',
+                                borderColor: '#2563eb',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'bottom',
+                                    labels: {
+                                        usePointStyle: true,
+                                        padding: 20
+                                    }
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    grid: {
+                                        color: '#e2e8f0'
+                                    }
+                                },
+                                x: {
+                                    grid: {
+                                        display: false
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+
+                // Gráfico 10: Pareto Anual NC Interna
+                const canvas10 = document.getElementById('grafico10');
+                if (canvas10) {
+                    const ctx10 = canvas10.getContext('2d');
+                    charts.grafico10 = new Chart(ctx10, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Problema X', 'Problema Y', 'Problema Z', 'Problema W'],
+                            datasets: [{
+                                label: 'Frequência Anual',
+                                data: [45, 30, 25, 15],
+                                backgroundColor: '#8b5cf6',
+                                borderColor: '#7c3aed',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'bottom',
+                                    labels: {
+                                        usePointStyle: true,
+                                        padding: 20
+                                    }
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    grid: {
+                                        color: '#e2e8f0'
+                                    }
+                                },
+                                x: {
+                                    grid: {
+                                        display: false
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+
+                // Gráfico 11: NC Interna Anual
+                const canvas11 = document.getElementById('grafico11');
+                if (canvas11) {
+                    const ctx11 = canvas11.getContext('2d');
+                    charts.grafico11 = new Chart(ctx11, {
+                        type: 'line',
+                        data: {
+                            labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                            datasets: [{
+                                label: 'NCs Internas',
+                                data: [5, 8, 6, 12, 9, 7, 10, 6, 8, 11, 9, 7],
+                                borderColor: '#ef4444',
+                                backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                                tension: 0.4,
+                                fill: true
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'bottom',
+                                    labels: {
+                                        usePointStyle: true,
+                                        padding: 20
+                                    }
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    grid: {
+                                        color: '#e2e8f0'
+                                    }
+                                },
+                                x: {
+                                    grid: {
+                                        display: false
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            } catch (error) {
+                console.error('Erro ao renderizar gráficos NC Interna:', error);
+            }
         }
 
         function renderizarGraficosNCExterna() {
-            console.log('Renderizando gráficos NC Externa...');
+            try {
+                // Gráfico 12: NC Externa Procedentes
+                const canvas12 = document.getElementById('grafico12');
+                if (canvas12) {
+                    const ctx12 = canvas12.getContext('2d');
+                    charts.grafico12 = new Chart(ctx12, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+                            datasets: [{
+                                label: 'NCs Procedentes',
+                                data: [3, 5, 2, 4],
+                                backgroundColor: '#ef4444',
+                                borderColor: '#dc2626',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'bottom',
+                                    labels: {
+                                        usePointStyle: true,
+                                        padding: 20
+                                    }
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    grid: {
+                                        color: '#e2e8f0'
+                                    }
+                                },
+                                x: {
+                                    grid: {
+                                        display: false
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+
+                // Gráfico 13: NC Externa Revertidas
+                const canvas13 = document.getElementById('grafico13');
+                if (canvas13) {
+                    const ctx13 = canvas13.getContext('2d');
+                    charts.grafico13 = new Chart(ctx13, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+                            datasets: [{
+                                label: 'NCs Revertidas',
+                                data: [1, 2, 0, 1],
+                                backgroundColor: '#10b981',
+                                borderColor: '#059669',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'bottom',
+                                    labels: {
+                                        usePointStyle: true,
+                                        padding: 20
+                                    }
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    grid: {
+                                        color: '#e2e8f0'
+                                    }
+                                },
+                                x: {
+                                    grid: {
+                                        display: false
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+
+                // Gráfico 14: Total NC Externa
+                const canvas14 = document.getElementById('grafico14');
+                if (canvas14) {
+                    const ctx14 = canvas14.getContext('2d');
+                    charts.grafico14 = new Chart(ctx14, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Procedentes', 'Revertidas', 'Em Análise'],
+                            datasets: [{
+                                data: [14, 4, 2],
+                                backgroundColor: ['#ef4444', '#10b981', '#f59e0b'],
+                                borderWidth: 0
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'bottom',
+                                    labels: {
+                                        usePointStyle: true,
+                                        padding: 20
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+
+                // Gráfico 15: Pareto NC Externa
+                const canvas15 = document.getElementById('grafico15');
+                if (canvas15) {
+                    const ctx15 = canvas15.getContext('2d');
+                    charts.grafico15 = new Chart(ctx15, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Cliente A', 'Cliente B', 'Cliente C', 'Cliente D'],
+                            datasets: [{
+                                label: 'NCs Externas',
+                                data: [8, 5, 3, 2],
+                                backgroundColor: '#8b5cf6',
+                                borderColor: '#7c3aed',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'bottom',
+                                    labels: {
+                                        usePointStyle: true,
+                                        padding: 20
+                                    }
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    grid: {
+                                        color: '#e2e8f0'
+                                    }
+                                },
+                                x: {
+                                    grid: {
+                                        display: false
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            } catch (error) {
+                console.error('Erro ao renderizar gráficos NC Externa:', error);
+            }
         }
 
         async function generatePDF() {
