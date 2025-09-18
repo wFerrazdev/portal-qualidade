@@ -25,73 +25,177 @@ body {
   box-shadow: 0 0 50px rgba(0, 0, 0, 0.1);
 }
 
-/* Sidebar Moderna */
+/* Sidebar Moderna com Hover */
 .sidebar {
-  width: 280px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  z-index: 1000;
+  width: 100px;
   background: linear-gradient(180deg, #003366 0%, #004488 100%);
   color: white;
-  padding: 2rem 0;
-  position: fixed;
-  height: 100vh;
-  overflow-y: auto;
-  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  transition: width 0.3s ease;
   box-shadow: 4px 0 20px rgba(0, 51, 102, 0.3);
 }
 
-.sidebar-header {
-  padding: 0 2rem 2rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  margin-bottom: 2rem;
+.sidebar:hover {
+  width: 260px;
 }
 
-.sidebar-logo {
-  width: 60px;
-  height: 60px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 1rem;
-  font-size: 1.5rem;
-  font-weight: 700;
+.sidebar-header { 
+  padding: 20px 0; 
+  margin-bottom: 20px; 
+  display: flex; 
+  flex-direction: column; 
+  justify-content: center; 
+  align-items: center; 
+  flex-shrink: 0; 
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-logo-img { 
+  height: 45px; 
+  width: auto; 
+  margin-bottom: 15px; 
+}
+
+.sidebar-header h2 { 
+  margin: 0; 
+  font-size: 1.2em; 
+  font-weight: 500; 
+  opacity: 0; 
+  visibility: hidden; 
+  white-space: nowrap; 
+  transition: opacity 0.2s ease 0.1s, visibility 0.2s ease 0.1s;
+}
+
+.sidebar:hover .sidebar-header h2 { 
+  opacity: 1; 
+  visibility: visible; 
 }
 
 .sidebar-nav {
-  padding: 0 1rem;
+  flex-grow: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
-.nav-item {
-  display: flex;
-  align-items: center;
-  padding: 1rem 1.5rem;
-  margin: 0.25rem 0;
-  border-radius: 12px;
-  color: rgba(255, 255, 255, 0.8);
-  text-decoration: none;
+.sidebar-nav ul { 
+  list-style: none; 
+  padding: 0; 
+  margin: 0; 
+}
+
+.sidebar-nav li a { 
+  display: flex; 
+  align-items: center; 
+  height: 50px; 
+  padding: 0 38px; 
+  color: white; 
+  text-decoration: none; 
+  white-space: nowrap; 
   transition: all 0.3s ease;
+  border-radius: 12px;
+  margin: 0.25rem 0;
   font-weight: 500;
 }
 
-.nav-item:hover,
-.nav-item.active {
+.sidebar:hover .sidebar-nav li a { 
+  padding: 0 28px; 
+}
+
+.sidebar-nav li a:hover { 
   background: rgba(255, 255, 255, 0.15);
-  color: white;
   transform: translateX(4px);
 }
 
-.nav-item svg {
-  width: 20px;
-  height: 20px;
-  margin-right: 1rem;
+.sidebar-nav li a.active { 
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateX(4px);
+}
+
+.sidebar-nav li a svg { 
+  width: 24px; 
+  height: 24px; 
+  flex-shrink: 0; 
+  margin-right: 20px; 
+}
+
+.sidebar-nav li a span { 
+  opacity: 0; 
+  visibility: hidden; 
+  white-space: nowrap; 
+  transition: opacity 0.2s ease 0.1s, visibility 0.2s ease 0.1s;
+}
+
+.sidebar:hover .sidebar-nav li a span { 
+  opacity: 1; 
+  visibility: visible; 
+}
+
+.user-info {
+  padding: 15px 38px;
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  font-size: 0.85em;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: padding 0.3s ease;
+}
+
+.sidebar:hover .user-info {
+  padding: 15px 28px;
+}
+
+.user-info svg {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  margin-right: 20px;
+}
+
+.user-info span {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease 0.1s, visibility 0.2s ease 0.1s;
+}
+
+.sidebar:hover .user-info span {
+  opacity: 1;
+  visibility: visible;
+}
+
+.sidebar-footer-logo { 
+  padding: 20px 0; 
+  margin-top: 20px; 
+  text-align: center; 
+  flex-shrink: 0; 
+}
+
+.footer-logo { 
+  max-width: 75px; 
+  opacity: 0.7; 
+  transition: max-width 0.3s ease, opacity 0.3s ease;
+}
+
+.sidebar:hover .footer-logo { 
+  max-width: 100px; 
 }
 
 /* Conteúdo Principal */
 .main-content {
   flex: 1;
-  margin-left: 280px;
+  margin-left: 100px;
   background: #ffffff;
   min-height: 100vh;
+  transition: margin-left 0.3s ease;
 }
 
 /* Header Moderno */
@@ -425,10 +529,23 @@ body {
   .sidebar {
     transform: translateX(-100%);
     transition: transform 0.3s ease;
+    width: 280px;
+  }
+  
+  .sidebar:hover {
+    width: 280px;
   }
   
   .sidebar.open {
     transform: translateX(0);
+    box-shadow: 5px 0px 25px rgba(0, 0, 0, 0.2);
+  }
+  
+  .sidebar.open .sidebar-header h2,
+  .sidebar.open .sidebar-nav li a span,
+  .sidebar.open .user-info span {
+    opacity: 1;
+    visibility: visible;
   }
   
   .main-content {
