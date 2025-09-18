@@ -655,59 +655,100 @@ body.is-resizing .card-graph canvas {
   height: 20px;
 }
 
-/* --- UI de Filtros (Período) --- */
-.filters-action-group {
+/* --- UI de Filtros (Período) - Interface Minimalista --- */
+.filters-compact {
   display: flex;
   align-items: center;
-  gap: 16px;
-  margin-left: auto; /* empurra para direita */
+  gap: 12px;
+  margin-left: auto;
 }
-.filters-inline {
+.filter-group {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   background: #f8fafc;
   border: 1px solid #e2e8f0;
-  padding: 6px 10px;
+  padding: 6px 12px;
   border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 .tab-indicator {
-  font-size: 0.8em;
+  font-size: 0.75em;
   font-weight: 600;
   color: #003366;
   background: #e6f3ff;
-  padding: 4px 8px;
-  border-radius: 4px;
+  padding: 3px 8px;
+  border-radius: 12px;
   border: 1px solid #b3d9ff;
+  white-space: nowrap;
 }
-.filters-inline label {
-  font-size: 0.85em;
-  color: #475569;
+.filter-select {
+  font-size: 0.8em;
+  padding: 4px 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  background: white;
+  color: #374151;
+  min-width: 80px;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
 }
-.filters-inline select {
-  padding: 6px 10px;
-  border: 1px solid #cbd5e1;
-  border-radius: 6px;
-  background: #fff;
+.filter-select:focus {
+  outline: none;
+  border-color: #003366;
+  box-shadow: 0 0 0 2px rgba(0, 51, 102, 0.1);
 }
-.filters-buttons { display: flex; align-items: center; gap: 8px; }
-.primary-button {
+.apply-btn {
   background-color: #003366;
-  color: #fff;
-  border: 2px solid #003366;
-  padding: 8px 16px;
-  font-size: 0.9em;
-  font-weight: 600;
+  color: white;
+  border: none;
+  padding: 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.apply-btn:hover {
+  background-color: #004488;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 51, 102, 0.2);
+}
+.refresh-btn {
+  background-color: transparent;
+  border: 1px solid #d1d5db;
+  color: #6b7280;
+  padding: 8px;
   border-radius: 6px;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.primary-button:hover { background-color: #004488; border-color: #004488; transform: translateY(-2px); }
-.secondary-button { background-color: transparent; border: 2px solid #003366; color: #003366; padding: 8px 16px; font-size: 0.9em; font-weight: 600; border-radius: 6px; cursor: pointer; transition: all 0.2s ease-in-out; display: flex; align-items: center; gap: 6px; }
-.secondary-button:hover { background-color: #003366; color: white; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,51,102,0.2); }
+.refresh-btn:hover {
+  background-color: #f9fafb;
+  border-color: #9ca3af;
+  color: #374151;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
 @media (max-width: 900px) {
-  .filters-action-group { flex-wrap: wrap; margin-left: 0; width: 100%; justify-content: flex-end; }
+  .filters-compact { 
+    flex-wrap: wrap; 
+    margin-left: 0; 
+    width: 100%; 
+    justify-content: flex-end; 
+  }
+  .filter-group {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .filter-select {
+    min-width: 70px;
+  }
 }
 
 /* Novo container para abas e botão de relatório */
