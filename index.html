@@ -74,21 +74,30 @@
                     <h1>Dashboard de Indicadores</h1>
                     <p>Visão geral dos indicadores de qualidade do mês.</p>
                 </div>
-                <div style="display:flex; align-items:center; gap:10px;">
-                    <label for="periodoMes" style="font-size:0.9em;color:#555;">Mês</label>
-                    <select id="periodoMes" style="padding:6px 10px;border:1px solid #ccc;border-radius:4px;">
-                        <option value="">Todos</option>
-                    </select>
-                    <label for="periodoAno" style="font-size:0.9em;color:#555;">Ano</label>
-                    <select id="periodoAno" style="padding:6px 10px;border:1px solid #ccc;border-radius:4px;">
-                        <option value="">Todos</option>
-                    </select>
-                    <button id="aplicarPeriodoBtn" class="refresh-button" title="Aplicar período">Aplicar</button>
+                <div class="filters-action-group">
+                    <div class="filters-inline">
+                        <label for="periodoMes">Mês</label>
+                        <select id="periodoMes">
+                            <option value="">Todos</option>
+                        </select>
+                        <label for="periodoAno">Ano</label>
+                        <select id="periodoAno">
+                            <option value="">Todos</option>
+                        </select>
+                    </div>
+                    <div class="filters-buttons">
+                        <button id="aplicarPeriodoBtn" class="primary-button" title="Aplicar período">Aplicar</button>
+                        <button id="refreshChartsBtn" class="secondary-button" title="Atualizar dados">
+                            <svg class="refresh-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 1.03a9 9 0 11-10.302-3.812"></path><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 2.25v5.25h-5.25"></path></svg>
+                            <span>Atualizar</span>
+                        </button>
+                    </div>
                 </div>
-                <button id="refreshChartsBtn" class="refresh-button" title="Atualizar dados">
+                <!-- Botão antigo removido em favor do grupo acima -->
+                <!--<button id="refreshChartsBtn" class="refresh-button" title="Atualizar dados">
                     <svg class="refresh-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 1.03a9 9 0 11-10.302-3.812"></path><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 2.25v5.25h-5.25"></path></svg>
                     <span>Atualizar</span>
-                </button>
+                </button>-->
             </header>
 
             <main class="content-area">
@@ -467,7 +476,7 @@
                 renderizarGraficosNCExterna(lastDataNCExterna);
             }
             function renderizarGraficosExternos(allData) {
-                const dataCliente = allData.opt_por_cliente || [];
+                const dataCliente = filtrarPorPeriodo(allData.opt_por_cliente || []);
                 const dataClienteFiltrado = dataCliente.filter(item => parseInt(item.quantidadecliente_nc) > 0);
                 if (dataClienteFiltrado.length > 0) {
                     const topData = dataClienteFiltrado.slice(0, 6);
@@ -477,7 +486,7 @@
                     charts['grafico7'] = new Chart(ctx7, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade de NC', data: values, backgroundColor: '#003366', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: true, anchor: 'end', align: 'end', color: 'black', font: { weight: 'bold' } } }, scales: { y: { beginAtZero: true, max: 20, grid: { display: false } }, x: { grid: { display: false } } } }, plugins: [ChartDataLabels] });
                 }
                     
-                const dataProjeto = allData.opt_por_projeto || [];
+                const dataProjeto = filtrarPorPeriodo(allData.opt_por_projeto || []);
                 const dataProjetoFiltrado = dataProjeto.filter(item => parseInt(item.quantidadeprojeto_nc) > 0);
                 if (dataProjetoFiltrado.length > 0) {
                     const topData = dataProjetoFiltrado.slice(0, 6);
@@ -487,7 +496,7 @@
                     charts['grafico8'] = new Chart(ctx8, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade de NC', data: values, backgroundColor: '#29abe2', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: true, anchor: 'end', align: 'end', color: 'black', font: { weight: 'bold' } } }, scales: { y: { beginAtZero: true, max: 20, grid: { display: false } }, x: { grid: { display: false } } } }, plugins: [ChartDataLabels] });
                 }
                     
-                const dataDetalhado = allData.opt_detalhado || [];
+                const dataDetalhado = filtrarPorPeriodo(allData.opt_detalhado || []);
                 if (dataDetalhado.length > 0) {
                     const tiposDeNC = Object.keys(dataDetalhado[0]).filter(key => key !== 'cliente');
                     const dataDetalhadoFiltrado = dataDetalhado.filter(item => { const totalNc = tiposDeNC.reduce((soma, tipo) => soma + (parseInt(item[tipo]) || 0), 0); return totalNc > 0; });
@@ -500,7 +509,7 @@
                         charts['grafico9'] = new Chart(ctx9, { type: 'bar', data: { labels: labels, datasets: datasets }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom', labels: { usePointStyle: true, pointStyle: 'rect', padding: 20, font: { size: 10 } } }, datalabels: { display: true, anchor: 'center', align: 'center', color: 'white', font: { weight: 'bold' }, formatter: (value) => { return value > 0 ? value : null; } } }, scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, beginAtZero: true, max: 7, ticks: { stepSize: 2 }, grid: { display: false } } } }, plugins: [ChartDataLabels] });
                     }
                 }
-                const dataInteiro = allData.opt_inteiro || [];
+                const dataInteiro = filtrarPorPeriodo(allData.opt_inteiro || []);
                 const dataInteiroFiltrado = dataInteiro.filter(item => parseInt(item.quantidadeopt_total) > 0);
                 if (dataInteiroFiltrado.length > 0) {
                     const topData = dataInteiroFiltrado.slice(0, 6);
@@ -511,7 +520,7 @@
                 }
             }
             function renderizarGraficosInternos(allData) {
-                const dataNciSetor = allData.nci_por_setor || [];
+                const dataNciSetor = filtrarPorPeriodo(allData.nci_por_setor || []);
                 if (dataNciSetor.length > 0) {
                     const labels = dataNciSetor.map(item => item.setor);
                     const statusTypes = ['nao_iniciado', 'em_andamento', 'atrasado', 'concluido'];
@@ -523,9 +532,9 @@
                     charts['grafico10'] = new Chart(ctx10, { type: 'bar', data: { labels: labels, datasets: datasets }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom', labels: { usePointStyle: true, pointStyle: 'rect', padding: 20, font: { size: 10 } } }, datalabels: { color: (context) => context.dataset.data[context.dataIndex] < 5 ? 'black' : 'white', font: { weight: 'bold' }, anchor: (context) => context.dataset.data[context.dataIndex] < 5 ? 'end' : 'center', align: (context) => context.dataset.data[context.dataIndex] < 5 ? 'end' : 'center', formatter: (value) => value > 0 ? value : null } }, scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, beginAtZero: true, max: maxValue + 5, grid: { display: false } } } }, plugins: [ChartDataLabels] });
                 }
 
-                const dataParetoMes = allData.pareto_mes || [];
+                const dataParetoMes = filtrarPorPeriodo(allData.pareto_mes || []);
                 if (dataParetoMes.length > 0) criarGraficoPareto('grafico11', dataParetoMes, 'topicos', 'nao_iniciado');
-                const dataParetoAno = allData.pareto_ano || [];
+                const dataParetoAno = filtrarPorPeriodo(allData.pareto_ano || []);
                 if (dataParetoAno.length > 0) criarGraficoPareto('grafico12', dataParetoAno, 'topicos', 'nao_iniciado');
                     
                 const dataNciAnual = filtrarPorPeriodo(allData.nci_anual || []);
@@ -562,6 +571,7 @@
                     return mesOk && anoOk;
                 });
             }
+            
             function popularPeriodosUI() {
                 const now = new Date();
                 const anoAtual = now.getFullYear();
@@ -748,14 +758,34 @@
                     selectedPeriodo = { mes: periodoMesSelect?.value || '', ano: periodoAnoSelect?.value || '' };
                     renderAllCharts();
 
-                    // Integração futura: atualizar parâmetro no Google Sheets
-                    // Descomente e configure TARGETS quando os ranges forem definidos.
-                    // await atualizarPeriodoNoSheets(selectedPeriodo);
+                    // Atualizar parâmetro no Google Sheets
+                    await atualizarPeriodoNoSheets(selectedPeriodo);
                 });
             }
 
             async function atualizarPeriodoNoSheets(periodo) {
-                const TARGETS = [];
+                const TARGETS = [
+                    // RIFS - 17F0DVUFu-cscmMnJsezkuCc_3SzuUehD_dSiPGOOz2A
+                    { spreadsheetId: '17F0DVUFu-cscmMnJsezkuCc_3SzuUehD_dSiPGOOz2A', sheetName: 'status_por_fornecedor_ano', cellA1: 'D1', formatter: (p) => p.ano || '' },
+                    { spreadsheetId: '17F0DVUFu-cscmMnJsezkuCc_3SzuUehD_dSiPGOOz2A', sheetName: 'status_por_fornecedor_mes', cellA1: 'E1', formatter: (p) => p.mes || '' },
+                    { spreadsheetId: '17F0DVUFu-cscmMnJsezkuCc_3SzuUehD_dSiPGOOz2A', sheetName: 'pareto_rifs', cellA1: 'C1', formatter: (p) => p.ano || '' },
+                    
+                    // OPT - 1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4
+                    { spreadsheetId: '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4', sheetName: 'opt_por_cliente', cellA1: 'C1', formatter: (p) => p.mes || '' },
+                    { spreadsheetId: '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4', sheetName: 'opt_por_cliente', cellA1: 'D1', formatter: (p) => p.ano || '' },
+                    { spreadsheetId: '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4', sheetName: 'opt_por_projeto', cellA1: 'C1', formatter: (p) => p.mes || '' },
+                    { spreadsheetId: '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4', sheetName: 'opt_por_projeto', cellA1: 'D1', formatter: (p) => p.ano || '' },
+                    { spreadsheetId: '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4', sheetName: 'opt_detalhado', cellA1: 'H1', formatter: (p) => p.mes || '' },
+                    { spreadsheetId: '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4', sheetName: 'opt_detalhado', cellA1: 'I1', formatter: (p) => p.ano || '' },
+                    { spreadsheetId: '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4', sheetName: 'opt_inteiro', cellA1: 'C1', formatter: (p) => p.mes || '' },
+                    
+                    // NC INTERNA - 1_XfCgxqMlxLjXUfw7MSgZ386E16d5sQFSbV8Q6Q0mmk
+                    { spreadsheetId: '1_XfCgxqMlxLjXUfw7MSgZ386E16d5sQFSbV8Q6Q0mmk', sheetName: 'nci_por_setor', cellA1: 'F1', formatter: (p) => p.mes || '' },
+                    { spreadsheetId: '1_XfCgxqMlxLjXUfw7MSgZ386E16d5sQFSbV8Q6Q0mmk', sheetName: 'pareto_mes', cellA1: 'D1', formatter: (p) => p.mes || '' },
+                    { spreadsheetId: '1_XfCgxqMlxLjXUfw7MSgZ386E16d5sQFSbV8Q6Q0mmk', sheetName: 'pareto_ano', cellA1: 'D1', formatter: (p) => p.ano || '' },
+                    { spreadsheetId: '1_XfCgxqMlxLjXUfw7MSgZ386E16d5sQFSbV8Q6Q0mmk', sheetName: 'nci_anual', cellA1: 'C1', formatter: (p) => p.ano || '' }
+                ];
+                
                 for (const target of TARGETS) {
                     try {
                         await fetch(`${API_BASE_URL}/setSheetParam`, {

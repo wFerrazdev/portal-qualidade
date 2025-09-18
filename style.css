@@ -655,6 +655,52 @@ body.is-resizing .card-graph canvas {
   height: 20px;
 }
 
+/* --- UI de Filtros (Período) --- */
+.filters-action-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-left: auto; /* empurra para direita */
+}
+.filters-inline {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+.filters-inline label {
+  font-size: 0.85em;
+  color: #475569;
+}
+.filters-inline select {
+  padding: 6px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  background: #fff;
+}
+.filters-buttons { display: flex; align-items: center; gap: 8px; }
+.primary-button {
+  background-color: #003366;
+  color: #fff;
+  border: 2px solid #003366;
+  padding: 8px 16px;
+  font-size: 0.9em;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+.primary-button:hover { background-color: #004488; border-color: #004488; transform: translateY(-2px); }
+.secondary-button { background-color: transparent; border: 2px solid #003366; color: #003366; padding: 8px 16px; font-size: 0.9em; font-weight: 600; border-radius: 6px; cursor: pointer; transition: all 0.2s ease-in-out; display: flex; align-items: center; gap: 6px; }
+.secondary-button:hover { background-color: #003366; color: white; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,51,102,0.2); }
+
+@media (max-width: 900px) {
+  .filters-action-group { flex-wrap: wrap; margin-left: 0; width: 100%; justify-content: flex-end; }
+}
+
 /* Novo container para abas e botão de relatório */
 .tabs-with-actions-container {
   display: flex;
