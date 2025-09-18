@@ -115,30 +115,30 @@
                         <button class="tab-button" data-tab="nc_externa">NC Externa</button>
                     </div>
                     <div class="filters-group">
-                        <div class="filter-group">
-                            <span id="currentTabIndicator" class="tab-indicator">RIFS</span>
-                            <select id="periodoMes" class="filter-select">
-                                <option value="">Selecionar Mês</option>
-                            </select>
-                            <select id="periodoAno" class="filter-select">
-                                <option value="">Selecionar Ano</option>
-                            </select>
-                            <button id="aplicarPeriodoBtn" class="btn btn-primary btn-icon" title="Aplicar período">
-                                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-                                </svg>
-                            </button>
-                            <button id="refreshChartsBtn" class="btn btn-primary btn-icon" title="Atualizar dados">
-                                <img src="atualizarbtn.png" alt="Atualizar" width="20" height="20">
-                            </button>
-                        </div>
-                        <button id="generatePdfBtn" class="btn btn-secondary" title="Gerar Relatório em PDF">
-                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="margin-right: 8px;">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                    <div class="filter-group">
+                        <span id="currentTabIndicator" class="tab-indicator">RIFS</span>
+                        <select id="periodoMes" class="filter-select">
+                            <option value="">Selecionar Mês</option>
+                        </select>
+                        <select id="periodoAno" class="filter-select">
+                            <option value="">Selecionar Ano</option>
+                        </select>
+                        <button id="aplicarPeriodoBtn" class="btn btn-primary btn-icon" title="Aplicar período">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
                             </svg>
-                            Relatório
+                        </button>
+                        <button id="refreshChartsBtn" class="btn btn-primary btn-icon" title="Atualizar dados">
+                            <img src="atualizarbtn.png" alt="Atualizar" width="20" height="20">
                         </button>
                     </div>
+                    <button id="generatePdfBtn" class="btn btn-secondary" title="Gerar Relatório em PDF">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="margin-right: 8px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                        </svg>
+                            Relatório
+                    </button>
+                </div>
                 </div>
             </section>
 
@@ -626,24 +626,36 @@
         }
 
         function renderizarGraficosRifs() {
+            if (!lastDataRifs || !lastDataRifs.sheets) {
+                console.log('Dados RIFs não disponíveis ainda');
+                return;
+            }
+
             try {
                 // Gráfico 1: RIFs por Fornecedor - Anual
                 const canvas1 = document.getElementById('grafico1');
                 if (canvas1) {
                     const ctx1 = canvas1.getContext('2d');
+                    const sheetData = lastDataRifs.sheets.status_por_fornecedor_ano;
+                    
+                    if (sheetData && sheetData.length > 0) {
+                        const labels = sheetData.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
+                        const concluidoData = sheetData.map(row => parseInt(row[1]) || 0).filter((_, index) => index < labels.length);
+                        const emTratativaData = sheetData.map(row => parseInt(row[2]) || 0).filter((_, index) => index < labels.length);
+                        
                     charts.grafico1 = new Chart(ctx1, {
                         type: 'bar',
                         data: {
-                            labels: ['MetalParts', 'Saertex', 'BOLD', 'FIBERTEX', 'AR FIBRAS', 'CPIC', 'PIGATTO'],
+                                labels: labels,
                             datasets: [{
                                 label: 'CONCLUIDO',
-                                data: [23, 2, 1, 2, 2, 0, 0],
+                                    data: concluidoData,
                                 backgroundColor: '#10b981',
                                 borderColor: '#059669',
                                 borderWidth: 1
                             }, {
                                 label: 'EM TRATATIVA',
-                                data: [9, 0, 0, 0, 0, 0, 1],
+                                    data: emTratativaData,
                                 backgroundColor: '#f59e0b',
                                 borderColor: '#d97706',
                                 borderWidth: 1
@@ -676,25 +688,35 @@
                             }
                         }
                     });
+                    } else {
+                        console.log('Dados do gráfico 1 (RIFs Anual) não encontrados');
+                    }
                 }
 
                 // Gráfico 2: RIFs por Fornecedor - Mensal
                 const canvas2 = document.getElementById('grafico2');
                 if (canvas2) {
                     const ctx2 = canvas2.getContext('2d');
+                    const sheetData2 = lastDataRifs.sheets.status_por_fornecedor_mes;
+                    
+                    if (sheetData2 && sheetData2.length > 0) {
+                        const labels2 = sheetData2.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
+                        const concluidoData2 = sheetData2.map(row => parseInt(row[1]) || 0).filter((_, index) => index < labels2.length);
+                        const emTratativaData2 = sheetData2.map(row => parseInt(row[2]) || 0).filter((_, index) => index < labels2.length);
+                        
                     charts.grafico2 = new Chart(ctx2, {
                         type: 'bar',
                         data: {
-                            labels: ['METALPARTS', 'SAERTEX', 'BOLD', 'FIBERTEX', 'AR FIBRAS', 'CPIC', 'PIGATTO', 'JB TECIDOS'],
+                                labels: labels2,
                             datasets: [{
                                 label: 'CONCLUIDO',
-                                data: [0, 0, 0, 0, 0, 0, 0, 0],
+                                    data: concluidoData2,
                                 backgroundColor: '#10b981',
                                 borderColor: '#059669',
                                 borderWidth: 1
                             }, {
                                 label: 'EM TRATATIVA',
-                                data: [5, 0, 0, 0, 0, 0, 0, 1],
+                                    data: emTratativaData2,
                                 backgroundColor: '#f59e0b',
                                 borderColor: '#d97706',
                                 borderWidth: 1
@@ -727,19 +749,28 @@
                             }
                         }
                     });
+                    } else {
+                        console.log('Dados do gráfico 2 (RIFs Mensal) não encontrados');
+                    }
                 }
 
                 // Gráfico 3: Pareto - Fornecedor
                 const canvas3 = document.getElementById('grafico3');
                 if (canvas3) {
                     const ctx3 = canvas3.getContext('2d');
+                    const sheetData3 = lastDataRifs.sheets.pareto_rifs;
+                    
+                    if (sheetData3 && sheetData3.length > 0) {
+                        const labels3 = sheetData3.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
+                        const quantidadeData3 = sheetData3.map(row => parseInt(row[1]) || 0).filter((_, index) => index < labels3.length);
+                        
                     charts.grafico3 = new Chart(ctx3, {
                         type: 'bar',
                         data: {
-                            labels: ['MetalParts', 'Saertex', 'BOLD', 'FIBERTEX', 'AR FIBRAS', 'CPIC', 'PIGATTO'],
+                                labels: labels3,
                             datasets: [{
                                 label: 'Quantidade',
-                                data: [32, 2, 1, 2, 2, 0, 1],
+                                    data: quantidadeData3,
                                 backgroundColor: '#3b82f6',
                                 borderColor: '#2563eb',
                                 borderWidth: 1
@@ -772,6 +803,9 @@
                             }
                         }
                     });
+                    } else {
+                        console.log('Dados do gráfico 3 (Pareto RIFs) não encontrados');
+                    }
                 }
             } catch (error) {
                 console.error('Erro ao renderizar gráficos RIFS:', error);
@@ -779,20 +813,31 @@
         }
 
         function renderizarGraficosOpt() {
+            if (!lastDataExterno || !lastDataExterno.sheets) {
+                console.log('Dados OPT não disponíveis ainda');
+                return;
+            }
+
             try {
                 // Gráfico 4: OPT por Cliente
                 const canvas4 = document.getElementById('grafico4');
                 if (canvas4) {
                     const ctx4 = canvas4.getContext('2d');
-                    charts.grafico4 = new Chart(ctx4, {
-                        type: 'bar',
-                        data: {
-                            labels: ['Cliente A', 'Cliente B', 'Cliente C', 'Cliente D'],
-                            datasets: [{
-                                label: 'OPTs',
-                                data: [12, 8, 15, 6],
-                                backgroundColor: '#3b82f6',
-                                borderColor: '#2563eb',
+                    const sheetData4 = lastDataExterno.sheets.opt_por_cliente;
+                    
+                    if (sheetData4 && sheetData4.length > 0) {
+                        const labels4 = sheetData4.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
+                        const optData4 = sheetData4.map(row => parseInt(row[1]) || 0).filter((_, index) => index < labels4.length);
+                        
+                        charts.grafico4 = new Chart(ctx4, {
+                            type: 'bar',
+                            data: {
+                                labels: labels4,
+                                datasets: [{
+                                    label: 'OPTs',
+                                    data: optData4,
+                                    backgroundColor: '#3b82f6',
+                                    borderColor: '#2563eb',
                                 borderWidth: 1
                             }]
                         },
@@ -815,135 +860,168 @@
                                         color: '#e2e8f0'
                                     }
                                 },
-                                x: {
-                                    grid: {
-                                        display: false
+                                    x: {
+                                        grid: {
+                                            display: false
+                                        }
                                     }
                                 }
                             }
-                        }
-                    });
+                        });
+                    } else {
+                        console.log('Dados do gráfico 4 (OPT por Cliente) não encontrados');
+                    }
                 }
 
                 // Gráfico 5: OPT por Projeto
                 const canvas5 = document.getElementById('grafico5');
                 if (canvas5) {
                     const ctx5 = canvas5.getContext('2d');
-                    charts.grafico5 = new Chart(ctx5, {
-                        type: 'doughnut',
-                        data: {
-                            labels: ['Projeto X', 'Projeto Y', 'Projeto Z'],
-                            datasets: [{
-                                data: [30, 25, 45],
-                                backgroundColor: ['#10b981', '#f59e0b', '#ef4444'],
-                                borderWidth: 0
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: {
-                                    position: 'bottom',
-                                    labels: {
-                                        usePointStyle: true,
-                                        padding: 20
+                    const sheetData5 = lastDataExterno.sheets.opt_por_projeto;
+                    
+                    if (sheetData5 && sheetData5.length > 0) {
+                        const labels5 = sheetData5.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
+                        const data5 = sheetData5.map(row => parseInt(row[1]) || 0).filter((_, index) => index < labels5.length);
+                        const colors = ['#10b981', '#f59e0b', '#ef4444', '#3b82f6', '#8b5cf6', '#f97316'];
+                        
+                        charts.grafico5 = new Chart(ctx5, {
+                            type: 'doughnut',
+                            data: {
+                                labels: labels5,
+                                datasets: [{
+                                    data: data5,
+                                    backgroundColor: colors.slice(0, labels5.length),
+                                    borderWidth: 0
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        position: 'bottom',
+                                        labels: {
+                                            usePointStyle: true,
+                                            padding: 20
+                                        }
                                     }
                                 }
                             }
-                        }
-                    });
+                        });
+                    } else {
+                        console.log('Dados do gráfico 5 (OPT por Projeto) não encontrados');
+                    }
                 }
 
                 // Gráfico 6: OPT Detalhado
                 const canvas6 = document.getElementById('grafico6');
                 if (canvas6) {
                     const ctx6 = canvas6.getContext('2d');
-                    charts.grafico6 = new Chart(ctx6, {
-                        type: 'line',
-                        data: {
-                            labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
-                            datasets: [{
-                                label: 'OPTs Resolvidas',
-                                data: [5, 8, 12, 6, 9, 11],
-                                borderColor: '#10b981',
-                                backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                                tension: 0.4
-                            }, {
-                                label: 'OPTs Pendentes',
-                                data: [3, 5, 7, 4, 6, 8],
-                                borderColor: '#f59e0b',
-                                backgroundColor: 'rgba(245, 158, 11, 0.1)',
-                                tension: 0.4
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: {
-                                    position: 'bottom',
-                                    labels: {
-                                        usePointStyle: true,
-                                        padding: 20
-                                    }
-                                }
+                    const sheetData6 = lastDataExterno.sheets.opt_detalhado;
+                    
+                    if (sheetData6 && sheetData6.length > 0) {
+                        const labels6 = sheetData6.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
+                        const resolvidasData6 = sheetData6.map(row => parseInt(row[1]) || 0).filter((_, index) => index < labels6.length);
+                        const pendentesData6 = sheetData6.map(row => parseInt(row[2]) || 0).filter((_, index) => index < labels6.length);
+                        
+                        charts.grafico6 = new Chart(ctx6, {
+                            type: 'line',
+                            data: {
+                                labels: labels6,
+                                datasets: [{
+                                    label: 'OPTs Resolvidas',
+                                    data: resolvidasData6,
+                                    borderColor: '#10b981',
+                                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                                    tension: 0.4
+                                }, {
+                                    label: 'OPTs Pendentes',
+                                    data: pendentesData6,
+                                    borderColor: '#f59e0b',
+                                    backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                                    tension: 0.4
+                                }]
                             },
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    grid: {
-                                        color: '#e2e8f0'
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        position: 'bottom',
+                                        labels: {
+                                            usePointStyle: true,
+                                            padding: 20
+                                        }
                                     }
                                 },
-                                x: {
-                                    grid: {
-                                        display: false
+                                scales: {
+                                    y: {
+                                        beginAtZero: true,
+                                        grid: {
+                                            color: '#e2e8f0'
+                                        }
+                                    },
+                                    x: {
+                                        grid: {
+                                            display: false
+                                        }
                                     }
                                 }
                             }
-                        }
-                    });
+                        });
+                    } else {
+                        console.log('Dados do gráfico 6 (OPT Detalhado) não encontrados');
+                    }
                 }
 
                 // Gráfico 7: OPT Inteiro
                 const canvas7 = document.getElementById('grafico7');
                 if (canvas7) {
                     const ctx7 = canvas7.getContext('2d');
-                    charts.grafico7 = new Chart(ctx7, {
-                        type: 'bar',
-                        data: {
-                            labels: ['Total OPTs', 'Resolvidas', 'Pendentes', 'Em Análise'],
-                            datasets: [{
-                                label: 'Quantidade',
-                                data: [50, 35, 10, 5],
-                                backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444'],
-                                borderWidth: 0
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: {
-                                    display: false
-                                }
+                    const sheetData7 = lastDataExterno.sheets.opt_inteiro;
+                    
+                    if (sheetData7 && sheetData7.length > 0) {
+                        const labels7 = sheetData7.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
+                        const data7 = sheetData7.map(row => parseInt(row[1]) || 0).filter((_, index) => index < labels7.length);
+                        const colors7 = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444'];
+                        
+                        charts.grafico7 = new Chart(ctx7, {
+                            type: 'bar',
+                            data: {
+                                labels: labels7,
+                                datasets: [{
+                                    label: 'Quantidade',
+                                    data: data7,
+                                    backgroundColor: colors7.slice(0, labels7.length),
+                                    borderWidth: 0
+                                }]
                             },
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    grid: {
-                                        color: '#e2e8f0'
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        display: false
                                     }
                                 },
-                                x: {
-                                    grid: {
-                                        display: false
+                                scales: {
+                                    y: {
+                                        beginAtZero: true,
+                                        grid: {
+                                            color: '#e2e8f0'
+                                        }
+                                    },
+                                    x: {
+                                        grid: {
+                                            display: false
+                                        }
                                     }
                                 }
                             }
-                        }
-                    });
+                        });
+                    } else {
+                        console.log('Dados do gráfico 7 (OPT Inteiro) não encontrados');
+                    }
                 }
             } catch (error) {
                 console.error('Erro ao renderizar gráficos OPT:', error);
