@@ -758,7 +758,7 @@ body.is-resizing .card-graph canvas {
 }
 
 /* Tablet e Desktop médio */
-@media (max-width: 1366px) and (min-width: 901px) {
+@media (max-width: 1920px) and (min-width: 901px) {
   .filters-compact {
     margin-right: -10px; /* Aproxima da borda direita */
   }
