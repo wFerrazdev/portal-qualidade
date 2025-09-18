@@ -756,10 +756,13 @@
             if (aplicarPeriodoBtn) {
                 aplicarPeriodoBtn.addEventListener('click', async () => {
                     selectedPeriodo = { mes: periodoMesSelect?.value || '', ano: periodoAnoSelect?.value || '' };
-                    renderAllCharts();
-
-                    // Atualizar parâmetro no Google Sheets
+                    console.log('Período selecionado:', selectedPeriodo);
+                    
+                    // Atualizar parâmetro no Google Sheets primeiro
                     await atualizarPeriodoNoSheets(selectedPeriodo);
+                    
+                    // Depois re-renderizar os gráficos
+                    renderAllCharts();
                 });
             }
 
@@ -767,7 +770,7 @@
                 const TARGETS = [
                     // RIFS - 17F0DVUFu-cscmMnJsezkuCc_3SzuUehD_dSiPGOOz2A
                     { spreadsheetId: '17F0DVUFu-cscmMnJsezkuCc_3SzuUehD_dSiPGOOz2A', sheetName: 'status_por_fornecedor_ano', cellA1: 'D1', formatter: (p) => p.ano || '' },
-                    { spreadsheetId: '17F0DVUFu-cscmMnJsezkuCc_3SzuUehD_dSiPGOOz2A', sheetName: 'status_por_fornecedor_mes', cellA1: 'E1', formatter: (p) => p.mes || '' },
+                    { spreadsheetId: '17F0DVUFu-cscmMnJsezkuCc_3SzuUehD_dSiPGOOz2A', sheetName: 'status_por_fornecedor_mes', cellA1: 'D1', formatter: (p) => p.mes || '' },
                     { spreadsheetId: '17F0DVUFu-cscmMnJsezkuCc_3SzuUehD_dSiPGOOz2A', sheetName: 'pareto_rifs', cellA1: 'C1', formatter: (p) => p.ano || '' },
                     
                     // OPT - 1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4
@@ -788,16 +791,26 @@
                 
                 for (const target of TARGETS) {
                     try {
-                        await fetch(`${API_BASE_URL}/setSheetParam`, {
+                        const value = target.formatter ? target.formatter(periodo) : `${periodo.mes}/${periodo.ano}`;
+                        console.log(`Atualizando ${target.sheetName} - ${target.cellA1} com valor: "${value}"`);
+                        
+                        const response = await fetch(`${API_BASE_URL}/setSheetParam`, {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
                                 spreadsheetId: target.spreadsheetId,
                                 sheetName: target.sheetName,
                                 cellA1: target.cellA1,
-                                value: target.formatter ? target.formatter(periodo) : `${periodo.mes}/${periodo.ano}`
+                                value: value
                             })
                         });
+                        
+                        const result = await response.json();
+                        console.log(`Resposta para ${target.sheetName}:`, result);
+                        
+                        if (!response.ok) {
+                            console.error(`Erro ao atualizar ${target.sheetName}:`, result);
+                        }
                     } catch (e) {
                         console.error('Falha ao atualizar período no Sheets:', e);
                     }
