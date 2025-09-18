@@ -76,6 +76,7 @@
                 </div>
                 <div class="filters-action-group">
                     <div class="filters-inline">
+                        <span id="currentTabIndicator" class="tab-indicator">Filtrando: RIFS</span>
                         <label for="periodoMes">Mês</label>
                         <select id="periodoMes">
                             <option value="">Todos</option>
@@ -297,6 +298,7 @@
             let lastDataRifs = {};
             let lastDataNCExterna = {};
             let selectedPeriodo = { mes: '', ano: '' };
+            let currentTab = 'rifs'; // Aba ativa atual
 
             // --- LÓGICA DAS ABAS ---
             const tabsContainer = document.querySelector('.dashboard-tabs');
@@ -309,6 +311,7 @@
             };
             // ... (resto da lógica das abas, sem alteração) ...
             function filterCharts(activeTab) {
+                    currentTab = activeTab; // Atualiza a aba ativa
                     const chartIdsToShow = tabMapping[activeTab];
                     allCards.forEach(card => {
                         const canvas = card.querySelector('canvas');
@@ -318,6 +321,22 @@
                             card.style.display = 'none';
                         }
                     });
+                    
+                    // Atualiza o indicador visual da aba ativa
+                    updateTabIndicator(activeTab);
+            }
+            
+            function updateTabIndicator(tab) {
+                const indicator = document.getElementById('currentTabIndicator');
+                if (indicator) {
+                    const tabNames = {
+                        'rifs': 'RIFS',
+                        'opt': 'OPT',
+                        'nc_interna': 'NC INTERNA',
+                        'nc_externa': 'NC EXTERNA'
+                    };
+                    indicator.textContent = `Filtrando: ${tabNames[tab] || tab.toUpperCase()}`;
+                }
             }
             if (tabsContainer) {
                     tabsContainer.addEventListener('click', (event) => {
@@ -773,7 +792,7 @@
             if (aplicarPeriodoBtn) {
                 aplicarPeriodoBtn.addEventListener('click', async () => {
                     selectedPeriodo = { mes: periodoMesSelect?.value || '', ano: periodoAnoSelect?.value || '' };
-                    console.log('Período selecionado:', selectedPeriodo);
+                    console.log(`Aplicando filtro para aba: ${currentTab}`, selectedPeriodo);
                     
                     // Atualizar parâmetro no Google Sheets primeiro
                     await atualizarPeriodoNoSheets(selectedPeriodo);
@@ -783,33 +802,46 @@
                 });
             }
 
+            function getTargetsForTab(tab) {
+                const ALL_TARGETS = {
+                    'rifs': [
+                        // RIFS - 17F0DVUFu-cscmMnJsezkuCc_3SzuUehD_dSiPGOOz2A
+                        { spreadsheetId: '17F0DVUFu-cscmMnJsezkuCc_3SzuUehD_dSiPGOOz2A', sheetName: 'status_por_fornecedor_ano', cellA1: 'D1', formatter: (p) => p.ano || '' },
+                        { spreadsheetId: '17F0DVUFu-cscmMnJsezkuCc_3SzuUehD_dSiPGOOz2A', sheetName: 'status_por_fornecedor_mes', cellA1: 'D1', formatter: (p) => p.mes || '' },
+                        { spreadsheetId: '17F0DVUFu-cscmMnJsezkuCc_3SzuUehD_dSiPGOOz2A', sheetName: 'pareto_rifs', cellA1: 'C1', formatter: (p) => p.ano || '' }
+                    ],
+                    'opt': [
+                        // OPT - 1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4
+                        { spreadsheetId: '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4', sheetName: 'opt_por_cliente', cellA1: 'C1', formatter: (p) => p.mes || '' },
+                        { spreadsheetId: '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4', sheetName: 'opt_por_cliente', cellA1: 'D1', formatter: (p) => p.ano || '' },
+                        { spreadsheetId: '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4', sheetName: 'opt_por_projeto', cellA1: 'C1', formatter: (p) => p.mes || '' },
+                        { spreadsheetId: '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4', sheetName: 'opt_por_projeto', cellA1: 'D1', formatter: (p) => p.ano || '' },
+                        { spreadsheetId: '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4', sheetName: 'opt_detalhado', cellA1: 'H1', formatter: (p) => p.mes || '' },
+                        { spreadsheetId: '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4', sheetName: 'opt_detalhado', cellA1: 'I1', formatter: (p) => p.ano || '' },
+                        { spreadsheetId: '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4', sheetName: 'opt_inteiro', cellA1: 'C1', formatter: (p) => p.mes || '' }
+                    ],
+                    'nc_interna': [
+                        // NC INTERNA - 1_XfCgxqMlxLjXUfw7MSgZ386E16d5sQFSbV8Q6Q0mmk
+                        { spreadsheetId: '1_XfCgxqMlxLjXUfw7MSgZ386E16d5sQFSbV8Q6Q0mmk', sheetName: 'nci_por_setor', cellA1: 'F1', formatter: (p) => p.mes || '' },
+                        { spreadsheetId: '1_XfCgxqMlxLjXUfw7MSgZ386E16d5sQFSbV8Q6Q0mmk', sheetName: 'pareto_mes', cellA1: 'D1', formatter: (p) => p.mes || '' },
+                        { spreadsheetId: '1_XfCgxqMlxLjXUfw7MSgZ386E16d5sQFSbV8Q6Q0mmk', sheetName: 'pareto_ano', cellA1: 'D1', formatter: (p) => p.ano || '' },
+                        { spreadsheetId: '1_XfCgxqMlxLjXUfw7MSgZ386E16d5sQFSbV8Q6Q0mmk', sheetName: 'nci_anual', cellA1: 'C1', formatter: (p) => p.ano || '' }
+                    ],
+                    'nc_externa': [
+                        // NC EXTERNA - 1kJcw-QMboXMSt2Ueej3kA0qwjZ1abyj4XgyWxf2KtKQ
+                        // Adicionar quando necessário
+                    ]
+                };
+                return ALL_TARGETS[tab] || [];
+            }
+
             async function atualizarPeriodoNoSheets(periodo) {
-                const TARGETS = [
-                    // RIFS - 17F0DVUFu-cscmMnJsezkuCc_3SzuUehD_dSiPGOOz2A
-                    { spreadsheetId: '17F0DVUFu-cscmMnJsezkuCc_3SzuUehD_dSiPGOOz2A', sheetName: 'status_por_fornecedor_ano', cellA1: 'D1', formatter: (p) => p.ano || '' },
-                    { spreadsheetId: '17F0DVUFu-cscmMnJsezkuCc_3SzuUehD_dSiPGOOz2A', sheetName: 'status_por_fornecedor_mes', cellA1: 'D1', formatter: (p) => p.mes || '' },
-                    { spreadsheetId: '17F0DVUFu-cscmMnJsezkuCc_3SzuUehD_dSiPGOOz2A', sheetName: 'pareto_rifs', cellA1: 'C1', formatter: (p) => p.ano || '' },
-                    
-                    // OPT - 1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4
-                    { spreadsheetId: '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4', sheetName: 'opt_por_cliente', cellA1: 'C1', formatter: (p) => p.mes || '' },
-                    { spreadsheetId: '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4', sheetName: 'opt_por_cliente', cellA1: 'D1', formatter: (p) => p.ano || '' },
-                    { spreadsheetId: '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4', sheetName: 'opt_por_projeto', cellA1: 'C1', formatter: (p) => p.mes || '' },
-                    { spreadsheetId: '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4', sheetName: 'opt_por_projeto', cellA1: 'D1', formatter: (p) => p.ano || '' },
-                    { spreadsheetId: '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4', sheetName: 'opt_detalhado', cellA1: 'H1', formatter: (p) => p.mes || '' },
-                    { spreadsheetId: '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4', sheetName: 'opt_detalhado', cellA1: 'I1', formatter: (p) => p.ano || '' },
-                    { spreadsheetId: '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4', sheetName: 'opt_inteiro', cellA1: 'C1', formatter: (p) => p.mes || '' },
-                    
-                    // NC INTERNA - 1_XfCgxqMlxLjXUfw7MSgZ386E16d5sQFSbV8Q6Q0mmk
-                    { spreadsheetId: '1_XfCgxqMlxLjXUfw7MSgZ386E16d5sQFSbV8Q6Q0mmk', sheetName: 'nci_por_setor', cellA1: 'F1', formatter: (p) => p.mes || '' },
-                    { spreadsheetId: '1_XfCgxqMlxLjXUfw7MSgZ386E16d5sQFSbV8Q6Q0mmk', sheetName: 'pareto_mes', cellA1: 'D1', formatter: (p) => p.mes || '' },
-                    { spreadsheetId: '1_XfCgxqMlxLjXUfw7MSgZ386E16d5sQFSbV8Q6Q0mmk', sheetName: 'pareto_ano', cellA1: 'D1', formatter: (p) => p.ano || '' },
-                    { spreadsheetId: '1_XfCgxqMlxLjXUfw7MSgZ386E16d5sQFSbV8Q6Q0mmk', sheetName: 'nci_anual', cellA1: 'C1', formatter: (p) => p.ano || '' }
-                ];
+                const TARGETS = getTargetsForTab(currentTab);
                 
                 for (const target of TARGETS) {
                     try {
                         const value = target.formatter ? target.formatter(periodo) : `${periodo.mes}/${periodo.ano}`;
-                        console.log(`Atualizando ${target.sheetName} - ${target.cellA1} com valor: "${value}"`);
+                        console.log(`Atualizando ${target.sheetName} - ${target.cellA1} com valor: "${value}" (período: ${JSON.stringify(periodo)})`);
                         
                         const response = await fetch(`${API_BASE_URL}/setSheetParam`, {
                             method: 'POST',
