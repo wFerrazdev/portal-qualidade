@@ -62,7 +62,7 @@
                     </svg>
                         <span>Calibração</span>
                     </a></li>
-                    <li><a href="login.html?logout=true" class="nav-item" id="logoutBtn">
+                    <li><a href="#" class="nav-item" id="logoutBtn">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
                     </svg>
@@ -446,6 +446,24 @@
 
             if (generatePdfBtn) {
                 generatePdfBtn.addEventListener('click', generatePDF);
+            }
+
+            // Logout functionality
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (window.netlifyIdentity) {
+                        netlifyIdentity.logout();
+                    }
+                });
+            }
+
+            // Netlify Identity logout event
+            if (window.netlifyIdentity) {
+                netlifyIdentity.on('logout', () => {
+                    window.location.href = '/login.html';
+                });
             }
         }
 

@@ -32,19 +32,6 @@
     </div>
 
     <script>
-        // Função para fazer logout
-        function logout() {
-            if (window.netlifyIdentity) {
-                netlifyIdentity.logout();
-            }
-        }
-
-        // Verificar se há parâmetro de logout na URL
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('logout') === 'true') {
-            logout();
-        }
-
         if (window.netlifyIdentity) {
             // Escuta o evento de inicialização do widget
             netlifyIdentity.on('init', user => {
