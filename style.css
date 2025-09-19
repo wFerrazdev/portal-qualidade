@@ -1525,9 +1525,10 @@ canvas {
 /* Grid de Reuniões */
 .meetings-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 25px;
     padding: 20px 0;
+    align-items: start;
 }
 
 /* Card de Reunião */
@@ -1538,6 +1539,9 @@ canvas {
     overflow: hidden;
     transition: all 0.3s ease;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
 }
 
 .meeting-card:hover {
@@ -1576,7 +1580,10 @@ canvas {
 
 /* Corpo do Card */
 .card-body {
-    padding: 20px 25px 25px;
+    padding: 20px 25px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .meeting-date {
@@ -1595,7 +1602,8 @@ canvas {
 
 .meeting-participants,
 .meeting-agenda {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
+    flex-grow: 1;
 }
 
 .meeting-participants h4,
@@ -1641,7 +1649,7 @@ canvas {
 
 /* Ações do Card */
 .meeting-actions {
-    margin-top: 20px;
+    margin-top: auto;
     padding-top: 15px;
     border-top: 1px solid #e2e8f0;
 }
@@ -1680,60 +1688,74 @@ canvas {
     transform: none;
 }
 
-/* Botões de Ação do Card */
-.card-action-buttons {
-    position: absolute;
-    top: 15px;
-    right: 15px;
+/* Rodapé do Card */
+.card-footer {
+    padding: 15px 25px 20px;
+    border-top: 1px solid #e2e8f0;
+    background: #f8fafc;
     display: flex;
-    gap: 8px;
-    opacity: 0;
-    transition: all 0.3s ease;
+    justify-content: flex-end;
+    gap: 10px;
 }
 
-.meeting-card:hover .card-action-buttons {
-    opacity: 1;
+/* Botões de Ação do Card */
+.card-action-buttons {
+    display: flex;
+    gap: 8px;
 }
 
 .edit-button,
 .delete-button-card {
-    background: rgba(255, 255, 255, 0.9);
-    border: none;
+    background: white;
+    border: 1px solid #e2e8f0;
     border-radius: 8px;
-    padding: 8px;
+    padding: 8px 12px;
     cursor: pointer;
     transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.edit-button {
+    color: #29abe2;
+    border-color: #29abe2;
 }
 
 .edit-button:hover {
-    background: white;
-    transform: scale(1.1);
+    background: #29abe2;
+    color: white;
+    transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(41, 171, 226, 0.3);
 }
 
+.delete-button-card {
+    color: #e53e3e;
+    border-color: #e53e3e;
+}
+
 .delete-button-card:hover {
-    background: #fed7d7;
-    transform: scale(1.1);
+    background: #e53e3e;
+    color: white;
+    transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(229, 62, 62, 0.3);
 }
 
 .edit-button svg {
-    width: 18px;
-    height: 18px;
-    color: #29abe2;
+    width: 16px;
+    height: 16px;
+    margin-right: 6px;
     display: block;
     stroke: currentColor;
     fill: none;
 }
 
 .delete-button-card svg {
-    width: 18px;
-    height: 18px;
-    color: #e53e3e;
+    width: 16px;
+    height: 16px;
+    margin-right: 6px;
     display: block;
     stroke: currentColor;
     fill: none;
@@ -1786,20 +1808,20 @@ canvas {
         padding: 15px;
     }
     
-    .card-action-buttons {
-        top: 10px;
-        right: 10px;
-        gap: 6px;
+    .card-footer {
+        padding: 12px 15px 15px;
     }
     
     .edit-button,
     .delete-button-card {
-        padding: 6px;
+        padding: 6px 10px;
+        font-size: 0.8rem;
     }
     
     .edit-button svg,
     .delete-button-card svg {
-        width: 16px;
-        height: 16px;
+        width: 14px;
+        height: 14px;
+        margin-right: 4px;
     }
 }
