@@ -1123,33 +1123,26 @@ canvas {
     font-weight: 500;
 }
 
-/* Rodapé específico para página de login */
-.login-footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 20px 0;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(20px);
+/* Rodapé dentro do card de login */
+.login-card-footer {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(0, 51, 102, 0.1);
     text-align: center;
-    z-index: 10;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.login-footer p {
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 0.9rem;
+.login-card-footer p {
+    color: #64748b;
+    font-size: 0.85rem;
     margin: 0;
     font-weight: 500;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    opacity: 0.8;
 }
 
 /* Responsive para login */
 @media (max-width: 768px) {
     .login-page-background {
         padding: 15px;
-        padding-bottom: 80px; /* Espaço para o rodapé */
     }
     
     .login-form-container {
@@ -1170,18 +1163,19 @@ canvas {
         margin-bottom: 35px;
     }
 
-    .login-footer {
-        padding: 15px 0;
+    .login-card-footer {
+        margin-top: 25px;
+        padding-top: 15px;
     }
 
-    .login-footer p {
-        font-size: 0.85rem;
+    .login-card-footer p {
+        font-size: 0.8rem;
     }
     }
 
 @media (max-width: 480px) {
     .login-page-background {
-        padding-bottom: 70px; /* Espaço para o rodapé em telas menores */
+        padding: 15px;
     }
 
     .login-form-container {
@@ -1207,12 +1201,13 @@ canvas {
         font-size: 1rem;
     }
 
-    .login-footer {
-        padding: 12px 0;
+    .login-card-footer {
+        margin-top: 20px;
+        padding-top: 12px;
     }
 
-    .login-footer p {
-        font-size: 0.8rem;
+    .login-card-footer p {
+        font-size: 0.75rem;
     }
 }
 
