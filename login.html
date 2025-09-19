@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | Portal da Qualidade</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="favicon.png">
     <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body class="login-page-background">
@@ -17,18 +18,42 @@
     <div class="login-form-container">
         <h3>Acessar a Plataforma</h3>
         <p>Insira suas credenciais para continuar.</p>
-        <button id="loginBtn">Acessar</button>
+        <button id="loginBtn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                <polyline points="10,17 15,12 10,7"></polyline>
+                <line x1="15" y1="12" x2="3" y2="12"></line>
+            </svg>
+            Acessar
+        </button>
         <footer class="footer">
             <p>&copy; 2025 - Developed by William Ferraz</p>
         </footer>
     </div>
 
     <script>
+        // Função para fazer logout
+        function logout() {
+            if (window.netlifyIdentity) {
+                netlifyIdentity.logout();
+            }
+        }
+
+        // Verificar se há parâmetro de logout na URL
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('logout') === 'true') {
+            logout();
+        }
+
         if (window.netlifyIdentity) {
             // Escuta o evento de inicialização do widget
             netlifyIdentity.on('init', user => {
+                console.log('Netlify Identity inicializado');
+                console.log('Usuário atual:', user);
+                
                 // Se, ao inicializar, ele já encontrou um usuário logado...
                 if (user) {
+                    console.log('Usuário já logado, redirecionando para dashboard');
                     // ...manda ele direto para o dashboard.
                     window.location.href = '/index.html';
                 }
@@ -37,14 +62,31 @@
             const loginButton = document.getElementById('loginBtn');
             if(loginButton) {
                 loginButton.addEventListener('click', () => {
+                    console.log('Botão de login clicado');
                     netlifyIdentity.open(); // Abre o modal de login
                 });
             }
 
             // Escuta o evento de login bem-sucedido para redirecionar
             netlifyIdentity.on('login', user => {
+                console.log('Login realizado com sucesso:', user);
                 window.location.href = '/index.html';
             });
+
+            // Escuta o evento de logout
+            netlifyIdentity.on('logout', () => {
+                console.log('Logout realizado');
+                // Limpar qualquer cache local se necessário
+                localStorage.clear();
+                sessionStorage.clear();
+            });
+
+            // Escuta o evento de erro
+            netlifyIdentity.on('error', err => {
+                console.error('Erro no Netlify Identity:', err);
+            });
+        } else {
+            console.error('Netlify Identity não carregado');
         }
     </script>
 </body>
