@@ -679,9 +679,26 @@
                     const sheetData = lastDataRifs.status_por_fornecedor_ano;
                     
                     if (sheetData && sheetData.length > 0) {
-                        const labels = sheetData.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
-                        const concluidoData = sheetData.map(row => parseInt(row[1]) || 0).filter((_, index) => index < labels.length);
-                        const emTratativaData = sheetData.map(row => parseInt(row[2]) || 0).filter((_, index) => index < labels.length);
+                        console.log('Estrutura dos dados RIFS Anual:', sheetData[0]);
+                        
+                        let labels, concluidoData, emTratativaData;
+                        
+                        // Verificar se é array de arrays ou array de objetos
+                        if (Array.isArray(sheetData[0])) {
+                            // Estrutura de array de arrays
+                            labels = sheetData.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
+                            concluidoData = sheetData.map(row => parseInt(row[1]) || 0).filter((_, index) => index < labels.length);
+                            emTratativaData = sheetData.map(row => parseInt(row[2]) || 0).filter((_, index) => index < labels.length);
+                        } else {
+                            // Estrutura de array de objetos
+                            labels = sheetData.map(item => item.fornecedor || 'N/A').filter(label => label !== 'N/A');
+                            concluidoData = sheetData.map(item => parseInt(item.concluido) || 0).filter((_, index) => index < labels.length);
+                            emTratativaData = sheetData.map(item => parseInt(item.em_tratativa) || 0).filter((_, index) => index < labels.length);
+                        }
+                        
+                        console.log('Labels:', labels);
+                        console.log('Concluído:', concluidoData);
+                        console.log('Em Tratativa:', emTratativaData);
                         
                     charts.grafico1 = new Chart(ctx1, {
                         type: 'bar',
@@ -749,9 +766,26 @@
                     const sheetData2 = lastDataRifs.status_por_fornecedor_mes;
                     
                     if (sheetData2 && sheetData2.length > 0) {
-                        const labels2 = sheetData2.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
-                        const concluidoData2 = sheetData2.map(row => parseInt(row[1]) || 0).filter((_, index) => index < labels2.length);
-                        const emTratativaData2 = sheetData2.map(row => parseInt(row[2]) || 0).filter((_, index) => index < labels2.length);
+                        console.log('Estrutura dos dados RIFS Mensal:', sheetData2[0]);
+                        
+                        let labels2, concluidoData2, emTratativaData2;
+                        
+                        // Verificar se é array de arrays ou array de objetos
+                        if (Array.isArray(sheetData2[0])) {
+                            // Estrutura de array de arrays
+                            labels2 = sheetData2.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
+                            concluidoData2 = sheetData2.map(row => parseInt(row[1]) || 0).filter((_, index) => index < labels2.length);
+                            emTratativaData2 = sheetData2.map(row => parseInt(row[2]) || 0).filter((_, index) => index < labels2.length);
+                        } else {
+                            // Estrutura de array de objetos
+                            labels2 = sheetData2.map(item => item.fornecedor || 'N/A').filter(label => label !== 'N/A');
+                            concluidoData2 = sheetData2.map(item => parseInt(item.concluido) || 0).filter((_, index) => index < labels2.length);
+                            emTratativaData2 = sheetData2.map(item => parseInt(item.em_tratativa) || 0).filter((_, index) => index < labels2.length);
+                        }
+                        
+                        console.log('Labels2:', labels2);
+                        console.log('Concluído2:', concluidoData2);
+                        console.log('Em Tratativa2:', emTratativaData2);
                         
                     charts.grafico2 = new Chart(ctx2, {
                         type: 'bar',
@@ -819,8 +853,23 @@
                     const sheetData3 = lastDataRifs.pareto_rifs;
                     
                     if (sheetData3 && sheetData3.length > 0) {
-                        const labels3 = sheetData3.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
-                        const quantidadeData3 = sheetData3.map(row => parseInt(row[1]) || 0).filter((_, index) => index < labels3.length);
+                        console.log('Estrutura dos dados Pareto RIFS:', sheetData3[0]);
+                        
+                        let labels3, quantidadeData3;
+                        
+                        // Verificar se é array de arrays ou array de objetos
+                        if (Array.isArray(sheetData3[0])) {
+                            // Estrutura de array de arrays
+                            labels3 = sheetData3.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
+                            quantidadeData3 = sheetData3.map(row => parseInt(row[1]) || 0).filter((_, index) => index < labels3.length);
+                        } else {
+                            // Estrutura de array de objetos
+                            labels3 = sheetData3.map(item => item.fornecedor || 'N/A').filter(label => label !== 'N/A');
+                            quantidadeData3 = sheetData3.map(item => parseInt(item.quantidade_pareto) || 0).filter((_, index) => index < labels3.length);
+                        }
+                        
+                        console.log('Labels3:', labels3);
+                        console.log('Quantidade3:', quantidadeData3);
                         
                     charts.grafico3 = new Chart(ctx3, {
                         type: 'bar',
