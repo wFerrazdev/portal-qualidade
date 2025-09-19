@@ -1142,7 +1142,7 @@ canvas {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    padding: 1.5rem 3rem;
+    padding: 1.5rem 1.5rem; /*teste*/
     margin: 0;
 }
 
