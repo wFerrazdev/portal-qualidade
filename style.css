@@ -374,7 +374,7 @@ body {
   padding: 0.5rem 3rem;
   border-bottom: 1px solid #e2e8f0;
   position: fixed;
-  top: 80px;
+  top: 100px;
   left: 100px;
   right: 0;
   z-index: 99;
@@ -434,7 +434,7 @@ body {
   padding: 1rem 3rem;
   background: #f8fafc;
   position: fixed;
-  top: 160px;
+  top: 180px;
   left: 100px;
   right: 0;
   bottom: 0;
