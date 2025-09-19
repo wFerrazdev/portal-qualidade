@@ -861,13 +861,13 @@ canvas {
 }
 
 .login-logo-mobile {
-    width: 138px;
+    width: 120px;
     height: 120px;
     margin-bottom: 25px;
     filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
     animation: logoFloat 4s ease-in-out infinite;
     transition: all 0.3s ease;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 .login-logo-mobile:hover {
@@ -1037,7 +1037,7 @@ canvas {
     }
     
     .login-logo-mobile {
-        width: 104px;
+        width: 90px;
         height: 90px;
     }
     
@@ -1057,7 +1057,7 @@ canvas {
     }
     
     .login-logo-mobile {
-        width: 81px;
+        width: 70px;
         height: 70px;
     }
     
