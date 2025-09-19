@@ -1254,12 +1254,18 @@ canvas {
     width: 18px;
     height: 18px;
     color: #29abe2;
+    display: block;
+    stroke: currentColor;
+    fill: none;
 }
 
 .delete-button-card svg {
     width: 18px;
     height: 18px;
     color: #e53e3e;
+    display: block;
+    stroke: currentColor;
+    fill: none;
 }
 
 /* Modal */
@@ -1501,6 +1507,9 @@ canvas {
     .delete-button-card svg {
         width: 16px;
         height: 16px;
+        display: block;
+        stroke: currentColor;
+        fill: none;
     }
     
     .modal-content {
