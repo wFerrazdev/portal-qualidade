@@ -671,6 +671,15 @@
                                         usePointStyle: true,
                                         padding: 20
                                     }
+                                },
+                                datalabels: {
+                                    display: true,
+                                    color: '#374151',
+                                    font: {
+                                        weight: 'bold',
+                                        size: 12
+                                    },
+                                    formatter: (value) => value > 0 ? value : ''
                                 }
                             },
                             scales: {
@@ -732,6 +741,15 @@
                                         usePointStyle: true,
                                         padding: 20
                                     }
+                                },
+                                datalabels: {
+                                    display: true,
+                                    color: '#374151',
+                                    font: {
+                                        weight: 'bold',
+                                        size: 12
+                                    },
+                                    formatter: (value) => value > 0 ? value : ''
                                 }
                             },
                             scales: {
@@ -786,6 +804,15 @@
                                         usePointStyle: true,
                                         padding: 20
                                     }
+                                },
+                                datalabels: {
+                                    display: true,
+                                    color: '#374151',
+                                    font: {
+                                        weight: 'bold',
+                                        size: 12
+                                    },
+                                    formatter: (value) => value > 0 ? value : ''
                                 }
                             },
                             scales: {
@@ -818,214 +845,257 @@
                 return;
             }
 
-            try {
-                // Gráfico 4: OPT por Cliente
-                const canvas4 = document.getElementById('grafico4');
-                if (canvas4) {
-                    const ctx4 = canvas4.getContext('2d');
-                    const sheetData4 = lastDataExterno.sheets.opt_por_cliente;
-                    
-                    if (sheetData4 && sheetData4.length > 0) {
-                        const labels4 = sheetData4.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
-                        const optData4 = sheetData4.map(row => parseInt(row[1]) || 0).filter((_, index) => index < labels4.length);
+            // Adicionar delay para todos os gráficos OPT para consistência
+            setTimeout(() => {
+                try {
+                    // Gráfico 4: OPT por Cliente
+                    const canvas4 = document.getElementById('grafico4');
+                    if (canvas4) {
+                        const ctx4 = canvas4.getContext('2d');
+                        const sheetData4 = lastDataExterno.sheets.opt_por_cliente;
                         
-                        charts.grafico4 = new Chart(ctx4, {
-                            type: 'bar',
-                            data: {
-                                labels: labels4,
-                                datasets: [{
-                                    label: 'OPTs',
-                                    data: optData4,
-                                    backgroundColor: '#3b82f6',
-                                    borderColor: '#2563eb',
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: {
-                                    position: 'bottom',
-                                    labels: {
-                                        usePointStyle: true,
-                                        padding: 20
-                                    }
-                                }
-                            },
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    grid: {
-                                        color: '#e2e8f0'
-                                    }
+                        if (sheetData4 && sheetData4.length > 0) {
+                            const labels4 = sheetData4.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
+                            const optData4 = sheetData4.map(row => parseInt(row[1]) || 0).filter((_, index) => index < labels4.length);
+                            
+                            charts.grafico4 = new Chart(ctx4, {
+                                type: 'bar',
+                                data: {
+                                    labels: labels4,
+                                    datasets: [{
+                                        label: 'OPTs',
+                                        data: optData4,
+                                        backgroundColor: '#3b82f6',
+                                        borderColor: '#2563eb',
+                                        borderWidth: 1
+                                    }]
                                 },
-                                    x: {
-                                        grid: {
-                                            display: false
-                                        }
-                                    }
-                                }
-                            }
-                        });
-                    } else {
-                        console.log('Dados do gráfico 4 (OPT por Cliente) não encontrados');
-                    }
-                }
-
-                // Gráfico 5: OPT por Projeto
-                const canvas5 = document.getElementById('grafico5');
-                if (canvas5) {
-                    const ctx5 = canvas5.getContext('2d');
-                    const sheetData5 = lastDataExterno.sheets.opt_por_projeto;
-                    
-                    if (sheetData5 && sheetData5.length > 0) {
-                        const labels5 = sheetData5.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
-                        const data5 = sheetData5.map(row => parseInt(row[1]) || 0).filter((_, index) => index < labels5.length);
-                        const colors = ['#10b981', '#f59e0b', '#ef4444', '#3b82f6', '#8b5cf6', '#f97316'];
-                        
-                        charts.grafico5 = new Chart(ctx5, {
-                            type: 'doughnut',
-                            data: {
-                                labels: labels5,
-                                datasets: [{
-                                    data: data5,
-                                    backgroundColor: colors.slice(0, labels5.length),
-                                    borderWidth: 0
-                                }]
-                            },
-                            options: {
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                plugins: {
-                                    legend: {
-                                        position: 'bottom',
-                                        labels: {
-                                            usePointStyle: true,
-                                            padding: 20
-                                        }
-                                    }
-                                }
-                            }
-                        });
-                    } else {
-                        console.log('Dados do gráfico 5 (OPT por Projeto) não encontrados');
-                    }
-                }
-
-                // Gráfico 6: OPT Detalhado
-                const canvas6 = document.getElementById('grafico6');
-                if (canvas6) {
-                    const ctx6 = canvas6.getContext('2d');
-                    const sheetData6 = lastDataExterno.sheets.opt_detalhado;
-                    
-                    if (sheetData6 && sheetData6.length > 0) {
-                        const labels6 = sheetData6.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
-                        const resolvidasData6 = sheetData6.map(row => parseInt(row[1]) || 0).filter((_, index) => index < labels6.length);
-                        const pendentesData6 = sheetData6.map(row => parseInt(row[2]) || 0).filter((_, index) => index < labels6.length);
-                        
-                        charts.grafico6 = new Chart(ctx6, {
-                            type: 'line',
-                            data: {
-                                labels: labels6,
-                                datasets: [{
-                                    label: 'OPTs Resolvidas',
-                                    data: resolvidasData6,
-                                    borderColor: '#10b981',
-                                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                                    tension: 0.4
-                                }, {
-                                    label: 'OPTs Pendentes',
-                                    data: pendentesData6,
-                                    borderColor: '#f59e0b',
-                                    backgroundColor: 'rgba(245, 158, 11, 0.1)',
-                                    tension: 0.4
-                                }]
-                            },
-                            options: {
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                plugins: {
-                                    legend: {
-                                        position: 'bottom',
-                                        labels: {
-                                            usePointStyle: true,
-                                            padding: 20
-                                        }
-                                    }
-                                },
-                                scales: {
-                                    y: {
-                                        beginAtZero: true,
-                                        grid: {
-                                            color: '#e2e8f0'
+                                options: {
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    plugins: {
+                                        legend: {
+                                            position: 'bottom',
+                                            labels: {
+                                                usePointStyle: true,
+                                                padding: 20
+                                            }
+                                        },
+                                        datalabels: {
+                                            display: true,
+                                            color: '#374151',
+                                            font: {
+                                                weight: 'bold',
+                                                size: 12
+                                            },
+                                            formatter: (value) => value > 0 ? value : ''
                                         }
                                     },
-                                    x: {
-                                        grid: {
-                                            display: false
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true,
+                                            grid: {
+                                                color: '#e2e8f0'
+                                            }
+                                        },
+                                        x: {
+                                            grid: {
+                                                display: false
+                                            }
                                         }
                                     }
                                 }
-                            }
-                        });
-                    } else {
-                        console.log('Dados do gráfico 6 (OPT Detalhado) não encontrados');
+                            });
+                        } else {
+                            console.log('Dados do gráfico 4 (OPT por Cliente) não encontrados');
+                        }
                     }
-                }
 
-                // Gráfico 7: OPT Inteiro
-                const canvas7 = document.getElementById('grafico7');
-                if (canvas7) {
-                    const ctx7 = canvas7.getContext('2d');
-                    const sheetData7 = lastDataExterno.sheets.opt_inteiro;
-                    
-                    if (sheetData7 && sheetData7.length > 0) {
-                        const labels7 = sheetData7.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
-                        const data7 = sheetData7.map(row => parseInt(row[1]) || 0).filter((_, index) => index < labels7.length);
-                        const colors7 = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444'];
+                    // Gráfico 5: OPT por Projeto
+                    const canvas5 = document.getElementById('grafico5');
+                    if (canvas5) {
+                        const ctx5 = canvas5.getContext('2d');
+                        const sheetData5 = lastDataExterno.sheets.opt_por_projeto;
                         
-                        charts.grafico7 = new Chart(ctx7, {
-                            type: 'bar',
-                            data: {
-                                labels: labels7,
-                                datasets: [{
-                                    label: 'Quantidade',
-                                    data: data7,
-                                    backgroundColor: colors7.slice(0, labels7.length),
-                                    borderWidth: 0
-                                }]
-                            },
-                            options: {
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                plugins: {
-                                    legend: {
-                                        display: false
-                                    }
+                        if (sheetData5 && sheetData5.length > 0) {
+                            const labels5 = sheetData5.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
+                            const data5 = sheetData5.map(row => parseInt(row[1]) || 0).filter((_, index) => index < labels5.length);
+                            const colors = ['#10b981', '#f59e0b', '#ef4444', '#3b82f6', '#8b5cf6', '#f97316'];
+                            
+                            charts.grafico5 = new Chart(ctx5, {
+                                type: 'doughnut',
+                                data: {
+                                    labels: labels5,
+                                    datasets: [{
+                                        data: data5,
+                                        backgroundColor: colors.slice(0, labels5.length),
+                                        borderWidth: 0
+                                    }]
                                 },
-                                scales: {
-                                    y: {
-                                        beginAtZero: true,
-                                        grid: {
-                                            color: '#e2e8f0'
+                                options: {
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    plugins: {
+                                        legend: {
+                                            position: 'bottom',
+                                            labels: {
+                                                usePointStyle: true,
+                                                padding: 20
+                                            }
+                                        },
+                                        datalabels: {
+                                            display: true,
+                                            color: '#ffffff',
+                                            font: {
+                                                weight: 'bold',
+                                                size: 12
+                                            },
+                                            formatter: (value) => value > 0 ? value : ''
+                                        }
+                                    }
+                                }
+                            });
+                        } else {
+                            console.log('Dados do gráfico 5 (OPT por Projeto) não encontrados');
+                        }
+                    }
+
+                    // Gráfico 6: OPT Detalhado
+                    const canvas6 = document.getElementById('grafico6');
+                    if (canvas6) {
+                        const ctx6 = canvas6.getContext('2d');
+                        const sheetData6 = lastDataExterno.sheets.opt_detalhado;
+                        
+                        if (sheetData6 && sheetData6.length > 0) {
+                            const labels6 = sheetData6.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
+                            const resolvidasData6 = sheetData6.map(row => parseInt(row[1]) || 0).filter((_, index) => index < labels6.length);
+                            const pendentesData6 = sheetData6.map(row => parseInt(row[2]) || 0).filter((_, index) => index < labels6.length);
+                            
+                            charts.grafico6 = new Chart(ctx6, {
+                                type: 'line',
+                                data: {
+                                    labels: labels6,
+                                    datasets: [{
+                                        label: 'OPTs Resolvidas',
+                                        data: resolvidasData6,
+                                        borderColor: '#10b981',
+                                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                                        tension: 0.4
+                                    }, {
+                                        label: 'OPTs Pendentes',
+                                        data: pendentesData6,
+                                        borderColor: '#f59e0b',
+                                        backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                                        tension: 0.4
+                                    }]
+                                },
+                                options: {
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    plugins: {
+                                        legend: {
+                                            position: 'bottom',
+                                            labels: {
+                                                usePointStyle: true,
+                                                padding: 20
+                                            }
+                                        },
+                                        datalabels: {
+                                            display: true,
+                                            color: '#374151',
+                                            font: {
+                                                weight: 'bold',
+                                                size: 10
+                                            },
+                                            formatter: (value) => value > 0 ? value : ''
                                         }
                                     },
-                                    x: {
-                                        grid: {
-                                            display: false
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true,
+                                            grid: {
+                                                color: '#e2e8f0'
+                                            }
+                                        },
+                                        x: {
+                                            grid: {
+                                                display: false
+                                            }
                                         }
                                     }
                                 }
-                            }
-                        });
-                    } else {
-                        console.log('Dados do gráfico 7 (OPT Inteiro) não encontrados');
+                            });
+                        } else {
+                            console.log('Dados do gráfico 6 (OPT Detalhado) não encontrados');
+                        }
                     }
+
+                    // Gráfico 7: OPT Inteiro
+                    const canvas7 = document.getElementById('grafico7');
+                    if (canvas7) {
+                        const ctx7 = canvas7.getContext('2d');
+                        const sheetData7 = lastDataExterno.sheets.opt_inteiro;
+                        
+                        if (sheetData7 && sheetData7.length > 0) {
+                            const labels7 = sheetData7.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
+                            const data7 = sheetData7.map(row => parseInt(row[1]) || 0).filter((_, index) => index < labels7.length);
+                            const colors7 = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444'];
+                            
+                            charts.grafico7 = new Chart(ctx7, {
+                                type: 'bar',
+                                data: {
+                                    labels: labels7,
+                                    datasets: [{
+                                        label: 'Quantidade',
+                                        data: data7,
+                                        backgroundColor: colors7.slice(0, labels7.length),
+                                        borderWidth: 0
+                                    }]
+                                },
+                                options: {
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    plugins: {
+                                        legend: {
+                                            position: 'bottom',
+                                            labels: {
+                                                usePointStyle: true,
+                                                padding: 20
+                                            }
+                                        },
+                                        datalabels: {
+                                            display: true,
+                                            color: '#374151',
+                                            font: {
+                                                weight: 'bold',
+                                                size: 12
+                                            },
+                                            formatter: (value) => value > 0 ? value : ''
+                                        }
+                                    },
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true,
+                                            grid: {
+                                                color: '#e2e8f0'
+                                            }
+                                        },
+                                        x: {
+                                            grid: {
+                                                display: false
+                                            }
+                                        }
+                                    }
+                                }
+                            });
+                        } else {
+                            console.log('Dados do gráfico 7 (OPT Inteiro) não encontrados');
+                        }
+                    }
+                } catch (error) {
+                    console.error('Erro ao renderizar gráficos OPT:', error);
                 }
-            } catch (error) {
-                console.error('Erro ao renderizar gráficos OPT:', error);
-            }
+            }, 500); // Fechar o setTimeout para todos os gráficos OPT
         }
 
         function renderizarGraficosNCInterna() {
