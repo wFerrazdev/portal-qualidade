@@ -445,7 +445,7 @@ body {
 .indicators-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 1.5rem;
+  gap: 2rem;
   margin-bottom: 2rem;
 }
 
@@ -551,7 +551,7 @@ body {
 @media (max-width: 1200px) {
   .indicators-grid {
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.25rem;
+    gap: 1.75rem;
   }
   
   .content-area {
@@ -624,7 +624,7 @@ body {
   
   .indicators-grid {
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: 1.5rem;
   }
   
   .content-area {
