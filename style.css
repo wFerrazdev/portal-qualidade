@@ -498,7 +498,8 @@ body {
 }
 
 .card-chart {
-  height: 220px;
+  height: 200px;
+  width: 400px;
   position: relative;
   background: #f8fafc;
   border-radius: 12px;
