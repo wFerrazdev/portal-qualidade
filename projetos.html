@@ -262,13 +262,49 @@
                 else if (project.progresso >= 70) { progressBarColor = '#ffc107'; }
                 else if (project.progresso >= 50) { progressBarColor = '#fd7e14'; }
 
-                let editButtonHtml = '';
+                let actionButtonsHtml = '';
                 const user = window.netlifyIdentity.currentUser();
                 if (user && user.app_metadata.roles && user.app_metadata.roles.includes('admin')) {
-                    editButtonHtml = `<button class="edit-button" data-id="${project.id}"><svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.536L16.732 3.732z"></path></svg></button>`;
+                    actionButtonsHtml = `
+                        <div class="card-action-buttons">
+                            <button class="edit-button" data-id="${project.id}" title="Editar Projeto">
+                                <svg fill="none" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.536L16.732 3.732z"></path>
+                                </svg>
+                            </button>
+                            <button class="delete-button-card" data-id="${project.id}" title="Excluir Projeto">
+                                <svg fill="none" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    `;
                 }
 
-                return `<div class="project-card"><div class="card-image-container"><img src="${project.imagem_url || 'https://via.placeholder.com/600x400/CCCCCC/FFFFFF?text=Sem+Imagem'}" alt="Imagem do Projeto ${project.titulo}"></div><div class="card-project-body">${editButtonHtml}<h3>${project.titulo}</h3><p><strong>Status:</strong> ${project.status}</p><hr><div class="card-project-details"><h4>Principais Feitos:</h4><ul>${feitosHtml}</ul></div><div class="card-progress-container"><div class="progress-bar-info"><span>Progresso</span><span>${project.progresso}%</span></div><div class="progress-bar-background"><div class="progress-bar-fill" style="width: ${project.progresso}%; background-color: ${progressBarColor};"></div></div></div></div></div>`;
+                return `<div class="project-card">
+                    <div class="card-image-container">
+                        <img src="${project.imagem_url || 'https://via.placeholder.com/600x400/CCCCCC/FFFFFF?text=Sem+Imagem'}" alt="Imagem do Projeto ${project.titulo}">
+                        ${actionButtonsHtml}
+                    </div>
+                    <div class="card-project-body">
+                        <h3>${project.titulo}</h3>
+                        <p><strong>Status:</strong> ${project.status}</p>
+                        <hr>
+                        <div class="card-project-details">
+                            <h4>Principais Feitos:</h4>
+                            <ul>${feitosHtml}</ul>
+                        </div>
+                        <div class="card-progress-container">
+                            <div class="progress-bar-info">
+                                <span>Progresso</span>
+                                <span>${project.progresso}%</span>
+                            </div>
+                            <div class="progress-bar-background">
+                                <div class="progress-bar-fill" style="width: ${project.progresso}%; background-color: ${progressBarColor};"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
             }
 
             async function fetchAndRenderProjects() {
@@ -374,6 +410,19 @@
                 }
             }
 
+            async function handleDeleteProjectFromCard(projectId) {
+                if (confirm('Tem certeza que deseja excluir este projeto? Esta ação não pode ser desfeita.')) {
+                    try {
+                        const response = await authFetch(`${API_BASE_URL}/deleteProjeto?id=${projectId}`, { method: 'DELETE' });
+                        if (!response.ok) { throw new Error('Falha ao excluir o projeto.'); }
+                        await fetchAndRenderProjects();
+                    } catch (error) {
+                        console.error('Erro ao excluir projeto:', error);
+                        alert('Não foi possível excluir o projeto.');
+                    }
+                }
+            }
+
             function openModalForAdd() {
                 projectForm.reset();
                 delete projectForm.dataset.editingId;
@@ -405,6 +454,8 @@
             
             projectsGrid.addEventListener('click', async (event) => {
                 const editButton = event.target.closest('.edit-button');
+                const deleteButton = event.target.closest('.delete-button-card');
+                
                 if (editButton) {
                     const projectId = editButton.dataset.id;
                     try {
@@ -416,6 +467,9 @@
                         console.error('Erro ao editar:', error);
                         alert('Não foi possível carregar os dados para edição.');
                     }
+                } else if (deleteButton) {
+                    const projectId = deleteButton.dataset.id;
+                    await handleDeleteProjectFromCard(projectId);
                 }
             });
         });

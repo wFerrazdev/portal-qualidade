@@ -1209,11 +1209,23 @@ canvas {
     transition: width 0.3s ease;
 }
 
-/* Botão de Editar */
-.edit-button {
+/* Botões de Ação do Card */
+.card-action-buttons {
     position: absolute;
     top: 15px;
     right: 15px;
+    display: flex;
+    gap: 8px;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.project-card:hover .card-action-buttons {
+    opacity: 1;
+}
+
+.edit-button,
+.delete-button-card {
     background: rgba(255, 255, 255, 0.9);
     border: none;
     border-radius: 8px;
@@ -1221,17 +1233,33 @@ canvas {
     cursor: pointer;
     transition: all 0.3s ease;
     backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .edit-button:hover {
     background: white;
     transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(41, 171, 226, 0.3);
+}
+
+.delete-button-card:hover {
+    background: #fed7d7;
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(229, 62, 62, 0.3);
 }
 
 .edit-button svg {
     width: 18px;
     height: 18px;
     color: #29abe2;
+}
+
+.delete-button-card svg {
+    width: 18px;
+    height: 18px;
+    color: #e53e3e;
 }
 
 /* Modal */
@@ -1456,6 +1484,23 @@ canvas {
     
     .card-project-body h3 {
         font-size: 1.2rem;
+    }
+    
+    .card-action-buttons {
+        top: 10px;
+        right: 10px;
+        gap: 6px;
+    }
+    
+    .edit-button,
+    .delete-button-card {
+        padding: 6px;
+    }
+    
+    .edit-button svg,
+    .delete-button-card svg {
+        width: 16px;
+        height: 16px;
     }
     
     .modal-content {
