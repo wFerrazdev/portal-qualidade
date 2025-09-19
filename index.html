@@ -386,16 +386,21 @@
 
         // Inicialização
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('=== DOMContentLoaded disparado ===');
             initializeApp();
         });
 
         async function initializeApp() {
+            console.log('=== INICIANDO initializeApp ===');
+            
             setupEventListeners();
             popularPeriodosUI();
             // Primeiro filtra os gráficos para mostrar apenas RIFs
             filterCharts('rifs');
             // Depois carrega os dados
+            console.log('Chamando updateAllCharts...');
             await updateAllCharts();
+            console.log('updateAllCharts concluído');
         }
 
         function setupEventListeners() {
@@ -575,6 +580,8 @@
         }
 
         async function updateAllCharts() {
+            console.log('=== INICIANDO updateAllCharts ===');
+            
             if (refreshBtn) { 
                 refreshBtn.disabled = true; 
                 refreshBtn.classList.add('loading');
@@ -583,6 +590,10 @@
             try {
                 console.log('Iniciando carregamento de dados...');
                 console.log('API_BASE_URL:', API_BASE_URL);
+                console.log('SPREADSHEET_ID_EXTERNO:', SPREADSHEET_ID_EXTERNO);
+                console.log('SPREADSHEET_ID_INTERNO:', SPREADSHEET_ID_INTERNO);
+                console.log('SPREADSHEET_ID_RIFS:', SPREADSHEET_ID_RIFS);
+                console.log('SPREADSHEET_ID_NC_EXTERNA:', SPREADSHEET_ID_NC_EXTERNA);
                 
                 const urls = [
                     `${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_EXTERNO}&sheets=opt_por_cliente,opt_por_projeto,opt_detalhado,opt_inteiro`,
