@@ -355,6 +355,9 @@
         const SPREADSHEET_ID_RIFS = '17F0DVUFu-cscmMnJsezkuCc_3SzuUehD_dSiPGOOz2A';
         const SPREADSHEET_ID_NC_EXTERNA = '1kJcw-QMboXMSt2Ueej3kA0qwjZ1abyj4XgyWxf2KtKQ';
 
+        // Registrar o plugin ChartDataLabels globalmente
+        Chart.register(ChartDataLabels);
+
         // Variáveis globais
         let charts = {};
         let lastDataExterno = {};
