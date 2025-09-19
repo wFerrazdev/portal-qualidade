@@ -194,9 +194,8 @@ body {
   flex: 1;
   margin-left: 100px;
   background: #ffffff;
-  min-height: 100vh;
+  height: 100vh;
   transition: margin-left 0.3s ease;
-  padding-bottom: 60px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -213,10 +212,13 @@ body {
   background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
   padding: 0.25rem 3rem;
   border-bottom: 1px solid #e2e8f0;
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 100px;
+  right: 0;
   z-index: 100;
   backdrop-filter: blur(10px);
+  flex-shrink: 0;
 }
 
 .header-top {
@@ -371,6 +373,11 @@ body {
   background: #ffffff;
   padding: 0 3rem;
   border-bottom: 1px solid #e2e8f0;
+  position: fixed;
+  top: 60px;
+  left: 100px;
+  right: 0;
+  z-index: 99;
   flex-shrink: 0;
 }
 
@@ -426,9 +433,13 @@ body {
 .content-area {
   padding: 1rem 3rem;
   background: #f8fafc;
-  flex: 1;
+  position: fixed;
+  top: 100px;
+  left: 100px;
+  right: 0;
+  bottom: 0;
   overflow-y: auto;
-  max-height: calc(100vh - 140px);
+  z-index: 98;
 }
 
 .indicators-grid {
@@ -545,11 +556,18 @@ body {
   
   .content-area {
     padding: 0.75rem 2rem;
-    max-height: calc(100vh - 120px);
+    left: 0;
+    top: 80px;
   }
   
   .content-header {
     padding: 0.25rem 1rem;
+    left: 0;
+  }
+  
+  .tabs-section {
+    left: 0;
+    top: 50px;
   }
 }
 
@@ -578,6 +596,7 @@ body {
   
   .main-content {
     margin-left: 0;
+    height: 100vh;
   }
   
   .mobile-menu-button {
@@ -609,12 +628,18 @@ body {
   
   .content-area {
     padding: 0.5rem;
-    max-height: calc(100vh - 100px);
+    left: 0;
+    top: 80px;
   }
   
   .tabs-container {
     overflow-x: auto;
     padding: 0.0625rem 0;
+  }
+  
+  .tabs-section {
+    left: 0;
+    top: 50px;
   }
 
 .tab-button {
