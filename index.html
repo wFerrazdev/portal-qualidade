@@ -949,8 +949,17 @@
                         const sheetData4 = lastDataExterno.opt_por_cliente;
                         
                         if (sheetData4 && sheetData4.length > 0) {
-                            const labels4 = sheetData4.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
-                            const optData4 = sheetData4.map(row => parseInt(row[1]) || 0).filter((_, index) => index < labels4.length);
+                            console.log('Estrutura dos dados OPT por Cliente:', sheetData4[0]);
+                            
+                            // Filtrar dados com quantidade > 0 e pegar os top 6
+                            const dataFiltrado = sheetData4.filter(item => parseInt(item.quantidadecliente_nc) > 0);
+                            const topData = dataFiltrado.slice(0, 6);
+                            
+                            const labels4 = topData.map(item => item.cliente);
+                            const optData4 = topData.map(item => parseInt(item.quantidadecliente_nc));
+                            
+                            console.log('Labels4:', labels4);
+                            console.log('OPT Data4:', optData4);
                             
                             charts.grafico4 = new Chart(ctx4, {
                                 type: 'bar',
@@ -1012,9 +1021,18 @@
                         const sheetData5 = lastDataExterno.opt_por_projeto;
                         
                         if (sheetData5 && sheetData5.length > 0) {
-                            const labels5 = sheetData5.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
-                            const data5 = sheetData5.map(row => parseInt(row[1]) || 0).filter((_, index) => index < labels5.length);
+                            console.log('Estrutura dos dados OPT por Projeto:', sheetData5[0]);
+                            
+                            // Filtrar dados com quantidade > 0 e pegar os top 6
+                            const dataFiltrado = sheetData5.filter(item => parseInt(item.quantidadeprojeto_nc) > 0);
+                            const topData = dataFiltrado.slice(0, 6);
+                            
+                            const labels5 = topData.map(item => item.projeto);
+                            const data5 = topData.map(item => parseInt(item.quantidadeprojeto_nc));
                             const colors = ['#10b981', '#f59e0b', '#ef4444', '#3b82f6', '#8b5cf6', '#f97316'];
+                            
+                            console.log('Labels5:', labels5);
+                            console.log('Data5:', data5);
                             
                             charts.grafico5 = new Chart(ctx5, {
                                 type: 'doughnut',
@@ -1061,9 +1079,25 @@
                         const sheetData6 = lastDataExterno.opt_detalhado;
                         
                         if (sheetData6 && sheetData6.length > 0) {
-                            const labels6 = sheetData6.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
-                            const resolvidasData6 = sheetData6.map(row => parseInt(row[1]) || 0).filter((_, index) => index < labels6.length);
-                            const pendentesData6 = sheetData6.map(row => parseInt(row[2]) || 0).filter((_, index) => index < labels6.length);
+                            console.log('Estrutura dos dados OPT Detalhado:', sheetData6[0]);
+                            
+                            // Obter tipos de NC (todas as colunas exceto 'cliente')
+                            const tiposDeNC = Object.keys(sheetData6[0]).filter(key => key !== 'cliente');
+                            
+                            // Filtrar dados com total > 0 e pegar os top 6
+                            const dataFiltrado = sheetData6.filter(item => {
+                                const totalNc = tiposDeNC.reduce((soma, tipo) => soma + (parseInt(item[tipo]) || 0), 0);
+                                return totalNc > 0;
+                            });
+                            const topData = dataFiltrado.slice(0, 6);
+                            
+                            const labels6 = topData.map(item => item.cliente);
+                            const resolvidasData6 = topData.map(item => parseInt(item.resolvidas) || 0);
+                            const pendentesData6 = topData.map(item => parseInt(item.pendentes) || 0);
+                            
+                            console.log('Labels6:', labels6);
+                            console.log('Resolvidas6:', resolvidasData6);
+                            console.log('Pendentes6:', pendentesData6);
                             
                             charts.grafico6 = new Chart(ctx6, {
                                 type: 'line',
@@ -1131,9 +1165,14 @@
                         const sheetData7 = lastDataExterno.opt_inteiro;
                         
                         if (sheetData7 && sheetData7.length > 0) {
-                            const labels7 = sheetData7.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
-                            const data7 = sheetData7.map(row => parseInt(row[1]) || 0).filter((_, index) => index < labels7.length);
+                            console.log('Estrutura dos dados OPT Inteiro:', sheetData7[0]);
+                            
+                            const labels7 = sheetData7.map(item => item.tipo || 'N/A');
+                            const data7 = sheetData7.map(item => parseInt(item.quantidade) || 0);
                             const colors7 = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444'];
+                            
+                            console.log('Labels7:', labels7);
+                            console.log('Data7:', data7);
                             
                             charts.grafico7 = new Chart(ctx7, {
                                 type: 'bar',
@@ -1211,20 +1250,27 @@
                     const sheetData8 = lastDataInterno.nci_por_setor;
                     
                     if (sheetData8 && sheetData8.length > 0) {
-                        const labels8 = sheetData8.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
-                        const data8 = sheetData8.map(row => parseInt(row[1]) || 0).filter((_, index) => index < labels8.length);
+                        console.log('Estrutura dos dados NC Interna por Setor:', sheetData8[0]);
+                        
+                        const labels8 = sheetData8.map(item => item.setor);
+                        const statusTypes = ['nao_iniciado', 'em_andamento', 'atrasado', 'concluido'];
+                        const statusColors = { 'nao_iniciado': '#6c757d', 'em_andamento': '#ffc107', 'atrasado': '#dc3545', 'concluido': '#28a745' };
+                        
+                        const datasets = statusTypes.map(status => ({
+                            label: status.replace('_', ' ').toUpperCase(),
+                            data: sheetData8.map(item => parseInt(item[status]) || 0),
+                            backgroundColor: statusColors[status],
+                            borderRadius: 3
+                        }));
+                        
+                        console.log('Labels8:', labels8);
+                        console.log('Datasets8:', datasets);
                         
                         charts.grafico8 = new Chart(ctx8, {
                             type: 'bar',
                             data: {
                                 labels: labels8,
-                                datasets: [{
-                                    label: 'NCs',
-                                    data: data8,
-                                    backgroundColor: '#ef4444',
-                                    borderColor: '#dc2626',
-                                    borderWidth: 1
-                                }]
+                                datasets: datasets
                             },
                             options: {
                                 responsive: true,
@@ -1265,8 +1311,13 @@
                     const sheetData9 = lastDataInterno.pareto_mes;
                     
                     if (sheetData9 && sheetData9.length > 0) {
-                        const labels9 = sheetData9.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
-                        const data9 = sheetData9.map(row => parseInt(row[1]) || 0).filter((_, index) => index < labels9.length);
+                        console.log('Estrutura dos dados Pareto Mensal NC Interna:', sheetData9[0]);
+                        
+                        const labels9 = sheetData9.map(item => item.topicos);
+                        const data9 = sheetData9.map(item => parseInt(item.nao_iniciado) || 0);
+                        
+                        console.log('Labels9:', labels9);
+                        console.log('Data9:', data9);
                         
                         charts.grafico9 = new Chart(ctx9, {
                             type: 'bar',
@@ -1319,8 +1370,13 @@
                     const sheetData10 = lastDataInterno.pareto_ano;
                     
                     if (sheetData10 && sheetData10.length > 0) {
-                        const labels10 = sheetData10.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
-                        const data10 = sheetData10.map(row => parseInt(row[1]) || 0).filter((_, index) => index < labels10.length);
+                        console.log('Estrutura dos dados Pareto Anual NC Interna:', sheetData10[0]);
+                        
+                        const labels10 = sheetData10.map(item => item.topicos);
+                        const data10 = sheetData10.map(item => parseInt(item.nao_iniciado) || 0);
+                        
+                        console.log('Labels10:', labels10);
+                        console.log('Data10:', data10);
                         
                         charts.grafico10 = new Chart(ctx10, {
                             type: 'bar',
@@ -1373,8 +1429,13 @@
                     const sheetData11 = lastDataInterno.nci_anual;
                     
                     if (sheetData11 && sheetData11.length > 0) {
-                        const labels11 = sheetData11.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
-                        const data11 = sheetData11.map(row => parseInt(row[1]) || 0).filter((_, index) => index < labels11.length);
+                        console.log('Estrutura dos dados NC Interna Anual:', sheetData11[0]);
+                        
+                        const labels11 = sheetData11.map(item => item.mes);
+                        const data11 = sheetData11.map(item => parseInt(item.quantidade_ano) || 0);
+                        
+                        console.log('Labels11:', labels11);
+                        console.log('Data11:', data11);
                         
                         charts.grafico11 = new Chart(ctx11, {
                             type: 'line',
@@ -1444,8 +1505,13 @@
                     const sheetData12 = lastDataNCExterna.nce_procedentes_anos;
                     
                     if (sheetData12 && sheetData12.length > 0) {
-                        const labels12 = sheetData12.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
-                        const data12 = sheetData12.map(row => parseInt(row[1]) || 0).filter((_, index) => index < labels12.length);
+                        console.log('Estrutura dos dados NC Externa Procedentes:', sheetData12[0]);
+                        
+                        const labels12 = sheetData12.map(item => item.mes);
+                        const data12 = sheetData12.map(item => parseInt(item.quantidade) || 0);
+                        
+                        console.log('Labels12:', labels12);
+                        console.log('Data12:', data12);
                         
                         charts.grafico12 = new Chart(ctx12, {
                             type: 'bar',
@@ -1498,8 +1564,13 @@
                     const sheetData13 = lastDataNCExterna.kpi_revertidos;
                     
                     if (sheetData13 && sheetData13.length > 0) {
-                        const labels13 = sheetData13.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
-                        const data13 = sheetData13.map(row => parseInt(row[1]) || 0).filter((_, index) => index < labels13.length);
+                        console.log('Estrutura dos dados NC Externa Revertidas:', sheetData13[0]);
+                        
+                        const labels13 = sheetData13.map(item => item.mes);
+                        const data13 = sheetData13.map(item => parseInt(item.quantidade) || 0);
+                        
+                        console.log('Labels13:', labels13);
+                        console.log('Data13:', data13);
                         
                         charts.grafico13 = new Chart(ctx13, {
                             type: 'bar',
@@ -1552,9 +1623,14 @@
                     const sheetData14 = lastDataNCExterna.total_nce_anos;
                     
                     if (sheetData14 && sheetData14.length > 0) {
-                        const labels14 = sheetData14.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
-                        const data14 = sheetData14.map(row => parseInt(row[1]) || 0).filter((_, index) => index < labels14.length);
+                        console.log('Estrutura dos dados Total NC Externa:', sheetData14[0]);
+                        
+                        const labels14 = sheetData14.map(item => item.mes);
+                        const data14 = sheetData14.map(item => parseInt(item.quantidade) || 0);
                         const colors14 = ['#ef4444', '#10b981', '#f59e0b'];
+                        
+                        console.log('Labels14:', labels14);
+                        console.log('Data14:', data14);
                         
                         charts.grafico14 = new Chart(ctx14, {
                             type: 'doughnut',
@@ -1592,8 +1668,13 @@
                     const sheetData15 = lastDataNCExterna.nce_pareto_defeitos;
                     
                     if (sheetData15 && sheetData15.length > 0) {
-                        const labels15 = sheetData15.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
-                        const data15 = sheetData15.map(row => parseInt(row[1]) || 0).filter((_, index) => index < labels15.length);
+                        console.log('Estrutura dos dados Pareto NC Externa:', sheetData15[0]);
+                        
+                        const labels15 = sheetData15.map(item => item.defeito);
+                        const data15 = sheetData15.map(item => parseInt(item.quantidade_pareto) || 0);
+                        
+                        console.log('Labels15:', labels15);
+                        console.log('Data15:', data15);
                         
                         charts.grafico15 = new Chart(ctx15, {
                             type: 'bar',
