@@ -1133,9 +1133,12 @@
                         if (sheetData7 && sheetData7.length > 0) {
                             console.log('Estrutura dos dados OPT Inteiro:', sheetData7[0]);
                             
-                            const labels7 = sheetData7.map(item => item.tipo || 'N/A');
-                            const data7 = sheetData7.map(item => parseInt(item.quantidade) || 0);
-                            const colors7 = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444'];
+                            // Filtrar dados com quantidade > 0 e pegar os top 6
+                            const dataFiltrado = sheetData7.filter(item => parseInt(item.quantidadeopt_total) > 0);
+                            const topData = dataFiltrado.slice(0, 6);
+                            
+                            const labels7 = topData.map(item => item.status);
+                            const data7 = topData.map(item => parseInt(item.quantidadeopt_total));
                             
                             console.log('Labels7:', labels7);
                             console.log('Data7:', data7);
@@ -1221,6 +1224,9 @@
                             borderRadius: 3
                         }));
                         
+                        const stackTotals = sheetData8.map(item => statusTypes.reduce((sum, type) => sum + (parseInt(item[type]) || 0), 0));
+                        const maxValue = Math.max(...stackTotals);
+                        
                         console.log('Labels8:', labels8);
                         console.log('Datasets8:', datasets);
                         
@@ -1235,25 +1241,26 @@
                                 maintainAspectRatio: false,
                                 plugins: {
                                     legend: {
+                                        display: true,
                                         position: 'bottom',
                                         labels: {
                                             usePointStyle: true,
-                                            padding: 20
+                                            pointStyle: 'rect',
+                                            padding: 20,
+                                            font: { size: 10 }
                                         }
+                                    },
+                                    datalabels: {
+                                        color: (context) => context.dataset.data[context.dataIndex] < 5 ? 'black' : 'white',
+                                        font: { weight: 'bold' },
+                                        anchor: (context) => context.dataset.data[context.dataIndex] < 5 ? 'end' : 'center',
+                                        align: (context) => context.dataset.data[context.dataIndex] < 5 ? 'end' : 'center',
+                                        formatter: (value) => value > 0 ? value : null
                                     }
                                 },
                                 scales: {
-                                    y: {
-                                        beginAtZero: true,
-                                        grid: {
-                                            color: '#e2e8f0'
-                                        }
-                                    },
-                                    x: {
-                                        grid: {
-                                            display: false
-                                        }
-                                    }
+                                    x: { stacked: true, grid: { display: false } },
+                                    y: { stacked: true, beginAtZero: true, max: maxValue + 5, grid: { display: false } }
                                 }
                             }
                         });
@@ -1498,68 +1505,14 @@
             console.log('Dados NC Externa encontrados:', lastDataNCExterna);
 
             try {
-                // Gráfico 12: NC Externa Procedentes
-                const canvas12 = document.getElementById('grafico12');
-                if (canvas12) {
-                    const ctx12 = canvas12.getContext('2d');
-                    const sheetData12 = lastDataNCExterna.nce_procedentes_anos;
-                    
-                    if (sheetData12 && sheetData12.length > 0) {
-                        console.log('Estrutura dos dados NC Externa Procedentes:', sheetData12[0]);
-                        
-                        // Usar a função original de gráfico combinado
-                        criarGraficoCombinadoAnual('grafico12', sheetData12, 'line', 'bar');
-                    } else {
-                        console.log('Dados do gráfico 12 (NC Externa Procedentes) não encontrados');
-                    }
-                }
-
-                // Gráfico 13: NC Externa Revertidas
-                const canvas13 = document.getElementById('grafico13');
-                if (canvas13) {
-                    const ctx13 = canvas13.getContext('2d');
-                    const sheetData13 = lastDataNCExterna.kpi_revertidos;
-                    
-                    if (sheetData13 && sheetData13.length > 0) {
-                        console.log('Estrutura dos dados NC Externa Revertidas:', sheetData13[0]);
-                        
-                        // Usar a função original de gráfico de barras simples
-                        criarGraficoBarrasSimplesAnual('grafico13', sheetData13);
-                    } else {
-                        console.log('Dados do gráfico 13 (NC Externa Revertidas) não encontrados');
-                    }
-                }
-
-                // Gráfico 14: Total NC Externa
-                const canvas14 = document.getElementById('grafico14');
-                if (canvas14) {
-                    const ctx14 = canvas14.getContext('2d');
-                    const sheetData14 = lastDataNCExterna.total_nce_anos;
-                    
-                    if (sheetData14 && sheetData14.length > 0) {
-                        console.log('Estrutura dos dados Total NC Externa:', sheetData14[0]);
-                        
-                        // Usar a função original de gráfico combinado
-                        criarGraficoCombinadoAnual('grafico14', sheetData14, 'line', 'line');
-                    } else {
-                        console.log('Dados do gráfico 14 (Total NC Externa) não encontrados');
-                    }
-                }
-
-                // Gráfico 15: Pareto NC Externa
-                const canvas15 = document.getElementById('grafico15');
-                if (canvas15) {
-                    const ctx15 = canvas15.getContext('2d');
-                    const sheetData15 = lastDataNCExterna.nce_pareto_defeitos;
-                    
-                    if (sheetData15 && sheetData15.length > 0) {
-                        console.log('Estrutura dos dados Pareto NC Externa:', sheetData15[0]);
-                        
-                        // Usar a função original do Pareto
-                        criarGraficoPareto('grafico15', sheetData15, 'defeito', 'quantidade_pareto');
-                    } else {
-                        console.log('Dados do gráfico 15 (Pareto NC Externa) não encontrados');
-                    }
+                // Usar a implementação original do arquivo antigo
+                criarGraficoCombinadoAnual('grafico12', lastDataNCExterna.nce_procedentes_anos, 'line', 'bar');
+                criarGraficoBarrasSimplesAnual('grafico13', lastDataNCExterna.nce_naoprocedentes_anos);
+                criarGraficoCombinadoAnual('grafico14', lastDataNCExterna.total_nce_anos, 'line', 'line');
+                
+                const dataPareto = lastDataNCExterna.nce_pareto_defeitos || [];
+                if (dataPareto.length > 0) {
+                    criarGraficoPareto('grafico15', dataPareto, 'defeito', 'quantidade_pareto');
                 }
             } catch (error) {
                 console.error('Erro ao renderizar gráficos NC Externa:', error);
