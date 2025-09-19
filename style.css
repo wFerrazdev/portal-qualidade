@@ -1128,33 +1128,31 @@ canvas {
 
 /* ==================== ESTILOS DA PÁGINA DE PROJETOS ==================== */
 
-/* Content Area específico para Projetos */
-.projects-page .content-area {
-    padding: 1rem 3rem;
-    background: #f8fafc;
-    min-height: calc(100vh - 200px);
-    overflow-y: auto;
-    max-height: calc(100vh - 200px);
-    border-top: 1px solid #e2e8f0;
-    margin-top: 0;
+/* Header específico para Projetos */
+.projects-page .content-header {
+    background: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 0;
+    margin: 0;
 }
 
-@media (max-width: 1200px) {
-    .projects-page .content-area {
-        padding: 0.75rem 2rem;
-        max-height: calc(100vh - 180px);
-    }
+.projects-page .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 1.5rem 3rem;
+    margin: 0;
 }
 
-@media (max-width: 768px) {
-    .projects-page .content-area {
-        padding: 0.5rem;
-        max-height: calc(100vh - 160px);
-    }
+.projects-page .header-text {
+    flex: 1;
 }
 
-/* Botão Add no Header */
-.header-actions .add-button {
+.projects-page .header-actions {
+    margin-left: 2rem;
+}
+
+.projects-page .header-actions .add-button {
     background: linear-gradient(135deg, #003366 0%, #004488 100%);
     color: white;
     border: none;
@@ -1167,17 +1165,64 @@ canvas {
     box-shadow: 0 4px 15px rgba(0, 51, 102, 0.3);
 }
 
-.header-actions .add-button:hover {
+.projects-page .header-actions .add-button:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(0, 51, 102, 0.4);
 }
 
+/* Content Area específico para Projetos */
+.projects-page .content-area {
+    background: #f8fafc;
+    padding: 0;
+    margin: 0;
+    min-height: calc(100vh - 200px);
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+}
+
 /* Grid de Projetos */
-.projects-grid {
+.projects-page .projects-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     gap: 2rem;
-    padding: 0.5rem 0 0 0;
+    padding: 2rem 3rem;
+    margin: 0;
+}
+
+@media (max-width: 1200px) {
+    .projects-page .header-content {
+        padding: 1rem 2rem;
+    }
+    
+    .projects-page .projects-grid {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+        padding: 1.5rem 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .projects-page .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem;
+        gap: 1rem;
+    }
+    
+    .projects-page .header-actions {
+        margin-left: 0;
+        width: 100%;
+    }
+    
+    .projects-page .header-actions .add-button {
+        width: 100%;
+    }
+    
+    .projects-page .projects-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: 1rem;
+    }
 }
 
 /* Card de Projeto */
