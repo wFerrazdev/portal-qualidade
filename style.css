@@ -500,7 +500,7 @@ body {
 .card-chart {
   height: 210px;
   position: relative;
-  background: #f8fafc;
+  background: #ffffff;
   border-radius: 12px;
   padding: 0.75rem;
 }
@@ -1122,12 +1122,41 @@ canvas {
 
 /* ==================== ESTILOS DA PÁGINA DE PROJETOS ==================== */
 
+/* Content Area específico para Projetos */
+.projects-page .content-area {
+    position: fixed;
+    top: 160px;
+    left: 100px;
+    right: 0;
+    bottom: 0;
+    overflow-y: auto;
+    z-index: 98;
+    padding: 1rem 3rem;
+    background: #f8fafc;
+}
+
+@media (max-width: 1200px) {
+    .projects-page .content-area {
+        left: 0;
+        top: 140px;
+        padding: 0.75rem 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .projects-page .content-area {
+        left: 0;
+        top: 140px;
+        padding: 0.5rem;
+    }
+}
+
 /* Grid de Projetos */
 .projects-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 30px;
-    padding: 20px 0;
+    gap: 2rem;
+    padding: 1rem 0;
 }
 
 /* Card de Projeto */
@@ -1508,8 +1537,8 @@ canvas {
 @media (max-width: 768px) {
     .projects-grid {
         grid-template-columns: 1fr;
-  gap: 20px;
-        padding: 15px 0;
+        gap: 1.5rem;
+        padding: 0.75rem 0;
     }
     
     .modal-content {
@@ -1574,7 +1603,7 @@ canvas {
 /* Botão Fixo de Adicionar */
 .fixed-add-button {
     position: fixed;
-    top: 80px;
+    top: 100px;
     right: 20px;
     z-index: 1000;
     transition: all 0.3s ease;
@@ -1869,7 +1898,7 @@ canvas {
 /* Responsividade para Reuniões */
 @media (max-width: 768px) {
     .fixed-add-button {
-        top: 70px;
+        top: 90px;
         right: 15px;
     }
     
@@ -1911,7 +1940,7 @@ canvas {
 
 @media (max-width: 480px) {
     .fixed-add-button {
-        top: 65px;
+        top: 85px;
         right: 10px;
     }
     
