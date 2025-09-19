@@ -664,19 +664,19 @@
             console.log('Tentando renderizar gráficos RIFS...');
             console.log('lastDataRifs:', lastDataRifs);
             
-            if (!lastDataRifs || !lastDataRifs.sheets) {
+            if (!lastDataRifs) {
                 console.log('Dados RIFs não disponíveis ainda');
                 return;
             }
             
-            console.log('Dados RIFS encontrados:', lastDataRifs.sheets);
+            console.log('Dados RIFS encontrados:', lastDataRifs);
 
             try {
                 // Gráfico 1: RIFs por Fornecedor - Anual
                 const canvas1 = document.getElementById('grafico1');
                 if (canvas1) {
                     const ctx1 = canvas1.getContext('2d');
-                    const sheetData = lastDataRifs.sheets.status_por_fornecedor_ano;
+                    const sheetData = lastDataRifs.status_por_fornecedor_ano;
                     
                     if (sheetData && sheetData.length > 0) {
                         const labels = sheetData.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
@@ -746,7 +746,7 @@
                 const canvas2 = document.getElementById('grafico2');
                 if (canvas2) {
                     const ctx2 = canvas2.getContext('2d');
-                    const sheetData2 = lastDataRifs.sheets.status_por_fornecedor_mes;
+                    const sheetData2 = lastDataRifs.status_por_fornecedor_mes;
                     
                     if (sheetData2 && sheetData2.length > 0) {
                         const labels2 = sheetData2.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
@@ -816,7 +816,7 @@
                 const canvas3 = document.getElementById('grafico3');
                 if (canvas3) {
                     const ctx3 = canvas3.getContext('2d');
-                    const sheetData3 = lastDataRifs.sheets.pareto_rifs;
+                    const sheetData3 = lastDataRifs.pareto_rifs;
                     
                     if (sheetData3 && sheetData3.length > 0) {
                         const labels3 = sheetData3.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
@@ -883,12 +883,12 @@
             console.log('Tentando renderizar gráficos OPT...');
             console.log('lastDataExterno:', lastDataExterno);
             
-            if (!lastDataExterno || !lastDataExterno.sheets) {
+            if (!lastDataExterno) {
                 console.log('Dados OPT não disponíveis ainda');
                 return;
             }
             
-            console.log('Dados OPT encontrados:', lastDataExterno.sheets);
+            console.log('Dados OPT encontrados:', lastDataExterno);
 
             // Adicionar delay para todos os gráficos OPT para consistência
             setTimeout(() => {
@@ -897,7 +897,7 @@
                     const canvas4 = document.getElementById('grafico4');
                     if (canvas4) {
                         const ctx4 = canvas4.getContext('2d');
-                        const sheetData4 = lastDataExterno.sheets.opt_por_cliente;
+                        const sheetData4 = lastDataExterno.opt_por_cliente;
                         
                         if (sheetData4 && sheetData4.length > 0) {
                             const labels4 = sheetData4.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
@@ -960,7 +960,7 @@
                     const canvas5 = document.getElementById('grafico5');
                     if (canvas5) {
                         const ctx5 = canvas5.getContext('2d');
-                        const sheetData5 = lastDataExterno.sheets.opt_por_projeto;
+                        const sheetData5 = lastDataExterno.opt_por_projeto;
                         
                         if (sheetData5 && sheetData5.length > 0) {
                             const labels5 = sheetData5.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
@@ -1009,7 +1009,7 @@
                     const canvas6 = document.getElementById('grafico6');
                     if (canvas6) {
                         const ctx6 = canvas6.getContext('2d');
-                        const sheetData6 = lastDataExterno.sheets.opt_detalhado;
+                        const sheetData6 = lastDataExterno.opt_detalhado;
                         
                         if (sheetData6 && sheetData6.length > 0) {
                             const labels6 = sheetData6.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
@@ -1079,7 +1079,7 @@
                     const canvas7 = document.getElementById('grafico7');
                     if (canvas7) {
                         const ctx7 = canvas7.getContext('2d');
-                        const sheetData7 = lastDataExterno.sheets.opt_inteiro;
+                        const sheetData7 = lastDataExterno.opt_inteiro;
                         
                         if (sheetData7 && sheetData7.length > 0) {
                             const labels7 = sheetData7.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
@@ -1147,19 +1147,19 @@
             console.log('Tentando renderizar gráficos NC Interna...');
             console.log('lastDataInterno:', lastDataInterno);
             
-            if (!lastDataInterno || !lastDataInterno.sheets) {
+            if (!lastDataInterno) {
                 console.log('Dados NC Interna não disponíveis ainda');
                 return;
             }
             
-            console.log('Dados NC Interna encontrados:', lastDataInterno.sheets);
+            console.log('Dados NC Interna encontrados:', lastDataInterno);
 
             try {
                 // Gráfico 8: NC Interna por Setor
                 const canvas8 = document.getElementById('grafico8');
                 if (canvas8) {
                     const ctx8 = canvas8.getContext('2d');
-                    const sheetData8 = lastDataInterno.sheets.nci_por_setor;
+                    const sheetData8 = lastDataInterno.nci_por_setor;
                     
                     if (sheetData8 && sheetData8.length > 0) {
                         const labels8 = sheetData8.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
@@ -1213,7 +1213,7 @@
                 const canvas9 = document.getElementById('grafico9');
                 if (canvas9) {
                     const ctx9 = canvas9.getContext('2d');
-                    const sheetData9 = lastDataInterno.sheets.pareto_mes;
+                    const sheetData9 = lastDataInterno.pareto_mes;
                     
                     if (sheetData9 && sheetData9.length > 0) {
                         const labels9 = sheetData9.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
@@ -1267,7 +1267,7 @@
                 const canvas10 = document.getElementById('grafico10');
                 if (canvas10) {
                     const ctx10 = canvas10.getContext('2d');
-                    const sheetData10 = lastDataInterno.sheets.pareto_ano;
+                    const sheetData10 = lastDataInterno.pareto_ano;
                     
                     if (sheetData10 && sheetData10.length > 0) {
                         const labels10 = sheetData10.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
@@ -1321,7 +1321,7 @@
                 const canvas11 = document.getElementById('grafico11');
                 if (canvas11) {
                     const ctx11 = canvas11.getContext('2d');
-                    const sheetData11 = lastDataInterno.sheets.nci_anual;
+                    const sheetData11 = lastDataInterno.nci_anual;
                     
                     if (sheetData11 && sheetData11.length > 0) {
                         const labels11 = sheetData11.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
@@ -1380,19 +1380,19 @@
             console.log('Tentando renderizar gráficos NC Externa...');
             console.log('lastDataNCExterna:', lastDataNCExterna);
             
-            if (!lastDataNCExterna || !lastDataNCExterna.sheets) {
+            if (!lastDataNCExterna) {
                 console.log('Dados NC Externa não disponíveis ainda');
                 return;
             }
             
-            console.log('Dados NC Externa encontrados:', lastDataNCExterna.sheets);
+            console.log('Dados NC Externa encontrados:', lastDataNCExterna);
 
             try {
                 // Gráfico 12: NC Externa Procedentes
                 const canvas12 = document.getElementById('grafico12');
                 if (canvas12) {
                     const ctx12 = canvas12.getContext('2d');
-                    const sheetData12 = lastDataNCExterna.sheets.nce_procedentes_anos;
+                    const sheetData12 = lastDataNCExterna.nce_procedentes_anos;
                     
                     if (sheetData12 && sheetData12.length > 0) {
                         const labels12 = sheetData12.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
@@ -1446,7 +1446,7 @@
                 const canvas13 = document.getElementById('grafico13');
                 if (canvas13) {
                     const ctx13 = canvas13.getContext('2d');
-                    const sheetData13 = lastDataNCExterna.sheets.kpi_revertidos;
+                    const sheetData13 = lastDataNCExterna.kpi_revertidos;
                     
                     if (sheetData13 && sheetData13.length > 0) {
                         const labels13 = sheetData13.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
@@ -1500,7 +1500,7 @@
                 const canvas14 = document.getElementById('grafico14');
                 if (canvas14) {
                     const ctx14 = canvas14.getContext('2d');
-                    const sheetData14 = lastDataNCExterna.sheets.total_nce_anos;
+                    const sheetData14 = lastDataNCExterna.total_nce_anos;
                     
                     if (sheetData14 && sheetData14.length > 0) {
                         const labels14 = sheetData14.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
@@ -1540,7 +1540,7 @@
                 const canvas15 = document.getElementById('grafico15');
                 if (canvas15) {
                     const ctx15 = canvas15.getContext('2d');
-                    const sheetData15 = lastDataNCExterna.sheets.nce_pareto_defeitos;
+                    const sheetData15 = lastDataNCExterna.nce_pareto_defeitos;
                     
                     if (sheetData15 && sheetData15.length > 0) {
                         const labels15 = sheetData15.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
