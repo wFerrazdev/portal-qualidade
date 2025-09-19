@@ -1029,186 +1029,227 @@
         }
 
         function renderizarGraficosNCInterna() {
+            if (!lastDataInterno || !lastDataInterno.sheets) {
+                console.log('Dados NC Interna não disponíveis ainda');
+                return;
+            }
+
             try {
                 // Gráfico 8: NC Interna por Setor
                 const canvas8 = document.getElementById('grafico8');
                 if (canvas8) {
                     const ctx8 = canvas8.getContext('2d');
-                    charts.grafico8 = new Chart(ctx8, {
-                        type: 'bar',
-                        data: {
-                            labels: ['Produção', 'Qualidade', 'Almoxarifado', 'Manutenção'],
-                            datasets: [{
-                                label: 'NCs',
-                                data: [8, 5, 12, 3],
-                                backgroundColor: '#ef4444',
-                                borderColor: '#dc2626',
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: {
-                                    position: 'bottom',
-                                    labels: {
-                                        usePointStyle: true,
-                                        padding: 20
-                                    }
-                                }
+                    const sheetData8 = lastDataInterno.sheets.nci_por_setor;
+                    
+                    if (sheetData8 && sheetData8.length > 0) {
+                        const labels8 = sheetData8.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
+                        const data8 = sheetData8.map(row => parseInt(row[1]) || 0).filter((_, index) => index < labels8.length);
+                        
+                        charts.grafico8 = new Chart(ctx8, {
+                            type: 'bar',
+                            data: {
+                                labels: labels8,
+                                datasets: [{
+                                    label: 'NCs',
+                                    data: data8,
+                                    backgroundColor: '#ef4444',
+                                    borderColor: '#dc2626',
+                                    borderWidth: 1
+                                }]
                             },
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    grid: {
-                                        color: '#e2e8f0'
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        position: 'bottom',
+                                        labels: {
+                                            usePointStyle: true,
+                                            padding: 20
+                                        }
                                     }
                                 },
-                                x: {
-                                    grid: {
-                                        display: false
+                                scales: {
+                                    y: {
+                                        beginAtZero: true,
+                                        grid: {
+                                            color: '#e2e8f0'
+                                        }
+                                    },
+                                    x: {
+                                        grid: {
+                                            display: false
+                                        }
                                     }
                                 }
                             }
-                        }
-                    });
+                        });
+                    } else {
+                        console.log('Dados do gráfico 8 (NC Interna por Setor) não encontrados');
+                    }
                 }
 
                 // Gráfico 9: Pareto Mensal NC Interna
                 const canvas9 = document.getElementById('grafico9');
                 if (canvas9) {
                     const ctx9 = canvas9.getContext('2d');
-                    charts.grafico9 = new Chart(ctx9, {
-                        type: 'bar',
-                        data: {
-                            labels: ['Problema A', 'Problema B', 'Problema C', 'Problema D'],
-                            datasets: [{
-                                label: 'Frequência',
-                                data: [15, 10, 8, 5],
-                                backgroundColor: '#3b82f6',
-                                borderColor: '#2563eb',
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: {
-                                    position: 'bottom',
-                                    labels: {
-                                        usePointStyle: true,
-                                        padding: 20
-                                    }
-                                }
+                    const sheetData9 = lastDataInterno.sheets.pareto_mes;
+                    
+                    if (sheetData9 && sheetData9.length > 0) {
+                        const labels9 = sheetData9.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
+                        const data9 = sheetData9.map(row => parseInt(row[1]) || 0).filter((_, index) => index < labels9.length);
+                        
+                        charts.grafico9 = new Chart(ctx9, {
+                            type: 'bar',
+                            data: {
+                                labels: labels9,
+                                datasets: [{
+                                    label: 'Frequência',
+                                    data: data9,
+                                    backgroundColor: '#3b82f6',
+                                    borderColor: '#2563eb',
+                                    borderWidth: 1
+                                }]
                             },
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    grid: {
-                                        color: '#e2e8f0'
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        position: 'bottom',
+                                        labels: {
+                                            usePointStyle: true,
+                                            padding: 20
+                                        }
                                     }
                                 },
-                                x: {
-                                    grid: {
-                                        display: false
+                                scales: {
+                                    y: {
+                                        beginAtZero: true,
+                                        grid: {
+                                            color: '#e2e8f0'
+                                        }
+                                    },
+                                    x: {
+                                        grid: {
+                                            display: false
+                                        }
                                     }
                                 }
                             }
-                        }
-                    });
+                        });
+                    } else {
+                        console.log('Dados do gráfico 9 (Pareto Mensal NC Interna) não encontrados');
+                    }
                 }
 
                 // Gráfico 10: Pareto Anual NC Interna
                 const canvas10 = document.getElementById('grafico10');
                 if (canvas10) {
                     const ctx10 = canvas10.getContext('2d');
-                    charts.grafico10 = new Chart(ctx10, {
-                        type: 'bar',
-                        data: {
-                            labels: ['Problema X', 'Problema Y', 'Problema Z', 'Problema W'],
-                            datasets: [{
-                                label: 'Frequência Anual',
-                                data: [45, 30, 25, 15],
-                                backgroundColor: '#8b5cf6',
-                                borderColor: '#7c3aed',
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: {
-                                    position: 'bottom',
-                                    labels: {
-                                        usePointStyle: true,
-                                        padding: 20
-                                    }
-                                }
+                    const sheetData10 = lastDataInterno.sheets.pareto_ano;
+                    
+                    if (sheetData10 && sheetData10.length > 0) {
+                        const labels10 = sheetData10.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
+                        const data10 = sheetData10.map(row => parseInt(row[1]) || 0).filter((_, index) => index < labels10.length);
+                        
+                        charts.grafico10 = new Chart(ctx10, {
+                            type: 'bar',
+                            data: {
+                                labels: labels10,
+                                datasets: [{
+                                    label: 'Frequência Anual',
+                                    data: data10,
+                                    backgroundColor: '#8b5cf6',
+                                    borderColor: '#7c3aed',
+                                    borderWidth: 1
+                                }]
                             },
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    grid: {
-                                        color: '#e2e8f0'
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        position: 'bottom',
+                                        labels: {
+                                            usePointStyle: true,
+                                            padding: 20
+                                        }
                                     }
                                 },
-                                x: {
-                                    grid: {
-                                        display: false
+                                scales: {
+                                    y: {
+                                        beginAtZero: true,
+                                        grid: {
+                                            color: '#e2e8f0'
+                                        }
+                                    },
+                                    x: {
+                                        grid: {
+                                            display: false
+                                        }
                                     }
                                 }
                             }
-                        }
-                    });
+                        });
+                    } else {
+                        console.log('Dados do gráfico 10 (Pareto Anual NC Interna) não encontrados');
+                    }
                 }
 
                 // Gráfico 11: NC Interna Anual
                 const canvas11 = document.getElementById('grafico11');
                 if (canvas11) {
                     const ctx11 = canvas11.getContext('2d');
-                    charts.grafico11 = new Chart(ctx11, {
-                        type: 'line',
-                        data: {
-                            labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                            datasets: [{
-                                label: 'NCs Internas',
-                                data: [5, 8, 6, 12, 9, 7, 10, 6, 8, 11, 9, 7],
-                                borderColor: '#ef4444',
-                                backgroundColor: 'rgba(239, 68, 68, 0.1)',
-                                tension: 0.4,
-                                fill: true
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: {
-                                    position: 'bottom',
-                                    labels: {
-                                        usePointStyle: true,
-                                        padding: 20
-                                    }
-                                }
+                    const sheetData11 = lastDataInterno.sheets.nci_anual;
+                    
+                    if (sheetData11 && sheetData11.length > 0) {
+                        const labels11 = sheetData11.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
+                        const data11 = sheetData11.map(row => parseInt(row[1]) || 0).filter((_, index) => index < labels11.length);
+                        
+                        charts.grafico11 = new Chart(ctx11, {
+                            type: 'line',
+                            data: {
+                                labels: labels11,
+                                datasets: [{
+                                    label: 'NCs Internas',
+                                    data: data11,
+                                    borderColor: '#ef4444',
+                                    backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                                    tension: 0.4,
+                                    fill: true
+                                }]
                             },
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    grid: {
-                                        color: '#e2e8f0'
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        position: 'bottom',
+                                        labels: {
+                                            usePointStyle: true,
+                                            padding: 20
+                                        }
                                     }
                                 },
-                                x: {
-                                    grid: {
-                                        display: false
+                                scales: {
+                                    y: {
+                                        beginAtZero: true,
+                                        grid: {
+                                            color: '#e2e8f0'
+                                        }
+                                    },
+                                    x: {
+                                        grid: {
+                                            display: false
+                                        }
                                     }
                                 }
                             }
-                        }
-                    });
+                        });
+                    } else {
+                        console.log('Dados do gráfico 11 (NC Interna Anual) não encontrados');
+                    }
                 }
             } catch (error) {
                 console.error('Erro ao renderizar gráficos NC Interna:', error);
@@ -1216,170 +1257,212 @@
         }
 
         function renderizarGraficosNCExterna() {
+            if (!lastDataNCExterna || !lastDataNCExterna.sheets) {
+                console.log('Dados NC Externa não disponíveis ainda');
+                return;
+            }
+
             try {
                 // Gráfico 12: NC Externa Procedentes
                 const canvas12 = document.getElementById('grafico12');
                 if (canvas12) {
                     const ctx12 = canvas12.getContext('2d');
-                    charts.grafico12 = new Chart(ctx12, {
-                        type: 'bar',
-                        data: {
-                            labels: ['Q1', 'Q2', 'Q3', 'Q4'],
-                            datasets: [{
-                                label: 'NCs Procedentes',
-                                data: [3, 5, 2, 4],
-                                backgroundColor: '#ef4444',
-                                borderColor: '#dc2626',
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: {
-                                    position: 'bottom',
-                                    labels: {
-                                        usePointStyle: true,
-                                        padding: 20
-                                    }
-                                }
+                    const sheetData12 = lastDataNCExterna.sheets.nce_procedentes_anos;
+                    
+                    if (sheetData12 && sheetData12.length > 0) {
+                        const labels12 = sheetData12.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
+                        const data12 = sheetData12.map(row => parseInt(row[1]) || 0).filter((_, index) => index < labels12.length);
+                        
+                        charts.grafico12 = new Chart(ctx12, {
+                            type: 'bar',
+                            data: {
+                                labels: labels12,
+                                datasets: [{
+                                    label: 'NCs Procedentes',
+                                    data: data12,
+                                    backgroundColor: '#ef4444',
+                                    borderColor: '#dc2626',
+                                    borderWidth: 1
+                                }]
                             },
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    grid: {
-                                        color: '#e2e8f0'
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        position: 'bottom',
+                                        labels: {
+                                            usePointStyle: true,
+                                            padding: 20
+                                        }
                                     }
                                 },
-                                x: {
-                                    grid: {
-                                        display: false
+                                scales: {
+                                    y: {
+                                        beginAtZero: true,
+                                        grid: {
+                                            color: '#e2e8f0'
+                                        }
+                                    },
+                                    x: {
+                                        grid: {
+                                            display: false
+                                        }
                                     }
                                 }
                             }
-                        }
-                    });
+                        });
+                    } else {
+                        console.log('Dados do gráfico 12 (NC Externa Procedentes) não encontrados');
+                    }
                 }
 
                 // Gráfico 13: NC Externa Revertidas
                 const canvas13 = document.getElementById('grafico13');
                 if (canvas13) {
                     const ctx13 = canvas13.getContext('2d');
-                    charts.grafico13 = new Chart(ctx13, {
-                        type: 'bar',
-                        data: {
-                            labels: ['Q1', 'Q2', 'Q3', 'Q4'],
-                            datasets: [{
-                                label: 'NCs Revertidas',
-                                data: [1, 2, 0, 1],
-                                backgroundColor: '#10b981',
-                                borderColor: '#059669',
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: {
-                                    position: 'bottom',
-                                    labels: {
-                                        usePointStyle: true,
-                                        padding: 20
-                                    }
-                                }
+                    const sheetData13 = lastDataNCExterna.sheets.kpi_revertidos;
+                    
+                    if (sheetData13 && sheetData13.length > 0) {
+                        const labels13 = sheetData13.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
+                        const data13 = sheetData13.map(row => parseInt(row[1]) || 0).filter((_, index) => index < labels13.length);
+                        
+                        charts.grafico13 = new Chart(ctx13, {
+                            type: 'bar',
+                            data: {
+                                labels: labels13,
+                                datasets: [{
+                                    label: 'NCs Revertidas',
+                                    data: data13,
+                                    backgroundColor: '#10b981',
+                                    borderColor: '#059669',
+                                    borderWidth: 1
+                                }]
                             },
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    grid: {
-                                        color: '#e2e8f0'
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        position: 'bottom',
+                                        labels: {
+                                            usePointStyle: true,
+                                            padding: 20
+                                        }
                                     }
                                 },
-                                x: {
-                                    grid: {
-                                        display: false
+                                scales: {
+                                    y: {
+                                        beginAtZero: true,
+                                        grid: {
+                                            color: '#e2e8f0'
+                                        }
+                                    },
+                                    x: {
+                                        grid: {
+                                            display: false
+                                        }
                                     }
                                 }
                             }
-                        }
-                    });
+                        });
+                    } else {
+                        console.log('Dados do gráfico 13 (NC Externa Revertidas) não encontrados');
+                    }
                 }
 
                 // Gráfico 14: Total NC Externa
                 const canvas14 = document.getElementById('grafico14');
                 if (canvas14) {
                     const ctx14 = canvas14.getContext('2d');
-                    charts.grafico14 = new Chart(ctx14, {
-                        type: 'doughnut',
-                        data: {
-                            labels: ['Procedentes', 'Revertidas', 'Em Análise'],
-                            datasets: [{
-                                data: [14, 4, 2],
-                                backgroundColor: ['#ef4444', '#10b981', '#f59e0b'],
-                                borderWidth: 0
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: {
-                                    position: 'bottom',
-                                    labels: {
-                                        usePointStyle: true,
-                                        padding: 20
+                    const sheetData14 = lastDataNCExterna.sheets.total_nce_anos;
+                    
+                    if (sheetData14 && sheetData14.length > 0) {
+                        const labels14 = sheetData14.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
+                        const data14 = sheetData14.map(row => parseInt(row[1]) || 0).filter((_, index) => index < labels14.length);
+                        const colors14 = ['#ef4444', '#10b981', '#f59e0b'];
+                        
+                        charts.grafico14 = new Chart(ctx14, {
+                            type: 'doughnut',
+                            data: {
+                                labels: labels14,
+                                datasets: [{
+                                    data: data14,
+                                    backgroundColor: colors14.slice(0, labels14.length),
+                                    borderWidth: 0
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        position: 'bottom',
+                                        labels: {
+                                            usePointStyle: true,
+                                            padding: 20
+                                        }
                                     }
                                 }
                             }
-                        }
-                    });
+                        });
+                    } else {
+                        console.log('Dados do gráfico 14 (Total NC Externa) não encontrados');
+                    }
                 }
 
                 // Gráfico 15: Pareto NC Externa
                 const canvas15 = document.getElementById('grafico15');
                 if (canvas15) {
                     const ctx15 = canvas15.getContext('2d');
-                    charts.grafico15 = new Chart(ctx15, {
-                        type: 'bar',
-                        data: {
-                            labels: ['Cliente A', 'Cliente B', 'Cliente C', 'Cliente D'],
-                            datasets: [{
-                                label: 'NCs Externas',
-                                data: [8, 5, 3, 2],
-                                backgroundColor: '#8b5cf6',
-                                borderColor: '#7c3aed',
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: {
-                                    position: 'bottom',
-                                    labels: {
-                                        usePointStyle: true,
-                                        padding: 20
-                                    }
-                                }
+                    const sheetData15 = lastDataNCExterna.sheets.nce_pareto_defeitos;
+                    
+                    if (sheetData15 && sheetData15.length > 0) {
+                        const labels15 = sheetData15.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
+                        const data15 = sheetData15.map(row => parseInt(row[1]) || 0).filter((_, index) => index < labels15.length);
+                        
+                        charts.grafico15 = new Chart(ctx15, {
+                            type: 'bar',
+                            data: {
+                                labels: labels15,
+                                datasets: [{
+                                    label: 'NCs Externas',
+                                    data: data15,
+                                    backgroundColor: '#8b5cf6',
+                                    borderColor: '#7c3aed',
+                                    borderWidth: 1
+                                }]
                             },
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    grid: {
-                                        color: '#e2e8f0'
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        position: 'bottom',
+                                        labels: {
+                                            usePointStyle: true,
+                                            padding: 20
+                                        }
                                     }
                                 },
-                                x: {
-                                    grid: {
-                                        display: false
+                                scales: {
+                                    y: {
+                                        beginAtZero: true,
+                                        grid: {
+                                            color: '#e2e8f0'
+                                        }
+                                    },
+                                    x: {
+                                        grid: {
+                                            display: false
+                                        }
                                     }
                                 }
                             }
-                        }
-                    });
+                        });
+                    } else {
+                        console.log('Dados do gráfico 15 (Pareto NC Externa) não encontrados');
+                    }
                 }
             } catch (error) {
                 console.error('Erro ao renderizar gráficos NC Externa:', error);
