@@ -201,7 +201,7 @@ body {
 /* Header Moderno */
 .content-header {
   background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-  padding: 2rem 3rem;
+  padding: 1.5rem 3rem;
   border-bottom: 1px solid #e2e8f0;
   position: sticky;
   top: 0;
@@ -213,7 +213,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 .header-title {
@@ -536,7 +536,7 @@ body {
   }
   
   .content-header {
-    padding: 1.5rem 2rem;
+    padding: 1.25rem 2rem;
   }
 }
 
@@ -586,7 +586,7 @@ body {
   
   .filter-group {
     flex-wrap: wrap;
-    justify-content: center;
+  justify-content: center;
   }
   
   .indicators-grid {
@@ -680,12 +680,12 @@ body {
 }
 
 .loading::after {
-  content: '';
+    content: '';
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
-  height: 100%;
+    height: 100%;
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
   animation: loading 1.5s infinite;
 }
@@ -721,7 +721,7 @@ canvas {
 
 /* Layout de Abas e Filtros na Mesma Linha */
 .tabs-with-filters-container {
-  display: flex;
+        display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem 0;
@@ -737,7 +737,7 @@ canvas {
 /* Responsividade para abas e filtros */
 @media (max-width: 1200px) {
   .tabs-with-filters-container {
-    flex-direction: column;
+        flex-direction: column;
     align-items: flex-start;
     gap: 1rem;
   }
@@ -770,7 +770,7 @@ canvas {
     background-size: cover, cover;
     background-position: center, center;
     background-blend-mode: hard-light, normal;
-    min-height: 100vh;
+        min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -780,7 +780,7 @@ canvas {
     overflow: hidden;
 }
 
-.login-page-background::before {
+    .login-page-background::before {
     content: '';
     position: absolute;
     top: 0;
@@ -853,14 +853,14 @@ canvas {
     }
 }
 
-.mobile-login-header {
-    text-align: center;
+    .mobile-login-header {
+        text-align: center;
     margin-bottom: 50px;
     z-index: 2;
     position: relative;
-}
+    }
 
-.login-logo-mobile {
+    .login-logo-mobile {
     width: 270px;
     height: 270px;
     margin-bottom: 25px;
@@ -890,7 +890,7 @@ canvas {
     }
 }
 
-.login-title-mobile {
+    .login-title-mobile {
     color: white;
     font-size: 3rem;
     font-weight: 800;
@@ -948,7 +948,7 @@ canvas {
 }
 
 .login-form-container h3 {
-    color: #003366;
+        color: #003366;
     font-size: 1.8rem;
     font-weight: 700;
     margin: 0 0 10px 0;
@@ -968,7 +968,7 @@ canvas {
     border: none;
     padding: 15px 40px;
     font-size: 1.1rem;
-    font-weight: 600;
+        font-weight: 600;
     border-radius: 50px;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -1010,15 +1010,18 @@ canvas {
 }
 
 .footer {
-    margin-top: 30px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(0, 51, 102, 0.1);
+    margin-top: 40px;
+    padding: 20px 0;
+    border-top: 1px solid #e2e8f0;
+    background: #f8fafc;
+    text-align: center;
 }
 
 .footer p {
-    color: #666;
+    color: #64748b;
     font-size: 0.9rem;
     margin: 0;
+    font-weight: 500;
 }
 
 /* Responsive para login */
@@ -1040,27 +1043,27 @@ canvas {
         width: 203px;
         height: 203px;
     }
-    
+
     .mobile-login-header {
         margin-bottom: 35px;
     }
-}
+    }
 
 @media (max-width: 480px) {
     .login-form-container {
         padding: 25px 15px;
     }
-    
+
     .login-title-mobile {
         font-size: 1.8rem;
         letter-spacing: -0.5px;
     }
-    
+
     .login-logo-mobile {
         width: 158px;
         height: 158px;
     }
-    
+
     .mobile-login-header {
         margin-bottom: 30px;
     }
@@ -1233,8 +1236,8 @@ canvas {
     cursor: pointer;
     transition: all 0.3s ease;
     backdrop-filter: blur(10px);
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
     justify-content: center;
 }
 
@@ -1300,7 +1303,7 @@ canvas {
         transform: translateY(-30px) scale(0.95);
     }
     to {
-        opacity: 1;
+  opacity: 1;
         transform: translateY(0) scale(1);
     }
 }
@@ -1348,7 +1351,7 @@ canvas {
 .form-group label {
     display: block;
     color: #2d3748;
-    font-weight: 600;
+  font-weight: 600;
     margin-bottom: 8px;
     font-size: 0.95rem;
 }
@@ -1393,12 +1396,12 @@ canvas {
     border-radius: 8px;
     font-weight: 600;
     font-size: 0.95rem;
-    cursor: pointer;
+  cursor: pointer;
     transition: all 0.3s ease;
     border: none;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .save-button {
@@ -1445,8 +1448,8 @@ canvas {
     font-size: 1rem;
     cursor: pointer;
     transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
     gap: 8px;
 }
 
@@ -1459,7 +1462,7 @@ canvas {
 @media (max-width: 768px) {
     .projects-grid {
         grid-template-columns: 1fr;
-        gap: 20px;
+  gap: 20px;
         padding: 15px 0;
     }
     
@@ -1521,6 +1524,27 @@ canvas {
 }
 
 /* ==================== ESTILOS DA PÁGINA DE REUNIÕES ==================== */
+
+/* Botão Fixo de Adicionar */
+.fixed-add-button {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.fixed-add-button .btn {
+    box-shadow: 0 4px 20px rgba(41, 171, 226, 0.3);
+    border-radius: 12px;
+    padding: 12px 20px;
+    font-weight: 600;
+}
+
+.fixed-add-button .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(41, 171, 226, 0.4);
+}
 
 /* Grid de Reuniões */
 .meetings-grid {
@@ -1771,21 +1795,43 @@ canvas {
 .edit-button svg {
     width: 18px;
     height: 18px;
+    color: #29abe2;
     display: block;
     stroke: currentColor;
     fill: none;
+    transition: color 0.3s ease;
+}
+
+.edit-button:hover svg {
+    color: white;
 }
 
 .delete-button-card svg {
     width: 18px;
     height: 18px;
+    color: #e53e3e;
     display: block;
     stroke: currentColor;
     fill: none;
+    transition: color 0.3s ease;
+}
+
+.delete-button-card:hover svg {
+    color: white;
 }
 
 /* Responsividade para Reuniões */
 @media (max-width: 768px) {
+    .fixed-add-button {
+        top: 70px;
+        right: 15px;
+    }
+    
+    .fixed-add-button .btn {
+        padding: 10px 16px;
+        font-size: 0.9rem;
+    }
+    
     .meetings-grid {
         grid-template-columns: 1fr;
         gap: 20px;
@@ -1818,6 +1864,16 @@ canvas {
 }
 
 @media (max-width: 480px) {
+    .fixed-add-button {
+        top: 65px;
+        right: 10px;
+    }
+    
+    .fixed-add-button .btn {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+    }
+    
     .meetings-grid {
         grid-template-columns: 1fr;
         gap: 15px;
