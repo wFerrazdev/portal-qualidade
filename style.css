@@ -199,6 +199,8 @@ body {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  padding: 0;
+  margin: 0;
 }
 
 @media (max-width: 768px) {
@@ -1178,6 +1180,7 @@ canvas {
     min-height: calc(100vh - 200px);
     max-height: calc(100vh - 200px);
     overflow-y: auto;
+    border-top: 1px solid #e2e8f0;
 }
 
 /* Grid de Projetos */
@@ -1185,7 +1188,7 @@ canvas {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     gap: 2rem;
-    padding: 2rem 3rem;
+    padding: 0 3rem 2rem 3rem;
     margin: 0;
 }
 
@@ -1197,7 +1200,7 @@ canvas {
     .projects-page .projects-grid {
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
         gap: 1.5rem;
-        padding: 1.5rem 2rem;
+        padding: 0 2rem 1.5rem 2rem;
     }
 }
 
@@ -1221,7 +1224,7 @@ canvas {
     .projects-page .projects-grid {
         grid-template-columns: 1fr;
         gap: 1rem;
-        padding: 1rem;
+        padding: 0 1rem 1rem 1rem;
     }
 }
 
