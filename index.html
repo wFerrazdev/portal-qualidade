@@ -660,6 +660,40 @@
             }
         }
 
+        function criarGraficoPareto(canvasId, data, labelX, labelY) {
+            if (!data || data.length === 0) return;
+            
+            try {
+                data.sort((a, b) => parseInt(b[labelY] || 0) - parseInt(a[labelY] || 0));
+                const dataFiltrada = data.filter(item => parseInt(item[labelY] || 0) > 0);
+                const labels = dataFiltrada.map(item => item[labelX]);
+                const values = dataFiltrada.map(item => parseInt(item[labelY] || 0));
+                const total = values.reduce((sum, value) => sum + value, 0);
+                if (total === 0) return;
+                let cumulativePercentage = 0;
+                const paretoData = values.map(value => {
+                    cumulativePercentage += (value / total) * 100;
+                    return cumulativePercentage.toFixed(2);
+                });
+                const maxValue = Math.max(...values);
+                const ctx = document.getElementById(canvasId).getContext('2d');
+                charts[canvasId] = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            { type: 'line', label: 'Cumulativo %', data: paretoData, borderColor: '#dc3545', tension: 0.4, yAxisID: 'y1', order: 0 },
+                            { type: 'bar', label: 'Quantidade', data: values, backgroundColor: '#003366', borderRadius: 5, yAxisID: 'y', order: 1 }
+                        ]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom', labels: { usePointStyle: true, pointStyle: 'rect', padding: 20, font: { size: 10 } } }, datalabels: { display: (context) => context.dataset.type === 'bar', color: 'black', font: { weight: 'bold' }, anchor: 'end', align: 'end' } }, scales: { y: { type: 'linear', position: 'left', title: { display: true, text: 'Quantidade' }, grid: { display: false }, max: maxValue + 5 }, y1: { type: 'linear', position: 'right', grid: { drawOnChartArea: false }, max: 100, ticks: { callback: value => value + '%' }, title: { display: true, text: 'Percentual Acumulado' } }, x: { grid: { display: false } } } },
+                    plugins: [ChartDataLabels]
+                });
+            } catch (error) {
+                console.error(`Erro ao criar gráfico Pareto ${canvasId}:`, error);
+            }
+        }
+
         function renderizarGraficosRifs() {
             console.log('Tentando renderizar gráficos RIFS...');
             console.log('lastDataRifs:', lastDataRifs);
@@ -700,22 +734,32 @@
                         console.log('Concluído:', concluidoData);
                         console.log('Em Tratativa:', emTratativaData);
                         
+                    // Criar gradientes como no original
+                    const gradienteConcluido = ctx1.createLinearGradient(0, 0, 0, 200);
+                    gradienteConcluido.addColorStop(0, 'rgba(40, 167, 69, 1)');
+                    gradienteConcluido.addColorStop(1, 'rgba(40, 167, 69, 0.7)');
+                    
+                    const gradienteTratativa = ctx1.createLinearGradient(0, 0, 0, 200);
+                    gradienteTratativa.addColorStop(0, 'rgba(255, 193, 7, 1)');
+                    gradienteTratativa.addColorStop(1, 'rgba(255, 193, 7, 0.7)');
+                    
+                    const stackTotals = labels.map((_, index) => concluidoData[index] + emTratativaData[index]);
+                    const maxValue = Math.max(...stackTotals);
+                    
                     charts.grafico1 = new Chart(ctx1, {
                         type: 'bar',
                         data: {
-                                labels: labels,
+                            labels: labels,
                             datasets: [{
                                 label: 'CONCLUIDO',
-                                    data: concluidoData,
-                                backgroundColor: '#10b981',
-                                borderColor: '#059669',
-                                borderWidth: 1
+                                data: concluidoData,
+                                backgroundColor: gradienteConcluido,
+                                borderRadius: 5
                             }, {
                                 label: 'EM TRATATIVA',
-                                    data: emTratativaData,
-                                backgroundColor: '#f59e0b',
-                                borderColor: '#d97706',
-                                borderWidth: 1
+                                data: emTratativaData,
+                                backgroundColor: gradienteTratativa,
+                                borderRadius: 5
                             }]
                         },
                         options: {
@@ -723,36 +767,29 @@
                             maintainAspectRatio: false,
                             plugins: {
                                 legend: {
+                                    display: true,
                                     position: 'bottom',
                                     labels: {
                                         usePointStyle: true,
-                                        padding: 20
+                                        pointStyle: 'rect',
+                                        padding: 20,
+                                        font: { size: 10 }
                                     }
                                 },
                                 datalabels: {
-                                    display: true,
-                                    color: '#374151',
-                                    font: {
-                                        weight: 'bold',
-                                        size: 12
-                                    },
-                                    formatter: (value) => value > 0 ? value : ''
+                                    color: 'black',
+                                    font: { weight: 'bold' },
+                                    anchor: 'center',
+                                    align: 'center',
+                                    formatter: (value) => value > 0 ? value : null
                                 }
                             },
                             scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    grid: {
-                                        color: '#e2e8f0'
-                                    }
-                                },
-                                x: {
-                                    grid: {
-                                        display: false
-                                    }
-                                }
+                                x: { stacked: true, grid: { display: false } },
+                                y: { stacked: true, beginAtZero: true, max: maxValue + 5, grid: { display: false } }
                             }
-                        }
+                        },
+                        plugins: [ChartDataLabels]
                     });
                     } else {
                         console.log('Dados do gráfico 1 (RIFs Anual) não encontrados');
@@ -787,22 +824,32 @@
                         console.log('Concluído2:', concluidoData2);
                         console.log('Em Tratativa2:', emTratativaData2);
                         
+                    // Criar gradientes como no original
+                    const gradienteConcluido2 = ctx2.createLinearGradient(0, 0, 0, 200);
+                    gradienteConcluido2.addColorStop(0, 'rgba(40, 167, 69, 1)');
+                    gradienteConcluido2.addColorStop(1, 'rgba(40, 167, 69, 0.7)');
+                    
+                    const gradienteTratativa2 = ctx2.createLinearGradient(0, 0, 0, 200);
+                    gradienteTratativa2.addColorStop(0, 'rgba(255, 193, 7, 1)');
+                    gradienteTratativa2.addColorStop(1, 'rgba(255, 193, 7, 0.7)');
+                    
+                    const stackTotals2 = labels2.map((_, index) => concluidoData2[index] + emTratativaData2[index]);
+                    const maxValue2 = Math.max(...stackTotals2);
+                    
                     charts.grafico2 = new Chart(ctx2, {
                         type: 'bar',
                         data: {
-                                labels: labels2,
+                            labels: labels2,
                             datasets: [{
                                 label: 'CONCLUIDO',
-                                    data: concluidoData2,
-                                backgroundColor: '#10b981',
-                                borderColor: '#059669',
-                                borderWidth: 1
+                                data: concluidoData2,
+                                backgroundColor: gradienteConcluido2,
+                                borderRadius: 5
                             }, {
                                 label: 'EM TRATATIVA',
-                                    data: emTratativaData2,
-                                backgroundColor: '#f59e0b',
-                                borderColor: '#d97706',
-                                borderWidth: 1
+                                data: emTratativaData2,
+                                backgroundColor: gradienteTratativa2,
+                                borderRadius: 5
                             }]
                         },
                         options: {
@@ -810,36 +857,29 @@
                             maintainAspectRatio: false,
                             plugins: {
                                 legend: {
+                                    display: true,
                                     position: 'bottom',
                                     labels: {
                                         usePointStyle: true,
-                                        padding: 20
+                                        pointStyle: 'rect',
+                                        padding: 20,
+                                        font: { size: 10 }
                                     }
                                 },
                                 datalabels: {
-                                    display: true,
-                                    color: '#374151',
-                                    font: {
-                                        weight: 'bold',
-                                        size: 12
-                                    },
-                                    formatter: (value) => value > 0 ? value : ''
+                                    color: 'black',
+                                    font: { weight: 'bold' },
+                                    anchor: 'center',
+                                    align: 'center',
+                                    formatter: (value) => value > 0 ? value : null
                                 }
                             },
                             scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    grid: {
-                                        color: '#e2e8f0'
-                                    }
-                                },
-                                x: {
-                                    grid: {
-                                        display: false
-                                    }
-                                }
+                                x: { stacked: true, grid: { display: false } },
+                                y: { stacked: true, beginAtZero: true, max: maxValue2 + 5, grid: { display: false } }
                             }
-                        }
+                        },
+                        plugins: [ChartDataLabels]
                     });
                     } else {
                         console.log('Dados do gráfico 2 (RIFs Mensal) não encontrados');
@@ -855,70 +895,8 @@
                     if (sheetData3 && sheetData3.length > 0) {
                         console.log('Estrutura dos dados Pareto RIFS:', sheetData3[0]);
                         
-                        let labels3, quantidadeData3;
-                        
-                        // Verificar se é array de arrays ou array de objetos
-                        if (Array.isArray(sheetData3[0])) {
-                            // Estrutura de array de arrays
-                            labels3 = sheetData3.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
-                            quantidadeData3 = sheetData3.map(row => parseInt(row[1]) || 0).filter((_, index) => index < labels3.length);
-                        } else {
-                            // Estrutura de array de objetos
-                            labels3 = sheetData3.map(item => item.fornecedor || 'N/A').filter(label => label !== 'N/A');
-                            quantidadeData3 = sheetData3.map(item => parseInt(item.quantidade_pareto) || 0).filter((_, index) => index < labels3.length);
-                        }
-                        
-                        console.log('Labels3:', labels3);
-                        console.log('Quantidade3:', quantidadeData3);
-                        
-                    charts.grafico3 = new Chart(ctx3, {
-                        type: 'bar',
-                        data: {
-                                labels: labels3,
-                            datasets: [{
-                                label: 'Quantidade',
-                                    data: quantidadeData3,
-                                backgroundColor: '#3b82f6',
-                                borderColor: '#2563eb',
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: {
-                                    position: 'bottom',
-                                    labels: {
-                                        usePointStyle: true,
-                                        padding: 20
-                                    }
-                                },
-                                datalabels: {
-                                    display: true,
-                                    color: '#374151',
-                                    font: {
-                                        weight: 'bold',
-                                        size: 12
-                                    },
-                                    formatter: (value) => value > 0 ? value : ''
-                                }
-                            },
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    grid: {
-                                        color: '#e2e8f0'
-                                    }
-                                },
-                                x: {
-                                    grid: {
-                                        display: false
-                                    }
-                                }
-                            }
-                        }
-                    });
+                        // Usar a função original do Pareto
+                        criarGraficoPareto('grafico3', sheetData3, 'fornecedor', 'quantidade_pareto');
                     } else {
                         console.log('Dados do gráfico 3 (Pareto RIFs) não encontrados');
                     }
@@ -966,11 +944,10 @@
                                 data: {
                                     labels: labels4,
                                     datasets: [{
-                                        label: 'OPTs',
+                                        label: 'Quantidade de NC',
                                         data: optData4,
-                                        backgroundColor: '#3b82f6',
-                                        borderColor: '#2563eb',
-                                        borderWidth: 1
+                                        backgroundColor: '#003366',
+                                        borderRadius: 5
                                     }]
                                 },
                                 options: {
@@ -978,36 +955,28 @@
                                     maintainAspectRatio: false,
                                     plugins: {
                                         legend: {
-                                            position: 'bottom',
-                                            labels: {
-                                                usePointStyle: true,
-                                                padding: 20
-                                            }
+                                            display: false
                                         },
                                         datalabels: {
                                             display: true,
-                                            color: '#374151',
-                                            font: {
-                                                weight: 'bold',
-                                                size: 12
-                                            },
-                                            formatter: (value) => value > 0 ? value : ''
+                                            anchor: 'end',
+                                            align: 'end',
+                                            color: 'black',
+                                            font: { weight: 'bold' }
                                         }
                                     },
                                     scales: {
                                         y: {
                                             beginAtZero: true,
-                                            grid: {
-                                                color: '#e2e8f0'
-                                            }
+                                            max: 20,
+                                            grid: { display: false }
                                         },
                                         x: {
-                                            grid: {
-                                                display: false
-                                            }
+                                            grid: { display: false }
                                         }
                                     }
-                                }
+                                },
+                                plugins: [ChartDataLabels]
                             });
                         } else {
                             console.log('Dados do gráfico 4 (OPT por Cliente) não encontrados');
@@ -1035,13 +1004,14 @@
                             console.log('Data5:', data5);
                             
                             charts.grafico5 = new Chart(ctx5, {
-                                type: 'doughnut',
+                                type: 'bar',
                                 data: {
                                     labels: labels5,
                                     datasets: [{
+                                        label: 'Quantidade de NC',
                                         data: data5,
-                                        backgroundColor: colors.slice(0, labels5.length),
-                                        borderWidth: 0
+                                        backgroundColor: '#29abe2',
+                                        borderRadius: 5
                                     }]
                                 },
                                 options: {
@@ -1049,23 +1019,28 @@
                                     maintainAspectRatio: false,
                                     plugins: {
                                         legend: {
-                                            position: 'bottom',
-                                            labels: {
-                                                usePointStyle: true,
-                                                padding: 20
-                                            }
+                                            display: false
                                         },
                                         datalabels: {
                                             display: true,
-                                            color: '#ffffff',
-                                            font: {
-                                                weight: 'bold',
-                                                size: 12
-                                            },
-                                            formatter: (value) => value > 0 ? value : ''
+                                            anchor: 'end',
+                                            align: 'end',
+                                            color: 'black',
+                                            font: { weight: 'bold' }
+                                        }
+                                    },
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true,
+                                            max: 20,
+                                            grid: { display: false }
+                                        },
+                                        x: {
+                                            grid: { display: false }
                                         }
                                     }
-                                }
+                                },
+                                plugins: [ChartDataLabels]
                             });
                         } else {
                             console.log('Dados do gráfico 5 (OPT por Projeto) não encontrados');
@@ -1092,30 +1067,21 @@
                             const topData = dataFiltrado.slice(0, 6);
                             
                             const labels6 = topData.map(item => item.cliente);
-                            const resolvidasData6 = topData.map(item => parseInt(item.resolvidas) || 0);
-                            const pendentesData6 = topData.map(item => parseInt(item.pendentes) || 0);
+                            const colors = ['#003366', '#29abe2', '#fd7e14', '#28a745', '#dc3545', '#6c757d', '#ffc107'];
+                            const datasets = tiposDeNC.map((tipo, index) => ({
+                                label: tipo.replace(/_/g, ' ').replace(/(^\w{1})|(\s+\w{1})/g, letra => letra.toUpperCase()),
+                                data: topData.map(item => parseInt(item[tipo]) || 0),
+                                backgroundColor: colors[index % colors.length]
+                            }));
                             
                             console.log('Labels6:', labels6);
-                            console.log('Resolvidas6:', resolvidasData6);
-                            console.log('Pendentes6:', pendentesData6);
+                            console.log('Datasets6:', datasets);
                             
                             charts.grafico6 = new Chart(ctx6, {
-                                type: 'line',
+                                type: 'bar',
                                 data: {
                                     labels: labels6,
-                                    datasets: [{
-                                        label: 'OPTs Resolvidas',
-                                        data: resolvidasData6,
-                                        borderColor: '#10b981',
-                                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                                        tension: 0.4
-                                    }, {
-                                        label: 'OPTs Pendentes',
-                                        data: pendentesData6,
-                                        borderColor: '#f59e0b',
-                                        backgroundColor: 'rgba(245, 158, 11, 0.1)',
-                                        tension: 0.4
-                                    }]
+                                    datasets: datasets
                                 },
                                 options: {
                                     responsive: true,
@@ -1179,10 +1145,10 @@
                                 data: {
                                     labels: labels7,
                                     datasets: [{
-                                        label: 'Quantidade',
+                                        label: 'Quantidade Total',
                                         data: data7,
-                                        backgroundColor: colors7.slice(0, labels7.length),
-                                        borderWidth: 0
+                                        backgroundColor: '#29abe2',
+                                        borderRadius: 5
                                     }]
                                 },
                                 options: {
@@ -1190,36 +1156,28 @@
                                     maintainAspectRatio: false,
                                     plugins: {
                                         legend: {
-                                            position: 'bottom',
-                                            labels: {
-                                                usePointStyle: true,
-                                                padding: 20
-                                            }
+                                            display: false
                                         },
                                         datalabels: {
                                             display: true,
-                                            color: '#374151',
-                                            font: {
-                                                weight: 'bold',
-                                                size: 12
-                                            },
-                                            formatter: (value) => value > 0 ? value : ''
+                                            anchor: 'end',
+                                            align: 'end',
+                                            color: 'black',
+                                            font: { weight: 'bold' }
                                         }
                                     },
                                     scales: {
                                         y: {
                                             beginAtZero: true,
-                                            grid: {
-                                                color: '#e2e8f0'
-                                            }
+                                            max: 20,
+                                            grid: { display: false }
                                         },
                                         x: {
-                                            grid: {
-                                                display: false
-                                            }
+                                            grid: { display: false }
                                         }
                                     }
-                                }
+                                },
+                                plugins: [ChartDataLabels]
                             });
                         } else {
                             console.log('Dados do gráfico 7 (OPT Inteiro) não encontrados');
@@ -1313,51 +1271,8 @@
                     if (sheetData9 && sheetData9.length > 0) {
                         console.log('Estrutura dos dados Pareto Mensal NC Interna:', sheetData9[0]);
                         
-                        const labels9 = sheetData9.map(item => item.topicos);
-                        const data9 = sheetData9.map(item => parseInt(item.nao_iniciado) || 0);
-                        
-                        console.log('Labels9:', labels9);
-                        console.log('Data9:', data9);
-                        
-                        charts.grafico9 = new Chart(ctx9, {
-                            type: 'bar',
-                            data: {
-                                labels: labels9,
-                                datasets: [{
-                                    label: 'Frequência',
-                                    data: data9,
-                                    backgroundColor: '#3b82f6',
-                                    borderColor: '#2563eb',
-                                    borderWidth: 1
-                                }]
-                            },
-                            options: {
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                plugins: {
-                                    legend: {
-                                        position: 'bottom',
-                                        labels: {
-                                            usePointStyle: true,
-                                            padding: 20
-                                        }
-                                    }
-                                },
-                                scales: {
-                                    y: {
-                                        beginAtZero: true,
-                                        grid: {
-                                            color: '#e2e8f0'
-                                        }
-                                    },
-                                    x: {
-                                        grid: {
-                                            display: false
-                                        }
-                                    }
-                                }
-                            }
-                        });
+                        // Usar a função original do Pareto
+                        criarGraficoPareto('grafico9', sheetData9, 'topicos', 'nao_iniciado');
                     } else {
                         console.log('Dados do gráfico 9 (Pareto Mensal NC Interna) não encontrados');
                     }
@@ -1372,51 +1287,8 @@
                     if (sheetData10 && sheetData10.length > 0) {
                         console.log('Estrutura dos dados Pareto Anual NC Interna:', sheetData10[0]);
                         
-                        const labels10 = sheetData10.map(item => item.topicos);
-                        const data10 = sheetData10.map(item => parseInt(item.nao_iniciado) || 0);
-                        
-                        console.log('Labels10:', labels10);
-                        console.log('Data10:', data10);
-                        
-                        charts.grafico10 = new Chart(ctx10, {
-                            type: 'bar',
-                            data: {
-                                labels: labels10,
-                                datasets: [{
-                                    label: 'Frequência Anual',
-                                    data: data10,
-                                    backgroundColor: '#8b5cf6',
-                                    borderColor: '#7c3aed',
-                                    borderWidth: 1
-                                }]
-                            },
-                            options: {
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                plugins: {
-                                    legend: {
-                                        position: 'bottom',
-                                        labels: {
-                                            usePointStyle: true,
-                                            padding: 20
-                                        }
-                                    }
-                                },
-                                scales: {
-                                    y: {
-                                        beginAtZero: true,
-                                        grid: {
-                                            color: '#e2e8f0'
-                                        }
-                                    },
-                                    x: {
-                                        grid: {
-                                            display: false
-                                        }
-                                    }
-                                }
-                            }
-                        });
+                        // Usar a função original do Pareto
+                        criarGraficoPareto('grafico10', sheetData10, 'topicos', 'nao_iniciado');
                     } else {
                         console.log('Dados do gráfico 10 (Pareto Anual NC Interna) não encontrados');
                     }
@@ -1437,17 +1309,17 @@
                         console.log('Labels11:', labels11);
                         console.log('Data11:', data11);
                         
+                        const maxValue = Math.max(...data11);
+                        
                         charts.grafico11 = new Chart(ctx11, {
-                            type: 'line',
+                            type: 'bar',
                             data: {
                                 labels: labels11,
                                 datasets: [{
-                                    label: 'NCs Internas',
+                                    label: 'Quantidade',
                                     data: data11,
-                                    borderColor: '#ef4444',
-                                    backgroundColor: 'rgba(239, 68, 68, 0.1)',
-                                    tension: 0.4,
-                                    fill: true
+                                    backgroundColor: '#003366',
+                                    borderRadius: 5
                                 }]
                             },
                             options: {
@@ -1455,27 +1327,27 @@
                                 maintainAspectRatio: false,
                                 plugins: {
                                     legend: {
-                                        position: 'bottom',
-                                        labels: {
-                                            usePointStyle: true,
-                                            padding: 20
-                                        }
+                                        display: false
+                                    },
+                                    datalabels: {
+                                        display: (context) => context.dataset.data[context.dataIndex] > 0,
+                                        color: 'black',
+                                        font: { weight: 'bold' },
+                                        anchor: 'end',
+                                        align: 'end'
                                     }
                                 },
                                 scales: {
                                     y: {
-                                        beginAtZero: true,
-                                        grid: {
-                                            color: '#e2e8f0'
-                                        }
+                                        max: maxValue + 5,
+                                        grid: { display: false }
                                     },
                                     x: {
-                                        grid: {
-                                            display: false
-                                        }
+                                        grid: { display: false }
                                     }
                                 }
-                            }
+                            },
+                            plugins: [ChartDataLabels]
                         });
                     } else {
                         console.log('Dados do gráfico 11 (NC Interna Anual) não encontrados');
@@ -1483,6 +1355,134 @@
                 }
             } catch (error) {
                 console.error('Erro ao renderizar gráficos NC Interna:', error);
+            }
+        }
+
+        function criarGraficoCombinadoAnual(canvasId, data, tipoLinha, tipoBarra) {
+            if (!data || data.length === 0) return;
+            
+            try {
+                const labels = data.map(item => item.mes);
+                const valores2025 = data.map(item => parseInt(item['2025']) || 0);
+                const valores2024 = data.map(item => parseInt(item['2024']) || 0);
+                
+                const datasets = [
+                    {
+                        type: tipoBarra,
+                        label: '2025',
+                        data: valores2025,
+                        backgroundColor: '#003366',
+                        borderRadius: 5,
+                        yAxisID: 'y'
+                    },
+                    {
+                        type: tipoLinha,
+                        label: '2024',
+                        data: valores2024,
+                        borderColor: '#fd7e14',
+                        backgroundColor: 'rgba(253, 126, 20, 0.1)',
+                        tension: 0.4,
+                        fill: false,
+                        yAxisID: 'y'
+                    }
+                ];
+                
+                const ctx = document.getElementById(canvasId).getContext('2d');
+                charts[canvasId] = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: datasets
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'bottom',
+                                labels: {
+                                    usePointStyle: true,
+                                    pointStyle: 'rect',
+                                    padding: 20,
+                                    font: { size: 10 }
+                                }
+                            },
+                            datalabels: {
+                                display: (context) => context.dataset.type === 'bar',
+                                color: 'black',
+                                font: { weight: 'bold' },
+                                anchor: 'end',
+                                align: 'end'
+                            }
+                        },
+                        scales: {
+                            y: {
+                                type: 'linear',
+                                position: 'left',
+                                beginAtZero: true,
+                                grid: { display: false }
+                            },
+                            x: {
+                                grid: { display: false }
+                            }
+                        }
+                    },
+                    plugins: [ChartDataLabels]
+                });
+            } catch (error) {
+                console.error(`Erro ao criar gráfico combinado ${canvasId}:`, error);
+            }
+        }
+
+        function criarGraficoBarrasSimplesAnual(canvasId, data) {
+            if (!data || data.length === 0) return;
+            
+            try {
+                const labels = data.map(item => item.mes);
+                const valores = data.map(item => parseInt(item.quantidade) || 0);
+                
+                const ctx = document.getElementById(canvasId).getContext('2d');
+                charts[canvasId] = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Quantidade',
+                            data: valores,
+                            backgroundColor: '#003366',
+                            borderRadius: 5
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            datalabels: {
+                                display: true,
+                                color: 'black',
+                                font: { weight: 'bold' },
+                                anchor: 'end',
+                                align: 'end'
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid: { display: false }
+                            },
+                            x: {
+                                grid: { display: false }
+                            }
+                        }
+                    },
+                    plugins: [ChartDataLabels]
+                });
+            } catch (error) {
+                console.error(`Erro ao criar gráfico de barras ${canvasId}:`, error);
             }
         }
 
@@ -1507,51 +1507,8 @@
                     if (sheetData12 && sheetData12.length > 0) {
                         console.log('Estrutura dos dados NC Externa Procedentes:', sheetData12[0]);
                         
-                        const labels12 = sheetData12.map(item => item.mes);
-                        const data12 = sheetData12.map(item => parseInt(item.quantidade) || 0);
-                        
-                        console.log('Labels12:', labels12);
-                        console.log('Data12:', data12);
-                        
-                        charts.grafico12 = new Chart(ctx12, {
-                            type: 'bar',
-                            data: {
-                                labels: labels12,
-                                datasets: [{
-                                    label: 'NCs Procedentes',
-                                    data: data12,
-                                    backgroundColor: '#ef4444',
-                                    borderColor: '#dc2626',
-                                    borderWidth: 1
-                                }]
-                            },
-                            options: {
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                plugins: {
-                                    legend: {
-                                        position: 'bottom',
-                                        labels: {
-                                            usePointStyle: true,
-                                            padding: 20
-                                        }
-                                    }
-                                },
-                                scales: {
-                                    y: {
-                                        beginAtZero: true,
-                                        grid: {
-                                            color: '#e2e8f0'
-                                        }
-                                    },
-                                    x: {
-                                        grid: {
-                                            display: false
-                                        }
-                                    }
-                                }
-                            }
-                        });
+                        // Usar a função original de gráfico combinado
+                        criarGraficoCombinadoAnual('grafico12', sheetData12, 'line', 'bar');
                     } else {
                         console.log('Dados do gráfico 12 (NC Externa Procedentes) não encontrados');
                     }
@@ -1566,51 +1523,8 @@
                     if (sheetData13 && sheetData13.length > 0) {
                         console.log('Estrutura dos dados NC Externa Revertidas:', sheetData13[0]);
                         
-                        const labels13 = sheetData13.map(item => item.mes);
-                        const data13 = sheetData13.map(item => parseInt(item.quantidade) || 0);
-                        
-                        console.log('Labels13:', labels13);
-                        console.log('Data13:', data13);
-                        
-                        charts.grafico13 = new Chart(ctx13, {
-                            type: 'bar',
-                            data: {
-                                labels: labels13,
-                                datasets: [{
-                                    label: 'NCs Revertidas',
-                                    data: data13,
-                                    backgroundColor: '#10b981',
-                                    borderColor: '#059669',
-                                    borderWidth: 1
-                                }]
-                            },
-                            options: {
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                plugins: {
-                                    legend: {
-                                        position: 'bottom',
-                                        labels: {
-                                            usePointStyle: true,
-                                            padding: 20
-                                        }
-                                    }
-                                },
-                                scales: {
-                                    y: {
-                                        beginAtZero: true,
-                                        grid: {
-                                            color: '#e2e8f0'
-                                        }
-                                    },
-                                    x: {
-                                        grid: {
-                                            display: false
-                                        }
-                                    }
-                                }
-                            }
-                        });
+                        // Usar a função original de gráfico de barras simples
+                        criarGraficoBarrasSimplesAnual('grafico13', sheetData13);
                     } else {
                         console.log('Dados do gráfico 13 (NC Externa Revertidas) não encontrados');
                     }
@@ -1625,37 +1539,8 @@
                     if (sheetData14 && sheetData14.length > 0) {
                         console.log('Estrutura dos dados Total NC Externa:', sheetData14[0]);
                         
-                        const labels14 = sheetData14.map(item => item.mes);
-                        const data14 = sheetData14.map(item => parseInt(item.quantidade) || 0);
-                        const colors14 = ['#ef4444', '#10b981', '#f59e0b'];
-                        
-                        console.log('Labels14:', labels14);
-                        console.log('Data14:', data14);
-                        
-                        charts.grafico14 = new Chart(ctx14, {
-                            type: 'doughnut',
-                            data: {
-                                labels: labels14,
-                                datasets: [{
-                                    data: data14,
-                                    backgroundColor: colors14.slice(0, labels14.length),
-                                    borderWidth: 0
-                                }]
-                            },
-                            options: {
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                plugins: {
-                                    legend: {
-                                        position: 'bottom',
-                                        labels: {
-                                            usePointStyle: true,
-                                            padding: 20
-                                        }
-                                    }
-                                }
-                            }
-                        });
+                        // Usar a função original de gráfico combinado
+                        criarGraficoCombinadoAnual('grafico14', sheetData14, 'line', 'line');
                     } else {
                         console.log('Dados do gráfico 14 (Total NC Externa) não encontrados');
                     }
@@ -1670,51 +1555,8 @@
                     if (sheetData15 && sheetData15.length > 0) {
                         console.log('Estrutura dos dados Pareto NC Externa:', sheetData15[0]);
                         
-                        const labels15 = sheetData15.map(item => item.defeito);
-                        const data15 = sheetData15.map(item => parseInt(item.quantidade_pareto) || 0);
-                        
-                        console.log('Labels15:', labels15);
-                        console.log('Data15:', data15);
-                        
-                        charts.grafico15 = new Chart(ctx15, {
-                            type: 'bar',
-                            data: {
-                                labels: labels15,
-                                datasets: [{
-                                    label: 'NCs Externas',
-                                    data: data15,
-                                    backgroundColor: '#8b5cf6',
-                                    borderColor: '#7c3aed',
-                                    borderWidth: 1
-                                }]
-                            },
-                            options: {
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                plugins: {
-                                    legend: {
-                                        position: 'bottom',
-                                        labels: {
-                                            usePointStyle: true,
-                                            padding: 20
-                                        }
-                                    }
-                                },
-                                scales: {
-                                    y: {
-                                        beginAtZero: true,
-                                        grid: {
-                                            color: '#e2e8f0'
-                                        }
-                                    },
-                                    x: {
-                                        grid: {
-                                            display: false
-                                        }
-                                    }
-                                }
-                            }
-                        });
+                        // Usar a função original do Pareto
+                        criarGraficoPareto('grafico15', sheetData15, 'defeito', 'quantidade_pareto');
                     } else {
                         console.log('Dados do gráfico 15 (Pareto NC Externa) não encontrados');
                     }
