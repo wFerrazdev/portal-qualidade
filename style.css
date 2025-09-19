@@ -763,7 +763,13 @@ canvas {
 
 /* ===== PÁGINA DE LOGIN ===== */
 .login-page-background {
-    background: linear-gradient(135deg, #001a33 0%, #003366 25%, #004080 50%, #0052a3 75%, #0066cc 100%);
+    background: #08090d;
+    background-image: 
+        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><pattern id="wave1" x="0" y="0" width="400" height="200" patternUnits="userSpaceOnUse"><path d="M0,100 Q100,50 200,100 T400,100" stroke="rgba(0,51,102,0.3)" stroke-width="2" fill="none" opacity="0.6"/><path d="M0,120 Q100,70 200,120 T400,120" stroke="rgba(0,51,102,0.2)" stroke-width="1.5" fill="none" opacity="0.4"/></pattern><pattern id="wave2" x="0" y="0" width="300" height="150" patternUnits="userSpaceOnUse"><path d="M0,75 Q75,25 150,75 T300,75" stroke="rgba(0,80,160,0.4)" stroke-width="1.5" fill="none" opacity="0.5"/><path d="M0,90 Q75,40 150,90 T300,90" stroke="rgba(0,80,160,0.3)" stroke-width="1" fill="none" opacity="0.3"/></pattern></defs><rect width="1200" height="800" fill="url(%23wave1)"/><rect width="1200" height="800" fill="url(%23wave2)" opacity="0.7"/></svg>'),
+        linear-gradient(135deg, #001a33 0%, #003366 25%, #004080 50%, #0052a3 75%, #0066cc 100%);
+    background-size: cover, cover;
+    background-position: center, center;
+    background-blend-mode: hard-light, normal;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -782,10 +788,10 @@ canvas {
     right: 0;
     bottom: 0;
     background: 
-        radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.06) 0%, transparent 50%),
-        radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.04) 0%, transparent 50%);
-    animation: backgroundShift 15s ease-in-out infinite;
+        radial-gradient(ellipse at 20% 80%, rgba(0, 102, 204, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(0, 51, 102, 0.12) 0%, transparent 50%),
+        radial-gradient(ellipse at 40% 40%, rgba(0, 80, 160, 0.08) 0%, transparent 50%);
+    animation: waveGlow 8s ease-in-out infinite;
     pointer-events: none;
 }
 
@@ -797,57 +803,53 @@ canvas {
     right: 0;
     bottom: 0;
     background: 
-        radial-gradient(2px 2px at 20px 30px, rgba(255, 255, 255, 0.3), transparent),
-        radial-gradient(2px 2px at 40px 70px, rgba(255, 255, 255, 0.2), transparent),
-        radial-gradient(1px 1px at 90px 40px, rgba(255, 255, 255, 0.4), transparent),
-        radial-gradient(1px 1px at 130px 80px, rgba(255, 255, 255, 0.3), transparent),
-        radial-gradient(2px 2px at 160px 30px, rgba(255, 255, 255, 0.2), transparent);
-    background-repeat: repeat;
-    background-size: 200px 200px;
-    animation: particleFloat 20s linear infinite;
+        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><filter id="glow"><feGaussianBlur stdDeviation="3" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><path d="M0,200 Q200,100 400,200 T800,200 T1200,200" stroke="rgba(0,102,204,0.4)" stroke-width="3" fill="none" filter="url(%23glow)"><animate attributeName="d" values="M0,200 Q200,100 400,200 T800,200 T1200,200;M0,200 Q200,150 400,200 T800,200 T1200,200;M0,200 Q200,100 400,200 T800,200 T1200,200" dur="6s" repeatCount="indefinite"/></path><path d="M0,300 Q300,200 600,300 T1200,300" stroke="rgba(0,80,160,0.3)" stroke-width="2" fill="none" filter="url(%23glow)"><animate attributeName="d" values="M0,300 Q300,200 600,300 T1200,300;M0,300 Q300,250 600,300 T1200,300;M0,300 Q300,200 600,300 T1200,300" dur="8s" repeatCount="indefinite"/></path><path d="M0,500 Q400,400 800,500 T1200,500" stroke="rgba(0,51,102,0.2)" stroke-width="2.5" fill="none" filter="url(%23glow)"><animate attributeName="d" values="M0,500 Q400,400 800,500 T1200,500;M0,500 Q400,450 800,500 T1200,500;M0,500 Q400,400 800,500 T1200,500" dur="10s" repeatCount="indefinite"/></path></svg>');
+    background-size: cover;
+    background-position: center;
+    animation: waveMove 12s linear infinite;
     pointer-events: none;
-    opacity: 0.7;
+    opacity: 0.6;
 }
 
-@keyframes backgroundShift {
+@keyframes waveGlow {
     0%, 100% { 
         transform: translateX(0) translateY(0) scale(1);
+        opacity: 0.8;
+    }
+    25% { 
+        transform: translateX(-20px) translateY(-10px) scale(1.05);
+        opacity: 0.6;
+    }
+    50% { 
+        transform: translateX(15px) translateY(-15px) scale(0.95);
+        opacity: 0.9;
+    }
+    75% { 
+        transform: translateX(-10px) translateY(8px) scale(1.02);
+        opacity: 0.7;
+    }
+}
+
+@keyframes waveMove {
+    0% { 
+        transform: translateX(0) translateY(0);
         opacity: 0.6;
     }
     25% { 
-        transform: translateX(-15px) translateY(-8px) scale(1.02);
+        transform: translateX(-40px) translateY(-20px);
         opacity: 0.4;
     }
     50% { 
-        transform: translateX(8px) translateY(-12px) scale(0.98);
-        opacity: 0.7;
-    }
-    75% { 
-        transform: translateX(-8px) translateY(6px) scale(1.01);
-        opacity: 0.5;
-    }
-}
-
-@keyframes particleFloat {
-    0% { 
-        transform: translateX(0) translateY(0) rotate(0deg);
-        opacity: 0.7;
-    }
-    25% { 
-        transform: translateX(-30px) translateY(-15px) rotate(90deg);
-        opacity: 0.5;
-    }
-    50% { 
-        transform: translateX(20px) translateY(-25px) rotate(180deg);
+        transform: translateX(30px) translateY(-30px);
         opacity: 0.8;
     }
     75% { 
-        transform: translateX(-15px) translateY(10px) rotate(270deg);
-        opacity: 0.6;
+        transform: translateX(-20px) translateY(15px);
+        opacity: 0.5;
     }
     100% { 
-        transform: translateX(0) translateY(0) rotate(360deg);
-        opacity: 0.7;
+        transform: translateX(0) translateY(0);
+        opacity: 0.6;
     }
 }
 
