@@ -861,8 +861,8 @@ canvas {
 }
 
 .login-logo-mobile {
-    width: 180px;
-    height: 180px;
+    width: 270px;
+    height: 270px;
     margin-bottom: 25px;
     filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
     animation: logoFloat 4s ease-in-out infinite;
@@ -1037,8 +1037,8 @@ canvas {
     }
     
     .login-logo-mobile {
-        width: 135px;
-        height: 135px;
+        width: 203px;
+        height: 203px;
     }
     
     .mobile-login-header {
@@ -1057,8 +1057,8 @@ canvas {
     }
     
     .login-logo-mobile {
-        width: 105px;
-        height: 105px;
+        width: 158px;
+        height: 158px;
     }
     
     .mobile-login-header {
