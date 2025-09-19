@@ -1096,26 +1096,16 @@
                                         },
                                         datalabels: {
                                             display: true,
-                                            color: '#374151',
-                                            font: {
-                                                weight: 'bold',
-                                                size: 10
-                                            },
-                                            formatter: (value) => value > 0 ? value : ''
+                                            anchor: 'center',
+                                            align: 'center',
+                                            color: 'white',
+                                            font: { weight: 'bold' },
+                                            formatter: (value) => { return value > 0 ? value : null; }
                                         }
                                     },
                                     scales: {
-                                        y: {
-                                            beginAtZero: true,
-                                            grid: {
-                                                color: '#e2e8f0'
-                                            }
-                                        },
-                                        x: {
-                                            grid: {
-                                                display: false
-                                            }
-                                        }
+                                        x: { stacked: true, grid: { display: false } },
+                                        y: { stacked: true, beginAtZero: true, max: 7, ticks: { stepSize: 2 }, grid: { display: false } }
                                     }
                                 }
                             });
@@ -1365,132 +1355,135 @@
             }
         }
 
-        function criarGraficoCombinadoAnual(canvasId, data, tipoLinha, tipoBarra) {
+        function criarGraficoCombinadoAnual(canvasId, data, tipoGrafico2025, tipoGrafico2024) {
             if (!data || data.length === 0) return;
             
-            try {
-                const labels = data.map(item => item.mes);
-                const valores2025 = data.map(item => parseInt(item['2025']) || 0);
-                const valores2024 = data.map(item => parseInt(item['2024']) || 0);
-                
-                const datasets = [
-                    {
-                        type: tipoBarra,
-                        label: '2025',
-                        data: valores2025,
-                        backgroundColor: '#003366',
-                        borderRadius: 5,
-                        yAxisID: 'y'
-                    },
-                    {
-                        type: tipoLinha,
-                        label: '2024',
-                        data: valores2024,
-                        borderColor: '#fd7e14',
-                        backgroundColor: 'rgba(253, 126, 20, 0.1)',
-                        tension: 0.4,
-                        fill: false,
-                        yAxisID: 'y'
+            const isMobile = window.innerWidth < 1024;
+            const labels = data.map(item => item.mes);
+            const dados2025 = data.map(item => parseInt(item.quantidade_2025) || 0);
+            const dados2024 = data.map(item => parseInt(item.quantidade_2024) || 0);
+
+            const maxValue = Math.max(...dados2025, ...dados2024);
+
+            const datasets = [
+                {
+                    type: tipoGrafico2024,
+                    label: '2024',
+                    data: dados2024,
+                    backgroundColor: 'rgba(233, 123, 50, 0.918)',
+                    borderColor: 'rgba(233, 123, 50, 0.918)',
+                    borderRadius: 5,
+                    order: 1, // <-- ORDEM 0: DESENHADO NO FUNDO
+                    datalabels: {
+                        color: '#adb5bd',
+                        font: { size: 10 },
+                        anchor: 'end',
+                        align: 'end',
+                        formatter: (value) => value > 0 ? value : null
                     }
-                ];
-                
-                const ctx = document.getElementById(canvasId).getContext('2d');
-                charts[canvasId] = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: labels,
-                        datasets: datasets
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                display: true,
-                                position: 'bottom',
-                                labels: {
-                                    usePointStyle: true,
-                                    pointStyle: 'rect',
-                                    padding: 20,
-                                    font: { size: 10 }
-                                }
-                            },
-                            datalabels: {
-                                display: (context) => context.dataset.type === 'bar',
-                                color: 'black',
-                                font: { weight: 'bold' },
-                                anchor: 'end',
-                                align: 'end'
+                },
+                {
+                    type: tipoGrafico2025,
+                    label: '2025',
+                    data: dados2025,
+                    backgroundColor: '#003366',
+                    borderColor: '#003366',
+                    borderRadius: 5,
+                    tension: 0.4,
+                    order: 0, // <-- ORDEM 1: DESENHADO NA FRENTE
+                    datalabels: {
+                        color: '#000',
+                        font: { weight: 'bold', size: 12 },
+                        anchor: 'end',
+                        align: 'end',
+                        formatter: (value) => value > 0 ? value : null
+                    }
+                }
+            ];
+
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            charts[canvasId] = new Chart(ctx, {
+                type: 'bar',
+                data: { labels, datasets },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'bottom',
+                            labels: {
+                                usePointStyle: true,
+                                pointStyle: 'rect',
+                                padding: 20,
+                                font: { size: 10 }
                             }
                         },
-                        scales: {
-                            y: {
-                                type: 'linear',
-                                position: 'left',
-                                beginAtZero: true,
-                                grid: { display: false }
-                            },
-                            x: {
-                                grid: { display: false }
-                            }
+                        datalabels: {
+                            display: true,
+                            color: (context) => context.dataset.datalabels.color,
+                            font: (context) => context.dataset.datalabels.font,
+                            anchor: (context) => context.dataset.datalabels.anchor,
+                            align: (context) => context.dataset.datalabels.align,
+                            formatter: (context) => context.dataset.datalabels.formatter
                         }
                     },
-                    plugins: [ChartDataLabels]
-                });
-            } catch (error) {
-                console.error(`Erro ao criar gráfico combinado ${canvasId}:`, error);
-            }
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: maxValue + 5,
+                            grid: { display: false }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { font: { size: isMobile ? 9 : 12 } }
+                        }
+                    }
+                },
+                plugins: [ChartDataLabels]
+            });
         }
 
         function criarGraficoBarrasSimplesAnual(canvasId, data) {
             if (!data || data.length === 0) return;
-            
-            try {
-                const labels = data.map(item => item.mes);
-                const valores = data.map(item => parseInt(item.quantidade) || 0);
-                
-                const ctx = document.getElementById(canvasId).getContext('2d');
-                charts[canvasId] = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            label: 'Quantidade',
-                            data: valores,
-                            backgroundColor: '#003366',
-                            borderRadius: 5
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                display: false
-                            },
-                            datalabels: {
-                                display: true,
-                                color: 'black',
-                                font: { weight: 'bold' },
-                                anchor: 'end',
-                                align: 'end'
-                            }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                grid: { display: false }
-                            },
-                            x: {
-                                grid: { display: false }
-                            }
+
+            const isMobile = window.innerWidth < 1024;
+            const labels = data.map(item => item.mes);
+            const dados2025 = data.map(item => parseInt(item.quantidade_2025) || 0);
+            const maxValue = Math.max(...dados2025);
+
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            charts[canvasId] = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Total Revertidas 2025',
+                        data: dados2025,
+                        backgroundColor: '#003366',
+                        borderRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        datalabels: {
+                            color: '#000',
+                            font: { weight: 'bold', size: 12 },
+                            anchor: 'end',
+                            align: 'end',
+                            formatter: (value) => value > 0 ? value : null
                         }
                     },
-                    plugins: [ChartDataLabels]
-                });
-            } catch (error) {
-                console.error(`Erro ao criar gráfico de barras ${canvasId}:`, error);
-            }
+                    scales: {
+                        y: { beginAtZero: true, max: maxValue + 5, grid: { display: false } },
+                        x: { grid: { display: false }, ticks: { font: { size: isMobile ? 9 : 12 } } }
+                    }
+                },
+                plugins: [ChartDataLabels]
+            });
         }
 
         function renderizarGraficosNCExterna() {
