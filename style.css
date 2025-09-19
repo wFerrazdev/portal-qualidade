@@ -444,8 +444,8 @@ body {
 
 .indicators-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  gap: 4rem;
   margin-bottom: 2rem;
 }
 
@@ -498,8 +498,7 @@ body {
 }
 
 .card-chart {
-  height: 200px;
-  width: 400px;
+  height: 210px;
   position: relative;
   background: #f8fafc;
   border-radius: 12px;
@@ -551,7 +550,7 @@ body {
 
 @media (max-width: 1200px) {
   .indicators-grid {
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 1.75rem;
   }
   
