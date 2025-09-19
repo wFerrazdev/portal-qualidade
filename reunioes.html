@@ -62,7 +62,7 @@
                         </svg>
                         <span>Calibração</span>
                     </a></li>
-                    <li><a href="login.html" class="nav-item">
+                    <li><a href="#" class="nav-item" id="logoutBtn">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
                         </svg>
@@ -110,16 +110,8 @@
                         Adicionar Reunião
                     </button>
                 </div>
-                <div class="meetings-list">
-                    <div class="list-header">
-                        <span>Título</span>
-                        <span>Data</span>
-                        <span>Participantes</span>
-                        <span>Ações</span>
-                    </div>
-                    <div class="list-body">
-                        <div class="loading-spinner"></div>
-                    </div>
+                <div class="meetings-grid">
+                    <div class="loading-spinner"></div>
                 </div>
             </main>
 
@@ -255,9 +247,23 @@
             if (mobileMenuButton) { mobileMenuButton.addEventListener('click', openMenu); }
             if (overlay) { overlay.addEventListener('click', closeMenu); }
             window.addEventListener('load', () => { if (sidebar) { sidebar.classList.remove('preload'); } });
+            // Logout functionality
             const logoutBtn = document.getElementById('logoutBtn');
-            if (logoutBtn) { logoutBtn.addEventListener('click', (e) => { e.preventDefault(); netlifyIdentity.logout(); }); }
-            netlifyIdentity.on('logout', () => { window.location.href = '/login.html'; });
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (window.netlifyIdentity) {
+                        netlifyIdentity.logout();
+                    }
+                });
+            }
+
+            // Netlify Identity logout event
+            if (window.netlifyIdentity) {
+                netlifyIdentity.on('logout', () => {
+                    window.location.href = '/login.html';
+                });
+            }
             // --- LÓGICA DE PERMISSÕES (VISUAL) ---
             if (window.netlifyIdentity) {
                 const user = netlifyIdentity.currentUser();
@@ -284,7 +290,7 @@
             const cancelModalBtn = meetingModal.querySelector('#cancelModalBtn');
             const deleteMeetingBtn = document.getElementById('deleteMeetingBtn');
             const meetingForm = document.getElementById('meetingForm');
-            const listBody = document.querySelector('.list-body');
+            const meetingsGrid = document.querySelector('.meetings-grid');
             const modalTitle = document.getElementById('modalTitle');
 
             function formatarData(dataISO) {
@@ -293,17 +299,89 @@
                 return new Date(data.getTime() + data.getTimezoneOffset() * 60000).toLocaleDateString('pt-BR');
             }
 
-            function renderMeetingRow(reuniao) {
-                const participantesPreview = (reuniao.participantes || []).slice(0, 2).join(', ') + ((reuniao.participantes || []).length > 2 ? '...' : '');
+            function getStatusInfo(reuniao) {
+                const hoje = new Date();
+                const dataReuniao = reuniao.data_reuniao ? new Date(reuniao.data_reuniao) : null;
+                
+                if (!dataReuniao) {
+                    return { status: 'Aguardando', color: '#29abe2', bgColor: '#e6f3ff' };
+                }
+                
+                const diffTime = dataReuniao - hoje;
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                
+                if (diffDays < 0) {
+                    return { status: 'Concluído', color: '#28a745', bgColor: '#e8f5e8' };
+                } else {
+                    return { status: 'Aguardando', color: '#29abe2', bgColor: '#e6f3ff' };
+                }
+            }
+
+            function renderMeetingCard(reuniao) {
+                const statusInfo = getStatusInfo(reuniao);
+                const participantesList = (reuniao.participantes || []).map(p => `<li>${p}</li>`).join('');
+                
+                let actionButtonsHtml = '';
+                const user = window.netlifyIdentity.currentUser();
+                if (user && user.app_metadata.roles && user.app_metadata.roles.includes('admin')) {
+                    actionButtonsHtml = `
+                        <div class="card-action-buttons">
+                            <button class="edit-button" data-id="${reuniao.id}" title="Editar Reunião">
+                                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                </svg>
+                            </button>
+                            <button class="delete-button-card" data-id="${reuniao.id}" title="Excluir Reunião">
+                                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    `;
+                }
+
                 return `
-                    <div class="list-row" data-date="${formatarData(reuniao.data_reuniao)}" data-participants="${(reuniao.participantes || []).length}">
-                        <div class="meeting-title">${reuniao.titulo}</div>
-                        <div>${formatarData(reuniao.data_reuniao)}</div>
-                        <div>${participantesPreview}</div>
-                        <div class="card-actions">
-                            ${reuniao.link_ata ? `<a href="${reuniao.link_ata}" target="_blank" rel="noopener noreferrer" class="ata-button">Ver Ata</a>` : `<span class="ata-button disabled">Sem Ata</span>`}
-                            <button class="edit-button" data-id="${reuniao.id}"><svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.536L16.732 3.732z"></path></svg></button>
-                            <button class="delete-button" data-id="${reuniao.id}"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
+                    <div class="meeting-card">
+                        <div class="card-header">
+                            <div class="meeting-title">${reuniao.titulo}</div>
+                            <div class="meeting-status" style="background-color: ${statusInfo.bgColor}; color: ${statusInfo.color};">
+                                ${statusInfo.status}
+                            </div>
+                            ${actionButtonsHtml}
+                        </div>
+                        <div class="card-body">
+                            <div class="meeting-date">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                </svg>
+                                <span>${formatarData(reuniao.data_reuniao)}</span>
+                            </div>
+                            <div class="meeting-participants">
+                                <h4>Participantes:</h4>
+                                <ul>${participantesList}</ul>
+                            </div>
+                            ${reuniao.pauta ? `
+                                <div class="meeting-agenda">
+                                    <h4>Pauta:</h4>
+                                    <p>${reuniao.pauta}</p>
+                                </div>
+                            ` : ''}
+                            <div class="meeting-actions">
+                                ${reuniao.link_ata ? 
+                                    `<a href="${reuniao.link_ata}" target="_blank" rel="noopener noreferrer" class="ata-button">
+                                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                        </svg>
+                                        Ver Ata
+                                    </a>` : 
+                                    `<span class="ata-button disabled">
+                                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                        </svg>
+                                        Sem Ata
+                                    </span>`
+                                }
+                            </div>
                         </div>
                     </div>
                 `;
@@ -313,13 +391,16 @@
                 try {
                     const response = await authFetch(`${API_BASE_URL}/getReunioes`);
                     const reunioes = await response.json();
-                    listBody.innerHTML = '';
+                    meetingsGrid.innerHTML = '';
                     if (reunioes.length === 0) {
-                        listBody.innerHTML = '<p style="padding: 20px;">Nenhuma reunião encontrada. Adicione a primeira!</p>';
+                        meetingsGrid.innerHTML = '<p style="padding: 20px; text-align: center; color: #666;">Nenhuma reunião encontrada. Adicione a primeira!</p>';
                     } else {
-                        reunioes.forEach(reuniao => { listBody.innerHTML += renderMeetingRow(reuniao); });
+                        reunioes.forEach(reuniao => { meetingsGrid.innerHTML += renderMeetingCard(reuniao); });
                     }
-                } catch (error) { console.error('Erro ao buscar reuniões:', error); listBody.innerHTML = '<p style="padding: 20px; color: red;">Não foi possível carregar as reuniões.</p>'; }
+                } catch (error) { 
+                    console.error('Erro ao buscar reuniões:', error); 
+                    meetingsGrid.innerHTML = '<p style="padding: 20px; color: red; text-align: center;">Não foi possível carregar as reuniões.</p>'; 
+                }
             }
 
             function populateFormForEdit(reuniao) {
@@ -389,6 +470,19 @@
                 }
             }
 
+            async function handleDeleteMeetingFromCard(reuniaoId) {
+                if (confirm('Tem certeza que deseja excluir esta reunião? Esta ação não pode ser desfeita.')) {
+                    try {
+                        const response = await authFetch(`${API_BASE_URL}/deleteReuniao?id=${reuniaoId}`, { method: 'DELETE' });
+                        if (!response.ok) { throw new Error('Falha ao excluir a reunião.'); }
+                        await fetchAndRenderMeetings();
+                    } catch (error) {
+                        console.error('Erro ao excluir reunião:', error);
+                        alert('Não foi possível excluir a reunião.');
+                    }
+                }
+            }
+
             function openModalForAdd() {
                 meetingForm.reset();
                 delete meetingForm.dataset.editingId;
@@ -415,9 +509,10 @@
             meetingForm.addEventListener('submit', handleFormSubmit);
             window.addEventListener('click', (event) => { if (event.target == meetingModal) { closeModal(); } });
             
-            listBody.addEventListener('click', async (event) => {
+            meetingsGrid.addEventListener('click', async (event) => {
                 const editButton = event.target.closest('.edit-button');
-                const deleteButton = event.target.closest('.delete-button');
+                const deleteButton = event.target.closest('.delete-button-card');
+                
                 if (editButton) {
                     const reuniaoId = editButton.dataset.id;
                     try {
@@ -428,9 +523,9 @@
                         console.error('Erro ao carregar dados da reunião:', error);
                         alert('Não foi possível carregar os dados para edição.');
                     }
-                }
-                if (deleteButton) {
-                    handleDeleteFromList(deleteButton.dataset.id);
+                } else if (deleteButton) {
+                    const reuniaoId = deleteButton.dataset.id;
+                    await handleDeleteMeetingFromCard(reuniaoId);
                 }
             });
         });
