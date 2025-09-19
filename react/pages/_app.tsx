@@ -27,7 +27,7 @@ export default function App({ Component, pageProps }: AppProps) {
           if (window.netlifyIdentity) {
             window.netlifyIdentity.on("init", user => {
               if (!user) {
-                window.location.href = '/login';
+                window.location.href = '/login.html';
               }
             });
           }

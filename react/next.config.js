@@ -2,6 +2,8 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  basePath: '/react',
+  assetPrefix: '/react',
   images: {
     domains: ['res.cloudinary.com', 'via.placeholder.com'],
   },

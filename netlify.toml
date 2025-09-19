@@ -1,9 +1,29 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+# Redirects para a versão React
 [[redirects]]
-  from = "/"
-  to = "/login.html"
+  from = "/react/*"
+  to = "/:splat"
   status = 200
 
-[functions]
-  directory = "netlify/functions/"
-# Redirecionamento para a página de login
+# Redirects para páginas específicas da versão React
+[[redirects]]
+  from = "/login-react"
+  to = "/react/login"
+  status = 200
 
+[[redirects]]
+  from = "/dashboard-react"
+  to = "/react/dashboard"
+  status = 200
+
+# Fallback para a versão HTML atual
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

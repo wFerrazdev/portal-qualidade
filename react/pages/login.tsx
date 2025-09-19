@@ -16,7 +16,7 @@ export default function Login() {
     if (typeof window !== 'undefined' && window.netlifyIdentity) {
       window.netlifyIdentity.on('init', (user: any) => {
         if (user) {
-          window.location.href = '/';
+          window.location.href = '/react/dashboard';
         }
       });
     }
@@ -49,8 +49,8 @@ export default function Login() {
   return (
     <>
       <Head>
-        <title>Login | Portal da Qualidade</title>
-        <meta name="description" content="Faça login no Portal da Qualidade" />
+        <title>Login | Portal da Qualidade - React</title>
+        <meta name="description" content="Faça login no Portal da Qualidade - Versão React" />
       </Head>
 
       <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
@@ -112,7 +112,7 @@ export default function Login() {
                 Portal da Qualidade
               </h2>
               <p className="text-blue-200 text-sm">
-                Acesse o sistema de indicadores
+                Acesse o sistema de indicadores - Versão React
               </p>
             </motion.div>
 
@@ -194,7 +194,7 @@ export default function Login() {
                   ) : (
                     <div className="flex items-center">
                       <LogIn className="h-5 w-5 mr-2" />
-                      Entrar
+                      Entrar (React)
                     </div>
                   )}
                 </motion.button>
@@ -204,6 +204,9 @@ export default function Login() {
               <div className="mt-8 pt-6 border-t border-white/20 text-center">
                 <p className="text-blue-200 text-sm">
                   © 2025 - Developed by William Ferraz
+                </p>
+                <p className="text-blue-300 text-xs mt-1">
+                  Versão React - Deploy Gradual
                 </p>
               </div>
             </motion.div>
