@@ -196,6 +196,15 @@ body {
   background: #ffffff;
   min-height: 100vh;
   transition: margin-left 0.3s ease;
+  padding-bottom: 60px;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding-bottom: 50px;
+  }
 }
 
 /* Header Moderno */
@@ -416,6 +425,8 @@ body {
   padding: 3rem;
   background: #f8fafc;
   min-height: calc(100vh - 200px);
+  overflow-y: auto;
+  max-height: calc(100vh - 200px);
 }
 
 .indicators-grid {
@@ -533,6 +544,7 @@ body {
   
   .content-area {
     padding: 2rem;
+    max-height: calc(100vh - 180px);
   }
   
   .content-header {
@@ -596,6 +608,7 @@ body {
   
   .content-area {
     padding: 1rem;
+    max-height: calc(100vh - 160px);
   }
   
   .tabs-container {
@@ -1010,11 +1023,16 @@ canvas {
 }
 
 .footer {
-    margin-top: 40px;
-    padding: 20px 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 15px 0;
     border-top: 1px solid #e2e8f0;
     background: #f8fafc;
     text-align: center;
+    z-index: 100;
+    backdrop-filter: blur(10px);
 }
 
 .footer p {
