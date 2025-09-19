@@ -384,7 +384,7 @@ body {
 .tabs-container {
   display: flex;
   gap: 0.25rem;
-  padding: 0.125rem 0;
+  padding: 0.1rem 0;
 }
 
 .tab-button {
@@ -555,7 +555,7 @@ body {
   }
   
   .content-area {
-    padding: 0.75rem 2rem;
+    padding: 0.25rem 2rem;
     left: 0;
     top: 120px;
   }
@@ -568,7 +568,7 @@ body {
   .tabs-section {
     left: 0;
     top: 50px;
-    padding: 0.5rem 1rem;
+    padding: 0.1rem 1rem;
   }
 }
 
@@ -635,7 +635,7 @@ body {
   
   .tabs-container {
     overflow-x: auto;
-    padding: 0.0625rem 0;
+    padding: 0.1rem 0;
   }
   
   .tabs-section {
