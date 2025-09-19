@@ -954,19 +954,64 @@ canvas {
 }
 
 
-@keyframes titleGlow {
+@keyframes neonPulse {
     0% { 
         text-shadow: 
-            0 4px 8px rgba(0, 0, 0, 0.4),
-            0 2px 4px rgba(0, 0, 0, 0.2),
-            0 0 20px rgba(255, 255, 255, 0.1);
+            0 0 10px rgba(0, 255, 127, 0.8),
+            0 0 20px rgba(0, 255, 127, 0.6),
+            0 0 30px rgba(0, 255, 127, 0.4),
+            0 0 40px rgba(0, 255, 127, 0.2),
+            0 4px 8px rgba(0, 0, 0, 0.8);
     }
     100% { 
         text-shadow: 
-            0 4px 8px rgba(0, 0, 0, 0.4),
-            0 2px 4px rgba(0, 0, 0, 0.2),
-            0 0 30px rgba(255, 255, 255, 0.2),
-            0 0 40px rgba(255, 255, 255, 0.1);
+            0 0 15px rgba(0, 255, 127, 1),
+            0 0 25px rgba(0, 255, 127, 0.8),
+            0 0 35px rgba(0, 255, 127, 0.6),
+            0 0 45px rgba(0, 255, 127, 0.4),
+            0 4px 8px rgba(0, 0, 0, 0.8);
+    }
+}
+
+@keyframes neonGlow {
+    0%, 100% { 
+        transform: translateX(0) translateY(0) scale(1);
+        opacity: 0.8;
+    }
+    25% { 
+        transform: translateX(-20px) translateY(-10px) scale(1.05);
+        opacity: 0.6;
+    }
+    50% { 
+        transform: translateX(15px) translateY(-15px) scale(0.95);
+        opacity: 0.9;
+    }
+    75% { 
+        transform: translateX(-10px) translateY(8px) scale(1.02);
+        opacity: 0.7;
+    }
+}
+
+@keyframes neonFloat {
+    0% { 
+        transform: translateX(0) translateY(0);
+        opacity: 0.7;
+    }
+    25% { 
+        transform: translateX(-40px) translateY(-20px);
+        opacity: 0.4;
+    }
+    50% { 
+        transform: translateX(30px) translateY(-30px);
+        opacity: 0.8;
+    }
+    75% { 
+        transform: translateX(-20px) translateY(15px);
+        opacity: 0.5;
+    }
+    100% { 
+        transform: translateX(0) translateY(0);
+        opacity: 0.7;
     }
 }
 
@@ -1130,19 +1175,22 @@ canvas {
 
 /* ==================== ESTILOS DA PÁGINA DE PROJETOS ==================== */
 
-/* Header específico para Projetos - BACKGROUND TECNOLÓGICO */
+/* Header específico para Projetos - NEON GLASS EFFECT */
 .projects-page .content-header {
-    background: #08090d;
+    background: #0a0a0a;
     background-image: 
-        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><pattern id="wave1" x="0" y="0" width="400" height="200" patternUnits="userSpaceOnUse"><path d="M0,100 Q100,50 200,100 T400,100" stroke="rgba(0,51,102,0.3)" stroke-width="2" fill="none" opacity="0.6"/><path d="M0,120 Q100,70 200,120 T400,120" stroke="rgba(0,51,102,0.2)" stroke-width="1.5" fill="none" opacity="0.4"/></pattern><pattern id="wave2" x="0" y="0" width="300" height="150" patternUnits="userSpaceOnUse"><path d="M0,75 Q75,25 150,75 T300,75" stroke="rgba(0,80,160,0.4)" stroke-width="1.5" fill="none" opacity="0.5"/><path d="M0,90 Q75,40 150,90 T300,90" stroke="rgba(0,80,160,0.3)" stroke-width="1" fill="none" opacity="0.3"/></pattern></defs><rect width="1200" height="800" fill="url(%23wave1)"/><rect width="1200" height="800" fill="url(%23wave2)" opacity="0.7"/></svg>'),
-        linear-gradient(135deg, #001a33 0%, #003366 25%, #004080 50%, #0052a3 75%, #0066cc 100%);
+        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><filter id="neonGlow"><feGaussianBlur stdDeviation="4" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><path d="M0,300 Q200,100 400,300 T800,300 T1200,300" stroke="rgba(0,255,127,0.8)" stroke-width="3" fill="none" filter="url(%23neonGlow)"><animate attributeName="d" values="M0,300 Q200,100 400,300 T800,300 T1200,300;M0,300 Q200,200 400,300 T800,300 T1200,300;M0,300 Q200,100 400,300 T800,300 T1200,300" dur="8s" repeatCount="indefinite"/></path><path d="M0,500 Q300,200 600,500 T1200,500" stroke="rgba(0,255,127,0.6)" stroke-width="2" fill="none" filter="url(%23neonGlow)"><animate attributeName="d" values="M0,500 Q300,200 600,500 T1200,500;M0,500 Q300,350 600,500 T1200,500;M0,500 Q300,200 600,500 T1200,500" dur="10s" repeatCount="indefinite"/></path><path d="M0,200 Q400,50 800,200 T1200,200" stroke="rgba(0,255,127,0.4)" stroke-width="1.5" fill="none" filter="url(%23neonGlow)"><animate attributeName="d" values="M0,200 Q400,50 800,200 T1200,200;M0,200 Q400,150 800,200 T1200,200;M0,200 Q400,50 800,200 T1200,200" dur="12s" repeatCount="indefinite"/></path></svg>'),
+        linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 25%, #0d1b0d 50%, #1a2a1a 75%, #0a0a0a 100%);
     background-size: cover, cover;
     background-position: center, center;
-    background-blend-mode: hard-light, normal;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    background-blend-mode: screen, normal;
+    border-bottom: 2px solid rgba(0, 255, 127, 0.3);
     padding: 0;
     margin-left: 100px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    box-shadow: 
+        0 4px 20px rgba(0, 0, 0, 0.5),
+        0 0 40px rgba(0, 255, 127, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
     position: static;
     overflow: hidden;
 }
@@ -1155,10 +1203,10 @@ canvas {
     right: 0;
     bottom: 0;
     background: 
-        radial-gradient(ellipse at 20% 80%, rgba(0, 102, 204, 0.15) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 20%, rgba(0, 51, 102, 0.12) 0%, transparent 50%),
-        radial-gradient(ellipse at 40% 40%, rgba(0, 80, 160, 0.08) 0%, transparent 50%);
-    animation: waveGlow 8s ease-in-out infinite;
+        radial-gradient(ellipse at 20% 80%, rgba(0, 255, 127, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(0, 255, 127, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 40% 40%, rgba(0, 255, 127, 0.05) 0%, transparent 50%);
+    animation: neonGlow 6s ease-in-out infinite;
     pointer-events: none;
 }
 
@@ -1170,12 +1218,12 @@ canvas {
     right: 0;
     bottom: 0;
     background: 
-        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><filter id="glow"><feGaussianBlur stdDeviation="3" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><path d="M0,200 Q200,100 400,200 T800,200 T1200,200" stroke="rgba(0,102,204,0.4)" stroke-width="3" fill="none" filter="url(%23glow)"><animate attributeName="d" values="M0,200 Q200,100 400,200 T800,200 T1200,200;M0,200 Q200,150 400,200 T800,200 T1200,200;M0,200 Q200,100 400,200 T800,200 T1200,200" dur="6s" repeatCount="indefinite"/></path><path d="M0,300 Q300,200 600,300 T1200,300" stroke="rgba(0,80,160,0.3)" stroke-width="2" fill="none" filter="url(%23glow)"><animate attributeName="d" values="M0,300 Q300,200 600,300 T1200,300;M0,300 Q300,250 600,300 T1200,300;M0,300 Q300,200 600,300 T1200,300" dur="8s" repeatCount="indefinite"/></path><path d="M0,500 Q400,400 800,500 T1200,500" stroke="rgba(0,51,102,0.2)" stroke-width="2.5" fill="none" filter="url(%23glow)"><animate attributeName="d" values="M0,500 Q400,400 800,500 T1200,500;M0,500 Q400,450 800,500 T1200,500;M0,500 Q400,400 800,500 T1200,500" dur="10s" repeatCount="indefinite"/></path></svg>');
+        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><filter id="neonParticles"><feGaussianBlur stdDeviation="2" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><circle cx="100" cy="200" r="2" fill="rgba(0,255,127,0.6)" filter="url(%23neonParticles)"><animate attributeName="cy" values="200;150;200" dur="3s" repeatCount="indefinite"/></circle><circle cx="300" cy="300" r="1.5" fill="rgba(0,255,127,0.4)" filter="url(%23neonParticles)"><animate attributeName="cy" values="300;250;300" dur="4s" repeatCount="indefinite"/></circle><circle cx="500" cy="150" r="1" fill="rgba(0,255,127,0.3)" filter="url(%23neonParticles)"><animate attributeName="cy" values="150;100;150" dur="5s" repeatCount="indefinite"/></circle><circle cx="700" cy="400" r="2.5" fill="rgba(0,255,127,0.5)" filter="url(%23neonParticles)"><animate attributeName="cy" values="400;350;400" dur="3.5s" repeatCount="indefinite"/></circle><circle cx="900" cy="250" r="1.8" fill="rgba(0,255,127,0.4)" filter="url(%23neonParticles)"><animate attributeName="cy" values="250;200;250" dur="4.5s" repeatCount="indefinite"/></circle><circle cx="1100" cy="350" r="1.2" fill="rgba(0,255,127,0.3)" filter="url(%23neonParticles)"><animate attributeName="cy" values="350;300;350" dur="6s" repeatCount="indefinite"/></circle></svg>');
     background-size: cover;
     background-position: center;
-    animation: waveMove 12s linear infinite;
+    animation: neonFloat 8s linear infinite;
     pointer-events: none;
-    opacity: 0.6;
+    opacity: 0.7;
 }
 
 .projects-page .projects-header {
@@ -1196,17 +1244,20 @@ canvas {
 .projects-page .projects-title {
     font-size: 2.5rem;
     font-weight: 800;
-    color: white;
+    color: #00ff7f;
     margin: 0;
     text-shadow: 
-        0 4px 8px rgba(0, 0, 0, 0.4),
-        0 2px 4px rgba(0, 0, 0, 0.2),
-        0 0 20px rgba(255, 255, 255, 0.1);
+        0 0 10px rgba(0, 255, 127, 0.8),
+        0 0 20px rgba(0, 255, 127, 0.6),
+        0 0 30px rgba(0, 255, 127, 0.4),
+        0 0 40px rgba(0, 255, 127, 0.2),
+        0 4px 8px rgba(0, 0, 0, 0.8);
     letter-spacing: -0.5px;
     line-height: 1.2;
-    animation: titleGlow 3s ease-in-out infinite alternate;
+    animation: neonPulse 2s ease-in-out infinite alternate;
     position: relative;
     z-index: 2;
+    filter: drop-shadow(0 0 15px rgba(0, 255, 127, 0.5));
 }
 
 .projects-page .header-right {
@@ -1214,23 +1265,27 @@ canvas {
 }
 
 .projects-page .projects-add-btn {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(0, 255, 127, 0.1);
     backdrop-filter: blur(20px);
-    color: white;
-    border: 2px solid rgba(255, 255, 255, 0.2);
+    color: #00ff7f;
+    border: 2px solid rgba(0, 255, 127, 0.3);
     padding: 14px 28px;
     border-radius: 16px;
     font-weight: 700;
     font-size: 1rem;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.5),
+        0 0 20px rgba(0, 255, 127, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
     display: flex;
     align-items: center;
     gap: 10px;
     position: relative;
     overflow: hidden;
     z-index: 2;
+    text-shadow: 0 0 10px rgba(0, 255, 127, 0.5);
 }
 
 .projects-page .projects-add-btn::before {
@@ -1250,9 +1305,13 @@ canvas {
 
 .projects-page .projects-add-btn:hover {
     transform: translateY(-3px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
-    background: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 
+        0 12px 40px rgba(0, 0, 0, 0.6),
+        0 0 30px rgba(0, 255, 127, 0.4),
+        0 0 50px rgba(0, 255, 127, 0.2);
+    background: rgba(0, 255, 127, 0.2);
+    border-color: rgba(0, 255, 127, 0.6);
+    text-shadow: 0 0 15px rgba(0, 255, 127, 0.8);
 }
 
 .projects-page .projects-add-btn:active {
