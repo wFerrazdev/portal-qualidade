@@ -371,7 +371,7 @@ body {
 /* Abas Modernas */
 .tabs-section {
   background: #ffffff;
-  padding: 0 3rem;
+  padding: 0.5rem 3rem;
   border-bottom: 1px solid #e2e8f0;
   position: fixed;
   top: 60px;
@@ -434,7 +434,7 @@ body {
   padding: 1rem 3rem;
   background: #f8fafc;
   position: fixed;
-  top: 120px;
+  top: 140px;
   left: 100px;
   right: 0;
   bottom: 0;
@@ -557,7 +557,7 @@ body {
   .content-area {
     padding: 0.75rem 2rem;
     left: 0;
-    top: 100px;
+    top: 120px;
   }
   
   .content-header {
@@ -568,6 +568,7 @@ body {
   .tabs-section {
     left: 0;
     top: 50px;
+    padding: 0.5rem 1rem;
   }
 }
 
@@ -629,7 +630,7 @@ body {
   .content-area {
     padding: 0.5rem;
     left: 0;
-    top: 100px;
+    top: 120px;
   }
   
   .tabs-container {
@@ -640,6 +641,7 @@ body {
   .tabs-section {
     left: 0;
     top: 50px;
+    padding: 0.5rem 1rem;
   }
 
 .tab-button {
@@ -763,8 +765,8 @@ canvas {
         display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 0;
-  gap: 2rem;
+  padding: 0.5rem 0;
+  gap: 1rem;
 }
 
 .filters-group {
