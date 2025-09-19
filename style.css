@@ -1137,6 +1137,7 @@ canvas {
     padding: 0;
     margin: 0;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    position: static;
 }
 
 .projects-page .projects-header {
@@ -1225,11 +1226,11 @@ canvas {
     background: #f8fafc;
     padding: 0;
     margin: 0;
-    min-height: 0;
+    min-height: calc(100vh - 200px);
     max-height: calc(100vh - 200px);
     overflow-y: auto;
-    border-top: 1px solid #e2e8f0;
     flex: 1;
+    position: static;
 }
 
 /* Grid de Projetos */
