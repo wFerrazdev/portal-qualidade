@@ -581,17 +581,41 @@
             }
             
             try {
+                console.log('Iniciando carregamento de dados...');
+                console.log('API_BASE_URL:', API_BASE_URL);
+                
+                const urls = [
+                    `${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_EXTERNO}&sheets=opt_por_cliente,opt_por_projeto,opt_detalhado,opt_inteiro`,
+                    `${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_INTERNO}&sheets=nci_por_setor,pareto_mes,pareto_ano,nci_anual`,
+                    `${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_RIFS}&sheets=status_por_fornecedor_ano,status_por_fornecedor_mes,pareto_rifs`,
+                    `${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_NC_EXTERNA}&sheets=nce_procedentes_anos,nce_naoprocedentes_anos,total_nce_anos,nce_pareto_defeitos,kpi_revertidos`
+                ];
+                
+                console.log('URLs das APIs:', urls);
+                
                 const [responseExterno, responseInterno, responseRifs, responseNCExterna] = await Promise.all([
-                    fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_EXTERNO}&sheets=opt_por_cliente,opt_por_projeto,opt_detalhado,opt_inteiro`),
-                    fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_INTERNO}&sheets=nci_por_setor,pareto_mes,pareto_ano,nci_anual`),
-                    fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_RIFS}&sheets=status_por_fornecedor_ano,status_por_fornecedor_mes,pareto_rifs`),
-                    fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_NC_EXTERNA}&sheets=nce_procedentes_anos,nce_naoprocedentes_anos,total_nce_anos,nce_pareto_defeitos,kpi_revertidos`)
+                    fetch(urls[0]),
+                    fetch(urls[1]),
+                    fetch(urls[2]),
+                    fetch(urls[3])
                 ]);
+
+                console.log('Status das respostas:');
+                console.log('Externo:', responseExterno.status, responseExterno.statusText);
+                console.log('Interno:', responseInterno.status, responseInterno.statusText);
+                console.log('RIFS:', responseRifs.status, responseRifs.statusText);
+                console.log('NC Externa:', responseNCExterna.status, responseNCExterna.statusText);
 
                 lastDataExterno = await responseExterno.json();
                 lastDataInterno = await responseInterno.json();
                 lastDataRifs = await responseRifs.json();
                 lastDataNCExterna = await responseNCExterna.json();
+
+                console.log('Dados carregados:');
+                console.log('Externo:', lastDataExterno);
+                console.log('Interno:', lastDataInterno);
+                console.log('RIFS:', lastDataRifs);
+                console.log('NC Externa:', lastDataNCExterna);
 
                 renderAllCharts();
                 
@@ -626,10 +650,15 @@
         }
 
         function renderizarGraficosRifs() {
+            console.log('Tentando renderizar gráficos RIFS...');
+            console.log('lastDataRifs:', lastDataRifs);
+            
             if (!lastDataRifs || !lastDataRifs.sheets) {
                 console.log('Dados RIFs não disponíveis ainda');
                 return;
             }
+            
+            console.log('Dados RIFS encontrados:', lastDataRifs.sheets);
 
             try {
                 // Gráfico 1: RIFs por Fornecedor - Anual
@@ -840,10 +869,15 @@
         }
 
         function renderizarGraficosOpt() {
+            console.log('Tentando renderizar gráficos OPT...');
+            console.log('lastDataExterno:', lastDataExterno);
+            
             if (!lastDataExterno || !lastDataExterno.sheets) {
                 console.log('Dados OPT não disponíveis ainda');
                 return;
             }
+            
+            console.log('Dados OPT encontrados:', lastDataExterno.sheets);
 
             // Adicionar delay para todos os gráficos OPT para consistência
             setTimeout(() => {
@@ -1099,10 +1133,15 @@
         }
 
         function renderizarGraficosNCInterna() {
+            console.log('Tentando renderizar gráficos NC Interna...');
+            console.log('lastDataInterno:', lastDataInterno);
+            
             if (!lastDataInterno || !lastDataInterno.sheets) {
                 console.log('Dados NC Interna não disponíveis ainda');
                 return;
             }
+            
+            console.log('Dados NC Interna encontrados:', lastDataInterno.sheets);
 
             try {
                 // Gráfico 8: NC Interna por Setor
@@ -1327,10 +1366,15 @@
         }
 
         function renderizarGraficosNCExterna() {
+            console.log('Tentando renderizar gráficos NC Externa...');
+            console.log('lastDataNCExterna:', lastDataNCExterna);
+            
             if (!lastDataNCExterna || !lastDataNCExterna.sheets) {
                 console.log('Dados NC Externa não disponíveis ainda');
                 return;
             }
+            
+            console.log('Dados NC Externa encontrados:', lastDataNCExterna.sheets);
 
             try {
                 // Gráfico 12: NC Externa Procedentes
