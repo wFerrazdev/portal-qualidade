@@ -33,7 +33,7 @@ body {
   height: 100vh;
   z-index: 1000;
   width: 100px;
-  background: linear-gradient(180deg, #003366 0%, #004488 100%);
+  background: linear-gradient(180deg, #0f172a 0%, #1e3a8a 100%);
   color: white;
   display: flex;
   flex-direction: column;
