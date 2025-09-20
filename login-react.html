@@ -197,27 +197,29 @@
 
         /* Logo integrada no card */
         .login-card .logo {
-            height: 4rem;
+            height: 6rem;
             width: auto;
-            margin: 0 auto 1.5rem;
+            margin: 0 auto 2rem;
             display: block;
         }
 
         /* Título integrado no card */
         .login-card .title {
-            margin: 0 0 1rem;
-            font-size: 1.5rem;
+            margin: 0 0 1.5rem;
+            font-size: 2rem;
             font-weight: 800;
-            color: #1f2937;
+            color: white;
             text-align: center;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         /* Subtítulo integrado no card */
         .login-card .subtitle {
-            margin: 0 0 2rem;
-            font-size: 0.875rem;
-            color: #6b7280;
+            margin: 0 0 2.5rem;
+            font-size: 1rem;
+            color: #e5e7eb;
             text-align: center;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
         }
 
 
@@ -226,11 +228,13 @@
         /* Card de Login */
         .login-card {
             position: relative;
-            background: white;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             border-radius: 1.5rem;
-            padding: 3rem 2rem;
+            padding: 4rem 2rem;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            border: 2px solid #e5e7eb;
+            border: 1px solid rgba(255, 255, 255, 0.2);
             overflow: hidden;
             animation: fadeInUp 0.6s ease-out 0.2s both;
         }
@@ -258,24 +262,26 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 1rem 2rem;
+            padding: 1.2rem 2rem;
             border-radius: 0.75rem;
-            font-size: 1.125rem;
+            font-size: 1.2rem;
             font-weight: 600;
             color: white;
-            background: linear-gradient(90deg, #2563eb, #1d4ed8);
-            border: none;
+            background: rgba(59, 130, 246, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
             overflow: hidden;
             animation: scaleIn 0.5s ease-out 0.6s both;
         }
 
         .login-button:hover {
-            background: linear-gradient(90deg, #1d4ed8, #1e40af);
+            background: rgba(37, 99, 235, 0.9);
             transform: scale(1.05);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
         }
 
         .login-button:active {
