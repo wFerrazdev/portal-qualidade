@@ -2234,29 +2234,8 @@ canvas {
 
 /* ========================================
    BACKGROUND ANIMADO DO CABEÇALHO - PROJETOS
+   EXATO da página de login
    ======================================== */
-
-/* Animações para o cabeçalho de projetos */
-@keyframes projectsBuildWave {
-    0% {
-        stroke-dashoffset: 1000;
-    }
-    50% {
-        stroke-dashoffset: 0;
-    }
-    100% {
-        stroke-dashoffset: -1000;
-    }
-}
-
-@keyframes projectsFloat {
-    0%, 100% {
-        transform: translateY(0px);
-    }
-    50% {
-        transform: translateY(-15px);
-    }
-}
 
 /* Background animado do cabeçalho de projetos */
 .projects-header-background {
@@ -2264,51 +2243,131 @@ canvas {
     top: 0;
     left: 0;
     width: 100%;
-    height: 300px;
+    height: 200px;
     z-index: 1;
     overflow: hidden;
     pointer-events: none;
 }
 
+/* Ondas animadas - EXATAS do login.html */
 .projects-wave {
     position: absolute;
     width: 100%;
-    height: 100%;
+    height: 120px;
     opacity: 0.75;
-    animation: projectsBuildWave 8s linear infinite;
 }
 
-.projects-wave:nth-child(1) { animation-delay: 0s; }
-.projects-wave:nth-child(2) { animation-delay: 1.6s; }
-.projects-wave:nth-child(3) { animation-delay: 3.2s; }
-.projects-wave:nth-child(4) { animation-delay: 4.8s; }
-.projects-wave:nth-child(5) { animation-delay: 6.4s; }
+.projects-wave.wave-1 {
+    top: 15%;
+    animation-delay: 0s;
+}
 
-/* Partículas flutuantes do cabeçalho de projetos */
+.projects-wave.wave-1 path {
+    stroke-dasharray: 2000;
+    stroke-dashoffset: 2000;
+    animation: buildWave 12s linear infinite;
+}
+
+.projects-wave.wave-2 {
+    top: 35%;
+    animation-delay: 2s;
+}
+
+.projects-wave.wave-2 path {
+    stroke-dasharray: 2000;
+    stroke-dashoffset: 2000;
+    animation: buildWave 14s linear infinite 2s;
+}
+
+.projects-wave.wave-3 {
+    top: 55%;
+    animation-delay: 4s;
+}
+
+.projects-wave.wave-3 path {
+    stroke-dasharray: 2000;
+    stroke-dashoffset: 2000;
+    animation: buildWave 13s linear infinite 4s;
+}
+
+.projects-wave.wave-4 {
+    top: 75%;
+    animation-delay: 6s;
+}
+
+.projects-wave.wave-4 path {
+    stroke-dasharray: 2000;
+    stroke-dashoffset: 2000;
+    animation: buildWave 15s linear infinite 6s;
+}
+
+.projects-wave.wave-5 {
+    top: 85%;
+    animation-delay: 8s;
+}
+
+.projects-wave.wave-5 path {
+    stroke-dasharray: 2000;
+    stroke-dashoffset: 2000;
+    animation: buildWave 11s linear infinite 8s;
+}
+
+/* Animação buildWave - EXATA do login.html */
+@keyframes buildWave {
+    0% { 
+        stroke-dashoffset: 2000; 
+        opacity: 0; 
+    }
+    10% { 
+        stroke-dashoffset: 1800; 
+        opacity: 0.3; 
+    }
+    25% { 
+        stroke-dashoffset: 1500; 
+        opacity: 0.6; 
+    }
+    50% { 
+        stroke-dashoffset: 1000; 
+        opacity: 0.9; 
+    }
+    60% { 
+        stroke-dashoffset: 800; 
+        opacity: 0.9; 
+    }
+    70% { 
+        stroke-dashoffset: 600; 
+        opacity: 0.8; 
+    }
+    80% { 
+        stroke-dashoffset: 400; 
+        opacity: 0.7; 
+    }
+    90% { 
+        stroke-dashoffset: 200; 
+        opacity: 0.5; 
+    }
+    100% { 
+        stroke-dashoffset: 0; 
+        opacity: 0; 
+    }
+}
+
+/* Partículas flutuantes - EXATAS do login.html */
 .projects-particle {
     position: absolute;
     width: 4px;
     height: 4px;
-    background: rgba(255, 255, 255, 0.6);
+    background: #60a5fa;
     border-radius: 50%;
-    animation: projectsFloat 6s ease-in-out infinite;
+    animation: float 6s ease-in-out infinite;
 }
 
-.projects-particle:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; }
-.projects-particle:nth-child(2) { top: 40%; left: 20%; animation-delay: 1s; }
-.projects-particle:nth-child(3) { top: 60%; left: 80%; animation-delay: 2s; }
-.projects-particle:nth-child(4) { top: 80%; left: 70%; animation-delay: 3s; }
-.projects-particle:nth-child(5) { top: 10%; left: 50%; animation-delay: 4s; }
-.projects-particle:nth-child(6) { top: 70%; left: 30%; animation-delay: 5s; }
-.projects-particle:nth-child(7) { top: 30%; left: 90%; animation-delay: 0.5s; }
-.projects-particle:nth-child(8) { top: 90%; left: 40%; animation-delay: 1.5s; }
-.projects-particle:nth-child(9) { top: 15%; left: 75%; animation-delay: 2.5s; }
-.projects-particle:nth-child(10) { top: 55%; left: 5%; animation-delay: 3.5s; }
-.projects-particle:nth-child(11) { top: 25%; left: 60%; animation-delay: 4.5s; }
-.projects-particle:nth-child(12) { top: 85%; left: 15%; animation-delay: 0.8s; }
-.projects-particle:nth-child(13) { top: 45%; left: 35%; animation-delay: 1.8s; }
-.projects-particle:nth-child(14) { top: 75%; left: 85%; animation-delay: 2.8s; }
-.projects-particle:nth-child(15) { top: 5%; left: 25%; animation-delay: 3.8s; }
+@keyframes float {
+    0%, 100% { transform: translateY(0px) translateX(0px); opacity: 0.7; }
+    25% { transform: translateY(-20px) translateX(10px); opacity: 0.4; }
+    50% { transform: translateY(-10px) translateX(-15px); opacity: 0.8; }
+    75% { transform: translateY(-30px) translateX(5px); opacity: 0.3; }
+}
 
 /* Ajustar o cabeçalho para ter posição relativa */
 .content-header {
