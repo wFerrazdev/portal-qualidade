@@ -251,33 +251,6 @@ body.dashboard-page {
   overflow: hidden;
 }
 
-/* Ondas animadas no header do dashboard */
-.dashboard-page .content-header::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 100%;
-  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 1200 200' preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,100 Q100,20 200,100 Q300,180 400,100 Q500,20 600,100 Q700,180 800,100 Q900,20 1000,100 Q1100,180 1200,100' stroke='%2360a5fa' stroke-width='2' fill='none'/%3E%3C/svg%3E") repeat-x;
-  opacity: 0.3;
-  animation: waveMove 8s linear infinite;
-  z-index: 1;
-}
-
-.dashboard-page .content-header::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 100%;
-  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 1200 200' preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,100 Q150,30 300,100 Q450,170 600,100 Q750,30 900,100 Q1050,170 1200,100' stroke='%2393c5fd' stroke-width='2' fill='none'/%3E%3C/svg%3E") repeat-x;
-  opacity: 0.2;
-  animation: waveMove 12s linear infinite reverse;
-  z-index: 1;
-}
-
 /* Textos do header do dashboard */
 .dashboard-page .header-title {
   color: #ffffff !important;
