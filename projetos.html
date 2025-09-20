@@ -89,6 +89,62 @@
         <div class="overlay" id="overlay"></div>
 
         <div class="main-content">
+            <!-- Background animado para o cabeçalho -->
+            <div class="header-background-animation">
+                <!-- Ondas SVG -->
+                <svg class="header-wave" viewBox="0 0 1200 200" preserveAspectRatio="none">
+                    <path d="M0,100 Q300,50 600,100 T1200,100 L1200,200 L0,200 Z" fill="url(#headerWaveGradient1)" stroke="rgba(59, 130, 246, 0.3)" stroke-width="4" stroke-dasharray="1000" stroke-dashoffset="1000"/>
+                </svg>
+                <svg class="header-wave" viewBox="0 0 1200 200" preserveAspectRatio="none">
+                    <path d="M0,120 Q300,70 600,120 T1200,120 L1200,200 L0,200 Z" fill="url(#headerWaveGradient2)" stroke="rgba(37, 99, 235, 0.4)" stroke-width="4" stroke-dasharray="1000" stroke-dashoffset="1000"/>
+                </svg>
+                <svg class="header-wave" viewBox="0 0 1200 200" preserveAspectRatio="none">
+                    <path d="M0,140 Q300,90 600,140 T1200,140 L1200,200 L0,200 Z" fill="url(#headerWaveGradient3)" stroke="rgba(29, 78, 216, 0.5)" stroke-width="4" stroke-dasharray="1000" stroke-dashoffset="1000"/>
+                </svg>
+                <svg class="header-wave" viewBox="0 0 1200 200" preserveAspectRatio="none">
+                    <path d="M0,160 Q300,110 600,160 T1200,160 L1200,200 L0,200 Z" fill="url(#headerWaveGradient4)" stroke="rgba(30, 64, 175, 0.6)" stroke-width="4" stroke-dasharray="1000" stroke-dashoffset="1000"/>
+                </svg>
+                <svg class="header-wave" viewBox="0 0 1200 200" preserveAspectRatio="none">
+                    <path d="M0,180 Q300,130 600,180 T1200,180 L1200,200 L0,200 Z" fill="url(#headerWaveGradient5)" stroke="rgba(30, 58, 138, 0.7)" stroke-width="4" stroke-dasharray="1000" stroke-dashoffset="1000"/>
+                </svg>
+
+                <!-- Gradientes para as ondas -->
+                <defs>
+                    <linearGradient id="headerWaveGradient1" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:rgba(59, 130, 246, 0.1);stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:rgba(37, 99, 235, 0.2);stop-opacity:1" />
+                    </linearGradient>
+                    <linearGradient id="headerWaveGradient2" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:rgba(37, 99, 235, 0.1);stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:rgba(29, 78, 216, 0.2);stop-opacity:1" />
+                    </linearGradient>
+                    <linearGradient id="headerWaveGradient3" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:rgba(29, 78, 216, 0.1);stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:rgba(30, 64, 175, 0.2);stop-opacity:1" />
+                    </linearGradient>
+                    <linearGradient id="headerWaveGradient4" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:rgba(30, 64, 175, 0.1);stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:rgba(30, 58, 138, 0.2);stop-opacity:1" />
+                    </linearGradient>
+                    <linearGradient id="headerWaveGradient5" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:rgba(30, 58, 138, 0.1);stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:rgba(30, 41, 59, 0.2);stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+
+                <!-- Partículas flutuantes -->
+                <div class="header-particle"></div>
+                <div class="header-particle"></div>
+                <div class="header-particle"></div>
+                <div class="header-particle"></div>
+                <div class="header-particle"></div>
+                <div class="header-particle"></div>
+                <div class="header-particle"></div>
+                <div class="header-particle"></div>
+                <div class="header-particle"></div>
+                <div class="header-particle"></div>
+            </div>
+
             <header class="content-header">
                 <button class="mobile-menu-button" id="mobileMenuButton">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
