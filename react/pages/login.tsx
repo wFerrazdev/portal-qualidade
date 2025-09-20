@@ -5,13 +5,11 @@ import { motion } from 'framer-motion';
 import AnimatedWaves from '../components/AnimatedWaves';
 import FloatingParticles from '../components/FloatingParticles';
 import LoginCard from '../components/LoginCard';
-import { useAnimations } from '../hooks/useAnimations';
 
 declare const netlifyIdentity: any;
 
 const LoginPage: React.FC = () => {
   const router = useRouter();
-  const { fadeInDown } = useAnimations();
 
   useEffect(() => {
     if (typeof netlifyIdentity !== 'undefined') {
@@ -60,7 +58,7 @@ const LoginPage: React.FC = () => {
         }}
       />
       
-      {/* Ondas animadas curvadas */}
+      {/* Ondas animadas */}
       <AnimatedWaves />
       
       {/* Partículas flutuantes */}
@@ -88,8 +86,10 @@ const LoginPage: React.FC = () => {
         <div className="max-w-md w-full space-y-8">
           {/* Logo e título */}
           <motion.div
-            {...fadeInDown}
             className="text-center"
+            initial={{ opacity: 0, y: -30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
           >
             <img
               className="mx-auto h-24 w-auto"
@@ -99,7 +99,7 @@ const LoginPage: React.FC = () => {
             <h2 className="mt-6 text-center text-3xl font-extrabold text-white">
               Portal da Qualidade
             </h2>
-            <p className="text-blue-200 text-sm">
+            <p className="text-blue-200 text-sm mt-2">
               Acesse o sistema de indicadores - Versão React
             </p>
           </motion.div>
