@@ -216,7 +216,7 @@ body {
 
 /* Header padrão (outras páginas) */
 .content-header {
-  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  background: linear-gradient(135deg,rgb(34, 64, 104) 0%,rgb(12, 42, 71) 100%);
   padding: 0.25rem 3rem;
   border-bottom: 1px solid #e2e8f0;
   position: fixed;
@@ -231,7 +231,7 @@ body {
 /* Background específico para dashboard */
 body.dashboard-page {
   background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%);
-  color: #ffffff;
+  color:rgba(255, 255, 255, 0);
 }
 
 /* Header do dashboard - COMPLETAMENTE TRANSPARENTE */
@@ -271,7 +271,7 @@ body.dashboard-page {
 .header-title {
   font-size: 2rem;
   font-weight: 700;
-  color: #003366;
+  color:rgb(255, 255, 255);
   margin: 0;
   background: linear-gradient(135deg, #003366 0%, #004488 100%);
   -webkit-background-clip: text;
@@ -298,7 +298,7 @@ body.dashboard-page {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: #ffffff;
+  background: linear-gradient(135deg, #003366 0%, #004488 100%);
   padding: 0.375rem 1rem;
   border-radius: 20px;
   box-shadow: 0 4px 20px rgba(0, 51, 102, 0.1);
@@ -319,7 +319,7 @@ body.dashboard-page {
 /* Tab indicator específico para Dashboard */
 .dashboard-page .tab-indicator {
   background: rgba(255, 255, 255, 0.4);
-  color: #ffffff;
+  color:rgba(56, 70, 129, 0.54);
   border: 1px solid rgba(255, 255, 255, 0.6);
 }
 

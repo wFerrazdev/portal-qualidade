@@ -66,7 +66,7 @@
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
                     </svg>
-                        <span>Logout</span>
+                            <span>Logout</span>
                     </a></li>
                 </ul>
             </nav>
@@ -144,10 +144,10 @@
                 </button>
                 
                 <div class="header-top">
-                    <div>
+                <div>
                         <h1 class="header-title">Dashboard de Indicadores</h1>
                         <p class="header-subtitle">Visão geral dos indicadores de qualidade do mês</p>
-                    </div>
+                </div>
                 </div>
 
             </header>
@@ -162,30 +162,30 @@
                         <button class="tab-button" data-tab="nc_externa">NC Externa</button>
                     </div>
                     <div class="filters-group">
-                    <div class="filter-group">
-                        <span id="currentTabIndicator" class="tab-indicator">RIFS</span>
-                        <select id="periodoMes" class="filter-select">
+                        <div class="filter-group">
+                            <span id="currentTabIndicator" class="tab-indicator">RIFS</span>
+                            <select id="periodoMes" class="filter-select">
                             <option value="">Selecionar Mês</option>
-                        </select>
-                        <select id="periodoAno" class="filter-select">
+                            </select>
+                            <select id="periodoAno" class="filter-select">
                             <option value="">Selecionar Ano</option>
-                        </select>
+                            </select>
                         <button id="aplicarPeriodoBtn" class="btn btn-primary btn-icon" title="Aplicar período">
                             <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-                            </svg>
-                        </button>
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                                </svg>
+                            </button>
                         <button id="refreshChartsBtn" class="btn btn-primary btn-icon" title="Atualizar dados">
                             <img src="atualizarbtn.png" alt="Atualizar" width="20" height="20">
-                        </button>
-                    </div>
+                            </button>
+                        </div>
                     <button id="generatePdfBtn" class="btn btn-secondary" title="Gerar Relatório em PDF">
                         <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="margin-right: 8px;">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                         </svg>
                             Relatório
-                    </button>
-                </div>
+                        </button>
+                    </div>
                 </div>
             </section>
 
@@ -198,46 +198,46 @@
                             <div>
                                 <h3 class="card-title">RIFs por Fornecedor - Anual</h3>
                                 <p class="card-description">Mostra os status e quantas rifs cada fornecedor teve no ano</p>
-                            </div>
-                        </div>
+                    </div>
+                    </div>
                         <div class="card-chart">
                             <canvas id="grafico1"></canvas>
                         </div>
                     </div>
-
+                    
                     <!-- RIFs por Fornecedor - Mensal -->
                     <div class="indicator-card" data-tab="rifs">
                         <div class="card-header">
                             <div>
                                 <h3 class="card-title">RIFs por Fornecedor - Mensal</h3>
                                 <p class="card-description">Mostra os status e quantas rifs cada fornecedor teve no mês</p>
-                            </div>
-                        </div>
+                    </div>
+                    </div>
                         <div class="card-chart">
                             <canvas id="grafico2"></canvas>
-                        </div>
                     </div>
-
+                    </div>
+                    
                     <!-- Pareto - Fornecedor -->
                     <div class="indicator-card" data-tab="rifs">
                         <div class="card-header">
                             <div>
                                 <h3 class="card-title">Pareto - Fornecedor</h3>
                                 <p class="card-description">Mostra o fornecedor com mais impacto para a empresa</p>
-                            </div>
-                        </div>
+                    </div>
+                    </div>
                         <div class="card-chart">
                             <canvas id="grafico3"></canvas>
-                        </div>
                     </div>
-
+                    </div>
+                    
                     <!-- OPT por Cliente -->
                     <div class="indicator-card" data-tab="opt">
                         <div class="card-header">
                             <div>
                                 <h3 class="card-title">OPT por Cliente</h3>
                                 <p class="card-description">Análise de oportunidades de melhoria por cliente</p>
-                            </div>
+                        </div>
                         </div>
                         <div class="card-chart">
                             <canvas id="grafico4"></canvas>
@@ -250,7 +250,7 @@
                             <div>
                                 <h3 class="card-title">OPT por Projeto</h3>
                                 <p class="card-description">Distribuição de OPTs por projeto</p>
-                            </div>
+                        </div>
                         </div>
                         <div class="card-chart">
                             <canvas id="grafico5"></canvas>
@@ -263,7 +263,7 @@
                             <div>
                                 <h3 class="card-title">OPT Detalhado</h3>
                                 <p class="card-description">Visão detalhada das oportunidades de melhoria</p>
-                            </div>
+                        </div>
                         </div>
                         <div class="card-chart">
                             <canvas id="grafico6"></canvas>
@@ -276,12 +276,12 @@
                             <div>
                                 <h3 class="card-title">OPT Inteiro</h3>
                                 <p class="card-description">Visão geral de todas as OPTs</p>
-                            </div>
+                        </div>
                         </div>
                         <div class="card-chart">
                             <canvas id="grafico7"></canvas>
-                        </div>
                     </div>
+                </div>
 
                     <!-- NC Interna por Setor -->
                     <div class="indicator-card" data-tab="nc_interna">
@@ -388,13 +388,13 @@
                     </div>
                 </div>
             </section>
-        </main>
+            </main>
 
-        <footer class="footer">
-            <p>&copy; 2025 - Developed by William Ferraz</p>
-        </footer>
+            <footer class="footer">
+                <p>&copy; 2025 - Developed by William Ferraz</p>
+            </footer>
     </div>
-
+    
     <script>
         // [Aqui vai o JavaScript completo da versão original, mas adaptado para o novo design]
         // Por enquanto, vou manter a funcionalidade básica
@@ -473,9 +473,9 @@
                     if (event.target.classList.contains('tab-button')) {
                         const activeTab = event.target.dataset.tab;
                         switchTab(activeTab);
-                    }
-                });
-            }
+                }
+            });
+        }
 
             // Botões
             if (refreshBtn) {
@@ -504,12 +504,12 @@
             if (logoutBtn) {
                 logoutBtn.addEventListener('click', (e) => {
                     e.preventDefault();
-                    if (window.netlifyIdentity) {
+            if (window.netlifyIdentity) {
                         netlifyIdentity.logout();
                     }
                 });
             }
-
+            
             // Netlify Identity logout event
             if (window.netlifyIdentity) {
                 netlifyIdentity.on('logout', () => {
@@ -536,34 +536,34 @@
             filterCharts(tabName);
         }
 
-        function filterCharts(activeTab) {
+            function filterCharts(activeTab) {
             currentTab = activeTab;
-            const chartIdsToShow = tabMapping[activeTab];
+                    const chartIdsToShow = tabMapping[activeTab];
             
-            allCards.forEach(card => {
-                const canvas = card.querySelector('canvas');
-                if (canvas && chartIdsToShow.includes(canvas.id)) {
+                    allCards.forEach(card => {
+                        const canvas = card.querySelector('canvas');
+                        if (canvas && chartIdsToShow.includes(canvas.id)) {
                     card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-            
-            updateTabIndicator(activeTab);
-        }
-
-        function updateTabIndicator(tab) {
-            const indicator = document.getElementById('currentTabIndicator');
-            if (indicator) {
-                const tabNames = {
-                    'rifs': 'RIFS',
-                    'opt': 'OPT',
-                    'nc_interna': 'NC INTERNA',
-                    'nc_externa': 'NC EXTERNA'
-                };
-                indicator.textContent = tabNames[tab] || tab.toUpperCase();
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                    
+                    updateTabIndicator(activeTab);
             }
-        }
+            
+            function updateTabIndicator(tab) {
+                const indicator = document.getElementById('currentTabIndicator');
+                if (indicator) {
+                    const tabNames = {
+                        'rifs': 'RIFS',
+                        'opt': 'OPT',
+                        'nc_interna': 'NC INTERNA',
+                        'nc_externa': 'NC EXTERNA'
+                    };
+                    indicator.textContent = tabNames[tab] || tab.toUpperCase();
+                }
+            }
 
         function popularPeriodosUI() {
             const meses = [
@@ -651,7 +651,7 @@
             }
         }
 
-        async function updateAllCharts() {
+            async function updateAllCharts() {
             console.log('=== INICIANDO updateAllCharts ===');
             
             if (refreshBtn) { 
@@ -676,7 +676,7 @@
                 
                 console.log('URLs das APIs:', urls);
                 
-                const [responseExterno, responseInterno, responseRifs, responseNCExterna] = await Promise.all([
+                    const [responseExterno, responseInterno, responseRifs, responseNCExterna] = await Promise.all([
                     fetch(urls[0]),
                     fetch(urls[1]),
                     fetch(urls[2]),
@@ -689,10 +689,10 @@
                 console.log('RIFS:', responseRifs.status, responseRifs.statusText);
                 console.log('NC Externa:', responseNCExterna.status, responseNCExterna.statusText);
 
-                lastDataExterno = await responseExterno.json();
-                lastDataInterno = await responseInterno.json();
-                lastDataRifs = await responseRifs.json();
-                lastDataNCExterna = await responseNCExterna.json();
+                    lastDataExterno = await responseExterno.json();
+                    lastDataInterno = await responseInterno.json();
+                    lastDataRifs = await responseRifs.json();
+                    lastDataNCExterna = await responseNCExterna.json();
 
                 console.log('Dados carregados:');
                 console.log('Externo:', lastDataExterno);
@@ -700,11 +700,11 @@
                 console.log('RIFS:', lastDataRifs);
                 console.log('NC Externa:', lastDataNCExterna);
 
-                renderAllCharts();
-                
-            } catch (error) {
-                console.error("Erro ao atualizar gráficos:", error);
-            } finally {
+                    renderAllCharts();
+                    
+                } catch (error) {
+                    console.error("Erro ao atualizar gráficos:", error);
+                } finally {
                 if (refreshBtn) { 
                     refreshBtn.disabled = false; 
                     refreshBtn.classList.remove('loading');
@@ -733,9 +733,9 @@
         }
 
         function criarGraficoPareto(canvasId, data, labelX, labelY) {
-            if (!data || data.length === 0) return;
-            
-            try {
+                if (!data || data.length === 0) return;
+                
+                try {
                 data.sort((a, b) => parseInt(b[labelY] || 0) - parseInt(a[labelY] || 0));
                 const dataFiltrada = data.filter(item => parseInt(item[labelY] || 0) > 0);
                 const labels = dataFiltrada.map(item => item[labelX]);
@@ -816,10 +816,10 @@
                     gradienteTratativa.addColorStop(1, 'rgba(255, 193, 7, 0.7)');
                     
                     const stackTotals = labels.map((_, index) => concluidoData[index] + emTratativaData[index]);
-                    const maxValue = Math.max(...stackTotals);
-                    
+                const maxValue = Math.max(...stackTotals);
+                
                     charts.grafico1 = new Chart(ctx1, {
-                        type: 'bar',
+                    type: 'bar', 
                         data: {
                             labels: labels,
                             datasets: [{
@@ -834,35 +834,35 @@
                                 borderRadius: 5
                             }]
                         },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: {
-                                    display: true,
-                                    position: 'bottom',
+                    options: { 
+                        responsive: true, 
+                        maintainAspectRatio: false, 
+                        plugins: { 
+                            legend: { 
+                                display: true, 
+                                position: 'bottom', 
                                     labels: {
                                         usePointStyle: true,
                                         pointStyle: 'rect',
                                         padding: 20,
                                         font: { size: 10 }
                                     }
-                                },
-                                datalabels: {
-                                    color: 'black',
-                                    font: { weight: 'bold' },
-                                    anchor: 'center',
-                                    align: 'center',
-                                    formatter: (value) => value > 0 ? value : null
-                                }
-                            },
-                            scales: {
-                                x: { stacked: true, grid: { display: false } },
-                                y: { stacked: true, beginAtZero: true, max: maxValue + 5, grid: { display: false } }
-                            }
-                        },
-                        plugins: [ChartDataLabels]
-                    });
+                            }, 
+                            datalabels: { 
+                                color: 'black', 
+                                font: { weight: 'bold' }, 
+                                anchor: 'center', 
+                                align: 'center', 
+                                formatter: (value) => value > 0 ? value : null 
+                            } 
+                        }, 
+                        scales: { 
+                            x: { stacked: true, grid: { display: false } }, 
+                            y: { stacked: true, beginAtZero: true, max: maxValue + 5, grid: { display: false } } 
+                        } 
+                    }, 
+                    plugins: [ChartDataLabels] 
+                });
                     } else {
                         console.log('Dados do gráfico 1 (RIFs Anual) não encontrados');
                     }
@@ -909,8 +909,8 @@
                     const maxValue2 = Math.max(...stackTotals2);
                     
                     charts.grafico2 = new Chart(ctx2, {
-                        type: 'bar',
-                        data: {
+                    type: 'bar',
+                    data: {
                             labels: labels2,
                             datasets: [{
                                 label: 'CONCLUIDO',
@@ -951,8 +951,8 @@
                                 y: { stacked: true, beginAtZero: true, max: maxValue2 + 5, grid: { display: false } }
                             }
                         },
-                        plugins: [ChartDataLabels]
-                    });
+                    plugins: [ChartDataLabels]
+                });
                     } else {
                         console.log('Dados do gráfico 2 (RIFs Mensal) não encontrados');
                     }
@@ -973,7 +973,7 @@
                         console.log('Dados do gráfico 3 (Pareto RIFs) não encontrados');
                     }
                 }
-            } catch (error) {
+                } catch (error) {
                 console.error('Erro ao renderizar gráficos RIFS:', error);
             }
         }
@@ -1139,7 +1139,7 @@
                             const topData = dataFiltrado.slice(0, 6);
                             
                             const labels6 = topData.map(item => item.cliente);
-                            const colors = ['#003366', '#29abe2', '#fd7e14', '#28a745', '#dc3545', '#6c757d', '#ffc107'];
+                        const colors = ['#003366', '#29abe2', '#fd7e14', '#28a745', '#dc3545', '#6c757d', '#ffc107'];
                             const datasets = tiposDeNC.map((tipo, index) => ({
                                 label: tipo.replace(/_/g, ' ').replace(/(^\w{1})|(\s+\w{1})/g, letra => letra.toUpperCase()),
                                 data: topData.map(item => parseInt(item[tipo]) || 0),
@@ -1276,8 +1276,8 @@
                         console.log('Estrutura dos dados NC Interna por Setor:', sheetData8[0]);
                         
                         const labels8 = sheetData8.map(item => item.setor);
-                        const statusTypes = ['nao_iniciado', 'em_andamento', 'atrasado', 'concluido'];
-                        const statusColors = { 'nao_iniciado': '#6c757d', 'em_andamento': '#ffc107', 'atrasado': '#dc3545', 'concluido': '#28a745' };
+                    const statusTypes = ['nao_iniciado', 'em_andamento', 'atrasado', 'concluido'];
+                    const statusColors = { 'nao_iniciado': '#6c757d', 'em_andamento': '#ffc107', 'atrasado': '#dc3545', 'concluido': '#28a745' };
                         
                         const datasets = statusTypes.map(status => ({
                             label: status.replace('_', ' ').toUpperCase(),
@@ -1287,7 +1287,7 @@
                         }));
                         
                         const stackTotals = sheetData8.map(item => statusTypes.reduce((sum, type) => sum + (parseInt(item[type]) || 0), 0));
-                        const maxValue = Math.max(...stackTotals);
+                    const maxValue = Math.max(...stackTotals);
                         
                         console.log('Labels8:', labels8);
                         console.log('Datasets8:', datasets);
@@ -1427,59 +1427,59 @@
             }
         }
 
-        function criarGraficoCombinadoAnual(canvasId, data, tipoGrafico2025, tipoGrafico2024) {
-            if (!data || data.length === 0) return;
-            
-            const isMobile = window.innerWidth < 1024;
-            const labels = data.map(item => item.mes);
-            const dados2025 = data.map(item => parseInt(item.quantidade_2025) || 0);
-            const dados2024 = data.map(item => parseInt(item.quantidade_2024) || 0);
+            function criarGraficoCombinadoAnual(canvasId, data, tipoGrafico2025, tipoGrafico2024) {
+                if (!data || data.length === 0) return;
+                
+                const isMobile = window.innerWidth < 1024;
+                const labels = data.map(item => item.mes);
+                const dados2025 = data.map(item => parseInt(item.quantidade_2025) || 0);
+                const dados2024 = data.map(item => parseInt(item.quantidade_2024) || 0);
 
-            const maxValue = Math.max(...dados2025, ...dados2024);
+                const maxValue = Math.max(...dados2025, ...dados2024);
 
-            const datasets = [
-                {
-                    type: tipoGrafico2024,
-                    label: '2024',
-                    data: dados2024,
-                    backgroundColor: 'rgba(233, 123, 50, 0.918)',
-                    borderColor: 'rgba(233, 123, 50, 0.918)',
-                    borderRadius: 5,
-                    order: 1, // <-- ORDEM 0: DESENHADO NO FUNDO
-                    datalabels: {
-                        color: '#adb5bd',
-                        font: { size: 10 },
-                        anchor: 'end',
-                        align: 'end',
-                        formatter: (value) => value > 0 ? value : null
+                const datasets = [
+                    {
+                        type: tipoGrafico2024,
+                        label: '2024',
+                        data: dados2024,
+                        backgroundColor: 'rgba(233, 123, 50, 0.918)',
+                        borderColor: 'rgba(233, 123, 50, 0.918)',
+                        borderRadius: 5,
+                        order: 1, // <-- ORDEM 0: DESENHADO NO FUNDO
+                        datalabels: {
+                            color: '#adb5bd',
+                            font: { size: 10 },
+                            anchor: 'end',
+                            align: 'end',
+                            formatter: (value) => value > 0 ? value : null
+                        }
+                    },
+                    {
+                        type: tipoGrafico2025,
+                        label: '2025',
+                        data: dados2025,
+                        backgroundColor: '#003366',
+                        borderColor: '#003366',
+                        borderRadius: 5,
+                        tension: 0.4,
+                        order: 0, // <-- ORDEM 1: DESENHADO NA FRENTE
+                        datalabels: {
+                            color: '#000',
+                            font: { weight: 'bold', size: 12 },
+                            anchor: 'end',
+                            align: 'end',
+                            formatter: (value) => value > 0 ? value : null
+                        }
                     }
-                },
-                {
-                    type: tipoGrafico2025,
-                    label: '2025',
-                    data: dados2025,
-                    backgroundColor: '#003366',
-                    borderColor: '#003366',
-                    borderRadius: 5,
-                    tension: 0.4,
-                    order: 0, // <-- ORDEM 1: DESENHADO NA FRENTE
-                    datalabels: {
-                        color: '#000',
-                        font: { weight: 'bold', size: 12 },
-                        anchor: 'end',
-                        align: 'end',
-                        formatter: (value) => value > 0 ? value : null
-                    }
-                }
-            ];
+                ];
 
-            const ctx = document.getElementById(canvasId).getContext('2d');
-            charts[canvasId] = new Chart(ctx, {
-                type: 'bar',
-                data: { labels, datasets },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
+                const ctx = document.getElementById(canvasId).getContext('2d');
+                charts[canvasId] = new Chart(ctx, {
+                    type: 'bar',
+                    data: { labels, datasets },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
                     plugins: {
                         legend: {
                             display: true,
@@ -1500,7 +1500,7 @@
                             formatter: (context) => context.dataset.datalabels.formatter
                         }
                     },
-                    scales: {
+                        scales: {
                         y: {
                             beginAtZero: true,
                             max: maxValue + 5,
@@ -1510,53 +1510,53 @@
                             grid: { display: false },
                             ticks: { font: { size: isMobile ? 9 : 12 } }
                         }
-                    }
-                },
-                plugins: [ChartDataLabels]
-            });
-        }
-
-        function criarGraficoBarrasSimplesAnual(canvasId, data) {
-            if (!data || data.length === 0) return;
-
-            const isMobile = window.innerWidth < 1024;
-            const labels = data.map(item => item.mes);
-            const dados2025 = data.map(item => parseInt(item.quantidade_2025) || 0);
-            const maxValue = Math.max(...dados2025);
-
-            const ctx = document.getElementById(canvasId).getContext('2d');
-            charts[canvasId] = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Total Revertidas 2025',
-                        data: dados2025,
-                        backgroundColor: '#003366',
-                        borderRadius: 5
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        datalabels: {
-                            color: '#000',
-                            font: { weight: 'bold', size: 12 },
-                            anchor: 'end',
-                            align: 'end',
-                            formatter: (value) => value > 0 ? value : null
                         }
                     },
-                    scales: {
-                        y: { beginAtZero: true, max: maxValue + 5, grid: { display: false } },
-                        x: { grid: { display: false }, ticks: { font: { size: isMobile ? 9 : 12 } } }
-                    }
-                },
-                plugins: [ChartDataLabels]
-            });
-        }
+                    plugins: [ChartDataLabels]
+                });
+            }
+
+            function criarGraficoBarrasSimplesAnual(canvasId, data) {
+                if (!data || data.length === 0) return;
+
+                const isMobile = window.innerWidth < 1024;
+                const labels = data.map(item => item.mes);
+                const dados2025 = data.map(item => parseInt(item.quantidade_2025) || 0);
+                const maxValue = Math.max(...dados2025);
+
+                const ctx = document.getElementById(canvasId).getContext('2d');
+                charts[canvasId] = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Total Revertidas 2025',
+                            data: dados2025,
+                            backgroundColor: '#003366',
+                            borderRadius: 5
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            datalabels: {
+                                color: '#000',
+                                font: { weight: 'bold', size: 12 },
+                                anchor: 'end',
+                                align: 'end',
+                                formatter: (value) => value > 0 ? value : null
+                            }
+                        },
+                        scales: {
+                            y: { beginAtZero: true, max: maxValue + 5, grid: { display: false } },
+                            x: { grid: { display: false }, ticks: { font: { size: isMobile ? 9 : 12 } } }
+                        }
+                    },
+                    plugins: [ChartDataLabels]
+                });
+            }
 
         function renderizarGraficosNCExterna() {
             console.log('Tentando renderizar gráficos NC Externa...');
@@ -1635,16 +1635,16 @@
             }
         }
 
-        let resizeTimer;
-        window.addEventListener('resize', () => {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(() => {
-                Object.values(charts).forEach(chart => {
-                    if (chart && typeof chart.resize === 'function') {
-                        chart.resize();
-                    }
-                });
-            }, 250);
+            let resizeTimer;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => {
+                    Object.values(charts).forEach(chart => {
+                        if (chart && typeof chart.resize === 'function') {
+                            chart.resize();
+                        }
+                    });
+                }, 250);
         });
     </script>
 </body>
