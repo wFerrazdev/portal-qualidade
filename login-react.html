@@ -194,17 +194,22 @@
             text-align: center;
         }
 
-        /* Logo e título */
+        /* Logo e título - Container externo (apenas estrutura) */
         .logo-section {
             margin-bottom: 2rem;
             animation: fadeInDown 0.6s ease-out;
             position: relative;
+            padding: 3rem;
+        }
+
+        /* Efeito de vidro - Container interno (todos os efeitos visuais) */
+        .glass-effect {
             padding: 2rem;
             backdrop-filter: blur(8px);
             background: rgba(255, 255, 255, 0.02);
             border-radius: 100px;
-            mask: radial-gradient(ellipse 200% 200% at center, black 20%, rgba(0,0,0,0.9) 35%, rgba(0,0,0,0.7) 50%, rgba(0,0,0,0.5) 65%, rgba(0,0,0,0.3) 80%, rgba(0,0,0,0.1) 90%, transparent 100%);
-            -webkit-mask: radial-gradient(ellipse 200% 200% at center, black 20%, rgba(0,0,0,0.9) 35%, rgba(0,0,0,0.7) 50%, rgba(0,0,0,0.5) 65%, rgba(0,0,0,0.3) 80%, rgba(0,0,0,0.1) 90%, transparent 100%);
+            mask: radial-gradient(circle at center, black 60%, transparent 100%);
+            -webkit-mask: radial-gradient(circle at center, black 60%, transparent 100%);
             box-shadow: 
                 0 0 0 1px rgba(255, 255, 255, 0.1),
                 0 0 20px rgba(255, 255, 255, 0.05),
@@ -453,9 +458,11 @@
         <div class="content">
             <!-- Logo e título -->
             <div class="logo-section">
-                <img class="logo" src="/GT Branco - Transparente.png" alt="GT Logo">
-                <h1 class="title">Portal da Qualidade</h1>
-                <p class="subtitle">Acesse o sistema de indicadores - Versão React</p>
+                <div class="glass-effect">
+                    <img class="logo" src="/GT Branco - Transparente.png" alt="GT Logo">
+                    <h1 class="title">Portal da Qualidade</h1>
+                    <p class="subtitle">Acesse o sistema de indicadores - Versão React</p>
+                </div>
             </div>
 
             <!-- Card de Login -->
