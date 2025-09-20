@@ -308,6 +308,13 @@ body.dashboard-page {
   letter-spacing: 0.5px;
 }
 
+/* Tab indicator específico para Dashboard */
+.dashboard-page .tab-indicator {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
 .filter-select {
   padding: 0.5rem 0.75rem;
   border: 2px solid #e2e8f0;
@@ -446,6 +453,31 @@ body.dashboard-page {
   color: #ffffff;
 }
 
+/* Botões específicos para Dashboard */
+.dashboard-page .btn-primary {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.dashboard-page .btn-primary:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+}
+
+.dashboard-page .btn-secondary {
+  background: rgba(16, 185, 129, 0.3);
+  color: #ffffff;
+  border: 1px solid rgba(16, 185, 129, 0.5);
+}
+
+.dashboard-page .btn-secondary:hover {
+  background: rgba(16, 185, 129, 0.5);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+}
+
 .tabs-container {
   display: flex;
   gap: 0.25rem;
@@ -544,6 +576,23 @@ body.dashboard-page {
 .indicator-card:hover {
   transform: translateY(-8px);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+/* Cards específicos para Dashboard */
+.dashboard-page .indicator-card {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Ajustar cores do texto dos cards para dashboard */
+.dashboard-page .card-title {
+  color: #ffffff;
+}
+
+.dashboard-page .card-description {
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .card-header {
