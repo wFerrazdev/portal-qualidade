@@ -39,7 +39,7 @@ body {
   flex-direction: column;
   overflow-x: hidden;
   transition: width 0.3s ease;
-  box-shadow: 4px 0 20px rgba(0, 51, 102, 0.3);
+  box-shadow: none;
 }
 
 .sidebar:hover {
