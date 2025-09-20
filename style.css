@@ -239,7 +239,7 @@ body.dashboard-page {
   color:rgba(255, 255, 255, 0);
 }
 
-/* Header do dashboard - FUNDO AZUL GRADIENTE */
+/* Header do dashboard - FUNDO AZUL GRADIENTE COM ANIMAÇÃO */
 .dashboard-page .content-header {
   background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%);
   border: none;
@@ -247,17 +247,50 @@ body.dashboard-page {
   -webkit-backdrop-filter: none;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   z-index: 99;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Ondas animadas no header do dashboard */
+.dashboard-page .content-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 1200 200' preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,100 Q100,20 200,100 Q300,180 400,100 Q500,20 600,100 Q700,180 800,100 Q900,20 1000,100 Q1100,180 1200,100' stroke='%2360a5fa' stroke-width='2' fill='none'/%3E%3C/svg%3E") repeat-x;
+  opacity: 0.3;
+  animation: waveMove 8s linear infinite;
+  z-index: 1;
+}
+
+.dashboard-page .content-header::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 1200 200' preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,100 Q150,30 300,100 Q450,170 600,100 Q750,30 900,100 Q1050,170 1200,100' stroke='%2393c5fd' stroke-width='2' fill='none'/%3E%3C/svg%3E") repeat-x;
+  opacity: 0.2;
+  animation: waveMove 12s linear infinite reverse;
+  z-index: 1;
 }
 
 /* Textos do header do dashboard */
 .dashboard-page .header-title {
   color: #ffffff !important;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 2;
 }
 
 .dashboard-page .header-subtitle {
   color: rgba(255, 255, 255, 0.9) !important;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 2;
 }
 
 .header-top {
@@ -580,7 +613,7 @@ body.dashboard-page {
 
 /* Content Area específico para Dashboard */
 .dashboard-page .content-area {
-  background: transparent;
+  background: #f8fafc;
 }
 
 .indicators-grid {
@@ -623,22 +656,22 @@ body.dashboard-page {
 
 /* Cards do dashboard */
 .dashboard-page .indicator-card {
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
 }
 
 /* Textos dos cards do dashboard */
 .dashboard-page .card-title {
-  color: #ffffff;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  color: #1e293b;
+  text-shadow: none;
 }
 
 .dashboard-page .card-description {
-  color: rgba(255, 255, 255, 0.9);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  color: #64748b;
+  text-shadow: none;
 }
 
 .card-header {
