@@ -251,8 +251,8 @@ body.dashboard-page {
   overflow: hidden;
 }
 
-/* Header do dashboard - COPIADO DA PÁGINA PROJETOS */
-.dashboard-page .dashboard-header {
+/* Header do dashboard - USANDO AS MESMAS CLASSES DA PÁGINA PROJETOS */
+.dashboard-page .projects-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -267,7 +267,7 @@ body.dashboard-page {
     flex: 1;
 }
 
-.dashboard-page .dashboard-title {
+.dashboard-page .projects-title {
     font-size: 2.5rem;
     font-weight: 700;
     color: #ffffff;
@@ -277,7 +277,7 @@ body.dashboard-page {
     line-height: 1.2;
 }
 
-.dashboard-page .dashboard-subtitle {
+.dashboard-page .projects-subtitle {
     color: rgba(255, 255, 255, 0.9);
     font-size: 1.1rem;
     margin: 0;
@@ -2759,8 +2759,8 @@ body.projects-page {
    BACKGROUND ANIMADO DO CABEÇALHO - DASHBOARD
    ======================================== */
 
-/* Background animado do cabeçalho do dashboard - COPIADO DA PÁGINA PROJETOS */
-.dashboard-header-background {
+/* Background animado do cabeçalho do dashboard - USANDO AS MESMAS CLASSES DA PÁGINA PROJETOS */
+.dashboard-page .projects-header-background {
     position: absolute;
     top: 0;
     left: 0;
@@ -2771,71 +2771,71 @@ body.projects-page {
     pointer-events: none;
 }
 
-/* Ondas animadas - EXATAS do projetos.html */
-.dashboard-wave {
+/* Ondas animadas - USANDO AS MESMAS CLASSES DA PÁGINA PROJETOS */
+.dashboard-page .projects-wave {
     position: absolute;
     width: 100%;
     height: 120px;
     opacity: 0.25;
 }
 
-.dashboard-wave.wave-1 {
+.dashboard-page .projects-wave.wave-1 {
     top: 15%;
     animation-delay: 0s;
 }
 
-.dashboard-wave.wave-1 path {
+.dashboard-page .projects-wave.wave-1 path {
     stroke-dasharray: 2000;
     stroke-dashoffset: 2000;
     animation: buildWave 12s linear infinite;
 }
 
-.dashboard-wave.wave-2 {
+.dashboard-page .projects-wave.wave-2 {
     top: 35%;
     animation-delay: 2s;
 }
 
-.dashboard-wave.wave-2 path {
+.dashboard-page .projects-wave.wave-2 path {
     stroke-dasharray: 2000;
     stroke-dashoffset: 2000;
     animation: buildWave 14s linear infinite 2s;
 }
 
-.dashboard-wave.wave-3 {
+.dashboard-page .projects-wave.wave-3 {
     top: 55%;
     animation-delay: 4s;
 }
 
-.dashboard-wave.wave-3 path {
+.dashboard-page .projects-wave.wave-3 path {
     stroke-dasharray: 2000;
     stroke-dashoffset: 2000;
     animation: buildWave 13s linear infinite 4s;
 }
 
-.dashboard-wave.wave-4 {
+.dashboard-page .projects-wave.wave-4 {
     top: 75%;
     animation-delay: 6s;
 }
 
-.dashboard-wave.wave-4 path {
+.dashboard-page .projects-wave.wave-4 path {
     stroke-dasharray: 2000;
     stroke-dashoffset: 2000;
     animation: buildWave 15s linear infinite 6s;
 }
 
-.dashboard-wave.wave-5 {
+.dashboard-page .projects-wave.wave-5 {
     top: 85%;
     animation-delay: 8s;
 }
 
-.dashboard-wave.wave-5 path {
+.dashboard-page .projects-wave.wave-5 path {
     stroke-dasharray: 2000;
     stroke-dashoffset: 2000;
     animation: buildWave 11s linear infinite 8s;
 }
 
-/* Partículas flutuantes - EXATAS do projetos.html */
-.dashboard-particle {
+/* Partículas flutuantes - USANDO AS MESMAS CLASSES DA PÁGINA PROJETOS */
+.dashboard-page .projects-particle {
     position: absolute;
     width: 3px;
     height: 3px;
@@ -2845,11 +2845,11 @@ body.projects-page {
 }
 
 /* Classes para diferentes tipos de movimento das partículas */
-.dashboard-particle.diagonal {
+.dashboard-page .projects-particle.diagonal {
     animation: floatDiagonal 3s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
 }
 
-.dashboard-particle.straight {
+.dashboard-page .projects-particle.straight {
     animation: floatStraight 3s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
     overflow: hidden;
     pointer-events: none;
