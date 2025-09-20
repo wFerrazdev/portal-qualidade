@@ -55,51 +55,51 @@
         .wave-1 path {
             stroke-dasharray: 2000;
             stroke-dashoffset: 2000;
-            animation: buildWave 8s linear infinite;
+            animation: buildWave 12s linear infinite;
         }
 
         .wave-2 {
             top: 35%;
-            animation-delay: 1s;
+            animation-delay: 2s;
         }
 
         .wave-2 path {
             stroke-dasharray: 2000;
             stroke-dashoffset: 2000;
-            animation: buildWave 10s linear infinite 1s;
+            animation: buildWave 14s linear infinite 2s;
         }
 
         .wave-3 {
             top: 55%;
-            animation-delay: 2s;
+            animation-delay: 4s;
         }
 
         .wave-3 path {
             stroke-dasharray: 2000;
             stroke-dashoffset: 2000;
-            animation: buildWave 9s linear infinite 2s;
+            animation: buildWave 13s linear infinite 4s;
         }
 
         .wave-4 {
             top: 75%;
-            animation-delay: 3s;
+            animation-delay: 6s;
         }
 
         .wave-4 path {
             stroke-dasharray: 2000;
             stroke-dashoffset: 2000;
-            animation: buildWave 11s linear infinite 3s;
+            animation: buildWave 15s linear infinite 6s;
         }
 
         .wave-5 {
             top: 85%;
-            animation-delay: 4s;
+            animation-delay: 8s;
         }
 
         .wave-5 path {
             stroke-dasharray: 2000;
             stroke-dashoffset: 2000;
-            animation: buildWave 7s linear infinite 4s;
+            animation: buildWave 11s linear infinite 8s;
         }
 
 
@@ -120,17 +120,25 @@
                 stroke-dashoffset: 1000; 
                 opacity: 0.9; 
             }
-            75% { 
-                stroke-dashoffset: 500; 
+            60% { 
+                stroke-dashoffset: 800; 
+                opacity: 0.9; 
+            }
+            70% { 
+                stroke-dashoffset: 600; 
                 opacity: 0.8; 
+            }
+            80% { 
+                stroke-dashoffset: 400; 
+                opacity: 0.7; 
             }
             90% { 
                 stroke-dashoffset: 200; 
-                opacity: 0.9; 
+                opacity: 0.5; 
             }
             100% { 
                 stroke-dashoffset: 0; 
-                opacity: 0.8; 
+                opacity: 0; 
             }
         }
 
