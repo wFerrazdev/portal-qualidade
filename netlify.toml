@@ -4,7 +4,7 @@
 # Redirect específico para página de login React
 [[redirects]]
   from = "/login-react"
-  to = "/login.html"
+  to = "/react/login"
   status = 200
 
 # Fallback para a versão HTML atual (funcionando)
