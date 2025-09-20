@@ -1,10 +1,14 @@
 # Configuração para deploy gradual
 # A versão HTML atual funciona normalmente
 
+[build]
+  command = "cd react && npm install && npm run build"
+  publish = "react/.next"
+
 # Redirect específico para página de login React
 [[redirects]]
   from = "/login-react"
-  to = "/react/login"
+  to = "/login.html"
   status = 200
 
 # Fallback para a versão HTML atual (funcionando)
