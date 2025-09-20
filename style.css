@@ -2236,8 +2236,8 @@ canvas {
    BACKGROUND ANIMADO DO CABEÇALHO - PROJETOS
    ======================================== */
 
-/* Animações para o cabeçalho */
-@keyframes headerBuildWave {
+/* Animações para o cabeçalho de projetos */
+@keyframes projectsBuildWave {
     0% {
         stroke-dashoffset: 1000;
     }
@@ -2249,61 +2249,66 @@ canvas {
     }
 }
 
-@keyframes headerFloat {
+@keyframes projectsFloat {
     0%, 100% {
         transform: translateY(0px);
     }
     50% {
-        transform: translateY(-10px);
+        transform: translateY(-15px);
     }
 }
 
-/* Background animado do cabeçalho */
-.header-background-animation {
+/* Background animado do cabeçalho de projetos */
+.projects-header-background {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: 200px;
+    height: 300px;
     z-index: 1;
     overflow: hidden;
     pointer-events: none;
 }
 
-.header-wave {
+.projects-wave {
     position: absolute;
     width: 100%;
     height: 100%;
     opacity: 0.75;
-    animation: headerBuildWave 8s linear infinite;
+    animation: projectsBuildWave 8s linear infinite;
 }
 
-.header-wave:nth-child(1) { animation-delay: 0s; }
-.header-wave:nth-child(2) { animation-delay: 1.6s; }
-.header-wave:nth-child(3) { animation-delay: 3.2s; }
-.header-wave:nth-child(4) { animation-delay: 4.8s; }
-.header-wave:nth-child(5) { animation-delay: 6.4s; }
+.projects-wave:nth-child(1) { animation-delay: 0s; }
+.projects-wave:nth-child(2) { animation-delay: 1.6s; }
+.projects-wave:nth-child(3) { animation-delay: 3.2s; }
+.projects-wave:nth-child(4) { animation-delay: 4.8s; }
+.projects-wave:nth-child(5) { animation-delay: 6.4s; }
 
-/* Partículas flutuantes do cabeçalho */
-.header-particle {
+/* Partículas flutuantes do cabeçalho de projetos */
+.projects-particle {
     position: absolute;
-    width: 3px;
-    height: 3px;
+    width: 4px;
+    height: 4px;
     background: rgba(255, 255, 255, 0.6);
     border-radius: 50%;
-    animation: headerFloat 6s ease-in-out infinite;
+    animation: projectsFloat 6s ease-in-out infinite;
 }
 
-.header-particle:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; }
-.header-particle:nth-child(2) { top: 40%; left: 20%; animation-delay: 1s; }
-.header-particle:nth-child(3) { top: 60%; left: 80%; animation-delay: 2s; }
-.header-particle:nth-child(4) { top: 80%; left: 70%; animation-delay: 3s; }
-.header-particle:nth-child(5) { top: 10%; left: 50%; animation-delay: 4s; }
-.header-particle:nth-child(6) { top: 70%; left: 30%; animation-delay: 5s; }
-.header-particle:nth-child(7) { top: 30%; left: 90%; animation-delay: 0.5s; }
-.header-particle:nth-child(8) { top: 90%; left: 40%; animation-delay: 1.5s; }
-.header-particle:nth-child(9) { top: 15%; left: 75%; animation-delay: 2.5s; }
-.header-particle:nth-child(10) { top: 55%; left: 5%; animation-delay: 3.5s; }
+.projects-particle:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; }
+.projects-particle:nth-child(2) { top: 40%; left: 20%; animation-delay: 1s; }
+.projects-particle:nth-child(3) { top: 60%; left: 80%; animation-delay: 2s; }
+.projects-particle:nth-child(4) { top: 80%; left: 70%; animation-delay: 3s; }
+.projects-particle:nth-child(5) { top: 10%; left: 50%; animation-delay: 4s; }
+.projects-particle:nth-child(6) { top: 70%; left: 30%; animation-delay: 5s; }
+.projects-particle:nth-child(7) { top: 30%; left: 90%; animation-delay: 0.5s; }
+.projects-particle:nth-child(8) { top: 90%; left: 40%; animation-delay: 1.5s; }
+.projects-particle:nth-child(9) { top: 15%; left: 75%; animation-delay: 2.5s; }
+.projects-particle:nth-child(10) { top: 55%; left: 5%; animation-delay: 3.5s; }
+.projects-particle:nth-child(11) { top: 25%; left: 60%; animation-delay: 4.5s; }
+.projects-particle:nth-child(12) { top: 85%; left: 15%; animation-delay: 0.8s; }
+.projects-particle:nth-child(13) { top: 45%; left: 35%; animation-delay: 1.8s; }
+.projects-particle:nth-child(14) { top: 75%; left: 85%; animation-delay: 2.8s; }
+.projects-particle:nth-child(15) { top: 5%; left: 25%; animation-delay: 3.8s; }
 
 /* Ajustar o cabeçalho para ter posição relativa */
 .content-header {
