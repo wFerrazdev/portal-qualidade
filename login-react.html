@@ -202,33 +202,43 @@
             padding: 3rem;
         }
 
-        /* Efeito de vidro - Container interno (todos os efeitos visuais) */
+        /* Efeito de vidro - Container interno (apenas estrutura) */
         .glass-effect {
             padding: 2rem;
-            backdrop-filter: blur(8px);
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 100px;
-            mask: radial-gradient(circle at center, black 60%, transparent 100%);
-            -webkit-mask: radial-gradient(circle at center, black 60%, transparent 100%);
-            box-shadow: 
-                0 0 0 1px rgba(255, 255, 255, 0.1),
-                0 0 20px rgba(255, 255, 255, 0.05),
-                0 0 40px rgba(255, 255, 255, 0.03),
-                0 0 60px rgba(255, 255, 255, 0.01);
         }
 
+        /* Blur apenas na logo */
         .logo {
             height: 6rem;
             width: auto;
             margin: 0 auto;
+            backdrop-filter: blur(8px);
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 50px;
+            padding: 1rem;
+            box-shadow: 
+                0 0 0 1px rgba(255, 255, 255, 0.1),
+                0 0 20px rgba(255, 255, 255, 0.05),
+                0 0 40px rgba(255, 255, 255, 0.03);
         }
 
+        /* Blur apenas no título */
         .title {
             margin-top: 1.5rem;
             font-size: 1.875rem;
             font-weight: 800;
             color: white;
+            backdrop-filter: blur(8px);
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 20px;
+            padding: 0.5rem 1rem;
+            box-shadow: 
+                0 0 0 1px rgba(255, 255, 255, 0.1),
+                0 0 15px rgba(255, 255, 255, 0.05),
+                0 0 30px rgba(255, 255, 255, 0.03);
         }
+
+
 
         .subtitle {
             margin-top: 0.5rem;
