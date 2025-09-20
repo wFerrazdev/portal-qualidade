@@ -55,38 +55,46 @@ export default function Login() {
 
       <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
         {/* Background animado */}
-        <div className="absolute inset-0 bg-[#08090d]">
+        <div className="absolute inset-0 bg-[#08090d] overflow-hidden">
+          {/* Gradiente de fundo */}
           <div 
-            className="absolute inset-0 opacity-60"
+            className="absolute inset-0 opacity-80"
             style={{
-              backgroundImage: `
-                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><pattern id="wave1" x="0" y="0" width="400" height="200" patternUnits="userSpaceOnUse"><path d="M0,100 Q100,50 200,100 T400,100" stroke="rgba(0,51,102,0.3)" stroke-width="2" fill="none" opacity="0.6"/><path d="M0,120 Q100,70 200,120 T400,120" stroke="rgba(0,51,102,0.2)" stroke-width="1.5" fill="none" opacity="0.4"/></pattern><pattern id="wave2" x="0" y="0" width="300" height="150" patternUnits="userSpaceOnUse"><path d="M0,75 Q75,25 150,75 T300,75" stroke="rgba(0,80,160,0.4)" stroke-width="1.5" fill="none" opacity="0.5"/><path d="M0,90 Q75,40 150,90 T300,90" stroke="rgba(0,80,160,0.3)" stroke-width="1" fill="none" opacity="0.3"/></pattern></defs><rect width="1200" height="800" fill="url(%23wave1)"/><rect width="1200" height="800" fill="url(%23wave2)" opacity="0.7"/></svg>'),
-                linear-gradient(135deg, #001a33 0%, #003366 25%, #004080 50%, #0052a3 75%, #0066cc 100%)
-              `,
-              backgroundSize: 'cover, cover',
-              backgroundPosition: 'center, center',
-              backgroundBlendMode: 'hard-light, normal'
+              background: 'linear-gradient(135deg, #001a33 0%, #003366 25%, #004080 50%, #0052a3 75%, #0066cc 100%)'
             }}
           />
           
-          {/* Efeitos de onda animados */}
+          {/* Ondas animadas - Primeira camada */}
           <div 
             className="absolute inset-0 animate-wave-glow"
             style={{
               background: `
-                radial-gradient(ellipse at 20% 80%, rgba(0, 102, 204, 0.3) 0%, transparent 60%),
-                radial-gradient(ellipse at 80% 20%, rgba(0, 51, 102, 0.25) 0%, transparent 60%),
-                radial-gradient(ellipse at 40% 40%, rgba(0, 80, 160, 0.2) 0%, transparent 60%)
+                radial-gradient(ellipse at 20% 80%, rgba(0, 102, 204, 0.4) 0%, transparent 70%),
+                radial-gradient(ellipse at 80% 20%, rgba(0, 51, 102, 0.3) 0%, transparent 70%),
+                radial-gradient(ellipse at 40% 40%, rgba(0, 80, 160, 0.25) 0%, transparent 70%)
               `
             }}
           />
           
+          {/* Ondas animadas - Segunda camada */}
           <div 
-            className="absolute inset-0 animate-wave-move opacity-90"
+            className="absolute inset-0 animate-wave-move opacity-70"
             style={{
-              background: `url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><filter id="glow"><feGaussianBlur stdDeviation="2" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><path d="M0,150 Q200,50 400,150 T800,150 T1200,150" stroke="rgba(0,102,204,0.8)" stroke-width="4" fill="none" filter="url(%23glow)"><animate attributeName="d" values="M0,150 Q200,50 400,150 T800,150 T1200,150;M0,150 Q200,100 400,150 T800,150 T1200,150;M0,150 Q200,50 400,150 T800,150 T1200,150" dur="4s" repeatCount="indefinite"/></path><path d="M0,250 Q300,150 600,250 T1200,250" stroke="rgba(0,80,160,0.7)" stroke-width="3" fill="none" filter="url(%23glow)"><animate attributeName="d" values="M0,250 Q300,150 600,250 T1200,250;M0,250 Q300,200 600,250 T1200,250;M0,250 Q300,150 600,250 T1200,250" dur="5s" repeatCount="indefinite"/></path><path d="M0,350 Q400,250 800,350 T1200,350" stroke="rgba(0,51,102,0.6)" stroke-width="3" fill="none" filter="url(%23glow)"><animate attributeName="d" values="M0,350 Q400,250 800,350 T1200,350;M0,350 Q400,300 800,350 T1200,350;M0,350 Q400,250 800,350 T1200,350" dur="6s" repeatCount="indefinite"/></path><path d="M0,450 Q200,350 400,450 T800,450 T1200,450" stroke="rgba(0,102,204,0.5)" stroke-width="2" fill="none" filter="url(%23glow)"><animate attributeName="d" values="M0,450 Q200,350 400,450 T800,450 T1200,450;M0,450 Q200,400 400,450 T800,450 T1200,450;M0,450 Q200,350 400,450 T800,450 T1200,450" dur="7s" repeatCount="indefinite"/></path></svg>')`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center'
+              background: `
+                linear-gradient(45deg, transparent 30%, rgba(0, 102, 204, 0.1) 50%, transparent 70%),
+                linear-gradient(-45deg, transparent 30%, rgba(0, 80, 160, 0.1) 50%, transparent 70%)
+              `
+            }}
+          />
+          
+          {/* Ondas animadas - Terceira camada */}
+          <div 
+            className="absolute inset-0 animate-wave-glow opacity-50"
+            style={{
+              background: `
+                conic-gradient(from 0deg at 50% 50%, transparent 0deg, rgba(0, 102, 204, 0.1) 60deg, transparent 120deg),
+                conic-gradient(from 180deg at 50% 50%, transparent 0deg, rgba(0, 80, 160, 0.1) 60deg, transparent 120deg)
+              `
             }}
           />
         </div>
