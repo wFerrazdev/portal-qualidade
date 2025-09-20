@@ -399,6 +399,9 @@
     </div>
 
     <script>
+        console.log('Script de login carregado');
+        console.log('Netlify Identity disponível:', !!window.netlifyIdentity);
+        
         if (window.netlifyIdentity) {
             // Escuta o evento de inicialização do widget
             netlifyIdentity.on('init', user => {
@@ -424,7 +427,11 @@
             // Escuta o evento de login bem-sucedido para redirecionar
             netlifyIdentity.on('login', user => {
                 console.log('Login realizado com sucesso:', user);
-                window.location.href = '/index.html';
+                console.log('Redirecionando para index.html...');
+                // Força o redirecionamento
+                setTimeout(() => {
+                    window.location.href = '/index.html';
+                }, 1000);
             });
 
             // Escuta o evento de logout
