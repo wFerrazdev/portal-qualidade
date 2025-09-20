@@ -252,7 +252,7 @@ body.dashboard-page {
 }
 
 /* Header do dashboard - COPIADO DA PÁGINA PROJETOS */
-.dashboard-page .projects-header {
+.dashboard-page .dashboard-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -267,7 +267,7 @@ body.dashboard-page {
     flex: 1;
 }
 
-.dashboard-page .projects-title {
+.dashboard-page .dashboard-title {
     font-size: 2.5rem;
     font-weight: 700;
     color: #ffffff;
@@ -277,7 +277,7 @@ body.dashboard-page {
     line-height: 1.2;
 }
 
-.dashboard-page .projects-subtitle {
+.dashboard-page .dashboard-subtitle {
     color: rgba(255, 255, 255, 0.9);
     font-size: 1.1rem;
     margin: 0;
@@ -2759,14 +2759,98 @@ body.projects-page {
    BACKGROUND ANIMADO DO CABEÇALHO - DASHBOARD
    ======================================== */
 
-/* Background animado do cabeçalho do dashboard */
+/* Background animado do cabeçalho do dashboard - COPIADO DA PÁGINA PROJETOS */
 .dashboard-header-background {
-    position: fixed;
+    position: absolute;
     top: 0;
-    left: 100px;
-    right: 0;
-    height: 100px;
-    z-index: 98;
+    left: 0;
+    width: 100%;
+    height: 200px;
+    z-index: 1;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+/* Ondas animadas - EXATAS do projetos.html */
+.dashboard-wave {
+    position: absolute;
+    width: 100%;
+    height: 120px;
+    opacity: 0.25;
+}
+
+.dashboard-wave.wave-1 {
+    top: 15%;
+    animation-delay: 0s;
+}
+
+.dashboard-wave.wave-1 path {
+    stroke-dasharray: 2000;
+    stroke-dashoffset: 2000;
+    animation: buildWave 12s linear infinite;
+}
+
+.dashboard-wave.wave-2 {
+    top: 35%;
+    animation-delay: 2s;
+}
+
+.dashboard-wave.wave-2 path {
+    stroke-dasharray: 2000;
+    stroke-dashoffset: 2000;
+    animation: buildWave 14s linear infinite 2s;
+}
+
+.dashboard-wave.wave-3 {
+    top: 55%;
+    animation-delay: 4s;
+}
+
+.dashboard-wave.wave-3 path {
+    stroke-dasharray: 2000;
+    stroke-dashoffset: 2000;
+    animation: buildWave 13s linear infinite 4s;
+}
+
+.dashboard-wave.wave-4 {
+    top: 75%;
+    animation-delay: 6s;
+}
+
+.dashboard-wave.wave-4 path {
+    stroke-dasharray: 2000;
+    stroke-dashoffset: 2000;
+    animation: buildWave 15s linear infinite 6s;
+}
+
+.dashboard-wave.wave-5 {
+    top: 85%;
+    animation-delay: 8s;
+}
+
+.dashboard-wave.wave-5 path {
+    stroke-dasharray: 2000;
+    stroke-dashoffset: 2000;
+    animation: buildWave 11s linear infinite 8s;
+}
+
+/* Partículas flutuantes - EXATAS do projetos.html */
+.dashboard-particle {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: #60a5fa;
+    border-radius: 50%;
+    box-shadow: 0 0 6px rgba(96, 165, 250, 0.37);
+}
+
+/* Classes para diferentes tipos de movimento das partículas */
+.dashboard-particle.diagonal {
+    animation: floatDiagonal 3s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+}
+
+.dashboard-particle.straight {
+    animation: floatStraight 3s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
     overflow: hidden;
     pointer-events: none;
 }
