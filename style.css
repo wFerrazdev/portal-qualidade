@@ -2248,6 +2248,7 @@ canvas {
     z-index: 1;
     overflow: hidden;
     pointer-events: none;
+    background: white;
 }
 
 /* Ondas animadas - EXATAS do login.html */
