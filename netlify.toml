@@ -1,11 +1,5 @@
-# Configuração para deploy gradual
-# A versão HTML atual funciona normalmente
-
-# Redirect específico para página de login React (versão real)
-[[redirects]]
-  from = "/login-react"
-  to = "/login-react.html"
-  status = 200
+# Configuração simplificada - Site HTML puro
+# Sem referências ao React
 
 # Fallback para a versão HTML atual (funcionando)
 [[redirects]]
