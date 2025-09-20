@@ -1,28 +1,8 @@
-[build]
-  command = "npm run build"
-  publish = ".next"
+# Configuração para deploy gradual
+# A versão HTML atual funciona normalmente
+# A versão React será configurada separadamente
 
-[build.environment]
-  NODE_VERSION = "18"
-
-# Redirects para a versão React
-[[redirects]]
-  from = "/react/*"
-  to = "/:splat"
-  status = 200
-
-# Redirects para páginas específicas da versão React
-[[redirects]]
-  from = "/login-react"
-  to = "/react/login"
-  status = 200
-
-[[redirects]]
-  from = "/dashboard-react"
-  to = "/react/dashboard"
-  status = 200
-
-# Fallback para a versão HTML atual
+# Fallback para a versão HTML atual (funcionando)
 [[redirects]]
   from = "/*"
   to = "/index.html"
