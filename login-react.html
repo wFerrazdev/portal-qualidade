@@ -45,7 +45,7 @@
             width: 100%;
             height: 120px;
             opacity: 0.8;
-            animation: waveMove 10s linear infinite;
+            animation: waveDeform 12s ease-in-out infinite;
         }
 
         .wave-1 {
@@ -53,9 +53,21 @@
             animation-delay: 0s;
         }
 
+        .wave-1 path {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: drawWave 8s ease-in-out infinite;
+        }
+
         .wave-2 {
             top: 35%;
             animation-delay: 2s;
+        }
+
+        .wave-2 path {
+            stroke-dasharray: 1200;
+            stroke-dashoffset: 1200;
+            animation: drawWave 10s ease-in-out infinite 2s;
         }
 
         .wave-3 {
@@ -63,9 +75,21 @@
             animation-delay: 4s;
         }
 
+        .wave-3 path {
+            stroke-dasharray: 1100;
+            stroke-dashoffset: 1100;
+            animation: drawWave 9s ease-in-out infinite 4s;
+        }
+
         .wave-4 {
             top: 75%;
             animation-delay: 6s;
+        }
+
+        .wave-4 path {
+            stroke-dasharray: 1300;
+            stroke-dashoffset: 1300;
+            animation: drawWave 11s ease-in-out infinite 6s;
         }
 
         .wave-5 {
@@ -73,12 +97,60 @@
             animation-delay: 8s;
         }
 
-        @keyframes waveMove {
-            0% { transform: translateX(0) translateY(0) scale(1); opacity: 0.8; }
-            25% { transform: translateX(-15px) translateY(-8px) scale(1.01); opacity: 0.6; }
-            50% { transform: translateX(10px) translateY(-12px) scale(0.99); opacity: 0.9; }
-            75% { transform: translateX(-8px) translateY(6px) scale(1.005); opacity: 0.7; }
-            100% { transform: translateX(0) translateY(0) scale(1); opacity: 0.8; }
+        .wave-5 path {
+            stroke-dasharray: 1050;
+            stroke-dashoffset: 1050;
+            animation: drawWave 7s ease-in-out infinite 8s;
+        }
+
+        @keyframes waveDeform {
+            0% { 
+                transform: translateX(0) translateY(0) scale(1) skewX(0deg); 
+                opacity: 0.8; 
+            }
+            20% { 
+                transform: translateX(-20px) translateY(-10px) scale(1.02) skewX(2deg); 
+                opacity: 0.6; 
+            }
+            40% { 
+                transform: translateX(15px) translateY(-15px) scale(0.98) skewX(-1deg); 
+                opacity: 0.9; 
+            }
+            60% { 
+                transform: translateX(-10px) translateY(8px) scale(1.01) skewX(1deg); 
+                opacity: 0.7; 
+            }
+            80% { 
+                transform: translateX(25px) translateY(-5px) scale(0.99) skewX(-2deg); 
+                opacity: 0.8; 
+            }
+            100% { 
+                transform: translateX(0) translateY(0) scale(1) skewX(0deg); 
+                opacity: 0.8; 
+            }
+        }
+
+        @keyframes drawWave {
+            0% { 
+                stroke-dashoffset: 1000; 
+                opacity: 0; 
+            }
+            20% { 
+                stroke-dashoffset: 800; 
+                opacity: 0.6; 
+            }
+            50% { 
+                stroke-dashoffset: 400; 
+                opacity: 0.9; 
+            }
+            80% { 
+                stroke-dashoffset: 200; 
+                opacity: 0.7; 
+            }
+            100% { 
+                stroke-dashoffset: 0; 
+                opacity: 0.8; 
+            }
         }
 
         /* Partículas flutuantes */
@@ -330,19 +402,19 @@
 
     <!-- Ondas animadas -->
     <svg class="wave wave-1" viewBox="0 0 1200 200" preserveAspectRatio="none">
-        <path d="M0,100 Q150,30 300,100 Q450,170 600,100 Q750,30 900,100 Q1050,170 1200,100" stroke="#60a5fa" stroke-width="4" fill="none" />
+        <path d="M0,100 Q100,20 200,100 Q300,180 400,100 Q500,20 600,100 Q700,180 800,100 Q900,20 1000,100 Q1100,180 1200,100" stroke="#60a5fa" stroke-width="4" fill="none" />
     </svg>
     <svg class="wave wave-2" viewBox="0 0 1200 200" preserveAspectRatio="none">
-        <path d="M0,100 Q200,50 400,100 Q600,150 800,100 Q1000,50 1200,100" stroke="#93c5fd" stroke-width="4" fill="none" />
+        <path d="M0,100 Q150,30 300,100 Q450,170 600,100 Q750,30 900,100 Q1050,170 1200,100" stroke="#93c5fd" stroke-width="4" fill="none" />
     </svg>
     <svg class="wave wave-3" viewBox="0 0 1200 200" preserveAspectRatio="none">
-        <path d="M0,100 Q250,70 500,100 Q750,130 1000,100 Q1150,70 1200,100" stroke="#3b82f6" stroke-width="4" fill="none" />
+        <path d="M0,100 Q200,40 400,100 Q600,160 800,100 Q1000,40 1200,100" stroke="#3b82f6" stroke-width="4" fill="none" />
     </svg>
     <svg class="wave wave-4" viewBox="0 0 1200 200" preserveAspectRatio="none">
-        <path d="M0,100 Q180,40 360,100 Q540,160 720,100 Q900,40 1080,100 Q1200,100 1200,100" stroke="#1d4ed8" stroke-width="4" fill="none" />
+        <path d="M0,100 Q120,10 240,100 Q360,190 480,100 Q600,10 720,100 Q840,190 960,100 Q1080,10 1200,100" stroke="#1d4ed8" stroke-width="4" fill="none" />
     </svg>
     <svg class="wave wave-5" viewBox="0 0 1200 200" preserveAspectRatio="none">
-        <path d="M0,100 Q300,60 600,100 Q900,140 1200,100" stroke="#0ea5e9" stroke-width="4" fill="none" />
+        <path d="M0,100 Q180,50 360,100 Q540,150 720,100 Q900,50 1080,100 Q1200,100 1200,100" stroke="#0ea5e9" stroke-width="4" fill="none" />
     </svg>
 
     <!-- Partículas flutuantes -->
