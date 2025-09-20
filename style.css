@@ -25,6 +25,11 @@ body {
   box-shadow: 0 0 50px rgba(0, 0, 0, 0.1);
 }
 
+/* Dashboard container específico para dashboard */
+.dashboard-page .dashboard-container {
+  background: transparent;
+}
+
 /* Sidebar Moderna com Hover */
 .sidebar {
   position: fixed;
@@ -234,13 +239,13 @@ body.dashboard-page {
   color:rgba(255, 255, 255, 0);
 }
 
-/* Header do dashboard - COMPLETAMENTE TRANSPARENTE */
+/* Header do dashboard - FUNDO AZUL GRADIENTE */
 .dashboard-page .content-header {
-  background: transparent;
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%);
   border: none;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
-  box-shadow: none;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   z-index: 99;
 }
 
@@ -432,13 +437,13 @@ body.dashboard-page {
   flex-shrink: 0;
 }
 
-/* Abas do dashboard - COMPLETAMENTE TRANSPARENTES */
+/* Abas do dashboard - FUNDO AZUL GRADIENTE */
 .dashboard-page .tabs-section {
-  background: transparent;
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%);
   border: none;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
-  box-shadow: none;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   z-index: 100;
 }
 
