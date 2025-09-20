@@ -54,50 +54,104 @@ export default function Login() {
       </Head>
 
       <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
-        {/* Background animado */}
-        <div className="absolute inset-0 bg-[#08090d] overflow-hidden">
-          {/* Gradiente de fundo */}
-          <div 
-            className="absolute inset-0 opacity-90"
+        {/* Background principal */}
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-blue-800" />
+        
+        {/* Grid pattern de fundo */}
+        <div 
+          className="absolute inset-0 opacity-10"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px)
+            `,
+            backgroundSize: '50px 50px'
+          }}
+        />
+        
+        {/* Ondas animadas - Linha 1 */}
+        <motion.div
+          className="absolute top-1/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-400 to-transparent"
+          animate={{
+            x: ['-100%', '100%'],
+            opacity: [0, 1, 0]
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        
+        {/* Ondas animadas - Linha 2 */}
+        <motion.div
+          className="absolute top-1/2 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-300 to-transparent"
+          animate={{
+            x: ['100%', '-100%'],
+            opacity: [0, 0.8, 0]
+          }}
+          transition={{
+            duration: 10,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 2
+          }}
+        />
+        
+        {/* Ondas animadas - Linha 3 */}
+        <motion.div
+          className="absolute top-3/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-500 to-transparent"
+          animate={{
+            x: ['-100%', '100%'],
+            opacity: [0, 0.6, 0]
+          }}
+          transition={{
+            duration: 12,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 4
+          }}
+        />
+        
+        {/* Partículas flutuantes */}
+        {[...Array(20)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-1 h-1 bg-blue-400 rounded-full"
             style={{
-              background: 'linear-gradient(135deg, #001a33 0%, #003366 25%, #004080 50%, #0052a3 75%, #0066cc 100%)'
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+            }}
+            animate={{
+              y: [0, -20, 0],
+              opacity: [0, 1, 0],
+              scale: [0, 1, 0]
+            }}
+            transition={{
+              duration: 3 + Math.random() * 2,
+              repeat: Infinity,
+              delay: Math.random() * 5,
+              ease: "easeInOut"
             }}
           />
-          
-          {/* Ondas animadas - Primeira camada (dentro da tela) */}
-          <div 
-            className="absolute inset-4 animate-wave-glow rounded-3xl"
-            style={{
-              background: `
-                radial-gradient(ellipse at 30% 70%, rgba(0, 102, 204, 0.3) 0%, transparent 60%),
-                radial-gradient(ellipse at 70% 30%, rgba(0, 51, 102, 0.25) 0%, transparent 60%),
-                radial-gradient(ellipse at 50% 50%, rgba(0, 80, 160, 0.2) 0%, transparent 60%)
-              `
-            }}
-          />
-          
-          {/* Ondas animadas - Segunda camada (dentro da tela) */}
-          <div 
-            className="absolute inset-8 animate-wave-move opacity-60 rounded-2xl"
-            style={{
-              background: `
-                linear-gradient(45deg, transparent 40%, rgba(0, 102, 204, 0.15) 50%, transparent 60%),
-                linear-gradient(-45deg, transparent 40%, rgba(0, 80, 160, 0.15) 50%, transparent 60%)
-              `
-            }}
-          />
-          
-          {/* Ondas animadas - Terceira camada (dentro da tela) */}
-          <div 
-            className="absolute inset-12 animate-wave-glow opacity-40 rounded-xl"
-            style={{
-              background: `
-                conic-gradient(from 0deg at 50% 50%, transparent 0deg, rgba(0, 102, 204, 0.1) 45deg, transparent 90deg),
-                conic-gradient(from 180deg at 50% 50%, transparent 0deg, rgba(0, 80, 160, 0.1) 45deg, transparent 90deg)
-              `
-            }}
-          />
-        </div>
+        ))}
+        
+        {/* Efeito de brilho central */}
+        <motion.div
+          className="absolute top-1/2 left-1/2 w-96 h-96 -translate-x-1/2 -translate-y-1/2 rounded-full"
+          style={{
+            background: 'radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%)'
+          }}
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.3, 0.6, 0.3]
+          }}
+          transition={{
+            duration: 4,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
 
         {/* Conteúdo principal */}
         <div className="relative z-10 min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
@@ -126,11 +180,35 @@ export default function Login() {
 
             {/* Formulário de login */}
             <motion.div 
-              className="bg-white/10 backdrop-blur-md rounded-2xl p-8 shadow-2xl border border-white/20"
+              className="relative bg-white/5 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-white/10 overflow-hidden"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
+              whileHover={{ scale: 1.02 }}
             >
+              {/* Efeito de brilho no card */}
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-transparent to-blue-500/10 rounded-3xl" />
+              
+              {/* Borda animada */}
+              <motion.div
+                className="absolute inset-0 rounded-3xl"
+                style={{
+                  background: 'linear-gradient(45deg, transparent, rgba(59, 130, 246, 0.3), transparent)',
+                  padding: '1px'
+                }}
+                animate={{
+                  background: [
+                    'linear-gradient(45deg, transparent, rgba(59, 130, 246, 0.3), transparent)',
+                    'linear-gradient(225deg, transparent, rgba(59, 130, 246, 0.3), transparent)',
+                    'linear-gradient(45deg, transparent, rgba(59, 130, 246, 0.3), transparent)'
+                  ]
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              />
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-white mb-2">
@@ -146,7 +224,7 @@ export default function Login() {
                       type="email"
                       autoComplete="email"
                       required
-                      className="w-full pl-10 pr-3 py-3 border border-white/30 rounded-lg bg-white/10 text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      className="w-full pl-10 pr-3 py-4 border border-white/20 rounded-xl bg-white/5 text-white placeholder-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400/50 transition-all duration-300 backdrop-blur-sm"
                       placeholder="seu@email.com"
                       value={formData.email}
                       onChange={handleInputChange}
@@ -168,7 +246,7 @@ export default function Login() {
                       type={showPassword ? 'text' : 'password'}
                       autoComplete="current-password"
                       required
-                      className="w-full pl-10 pr-12 py-3 border border-white/30 rounded-lg bg-white/10 text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      className="w-full pl-10 pr-12 py-4 border border-white/20 rounded-xl bg-white/5 text-white placeholder-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400/50 transition-all duration-300 backdrop-blur-sm"
                       placeholder="••••••••"
                       value={formData.password}
                       onChange={handleInputChange}
@@ -190,10 +268,23 @@ export default function Login() {
                 <motion.button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                  className="relative w-full flex justify-center items-center py-4 px-6 rounded-xl text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-lg hover:shadow-xl overflow-hidden"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
+                  {/* Efeito de brilho no botão */}
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                    animate={{
+                      x: ['-100%', '100%']
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      repeatDelay: 3,
+                      ease: "easeInOut"
+                    }}
+                  />
                   {isLoading ? (
                     <div className="flex items-center">
                       <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
