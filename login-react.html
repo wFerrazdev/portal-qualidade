@@ -45,7 +45,6 @@
             width: 100%;
             height: 120px;
             opacity: 0.8;
-            animation: waveDeform 6s ease-in-out infinite;
         }
 
         .wave-1 {
@@ -54,9 +53,9 @@
         }
 
         .wave-1 path {
-            stroke-dasharray: 1000;
-            stroke-dashoffset: 1000;
-            animation: drawWave 4s ease-in-out infinite;
+            stroke-dasharray: 2000;
+            stroke-dashoffset: 2000;
+            animation: buildWave 8s linear infinite;
         }
 
         .wave-2 {
@@ -65,9 +64,9 @@
         }
 
         .wave-2 path {
-            stroke-dasharray: 1200;
-            stroke-dashoffset: 1200;
-            animation: drawWave 5s ease-in-out infinite 1s;
+            stroke-dasharray: 2000;
+            stroke-dashoffset: 2000;
+            animation: buildWave 10s linear infinite 1s;
         }
 
         .wave-3 {
@@ -76,9 +75,9 @@
         }
 
         .wave-3 path {
-            stroke-dasharray: 1100;
-            stroke-dashoffset: 1100;
-            animation: drawWave 4.5s ease-in-out infinite 2s;
+            stroke-dasharray: 2000;
+            stroke-dashoffset: 2000;
+            animation: buildWave 9s linear infinite 2s;
         }
 
         .wave-4 {
@@ -87,9 +86,9 @@
         }
 
         .wave-4 path {
-            stroke-dasharray: 1300;
-            stroke-dashoffset: 1300;
-            animation: drawWave 5.5s ease-in-out infinite 3s;
+            stroke-dasharray: 2000;
+            stroke-dashoffset: 2000;
+            animation: buildWave 11s linear infinite 3s;
         }
 
         .wave-5 {
@@ -98,62 +97,36 @@
         }
 
         .wave-5 path {
-            stroke-dasharray: 1050;
-            stroke-dashoffset: 1050;
-            animation: drawWave 3.5s ease-in-out infinite 4s;
+            stroke-dasharray: 2000;
+            stroke-dashoffset: 2000;
+            animation: buildWave 7s linear infinite 4s;
         }
 
-        @keyframes waveDeform {
-            0% { 
-                transform: translateX(0) scale(1) skewX(0deg); 
-                opacity: 0.8; 
-            }
-            15% { 
-                transform: translateX(-25px) scale(1.03) skewX(3deg); 
-                opacity: 0.6; 
-            }
-            30% { 
-                transform: translateX(20px) scale(0.97) skewX(-2deg); 
-                opacity: 0.9; 
-            }
-            45% { 
-                transform: translateX(-15px) scale(1.02) skewX(2deg); 
-                opacity: 0.7; 
-            }
-            60% { 
-                transform: translateX(30px) scale(0.98) skewX(-3deg); 
-                opacity: 0.8; 
-            }
-            75% { 
-                transform: translateX(-20px) scale(1.01) skewX(1deg); 
-                opacity: 0.6; 
-            }
-            90% { 
-                transform: translateX(15px) scale(0.99) skewX(-1deg); 
-                opacity: 0.9; 
-            }
-            100% { 
-                transform: translateX(0) scale(1) skewX(0deg); 
-                opacity: 0.8; 
-            }
-        }
 
-        @keyframes drawWave {
+        @keyframes buildWave {
             0% { 
-                stroke-dashoffset: 1000; 
+                stroke-dashoffset: 2000; 
                 opacity: 0; 
             }
+            10% { 
+                stroke-dashoffset: 1800; 
+                opacity: 0.3; 
+            }
             25% { 
-                stroke-dashoffset: 750; 
+                stroke-dashoffset: 1500; 
                 opacity: 0.6; 
             }
             50% { 
-                stroke-dashoffset: 500; 
+                stroke-dashoffset: 1000; 
                 opacity: 0.9; 
             }
             75% { 
-                stroke-dashoffset: 250; 
-                opacity: 0.7; 
+                stroke-dashoffset: 500; 
+                opacity: 0.8; 
+            }
+            90% { 
+                stroke-dashoffset: 200; 
+                opacity: 0.9; 
             }
             100% { 
                 stroke-dashoffset: 0; 
