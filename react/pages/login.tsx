@@ -58,42 +58,42 @@ export default function Login() {
         <div className="absolute inset-0 bg-[#08090d] overflow-hidden">
           {/* Gradiente de fundo */}
           <div 
-            className="absolute inset-0 opacity-80"
+            className="absolute inset-0 opacity-90"
             style={{
               background: 'linear-gradient(135deg, #001a33 0%, #003366 25%, #004080 50%, #0052a3 75%, #0066cc 100%)'
             }}
           />
           
-          {/* Ondas animadas - Primeira camada */}
+          {/* Ondas animadas - Primeira camada (dentro da tela) */}
           <div 
-            className="absolute inset-0 animate-wave-glow"
+            className="absolute inset-4 animate-wave-glow rounded-3xl"
             style={{
               background: `
-                radial-gradient(ellipse at 20% 80%, rgba(0, 102, 204, 0.4) 0%, transparent 70%),
-                radial-gradient(ellipse at 80% 20%, rgba(0, 51, 102, 0.3) 0%, transparent 70%),
-                radial-gradient(ellipse at 40% 40%, rgba(0, 80, 160, 0.25) 0%, transparent 70%)
+                radial-gradient(ellipse at 30% 70%, rgba(0, 102, 204, 0.3) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 30%, rgba(0, 51, 102, 0.25) 0%, transparent 60%),
+                radial-gradient(ellipse at 50% 50%, rgba(0, 80, 160, 0.2) 0%, transparent 60%)
               `
             }}
           />
           
-          {/* Ondas animadas - Segunda camada */}
+          {/* Ondas animadas - Segunda camada (dentro da tela) */}
           <div 
-            className="absolute inset-0 animate-wave-move opacity-70"
+            className="absolute inset-8 animate-wave-move opacity-60 rounded-2xl"
             style={{
               background: `
-                linear-gradient(45deg, transparent 30%, rgba(0, 102, 204, 0.1) 50%, transparent 70%),
-                linear-gradient(-45deg, transparent 30%, rgba(0, 80, 160, 0.1) 50%, transparent 70%)
+                linear-gradient(45deg, transparent 40%, rgba(0, 102, 204, 0.15) 50%, transparent 60%),
+                linear-gradient(-45deg, transparent 40%, rgba(0, 80, 160, 0.15) 50%, transparent 60%)
               `
             }}
           />
           
-          {/* Ondas animadas - Terceira camada */}
+          {/* Ondas animadas - Terceira camada (dentro da tela) */}
           <div 
-            className="absolute inset-0 animate-wave-glow opacity-50"
+            className="absolute inset-12 animate-wave-glow opacity-40 rounded-xl"
             style={{
               background: `
-                conic-gradient(from 0deg at 50% 50%, transparent 0deg, rgba(0, 102, 204, 0.1) 60deg, transparent 120deg),
-                conic-gradient(from 180deg at 50% 50%, transparent 0deg, rgba(0, 80, 160, 0.1) 60deg, transparent 120deg)
+                conic-gradient(from 0deg at 50% 50%, transparent 0deg, rgba(0, 102, 204, 0.1) 45deg, transparent 90deg),
+                conic-gradient(from 180deg at 50% 50%, transparent 0deg, rgba(0, 80, 160, 0.1) 45deg, transparent 90deg)
               `
             }}
           />
