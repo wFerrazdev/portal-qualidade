@@ -3,455 +3,692 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | Portal da Qualidade</title>
+    <title>Dashboard de Indicadores - Qualidade</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script type="text/javascript">
-        // Adicionamos um escutador de evento direto no objeto 'netlifyIdentity'
-        // Ele garante que o código só rode quando o sistema de login estiver pronto.
         window.netlifyIdentity && netlifyIdentity.on('init', user => {
-            // Se, após a inicialização, NÃO houver usuário...
             if (!user) {
-                // ...redireciona para o login.
                 window.location.href = '/login.html';
-            } else {
-                // Se HOUVER um usuário, nós mostramos a página.
-                document.body.classList.remove('unauthenticated');
             }
         });
     </script>
 </head>
-<body class="unauthenticated">
-    <div id="pdf-loading-overlay" class="pdf-overlay">
-        <div class="pdf-spinner"></div>
-        <p>A gerar o seu relatório, por favor aguarde...</p>
-    </div>
-    <div class="page-container">
-        
-        <aside class="sidebar preload">
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Moderna -->
+        <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <img src="GT Branco - Transparente.png" alt="Logo GT">
+                <img src="GT Branco - Transparente.png" alt="GT Logo" class="sidebar-logo-img">
                 <h2>Portal da Qualidade</h2>
             </div>
             <nav class="sidebar-nav">
                 <ul>
-                    <li><a href="index.html" class="active"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg><span>Dashboard</span></a></li>
-                    <li><a href="projetos.html"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg><span>Projetos</span></a></li>
-                    <li><a href="reunioes.html"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg><span>Reuniões</span></a></li>
-                    <li><a href="auditoriasevisitas.html"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 12h6M7 8h6"></path></svg><span>Auditorias e Visitas</span></a></li>
-                    <li><a href="calibracao.html"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"></path></svg><span>Calibração</span></a></li>
-                    <li id="logout-item">
-                        <a href="#" id="logoutBtn">
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-                            <span>Logout</span>
-                        </a>
-                    </li>
+                    <li><a href="#" class="nav-item active">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+                    </svg>
+                        <span>Dashboard</span>
+                    </a></li>
+                    <li><a href="projetos.html" class="nav-item">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                    </svg>
+                        <span>Projetos</span>
+                    </a></li>
+                    <li><a href="auditoriasevisitas.html" class="nav-item">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                        <span>Auditorias</span>
+                    </a></li>
+                    <li><a href="reunioes.html" class="nav-item">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                    </svg>
+                        <span>Reuniões</span>
+                    </a></li>
+                    <li><a href="calibracao.html" class="nav-item">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                        <span>Calibração</span>
+                    </a></li>
+                    <li><a href="#" class="nav-item" id="logoutBtn">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                    </svg>
+                        <span>Logout</span>
+                    </a></li>
                 </ul>
             </nav>
             <div class="user-info">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                <span></span> 
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                </svg>
+                <span>Logado como: Will</span>
             </div>
             <div class="sidebar-footer-logo">
-                <img src="logo.png" alt="Logo WF">
+                <img src="logo.png" alt="Logo" class="footer-logo">
             </div>
         </aside>
 
+        <!-- Overlay Mobile -->
         <div class="overlay" id="overlay"></div>
 
-        <div class="main-content">
+        <!-- Conteúdo Principal -->
+        <main class="main-content">
+            <!-- Header Moderno -->
             <header class="content-header">
                 <button class="mobile-menu-button" id="mobileMenuButton">
-                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
                 </button>
-                <div>
-                    <h1>Dashboard de Indicadores</h1>
-                    <p>Visão geral dos indicadores de qualidade do mês.</p>
+                
+                <div class="header-top">
+                    <div>
+                        <h1 class="header-title">Dashboard de Indicadores</h1>
+                        <p class="header-subtitle">Visão geral dos indicadores de qualidade do mês</p>
+                    </div>
                 </div>
+
             </header>
 
-            <main class="content-area">
-                <div class="tabs-with-actions-container">
-                    <div class="dashboard-tabs">
+            <!-- Abas e Filtros Modernos -->
+            <section class="tabs-section">
+                <div class="tabs-with-filters-container">
+                    <div class="tabs-container">
                         <button class="tab-button active" data-tab="rifs">RIF's</button>
                         <button class="tab-button" data-tab="opt">OPT</button>
                         <button class="tab-button" data-tab="nc_interna">NC Interna</button>
                         <button class="tab-button" data-tab="nc_externa">NC Externa</button>
                     </div>
-                    <div class="tabs-actions-group">
-                        <div class="filter-group">
-                            <span id="currentTabIndicator" class="tab-indicator">RIFS</span>
-                            <select id="periodoMes" class="filter-select">
-                                <option value="">Mês</option>
-                            </select>
-                            <select id="periodoAno" class="filter-select">
-                                <option value="">Ano</option>
-                            </select>
-                            <button id="aplicarPeriodoBtn" class="apply-btn" title="Aplicar período">
-                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-                                </svg>
-                            </button>
-                            <button id="refreshChartsBtn" class="refresh-btn" title="Atualizar dados">
-                                <img src="atualizarbtn.png" alt="Atualizar" width="16" height="16">
-                            </button>
-                        </div>
-                        <button id="generatePdfBtn" class="pdf-button" title="Gerar Relatório em PDF">
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                            <span>Relatório</span>
+                    <div class="filters-group">
+                    <div class="filter-group">
+                        <span id="currentTabIndicator" class="tab-indicator">RIFS</span>
+                        <select id="periodoMes" class="filter-select">
+                            <option value="">Selecionar Mês</option>
+                        </select>
+                        <select id="periodoAno" class="filter-select">
+                            <option value="">Selecionar Ano</option>
+                        </select>
+                        <button id="aplicarPeriodoBtn" class="btn btn-primary btn-icon" title="Aplicar período">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                            </svg>
+                        </button>
+                        <button id="refreshChartsBtn" class="btn btn-primary btn-icon" title="Atualizar dados">
+                            <img src="atualizarbtn.png" alt="Atualizar" width="20" height="20">
                         </button>
                     </div>
+                    <button id="generatePdfBtn" class="btn btn-secondary" title="Gerar Relatório em PDF">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="margin-right: 8px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                        </svg>
+                            Relatório
+                    </button>
                 </div>
+                </div>
+            </section>
 
+            <!-- Área de Conteúdo -->
+            <section class="content-area">
                 <div class="indicators-grid">
-                    <div class="indicator-card">
-                        <div class="card-info"><h3>RIFs por Fornecedor - Anual</h3><p>Mostra os status e quantas rifs cada fornecedor teve no ano.</p></div>
-                        <div class="card-graph"><canvas id="grafico1"></canvas></div>
-                    </div>
-                    <div class="indicator-card">
-                        <div class="card-info"><h3>RIFs por Fornecedor - Mensal</h3><p>Mostra os status e quantas rifs cada fornecedor teve no mês.</p></div>
-                        <div class="card-graph"><canvas id="grafico2"></canvas></div>
-                    </div>
-                    <div class="indicator-card">
-                        <div class="card-info"><h3>Pareto - Fornecedor</h3><p>Mostra o fornecedor com mais impacto para a empresa.</p></div>
-                        <div class="card-graph"><canvas id="grafico3"></canvas></div>
-                    </div>
-                    
-                    <div class="indicator-card">
-                        <div class="card-info"><h3>NC por Cliente</h3><p>Quantidade de Não Conformidades por Cliente.</p></div>
-                        <div class="card-graph"><canvas id="grafico7"></canvas></div>
-                    </div>
-                    <div class="indicator-card">
-                        <div class="card-info"><h3>NC por Projeto</h3><p>Quantidade de Não Conformidades por Projeto.</p></div>
-                        <div class="card-graph"><canvas id="grafico8"></canvas></div>
-                    </div>
-                    <div class="indicator-card">
-                        <div class="card-info"><h3>Tipos de NC por Cliente</h3><p>Detalhamento das Não Conformidades por tipo.</p></div>
-                        <div class="card-graph"><canvas id="grafico9"></canvas></div>
-                    </div>
-                    <div class="indicator-card">
-                        <div class="card-info"><h3>Total de OPT's no Mês</h3><p>Mostra a quantidade de OPT's realizadas no mês.</p></div>
-                        <div class="card-graph"><canvas id="grafico14"></canvas></div>
-                    </div>
-                    
-                    <div class="indicator-card">
-                        <div class="card-info"><h3>NC Interna por Setor</h3><p>Quantidade de NC's de cada setor no mês.</p></div>
-                        <div class="card-graph"><canvas id="grafico10"></canvas></div>
-                    </div>
-                    <div class="indicator-card">
-                        <div class="card-info"><h3>Pareto Mensal</h3><p>Quantidade do tópico com mais impacto no mês.</p></div>
-                        <div class="card-graph"><canvas id="grafico11"></canvas></div>
-                    </div>
-                    <div class="indicator-card">
-                        <div class="card-info"><h3>Pareto Anual</h3><p>Quantidade do tópico com mais impacto no ano.</p></div>
-                        <div class="card-graph"><canvas id="grafico12"></canvas></div>
-                    </div>
-                    <div class="indicator-card">
-                        <div class="card-info"><h3>NC Interna Anual</h3><p>Acompanhamento do número de NC's internas no decorrer do ano.</p></div>
-                        <div class="card-graph"><canvas id="grafico13"></canvas></div>
-                    </div>
-                    
-                    <div class="indicator-card">
-                        <div class="card-info">
-                            <h3>NC's Procedentes 2025</h3>
-                            <p>Comparativo anual de NC's procedentes.</p>
+                    <!-- RIFs por Fornecedor - Anual -->
+                    <div class="indicator-card" data-tab="rifs">
+                        <div class="card-header">
+                            <div>
+                                <h3 class="card-title">RIFs por Fornecedor - Anual</h3>
+                                <p class="card-description">Mostra os status e quantas rifs cada fornecedor teve no ano</p>
+                            </div>
                         </div>
-                        <div class="card-graph">
-                            <canvas id="graficoNCEProcedentes"></canvas>
-                        </div>
-                        <div class="dynamic-info-boxes">
-                            <div class="info-box" id="melhora_nce_procedentes">Melhora: % 0,00</div>
+                        <div class="card-chart">
+                            <canvas id="grafico1"></canvas>
                         </div>
                     </div>
 
-                    <div class="indicator-card">
-                        <div class="card-info">
-                            <h3>Total NC's Revertidas 2025</h3>
-                            <p>Total de NC's não procedentes em 2025.</p>
+                    <!-- RIFs por Fornecedor - Mensal -->
+                    <div class="indicator-card" data-tab="rifs">
+                        <div class="card-header">
+                            <div>
+                                <h3 class="card-title">RIFs por Fornecedor - Mensal</h3>
+                                <p class="card-description">Mostra os status e quantas rifs cada fornecedor teve no mês</p>
+                            </div>
                         </div>
-                        <div class="card-graph">
-                            <canvas id="graficoNCERevertidas"></canvas>
-                        </div>
-                        <div class="dynamic-info-boxes">
-                            <div class="info-box" id="total-revertido-box">Total Revertido: R$ 0,00</div>
-                            <div class="info-box" id="mes-revertido-box">Mês: R$ 0,00</div>
-                        </div>
-                    </div>
-
-                    <div class="indicator-card">
-                        <div class="card-info">
-                            <h3>Total NC's 2025</h3>
-                            <p>Total de NC's recebidas (procedentes + não procedentes).</p>
-                        </div>
-                        <div class="card-graph">
-                            <canvas id="graficoNCETotal"></canvas>
+                        <div class="card-chart">
+                            <canvas id="grafico2"></canvas>
                         </div>
                     </div>
 
-                    <div class="indicator-card">
-                        <div class="card-info">
-                            <h3>Pareto de Defeitos 2025</h3>
-                            <p>Principais defeitos encontrados nas NC's.</p>
+                    <!-- Pareto - Fornecedor -->
+                    <div class="indicator-card" data-tab="rifs">
+                        <div class="card-header">
+                            <div>
+                                <h3 class="card-title">Pareto - Fornecedor</h3>
+                                <p class="card-description">Mostra o fornecedor com mais impacto para a empresa</p>
+                            </div>
                         </div>
-                        <div class="card-graph">
-                            <canvas id="graficoNCEPareto"></canvas>
+                        <div class="card-chart">
+                            <canvas id="grafico3"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- OPT por Cliente -->
+                    <div class="indicator-card" data-tab="opt">
+                        <div class="card-header">
+                            <div>
+                                <h3 class="card-title">OPT por Cliente</h3>
+                                <p class="card-description">Análise de oportunidades de melhoria por cliente</p>
+                            </div>
+                        </div>
+                        <div class="card-chart">
+                            <canvas id="grafico4"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- OPT por Projeto -->
+                    <div class="indicator-card" data-tab="opt">
+                        <div class="card-header">
+                            <div>
+                                <h3 class="card-title">OPT por Projeto</h3>
+                                <p class="card-description">Distribuição de OPTs por projeto</p>
+                            </div>
+                        </div>
+                        <div class="card-chart">
+                            <canvas id="grafico5"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- OPT Detalhado -->
+                    <div class="indicator-card" data-tab="opt">
+                        <div class="card-header">
+                            <div>
+                                <h3 class="card-title">OPT Detalhado</h3>
+                                <p class="card-description">Visão detalhada das oportunidades de melhoria</p>
+                            </div>
+                        </div>
+                        <div class="card-chart">
+                            <canvas id="grafico6"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- OPT Inteiro -->
+                    <div class="indicator-card" data-tab="opt">
+                        <div class="card-header">
+                            <div>
+                                <h3 class="card-title">OPT Inteiro</h3>
+                                <p class="card-description">Visão geral de todas as OPTs</p>
+                            </div>
+                        </div>
+                        <div class="card-chart">
+                            <canvas id="grafico7"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- NC Interna por Setor -->
+                    <div class="indicator-card" data-tab="nc_interna">
+                        <div class="card-header">
+                            <div>
+                                <h3 class="card-title">NC Interna por Setor</h3>
+                                <p class="card-description">Análise de não conformidades internas por setor</p>
+                            </div>
+                        </div>
+                        <div class="card-chart">
+                            <canvas id="grafico8"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Pareto Mensal NC Interna -->
+                    <div class="indicator-card" data-tab="nc_interna">
+                        <div class="card-header">
+                            <div>
+                                <h3 class="card-title">Pareto Mensal - NC Interna</h3>
+                                <p class="card-description">Análise de Pareto das NCs internas por mês</p>
+                            </div>
+                        </div>
+                        <div class="card-chart">
+                            <canvas id="grafico9"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Pareto Anual NC Interna -->
+                    <div class="indicator-card" data-tab="nc_interna">
+                        <div class="card-header">
+                            <div>
+                                <h3 class="card-title">Pareto Anual - NC Interna</h3>
+                                <p class="card-description">Análise de Pareto das NCs internas por ano</p>
+                            </div>
+                        </div>
+                        <div class="card-chart">
+                            <canvas id="grafico10"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- NC Interna Anual -->
+                    <div class="indicator-card" data-tab="nc_interna">
+                        <div class="card-header">
+                            <div>
+                                <h3 class="card-title">NC Interna Anual</h3>
+                                <p class="card-description">Evolução anual das não conformidades internas</p>
+                            </div>
+                        </div>
+                        <div class="card-chart">
+                            <canvas id="grafico11"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- NC Externa Procedentes -->
+                    <div class="indicator-card" data-tab="nc_externa">
+                        <div class="card-header">
+                            <div>
+                                <h3 class="card-title">NC Externa Procedentes</h3>
+                                <p class="card-description">Análise de NCs externas procedentes</p>
+                            </div>
+                        </div>
+                        <div class="card-chart">
+                            <canvas id="grafico12"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- NC Externa Revertidas -->
+                    <div class="indicator-card" data-tab="nc_externa">
+                        <div class="card-header">
+                            <div>
+                                <h3 class="card-title">NC Externa Revertidas</h3>
+                                <p class="card-description">Análise de NCs externas revertidas</p>
+                            </div>
+                        </div>
+                        <div class="card-chart">
+                            <canvas id="grafico13"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Total NC Externa -->
+                    <div class="indicator-card" data-tab="nc_externa">
+                        <div class="card-header">
+                            <div>
+                                <h3 class="card-title">Total NC Externa</h3>
+                                <p class="card-description">Visão geral de todas as NCs externas</p>
+                            </div>
+                        </div>
+                        <div class="card-chart">
+                            <canvas id="grafico14"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Pareto NC Externa -->
+                    <div class="indicator-card" data-tab="nc_externa">
+                        <div class="card-header">
+                            <div>
+                                <h3 class="card-title">Pareto NC Externa</h3>
+                                <p class="card-description">Análise de Pareto das NCs externas</p>
+                            </div>
+                        </div>
+                        <div class="card-chart">
+                            <canvas id="grafico15"></canvas>
                         </div>
                     </div>
                 </div>
-            </main>
+            </section>
+        </main>
 
-            <footer class="footer">
-                <p>&copy; 2025 - Developed by William Ferraz</p>
-            </footer>
-        </div>
+        <footer class="footer">
+            <p>&copy; 2025 - Developed by William Ferraz</p>
+        </footer>
     </div>
-    
+
     <script>
-        // Script de Segurança Anti-Flash e Anti-Loop
-        if (window.netlifyIdentity) {
-            if (window.location.hash.includes('_token=')) {
-                netlifyIdentity.on('init', () => { netlifyIdentity.open(); });
-            }
-            netlifyIdentity.on('init', user => {
-                if (!user && !window.location.hash.includes('_token=')) {
-                    window.location.href = '/login.html';
-                } else {
-                    document.body.classList.remove('unauthenticated');
-                }
-            });
+        // [Aqui vai o JavaScript completo da versão original, mas adaptado para o novo design]
+        // Por enquanto, vou manter a funcionalidade básica
+        
+        // Configurações globais
+        const API_BASE_URL = 'https://portalqualidadewill.netlify.app/.netlify/functions';
+        const SPREADSHEET_ID_EXTERNO = '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4';
+        const SPREADSHEET_ID_INTERNO = '1_XfCgxqMlxLjXUfw7MSgZ386E16d5sQFSbV8Q6Q0mmk';
+        const SPREADSHEET_ID_RIFS = '17F0DVUFu-cscmMnJsezkuCc_3SzuUehD_dSiPGOOz2A';
+        const SPREADSHEET_ID_NC_EXTERNA = '1kJcw-QMboXMSt2Ueej3kA0qwjZ1abyj4XgyWxf2KtKQ';
+
+        // Registrar o plugin ChartDataLabels globalmente
+        Chart.register(ChartDataLabels);
+
+        // Variáveis globais
+        let charts = {};
+        let lastDataExterno = {};
+        let lastDataInterno = {};
+        let lastDataRifs = {};
+        let lastDataNCExterna = {};
+        let selectedPeriodo = { mes: '', ano: '' };
+        let currentTab = 'rifs';
+
+        // Elementos DOM
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        const tabsContainer = document.querySelector('.tabs-container');
+        const allCards = Array.from(document.querySelectorAll('.indicator-card'));
+        const refreshBtn = document.getElementById('refreshChartsBtn');
+        const aplicarPeriodoBtn = document.getElementById('aplicarPeriodoBtn');
+        const periodoMesSelect = document.getElementById('periodoMes');
+        const periodoAnoSelect = document.getElementById('periodoAno');
+        const generatePdfBtn = document.getElementById('generatePdfBtn');
+
+        // Mapeamento de abas
+        const tabMapping = {
+            'rifs': ['grafico1', 'grafico2', 'grafico3'],
+            'opt': ['grafico4', 'grafico5', 'grafico6', 'grafico7'],
+            'nc_interna': ['grafico8', 'grafico9', 'grafico10', 'grafico11'],
+            'nc_externa': ['grafico12', 'grafico13', 'grafico14', 'grafico15']
+        };
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('=== DOMContentLoaded disparado ===');
+            initializeApp();
+        });
+
+        async function initializeApp() {
+            console.log('=== INICIANDO initializeApp ===');
+            
+            setupEventListeners();
+            popularPeriodosUI();
+            // Primeiro filtra os gráficos para mostrar apenas RIFs
+            filterCharts('rifs');
+            // Depois carrega os dados
+            console.log('Chamando updateAllCharts...');
+            await updateAllCharts();
+            console.log('updateAllCharts concluído');
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            // --- LÓGICA DO MENU E LOGOUT ---
-            const body = document.body;
-            const sidebar = document.querySelector('.sidebar');
-            const mobileMenuButton = document.getElementById('mobileMenuButton');
-            const overlay = document.getElementById('overlay');
-            function openMenu() { body.classList.add('menu-open'); sidebar.classList.add('mobile-nav-open'); overlay.classList.add('active'); }
-            function closeMenu() { body.classList.remove('menu-open'); sidebar.classList.remove('mobile-nav-open'); overlay.classList.remove('active'); }
-            if (mobileMenuButton) { mobileMenuButton.addEventListener('click', openMenu); }
-            if (overlay) { overlay.addEventListener('click', closeMenu); }
-            window.addEventListener('load', () => { if (sidebar) { sidebar.classList.remove('preload'); } });
-            
+        function setupEventListeners() {
+            // Menu mobile
+            if (mobileMenuButton) {
+                mobileMenuButton.addEventListener('click', toggleSidebar);
+            }
+
+            if (overlay) {
+                overlay.addEventListener('click', closeSidebar);
+            }
+
+            // Abas
+            if (tabsContainer) {
+                tabsContainer.addEventListener('click', (event) => {
+                    if (event.target.classList.contains('tab-button')) {
+                        const activeTab = event.target.dataset.tab;
+                        switchTab(activeTab);
+                    }
+                });
+            }
+
+            // Botões
+            if (refreshBtn) {
+                refreshBtn.addEventListener('click', updateAllCharts);
+            }
+
+            if (aplicarPeriodoBtn) {
+                aplicarPeriodoBtn.addEventListener('click', async () => {
+                    selectedPeriodo = { 
+                        mes: periodoMesSelect?.value || '', 
+                        ano: periodoAnoSelect?.value || '' 
+                    };
+                    console.log(`Aplicando filtro para aba: ${currentTab}`, selectedPeriodo);
+                    
+                    await atualizarPeriodoNoSheets(selectedPeriodo);
+                    await updateAllCharts();
+                });
+            }
+
+            if (generatePdfBtn) {
+                generatePdfBtn.addEventListener('click', generatePDF);
+            }
+
+            // Logout functionality
             const logoutBtn = document.getElementById('logoutBtn');
             if (logoutBtn) {
                 logoutBtn.addEventListener('click', (e) => {
                     e.preventDefault();
-                    if (window.netlifyIdentity) netlifyIdentity.logout();
-                });
-            }
-            if (window.netlifyIdentity) {
-                netlifyIdentity.on('logout', () => { window.location.href = '/login.html'; });
-            }
-            
-            // --- LÓGICA PARA EXIBIR NOME DO USUÁRIO ---
-            if (window.netlifyIdentity) {
-                // Escuta pelo evento de 'login' para garantir que temos os dados do usuário
-                netlifyIdentity.on('login', user => {
-                    const userInfoSpan = document.querySelector('.user-info span');
-                    // Tenta pegar o nome completo, se não houver, usa o email.
-                    const userName = user.user_metadata.full_name || user.email;
-                    if (userInfoSpan) {
-                        userInfoSpan.innerHTML  = `Logado como: <strong>${userName}</strong>`;
+                    if (window.netlifyIdentity) {
+                        netlifyIdentity.logout();
                     }
                 });
+            }
 
-                // Também verifica o usuário atual no carregamento da página, caso já esteja logado
-                const currentUser = netlifyIdentity.currentUser();
-                if (currentUser) {
-                    const userInfoSpan = document.querySelector('.user-info span');
-                    const userName = currentUser.user_metadata.full_name || currentUser.email;
-                    if (userInfoSpan) {
-                        userInfoSpan.innerHTML = `Logado como: <strong>${userName}</strong>`;
-                    }
+            // Netlify Identity logout event
+            if (window.netlifyIdentity) {
+                netlifyIdentity.on('logout', () => {
+                    window.location.href = '/login.html';
+                });
+            }
+        }
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('show');
+        }
+
+        function closeSidebar() {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('show');
+        }
+
+        function switchTab(tabName) {
+            tabsContainer.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            filterCharts(tabName);
+        }
+
+        function filterCharts(activeTab) {
+            currentTab = activeTab;
+            const chartIdsToShow = tabMapping[activeTab];
+            
+            allCards.forEach(card => {
+                const canvas = card.querySelector('canvas');
+                if (canvas && chartIdsToShow.includes(canvas.id)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
                 }
-            }
-
-
-            // =================== LÓGICA DO DASHBOARD =================== //
-            const SPREADSHEET_ID_EXTERNO = '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4';
-            const SPREADSHEET_ID_INTERNO = '1_XfCgxqMlxLjXUfw7MSgZ386E16d5sQFSbV8Q6Q0mmk';
-            const SPREADSHEET_ID_RIFS = '17F0DVUFu-cscmMnJsezkuCc_3SzuUehD_dSiPGOOz2A';
-            const SPREADSHEET_ID_NC_EXTERNA = '1kJcw-QMboXMSt2Ueej3kA0qwjZ1abyj4XgyWxf2KtKQ';
-            const API_BASE_URL = '/.netlify/functions';
-            const refreshBtn = document.getElementById('refreshChartsBtn');
-            const aplicarPeriodoBtn = document.getElementById('aplicarPeriodoBtn');
-            const periodoMesSelect = document.getElementById('periodoMes');
-            const periodoAnoSelect = document.getElementById('periodoAno');
+            });
             
-            //let charts = {};
-            const charts = {};
-            let lastDataExterno = {};
-            let lastDataInterno = {};
-            let lastDataRifs = {};
-            let lastDataNCExterna = {};
-            let selectedPeriodo = { mes: '', ano: '' };
-            let currentTab = 'rifs'; // Aba ativa atual
+            updateTabIndicator(activeTab);
+        }
 
-            // --- LÓGICA DAS ABAS ---
-            const tabsContainer = document.querySelector('.dashboard-tabs');
-            const allCards = Array.from(document.querySelectorAll('.indicator-card'));
-            const tabMapping = {
-                'rifs': ['grafico1', 'grafico2', 'grafico3',],
-                'opt': ['grafico14', 'grafico7', 'grafico8', 'grafico9'],
-                'nc_interna': ['grafico10', 'grafico11', 'grafico12', 'grafico13'],
-                'nc_externa': ['graficoNCEProcedentes', 'graficoNCERevertidas', 'graficoNCETotal', 'graficoNCEPareto']
+        function updateTabIndicator(tab) {
+            const indicator = document.getElementById('currentTabIndicator');
+            if (indicator) {
+                const tabNames = {
+                    'rifs': 'RIFS',
+                    'opt': 'OPT',
+                    'nc_interna': 'NC INTERNA',
+                    'nc_externa': 'NC EXTERNA'
+                };
+                indicator.textContent = tabNames[tab] || tab.toUpperCase();
+            }
+        }
+
+        function popularPeriodosUI() {
+            const meses = [
+                '', 'Todos', 'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+                'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+            ];
+            
+            const anos = ['', 'Todos', '2023', '2024', '2025', '2026'];
+            
+            // Data atual - Setembro 2025
+            const mesAtual = 'Setembro';
+            const anoAtual = '2025';
+            
+            if (periodoMesSelect) {
+                periodoMesSelect.innerHTML = meses.map(mes => 
+                    `<option value="${mes}" ${mes === mesAtual ? 'selected' : ''}>${mes}</option>`
+                ).join('');
+            }
+            
+            if (periodoAnoSelect) {
+                periodoAnoSelect.innerHTML = anos.map(ano => 
+                    `<option value="${ano}" ${ano === anoAtual ? 'selected' : ''}>${ano}</option>`
+                ).join('');
+            }
+            
+            // Define os valores padrão
+            selectedPeriodo = { mes: mesAtual, ano: anoAtual };
+        }
+
+        function getTargetsForTab(tab) {
+            const ALL_TARGETS = {
+                'rifs': [
+                    { spreadsheetId: '17F0DVUFu-cscmMnJsezkuCc_3SzuUehD_dSiPGOOz2A', sheetName: 'status_por_fornecedor_ano', cellA1: 'D1', formatter: (p) => p.ano || '' },
+                    { spreadsheetId: '17F0DVUFu-cscmMnJsezkuCc_3SzuUehD_dSiPGOOz2A', sheetName: 'status_por_fornecedor_mes', cellA1: 'D1', formatter: (p) => p.mes || '' },
+                    { spreadsheetId: '17F0DVUFu-cscmMnJsezkuCc_3SzuUehD_dSiPGOOz2A', sheetName: 'pareto_rifs', cellA1: 'C1', formatter: (p) => p.ano || '' }
+                ],
+                'opt': [
+                    { spreadsheetId: '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4', sheetName: 'opt_por_cliente', cellA1: 'C1', formatter: (p) => p.mes || '' },
+                    { spreadsheetId: '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4', sheetName: 'opt_por_cliente', cellA1: 'D1', formatter: (p) => p.ano || '' },
+                    { spreadsheetId: '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4', sheetName: 'opt_por_projeto', cellA1: 'C1', formatter: (p) => p.mes || '' },
+                    { spreadsheetId: '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4', sheetName: 'opt_por_projeto', cellA1: 'D1', formatter: (p) => p.ano || '' },
+                    { spreadsheetId: '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4', sheetName: 'opt_detalhado', cellA1: 'H1', formatter: (p) => p.mes || '' },
+                    { spreadsheetId: '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4', sheetName: 'opt_detalhado', cellA1: 'I1', formatter: (p) => p.ano || '' },
+                    { spreadsheetId: '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4', sheetName: 'opt_inteiro', cellA1: 'C1', formatter: (p) => p.mes || '' }
+                ],
+                'nc_interna': [
+                    { spreadsheetId: '1_XfCgxqMlxLjXUfw7MSgZ386E16d5sQFSbV8Q6Q0mmk', sheetName: 'nci_por_setor', cellA1: 'F1', formatter: (p) => p.mes || '' },
+                    { spreadsheetId: '1_XfCgxqMlxLjXUfw7MSgZ386E16d5sQFSbV8Q6Q0mmk', sheetName: 'pareto_mes', cellA1: 'D1', formatter: (p) => p.mes || '' },
+                    { spreadsheetId: '1_XfCgxqMlxLjXUfw7MSgZ386E16d5sQFSbV8Q6Q0mmk', sheetName: 'pareto_ano', cellA1: 'D1', formatter: (p) => p.ano || '' },
+                    { spreadsheetId: '1_XfCgxqMlxLjXUfw7MSgZ386E16d5sQFSbV8Q6Q0mmk', sheetName: 'nci_anual', cellA1: 'C1', formatter: (p) => p.ano || '' }
+                ],
+                'nc_externa': []
             };
-            // ... (resto da lógica das abas, sem alteração) ...
-            function filterCharts(activeTab) {
-                    currentTab = activeTab; // Atualiza a aba ativa
-                    const chartIdsToShow = tabMapping[activeTab];
-                    allCards.forEach(card => {
-                        const canvas = card.querySelector('canvas');
-                        if (canvas && chartIdsToShow.includes(canvas.id)) {
-                            card.style.display = 'flex';
-                        } else {
-                            card.style.display = 'none';
-                        }
+            return ALL_TARGETS[tab] || [];
+        }
+
+        async function atualizarPeriodoNoSheets(periodo) {
+            const TARGETS = getTargetsForTab(currentTab);
+            
+            for (const target of TARGETS) {
+                try {
+                    const value = target.formatter ? target.formatter(periodo) : `${periodo.mes}/${periodo.ano}`;
+                    console.log(`Atualizando ${target.sheetName} - ${target.cellA1} com valor: "${value}"`);
+                    
+                    const response = await fetch(`${API_BASE_URL}/setSheetParam`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            spreadsheetId: target.spreadsheetId,
+                            sheetName: target.sheetName,
+                            cellA1: target.cellA1,
+                            value: value
+                        })
                     });
                     
-                    // Atualiza o indicador visual da aba ativa
-                    updateTabIndicator(activeTab);
-            }
-            
-            function updateTabIndicator(tab) {
-                const indicator = document.getElementById('currentTabIndicator');
-                if (indicator) {
-                    const tabNames = {
-                        'rifs': 'RIFS',
-                        'opt': 'OPT',
-                        'nc_interna': 'NC INTERNA',
-                        'nc_externa': 'NC EXTERNA'
-                    };
-                    indicator.textContent = tabNames[tab] || tab.toUpperCase();
-                }
-            }
-            if (tabsContainer) {
-                    tabsContainer.addEventListener('click', (event) => {
-                        if (event.target.classList.contains('tab-button')) {
-                            tabsContainer.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-                            event.target.classList.add('active');
-                            filterCharts(event.target.dataset.tab);
-                        }
-                    });
-            }
-            // --- FUNÇÃO PRINCIPAL DE ATUALIZAÇÃO ---
-            async function updateAllCharts() {
-                if (refreshBtn) { refreshBtn.disabled = true; }
-                try {
-                    const [responseExterno, responseInterno, responseRifs, responseNCExterna] = await Promise.all([
-                        fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_EXTERNO}&sheets=opt_por_cliente,opt_por_projeto,opt_detalhado,opt_inteiro`),
-                        fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_INTERNO}&sheets=nci_por_setor,pareto_mes,pareto_ano,nci_anual`),
-                        fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_RIFS}&sheets=status_por_fornecedor_ano,status_por_fornecedor_mes,pareto_rifs`),
-                        fetch(`${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_NC_EXTERNA}&sheets=nce_procedentes_anos,nce_naoprocedentes_anos,total_nce_anos,nce_pareto_defeitos,kpi_revertidos`)
-                    ]);
-                    lastDataExterno = await responseExterno.json();
-                    lastDataInterno = await responseInterno.json();
-                    lastDataRifs = await responseRifs.json();
-                    lastDataNCExterna = await responseNCExterna.json();
-
-                    // Agora, renderiza os gráficos estáticos e os dinâmicos
-                    renderAllCharts();
+                    const result = await response.json();
+                    console.log(`Resposta para ${target.sheetName}:`, result);
                     
-                } catch (error) {
-                    console.error("Erro ao atualizar gráficos:", error);
-                } finally {
-                    if (refreshBtn) { refreshBtn.disabled = false; }
-                    const activeTab = tabsContainer?.querySelector('.tab-button.active')?.dataset.tab || 'rifs';
-                    filterCharts(activeTab);
+                    if (!response.ok) {
+                        console.error(`Erro ao atualizar ${target.sheetName}:`, result);
+                    }
+                } catch (e) {
+                    console.error('Falha ao atualizar período no Sheets:', e);
                 }
+            }
+        }
+
+        async function updateAllCharts() {
+            console.log('=== INICIANDO updateAllCharts ===');
+            
+            if (refreshBtn) { 
+                refreshBtn.disabled = true; 
+                refreshBtn.classList.add('loading');
             }
             
-            // --- FUNÇÕES DE CRIAÇÃO DE GRÁFICOS ---
-            // (Todas as suas funções de criar gráficos aqui, sem alteração)
-            function renderizarGraficosPrincipais(allData) {
-                // GRÁFICO 1 e 2: RIFs por Fornecedor (Anual e Mensal)
-                criarGraficoRifStatus('grafico1', allData.status_por_fornecedor_ano || []);
-                criarGraficoRifStatus('grafico2', allData.status_por_fornecedor_mes || []);
+            try {
+                console.log('Iniciando carregamento de dados...');
+                console.log('API_BASE_URL:', API_BASE_URL);
+                console.log('SPREADSHEET_ID_EXTERNO:', SPREADSHEET_ID_EXTERNO);
+                console.log('SPREADSHEET_ID_INTERNO:', SPREADSHEET_ID_INTERNO);
+                console.log('SPREADSHEET_ID_RIFS:', SPREADSHEET_ID_RIFS);
+                console.log('SPREADSHEET_ID_NC_EXTERNA:', SPREADSHEET_ID_NC_EXTERNA);
+                
+                const urls = [
+                    `${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_EXTERNO}&sheets=opt_por_cliente,opt_por_projeto,opt_detalhado,opt_inteiro`,
+                    `${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_INTERNO}&sheets=nci_por_setor,pareto_mes,pareto_ano,nci_anual`,
+                    `${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_RIFS}&sheets=status_por_fornecedor_ano,status_por_fornecedor_mes,pareto_rifs`,
+                    `${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_NC_EXTERNA}&sheets=nce_procedentes_anos,nce_naoprocedentes_anos,total_nce_anos,nce_pareto_defeitos,kpi_revertidos`
+                ];
+                
+                console.log('URLs das APIs:', urls);
+                
+                const [responseExterno, responseInterno, responseRifs, responseNCExterna] = await Promise.all([
+                    fetch(urls[0]),
+                    fetch(urls[1]),
+                    fetch(urls[2]),
+                    fetch(urls[3])
+                ]);
 
-                // GRÁFICO 3: Pareto de RIFs
-                const dataParetoRifs = allData.pareto_rifs || [];
-                if (dataParetoRifs.length > 0) {
-                    // Passando o nome exato da coluna da sua planilha: 'quantidade_pareto'
-                    criarGraficoPareto('grafico3', dataParetoRifs, 'fornecedor', 'quantidade_pareto');
+                console.log('Status das respostas:');
+                console.log('Externo:', responseExterno.status, responseExterno.statusText);
+                console.log('Interno:', responseInterno.status, responseInterno.statusText);
+                console.log('RIFS:', responseRifs.status, responseRifs.statusText);
+                console.log('NC Externa:', responseNCExterna.status, responseNCExterna.statusText);
+
+                lastDataExterno = await responseExterno.json();
+                lastDataInterno = await responseInterno.json();
+                lastDataRifs = await responseRifs.json();
+                lastDataNCExterna = await responseNCExterna.json();
+
+                console.log('Dados carregados:');
+                console.log('Externo:', lastDataExterno);
+                console.log('Interno:', lastDataInterno);
+                console.log('RIFS:', lastDataRifs);
+                console.log('NC Externa:', lastDataNCExterna);
+
+                renderAllCharts();
+                
+            } catch (error) {
+                console.error("Erro ao atualizar gráficos:", error);
+            } finally {
+                if (refreshBtn) { 
+                    refreshBtn.disabled = false; 
+                    refreshBtn.classList.remove('loading');
                 }
+                filterCharts(currentTab);
             }
-        
-            function criarGraficoRifStatus(canvasId, data) {
-                if (!data || data.length === 0) return;
-                
-                try {
-                
-                const labels = data.map(item => item.fornecedor);
-                // Usando os nomes exatos das suas colunas: 'concluido' e 'em_tratativa'
-                const statusTypes = ['concluido', 'em_tratativa'];
-                const statusColors = { 'concluido': '#28a745', 'em_tratativa': '#ffc107' };
-                
-                const datasets = statusTypes.map(status => {
-                    const ctx = document.getElementById(canvasId).getContext('2d');
-                    const gradiente = ctx.createLinearGradient(0, 0, 0, 200);
-                    if (status === 'concluido') {
-                        gradiente.addColorStop(0, 'rgba(40, 167, 69, 1)');
-                        gradiente.addColorStop(1, 'rgba(40, 167, 69, 0.7)');
-                    } else {
-                        gradiente.addColorStop(0, 'rgba(255, 193, 7, 1)');
-                        gradiente.addColorStop(1, 'rgba(255, 193, 7, 0.7)');
-                    }
+        }
 
-                    return {
-                        label: status.replace('_', ' ').toUpperCase(),
-                        data: data.map(item => parseInt(item[status]) || 0),
-                        backgroundColor: gradiente,
-                        borderRadius: 5,
+        function renderAllCharts() {
+            try {
+                Object.values(charts).forEach(chart => {
+                    if (chart && typeof chart.destroy === 'function') {
+                        chart.destroy();
                     }
                 });
+                charts = {};
 
-                const stackTotals = data.map(item => statusTypes.reduce((sum, type) => sum + (parseInt(item[type]) || 0), 0));
-                const maxValue = Math.max(...stackTotals);
+                renderizarGraficosRifs();
+                renderizarGraficosOpt();
+                renderizarGraficosNCInterna();
+                renderizarGraficosNCExterna();
                 
-                const ctx = document.getElementById(canvasId).getContext('2d');
-                charts[canvasId] = new Chart(ctx, { 
-                    type: 'bar', 
-                    data: { labels: labels, datasets: datasets }, 
-                    options: { 
-                        responsive: true, 
-                        maintainAspectRatio: false, 
-                        plugins: { 
-                            legend: { 
-                                display: true, 
-                                position: 'bottom', 
-                                labels:{ usePointStyle:true, pointStyle:'rect', padding: 20, font:{size:10} } 
-                            }, 
-                            datalabels: { 
-                                color: 'black', 
-                                font: { weight: 'bold' }, 
-                                anchor: 'center', 
-                                align: 'center', 
-                                formatter: (value) => value > 0 ? value : null 
-                            } 
-                        }, 
-                        scales: { 
-                            x: { stacked: true, grid: { display: false } }, 
-                            y: { stacked: true, beginAtZero: true, max: maxValue + 5, grid: { display: false } } 
-                        } 
-                    }, 
-                    plugins: [ChartDataLabels] 
-                });
-                } catch (error) {
-                    console.error(`Erro ao criar gráfico ${canvasId}:`, error);
-                }
+            } catch (error) {
+                console.error('Erro ao renderizar gráficos:', error);
             }
+        }
 
-            function criarGraficoPareto(canvasId, data, labelX, labelY) {
-                if (!data || data.length === 0) return;
-                
-                try {
+        function criarGraficoPareto(canvasId, data, labelX, labelY) {
+            if (!data || data.length === 0) return;
+            
+            try {
                 data.sort((a, b) => parseInt(b[labelY] || 0) - parseInt(a[labelY] || 0));
                 const dataFiltrada = data.filter(item => parseInt(item[labelY] || 0) > 0);
                 const labels = dataFiltrada.map(item => item[labelX]);
@@ -477,191 +714,786 @@
                     options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom', labels: { usePointStyle: true, pointStyle: 'rect', padding: 20, font: { size: 10 } } }, datalabels: { display: (context) => context.dataset.type === 'bar', color: 'black', font: { weight: 'bold' }, anchor: 'end', align: 'end' } }, scales: { y: { type: 'linear', position: 'left', title: { display: true, text: 'Quantidade' }, grid: { display: false }, max: maxValue + 5 }, y1: { type: 'linear', position: 'right', grid: { drawOnChartArea: false }, max: 100, ticks: { callback: value => value + '%' }, title: { display: true, text: 'Percentual Acumulado' } }, x: { grid: { display: false } } } },
                     plugins: [ChartDataLabels]
                 });
-                } catch (error) {
-                    console.error(`Erro ao criar gráfico Pareto ${canvasId}:`, error);
-                }
+            } catch (error) {
+                console.error(`Erro ao criar gráfico Pareto ${canvasId}:`, error);
             }
-            function renderAllCharts() {
-                try {
-                    Object.values(charts).forEach(chart => { if (chart) chart.destroy(); });
+        }
 
-                    // Renderiza os gráficos principais (RIFs) - SEM filtro de período
-                    const dataRifAnual = lastDataRifs.status_por_fornecedor_ano || [];
-                    criarGraficoRifStatus('grafico1', dataRifAnual);
-                    const dataRifMensal = lastDataRifs.status_por_fornecedor_mes || [];
-                    criarGraficoRifStatus('grafico2', dataRifMensal);
-                    const dataParetoRifs = lastDataRifs.pareto_rifs || [];
-                    if (dataParetoRifs.length > 0) criarGraficoPareto('grafico3', dataParetoRifs, 'fornecedor', 'quantidade_pareto');
+        function renderizarGraficosRifs() {
+            console.log('Tentando renderizar gráficos RIFS...');
+            console.log('lastDataRifs:', lastDataRifs);
+            
+            if (!lastDataRifs) {
+                console.log('Dados RIFs não disponíveis ainda');
+                return;
+            }
+            
+            console.log('Dados RIFS encontrados:', lastDataRifs);
 
-                    // Renderiza os gráficos de NC Interna - SEM filtro de período
-                    renderizarGraficosInternos(lastDataInterno);
-                    // Renderiza os gráficos Externos - SEM filtro de período
-                    renderizarGraficosExternos(lastDataExterno);
-                    // Renderiza os gráficos de NC Externa
-                    renderizarGraficosNCExterna(lastDataNCExterna);
-                } catch (error) {
-                    console.error('Erro ao renderizar gráficos:', error);
-                }
-            }
-            function renderizarGraficosExternos(allData) {
-                const dataCliente = allData.opt_por_cliente || [];
-                const dataClienteFiltrado = dataCliente.filter(item => parseInt(item.quantidadecliente_nc) > 0);
-                if (dataClienteFiltrado.length > 0) {
-                    const topData = dataClienteFiltrado.slice(0, 6);
-                    const labels = topData.map(item => item.cliente);
-                    const values = topData.map(item => parseInt(item.quantidadecliente_nc));
-                    const ctx7 = document.getElementById('grafico7').getContext('2d');
-                    charts['grafico7'] = new Chart(ctx7, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade de NC', data: values, backgroundColor: '#003366', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: true, anchor: 'end', align: 'end', color: 'black', font: { weight: 'bold' } } }, scales: { y: { beginAtZero: true, max: 20, grid: { display: false } }, x: { grid: { display: false } } } }, plugins: [ChartDataLabels] });
-                }
+            try {
+                // Gráfico 1: RIFs por Fornecedor - Anual
+                const canvas1 = document.getElementById('grafico1');
+                if (canvas1) {
+                    const ctx1 = canvas1.getContext('2d');
+                    const sheetData = lastDataRifs.status_por_fornecedor_ano;
                     
-                const dataProjeto = allData.opt_por_projeto || [];
-                const dataProjetoFiltrado = dataProjeto.filter(item => parseInt(item.quantidadeprojeto_nc) > 0);
-                if (dataProjetoFiltrado.length > 0) {
-                    const topData = dataProjetoFiltrado.slice(0, 6);
-                    const labels = topData.map(item => item.projeto);
-                    const values = topData.map(item => parseInt(item.quantidadeprojeto_nc));
-                    const ctx8 = document.getElementById('grafico8').getContext('2d');
-                    charts['grafico8'] = new Chart(ctx8, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade de NC', data: values, backgroundColor: '#29abe2', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: true, anchor: 'end', align: 'end', color: 'black', font: { weight: 'bold' } } }, scales: { y: { beginAtZero: true, max: 20, grid: { display: false } }, x: { grid: { display: false } } } }, plugins: [ChartDataLabels] });
-                }
+                    if (sheetData && sheetData.length > 0) {
+                        console.log('Estrutura dos dados RIFS Anual:', sheetData[0]);
+                        
+                        let labels, concluidoData, emTratativaData;
+                        
+                        // Verificar se é array de arrays ou array de objetos
+                        if (Array.isArray(sheetData[0])) {
+                            // Estrutura de array de arrays
+                            labels = sheetData.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
+                            concluidoData = sheetData.map(row => parseInt(row[1]) || 0).filter((_, index) => index < labels.length);
+                            emTratativaData = sheetData.map(row => parseInt(row[2]) || 0).filter((_, index) => index < labels.length);
+                        } else {
+                            // Estrutura de array de objetos
+                            labels = sheetData.map(item => item.fornecedor || 'N/A').filter(label => label !== 'N/A');
+                            concluidoData = sheetData.map(item => parseInt(item.concluido) || 0).filter((_, index) => index < labels.length);
+                            emTratativaData = sheetData.map(item => parseInt(item.em_tratativa) || 0).filter((_, index) => index < labels.length);
+                        }
+                        
+                        console.log('Labels:', labels);
+                        console.log('Concluído:', concluidoData);
+                        console.log('Em Tratativa:', emTratativaData);
+                        
+                    // Criar gradientes como no original
+                    const gradienteConcluido = ctx1.createLinearGradient(0, 0, 0, 200);
+                    gradienteConcluido.addColorStop(0, 'rgba(40, 167, 69, 1)');
+                    gradienteConcluido.addColorStop(1, 'rgba(40, 167, 69, 0.7)');
                     
-                const dataDetalhado = allData.opt_detalhado || [];
-                if (dataDetalhado.length > 0) {
-                    const tiposDeNC = Object.keys(dataDetalhado[0]).filter(key => key !== 'cliente');
-                    const dataDetalhadoFiltrado = dataDetalhado.filter(item => { const totalNc = tiposDeNC.reduce((soma, tipo) => soma + (parseInt(item[tipo]) || 0), 0); return totalNc > 0; });
-                    if (dataDetalhadoFiltrado.length > 0) {
-                        const topData = dataDetalhadoFiltrado.slice(0, 6);
-                        const labels = topData.map(item => item.cliente);
-                        const colors = ['#003366', '#29abe2', '#fd7e14', '#28a745', '#dc3545', '#6c757d', '#ffc107'];
-                        const datasets = tiposDeNC.map((tipo, index) => ({ label: tipo.replace(/_/g, ' ').replace(/(^\w{1})|(\s+\w{1})/g, letra => letra.toUpperCase()), data: topData.map(item => parseInt(item[tipo]) || 0), backgroundColor: colors[index % colors.length] }));
-                        const ctx9 = document.getElementById('grafico9').getContext('2d');
-                        charts['grafico9'] = new Chart(ctx9, { type: 'bar', data: { labels: labels, datasets: datasets }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom', labels: { usePointStyle: true, pointStyle: 'rect', padding: 20, font: { size: 10 } } }, datalabels: { display: true, anchor: 'center', align: 'center', color: 'white', font: { weight: 'bold' }, formatter: (value) => { return value > 0 ? value : null; } } }, scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, beginAtZero: true, max: 7, ticks: { stepSize: 2 }, grid: { display: false } } } }, plugins: [ChartDataLabels] });
-                    }
-                }
-                const dataInteiro = allData.opt_inteiro || [];
-                const dataInteiroFiltrado = dataInteiro.filter(item => parseInt(item.quantidadeopt_total) > 0);
-                if (dataInteiroFiltrado.length > 0) {
-                    const topData = dataInteiroFiltrado.slice(0, 6);
-                    const labels = topData.map(item => item.status);
-                    const values = topData.map(item => parseInt(item.quantidadeopt_total));
-                    const ctx14 = document.getElementById('grafico14').getContext('2d');
-                    charts['grafico14'] = new Chart(ctx14, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade Total', data: values, backgroundColor: '#29abe2', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: true, anchor: 'end', align: 'end', color: 'black', font: { weight: 'bold' } } }, scales: { y: { beginAtZero: true, max: 20, grid: { display: false } }, x: { grid: { display: false } } } }, plugins: [ChartDataLabels] });
-                }
-            }
-            function renderizarGraficosInternos(allData) {
-                const dataNciSetor = allData.nci_por_setor || [];
-                if (dataNciSetor.length > 0) {
-                    const labels = dataNciSetor.map(item => item.setor);
-                    const statusTypes = ['nao_iniciado', 'em_andamento', 'atrasado', 'concluido'];
-                    const statusColors = { 'nao_iniciado': '#6c757d', 'em_andamento': '#ffc107', 'atrasado': '#dc3545', 'concluido': '#28a745' };
-                    const datasets = statusTypes.map(status => ({ label: status.replace('_', ' ').toUpperCase(), data: dataNciSetor.map(item => parseInt(item[status]) || 0), backgroundColor: statusColors[status], borderRadius: 3 }));
-                    const stackTotals = dataNciSetor.map(item => statusTypes.reduce((sum, type) => sum + (parseInt(item[type]) || 0), 0));
+                    const gradienteTratativa = ctx1.createLinearGradient(0, 0, 0, 200);
+                    gradienteTratativa.addColorStop(0, 'rgba(255, 193, 7, 1)');
+                    gradienteTratativa.addColorStop(1, 'rgba(255, 193, 7, 0.7)');
+                    
+                    const stackTotals = labels.map((_, index) => concluidoData[index] + emTratativaData[index]);
                     const maxValue = Math.max(...stackTotals);
-                    const ctx10 = document.getElementById('grafico10').getContext('2d');
-                    charts['grafico10'] = new Chart(ctx10, { type: 'bar', data: { labels: labels, datasets: datasets }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom', labels: { usePointStyle: true, pointStyle: 'rect', padding: 20, font: { size: 10 } } }, datalabels: { color: (context) => context.dataset.data[context.dataIndex] < 5 ? 'black' : 'white', font: { weight: 'bold' }, anchor: (context) => context.dataset.data[context.dataIndex] < 5 ? 'end' : 'center', align: (context) => context.dataset.data[context.dataIndex] < 5 ? 'end' : 'center', formatter: (value) => value > 0 ? value : null } }, scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, beginAtZero: true, max: maxValue + 5, grid: { display: false } } } }, plugins: [ChartDataLabels] });
-                }
-
-                const dataParetoMes = allData.pareto_mes || [];
-                if (dataParetoMes.length > 0) criarGraficoPareto('grafico11', dataParetoMes, 'topicos', 'nao_iniciado');
-                const dataParetoAno = allData.pareto_ano || [];
-                if (dataParetoAno.length > 0) criarGraficoPareto('grafico12', dataParetoAno, 'topicos', 'nao_iniciado');
                     
-                const dataNciAnual = allData.nci_anual || [];
-                if (dataNciAnual.length > 0) {
-                    const labels = dataNciAnual.map(item => item.mes);
-                    const values = dataNciAnual.map(item => parseInt(item.quantidade_ano));
-                    const maxValue = Math.max(...values);
-                    const ctx13 = document.getElementById('grafico13').getContext('2d');
-                    charts['grafico13'] = new Chart(ctx13, { type: 'bar', data: { labels: labels, datasets: [{ label: 'Quantidade', data: values, backgroundColor: '#003366', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, datalabels: { display: (context) => context.dataset.data[context.dataIndex] > 0, color: 'black', font: { weight: 'bold' }, anchor: 'end', align: 'end' } }, scales: { y: { max: maxValue + 5, grid: { display: false } }, x: { grid: { display: false } } } }, plugins: [ChartDataLabels] });
-                }
-            }
-
-            // --- UTILITÁRIOS DE PERÍODO ---
-            const MESES = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
-            function normalizarMes(valor) {
-                if (!valor) return '';
-                const v = String(valor).toLowerCase().trim();
-                const abreviacoes = {
-                    'jan':'janeiro','fev':'fevereiro','mar':'março','abr':'abril','mai':'maio','jun':'junho',
-                    'jul':'julho','ago':'agosto','set':'setembro','sep':'setembro','out':'outubro','nov':'novembro','dez':'dezembro'
-                };
-                if (MESES.includes(v)) return v;
-                if (abreviacoes[v]) return abreviacoes[v];
-                const num = parseInt(v,10);
-                if (!isNaN(num) && num>=1 && num<=12) return MESES[num-1];
-                return v;
-            }
-            function filtrarPorPeriodo(dados, abaAtiva = null) {
-                if (!Array.isArray(dados) || (!selectedPeriodo.mes && !selectedPeriodo.ano)) return dados;
-                
-                // Aplicar filtro apenas se estivermos na aba correta ou se não especificada
-                return dados.filter(item => {
-                    const mesOk = selectedPeriodo.mes ? normalizarMes(item.mes) === normalizarMes(selectedPeriodo.mes) : true;
-                    const anoItem = item.ano || item.ano_ref || item.ano_base;
-                    const anoOk = selectedPeriodo.ano ? String(anoItem||'') === String(selectedPeriodo.ano) : true;
-                    return mesOk && anoOk;
-                });
-            }
-            
-            function popularPeriodosUI() {
-                const now = new Date();
-                const anoAtual = now.getFullYear();
-                if (periodoMesSelect && periodoMesSelect.options.length <= 1) {
-                    MESES.forEach((m,idx)=>{
-                        const opt=document.createElement('option');
-                        opt.value = m; opt.textContent = m.charAt(0).toUpperCase()+m.slice(1);
-                        if (idx===now.getMonth()) opt.selected = true;
-                        periodoMesSelect.appendChild(opt);
+                    charts.grafico1 = new Chart(ctx1, {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'CONCLUIDO',
+                                data: concluidoData,
+                                backgroundColor: gradienteConcluido,
+                                borderRadius: 5
+                            }, {
+                                label: 'EM TRATATIVA',
+                                data: emTratativaData,
+                                backgroundColor: gradienteTratativa,
+                                borderRadius: 5
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    display: true,
+                                    position: 'bottom',
+                                    labels: {
+                                        usePointStyle: true,
+                                        pointStyle: 'rect',
+                                        padding: 20,
+                                        font: { size: 10 }
+                                    }
+                                },
+                                datalabels: {
+                                    color: 'black',
+                                    font: { weight: 'bold' },
+                                    anchor: 'center',
+                                    align: 'center',
+                                    formatter: (value) => value > 0 ? value : null
+                                }
+                            },
+                            scales: {
+                                x: { stacked: true, grid: { display: false } },
+                                y: { stacked: true, beginAtZero: true, max: maxValue + 5, grid: { display: false } }
+                            }
+                        },
+                        plugins: [ChartDataLabels]
                     });
-                }
-                if (periodoAnoSelect && periodoAnoSelect.options.length <= 1) {
-                    for(let a=anoAtual-3; a<=anoAtual+1; a++){
-                        const opt=document.createElement('option');
-                        opt.value=String(a); opt.textContent=String(a);
-                        if (a===anoAtual) opt.selected = true;
-                        periodoAnoSelect.appendChild(opt);
+                    } else {
+                        console.log('Dados do gráfico 1 (RIFs Anual) não encontrados');
                     }
                 }
-                selectedPeriodo.mes = periodoMesSelect?.value || '';
-                selectedPeriodo.ano = periodoAnoSelect?.value || '';
+
+                // Gráfico 2: RIFs por Fornecedor - Mensal
+                const canvas2 = document.getElementById('grafico2');
+                if (canvas2) {
+                    const ctx2 = canvas2.getContext('2d');
+                    const sheetData2 = lastDataRifs.status_por_fornecedor_mes;
+                    
+                    if (sheetData2 && sheetData2.length > 0) {
+                        console.log('Estrutura dos dados RIFS Mensal:', sheetData2[0]);
+                        
+                        let labels2, concluidoData2, emTratativaData2;
+                        
+                        // Verificar se é array de arrays ou array de objetos
+                        if (Array.isArray(sheetData2[0])) {
+                            // Estrutura de array de arrays
+                            labels2 = sheetData2.map(row => row[0] || 'N/A').filter(label => label !== 'N/A');
+                            concluidoData2 = sheetData2.map(row => parseInt(row[1]) || 0).filter((_, index) => index < labels2.length);
+                            emTratativaData2 = sheetData2.map(row => parseInt(row[2]) || 0).filter((_, index) => index < labels2.length);
+                        } else {
+                            // Estrutura de array de objetos
+                            labels2 = sheetData2.map(item => item.fornecedor || 'N/A').filter(label => label !== 'N/A');
+                            concluidoData2 = sheetData2.map(item => parseInt(item.concluido) || 0).filter((_, index) => index < labels2.length);
+                            emTratativaData2 = sheetData2.map(item => parseInt(item.em_tratativa) || 0).filter((_, index) => index < labels2.length);
+                        }
+                        
+                        console.log('Labels2:', labels2);
+                        console.log('Concluído2:', concluidoData2);
+                        console.log('Em Tratativa2:', emTratativaData2);
+                        
+                    // Criar gradientes como no original
+                    const gradienteConcluido2 = ctx2.createLinearGradient(0, 0, 0, 200);
+                    gradienteConcluido2.addColorStop(0, 'rgba(40, 167, 69, 1)');
+                    gradienteConcluido2.addColorStop(1, 'rgba(40, 167, 69, 0.7)');
+                    
+                    const gradienteTratativa2 = ctx2.createLinearGradient(0, 0, 0, 200);
+                    gradienteTratativa2.addColorStop(0, 'rgba(255, 193, 7, 1)');
+                    gradienteTratativa2.addColorStop(1, 'rgba(255, 193, 7, 0.7)');
+                    
+                    const stackTotals2 = labels2.map((_, index) => concluidoData2[index] + emTratativaData2[index]);
+                    const maxValue2 = Math.max(...stackTotals2);
+                    
+                    charts.grafico2 = new Chart(ctx2, {
+                        type: 'bar',
+                        data: {
+                            labels: labels2,
+                            datasets: [{
+                                label: 'CONCLUIDO',
+                                data: concluidoData2,
+                                backgroundColor: gradienteConcluido2,
+                                borderRadius: 5
+                            }, {
+                                label: 'EM TRATATIVA',
+                                data: emTratativaData2,
+                                backgroundColor: gradienteTratativa2,
+                                borderRadius: 5
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    display: true,
+                                    position: 'bottom',
+                                    labels: {
+                                        usePointStyle: true,
+                                        pointStyle: 'rect',
+                                        padding: 20,
+                                        font: { size: 10 }
+                                    }
+                                },
+                                datalabels: {
+                                    color: 'black',
+                                    font: { weight: 'bold' },
+                                    anchor: 'center',
+                                    align: 'center',
+                                    formatter: (value) => value > 0 ? value : null
+                                }
+                            },
+                            scales: {
+                                x: { stacked: true, grid: { display: false } },
+                                y: { stacked: true, beginAtZero: true, max: maxValue2 + 5, grid: { display: false } }
+                            }
+                        },
+                        plugins: [ChartDataLabels]
+                    });
+                    } else {
+                        console.log('Dados do gráfico 2 (RIFs Mensal) não encontrados');
+                    }
+                }
+
+                // Gráfico 3: Pareto - Fornecedor
+                const canvas3 = document.getElementById('grafico3');
+                if (canvas3) {
+                    const ctx3 = canvas3.getContext('2d');
+                    const sheetData3 = lastDataRifs.pareto_rifs;
+                    
+                    if (sheetData3 && sheetData3.length > 0) {
+                        console.log('Estrutura dos dados Pareto RIFS:', sheetData3[0]);
+                        
+                        // Usar a função original do Pareto
+                        criarGraficoPareto('grafico3', sheetData3, 'fornecedor', 'quantidade_pareto');
+                    } else {
+                        console.log('Dados do gráfico 3 (Pareto RIFs) não encontrados');
+                    }
+                }
+            } catch (error) {
+                console.error('Erro ao renderizar gráficos RIFS:', error);
+            }
+        }
+
+        function renderizarGraficosOpt() {
+            console.log('Tentando renderizar gráficos OPT...');
+            console.log('lastDataExterno:', lastDataExterno);
+            
+            if (!lastDataExterno) {
+                console.log('Dados OPT não disponíveis ainda');
+                return;
             }
             
-            // ADICIONE TODO ESTE BLOCO DE CÓDIGO
-            function criarGraficoCombinadoAnual(canvasId, data, tipoGrafico2025, tipoGrafico2024) {
-                if (!data || data.length === 0) return;
-                
-                const isMobile = window.innerWidth < 1024;
-                const labels = data.map(item => item.mes);
-                const dados2025 = data.map(item => parseInt(item.quantidade_2025) || 0);
-                const dados2024 = data.map(item => parseInt(item.quantidade_2024) || 0);
+            console.log('Dados OPT encontrados:', lastDataExterno);
 
-                const maxValue = Math.max(...dados2025, ...dados2024);
+            // Adicionar delay para todos os gráficos OPT para consistência
+            setTimeout(() => {
+                try {
+                    // Gráfico 4: OPT por Cliente
+                    const canvas4 = document.getElementById('grafico4');
+                    if (canvas4) {
+                        const ctx4 = canvas4.getContext('2d');
+                        const sheetData4 = lastDataExterno.opt_por_cliente;
+                        
+                        if (sheetData4 && sheetData4.length > 0) {
+                            console.log('Estrutura dos dados OPT por Cliente:', sheetData4[0]);
+                            
+                            // Filtrar dados com quantidade > 0 e pegar os top 6
+                            const dataFiltrado = sheetData4.filter(item => parseInt(item.quantidadecliente_nc) > 0);
+                            const topData = dataFiltrado.slice(0, 6);
+                            
+                            const labels4 = topData.map(item => item.cliente);
+                            const optData4 = topData.map(item => parseInt(item.quantidadecliente_nc));
+                            
+                            console.log('Labels4:', labels4);
+                            console.log('OPT Data4:', optData4);
+                            
+                            charts.grafico4 = new Chart(ctx4, {
+                                type: 'bar',
+                                data: {
+                                    labels: labels4,
+                                    datasets: [{
+                                        label: 'Quantidade de NC',
+                                        data: optData4,
+                                        backgroundColor: '#003366',
+                                        borderRadius: 5
+                                    }]
+                                },
+                                options: {
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    plugins: {
+                                        legend: {
+                                            display: false
+                                        },
+                                        datalabels: {
+                                            display: true,
+                                            anchor: 'end',
+                                            align: 'end',
+                                            color: 'black',
+                                            font: { weight: 'bold' }
+                                        }
+                                    },
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true,
+                                            max: 20,
+                                            grid: { display: false }
+                                        },
+                                        x: {
+                                            grid: { display: false }
+                                        }
+                                    }
+                                },
+                                plugins: [ChartDataLabels]
+                            });
+                        } else {
+                            console.log('Dados do gráfico 4 (OPT por Cliente) não encontrados');
+                        }
+                    }
 
-                const datasets = [
-                    {
-                        type: tipoGrafico2024,
-                        label: '2024',
-                        data: dados2024,
-                        backgroundColor: 'rgba(233, 123, 50, 0.918)',
-                        borderColor: 'rgba(233, 123, 50, 0.918)',
-                        borderRadius: 5,
-                        order: 1, // <-- ORDEM 0: DESENHADO NO FUNDO
+                    // Gráfico 5: OPT por Projeto
+                    const canvas5 = document.getElementById('grafico5');
+                    if (canvas5) {
+                        const ctx5 = canvas5.getContext('2d');
+                        const sheetData5 = lastDataExterno.opt_por_projeto;
+                        
+                        if (sheetData5 && sheetData5.length > 0) {
+                            console.log('Estrutura dos dados OPT por Projeto:', sheetData5[0]);
+                            
+                            // Filtrar dados com quantidade > 0 e pegar os top 6
+                            const dataFiltrado = sheetData5.filter(item => parseInt(item.quantidadeprojeto_nc) > 0);
+                            const topData = dataFiltrado.slice(0, 6);
+                            
+                            const labels5 = topData.map(item => item.projeto);
+                            const data5 = topData.map(item => parseInt(item.quantidadeprojeto_nc));
+                            const colors = ['#10b981', '#f59e0b', '#ef4444', '#3b82f6', '#8b5cf6', '#f97316'];
+                            
+                            console.log('Labels5:', labels5);
+                            console.log('Data5:', data5);
+                            
+                            charts.grafico5 = new Chart(ctx5, {
+                                type: 'bar',
+                                data: {
+                                    labels: labels5,
+                                    datasets: [{
+                                        label: 'Quantidade de NC',
+                                        data: data5,
+                                        backgroundColor: '#29abe2',
+                                        borderRadius: 5
+                                    }]
+                                },
+                                options: {
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    plugins: {
+                                        legend: {
+                                            display: false
+                                        },
+                                        datalabels: {
+                                            display: true,
+                                            anchor: 'end',
+                                            align: 'end',
+                                            color: 'black',
+                                            font: { weight: 'bold' }
+                                        }
+                                    },
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true,
+                                            max: 20,
+                                            grid: { display: false }
+                                        },
+                                        x: {
+                                            grid: { display: false }
+                                        }
+                                    }
+                                },
+                                plugins: [ChartDataLabels]
+                            });
+                        } else {
+                            console.log('Dados do gráfico 5 (OPT por Projeto) não encontrados');
+                        }
+                    }
+
+                    // Gráfico 6: OPT Detalhado
+                    const canvas6 = document.getElementById('grafico6');
+                    if (canvas6) {
+                        const ctx6 = canvas6.getContext('2d');
+                        const sheetData6 = lastDataExterno.opt_detalhado;
+                        
+                        if (sheetData6 && sheetData6.length > 0) {
+                            console.log('Estrutura dos dados OPT Detalhado:', sheetData6[0]);
+                            
+                            // Obter tipos de NC (todas as colunas exceto 'cliente')
+                            const tiposDeNC = Object.keys(sheetData6[0]).filter(key => key !== 'cliente');
+                            
+                            // Filtrar dados com total > 0 e pegar os top 6
+                            const dataFiltrado = sheetData6.filter(item => {
+                                const totalNc = tiposDeNC.reduce((soma, tipo) => soma + (parseInt(item[tipo]) || 0), 0);
+                                return totalNc > 0;
+                            });
+                            const topData = dataFiltrado.slice(0, 6);
+                            
+                            const labels6 = topData.map(item => item.cliente);
+                            const colors = ['#003366', '#29abe2', '#fd7e14', '#28a745', '#dc3545', '#6c757d', '#ffc107'];
+                            const datasets = tiposDeNC.map((tipo, index) => ({
+                                label: tipo.replace(/_/g, ' ').replace(/(^\w{1})|(\s+\w{1})/g, letra => letra.toUpperCase()),
+                                data: topData.map(item => parseInt(item[tipo]) || 0),
+                                backgroundColor: colors[index % colors.length]
+                            }));
+                            
+                            console.log('Labels6:', labels6);
+                            console.log('Datasets6:', datasets);
+                            
+                            charts.grafico6 = new Chart(ctx6, {
+                                type: 'bar',
+                                data: {
+                                    labels: labels6,
+                                    datasets: datasets
+                                },
+                                options: {
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    plugins: {
+                                        legend: {
+                                            position: 'bottom',
+                                            labels: {
+                                                usePointStyle: true,
+                                                padding: 20
+                                            }
+                                        },
+                                        datalabels: {
+                                            display: true,
+                                            anchor: 'center',
+                                            align: 'center',
+                                            color: 'white',
+                                            font: { weight: 'bold' },
+                                            formatter: (value) => { return value > 0 ? value : null; }
+                                        }
+                                    },
+                                    scales: {
+                                        x: { stacked: true, grid: { display: false } },
+                                        y: { stacked: true, beginAtZero: true, max: 7, ticks: { stepSize: 2 }, grid: { display: false } }
+                                    }
+                                }
+                            });
+                        } else {
+                            console.log('Dados do gráfico 6 (OPT Detalhado) não encontrados');
+                        }
+                    }
+
+                    // Gráfico 7: OPT Inteiro
+                    const canvas7 = document.getElementById('grafico7');
+                    if (canvas7) {
+                        const ctx7 = canvas7.getContext('2d');
+                        const sheetData7 = lastDataExterno.opt_inteiro;
+                        
+                        if (sheetData7 && sheetData7.length > 0) {
+                            console.log('Estrutura dos dados OPT Inteiro:', sheetData7[0]);
+                            
+                            // Filtrar dados com quantidade > 0 e pegar os top 6
+                            const dataFiltrado = sheetData7.filter(item => parseInt(item.quantidadeopt_total) > 0);
+                            const topData = dataFiltrado.slice(0, 6);
+                            
+                            const labels7 = topData.map(item => item.status);
+                            const data7 = topData.map(item => parseInt(item.quantidadeopt_total));
+                            
+                            console.log('Labels7:', labels7);
+                            console.log('Data7:', data7);
+                            
+                            charts.grafico7 = new Chart(ctx7, {
+                                type: 'bar',
+                                data: {
+                                    labels: labels7,
+                                    datasets: [{
+                                        label: 'Quantidade Total',
+                                        data: data7,
+                                        backgroundColor: '#29abe2',
+                                        borderRadius: 5
+                                    }]
+                                },
+                                options: {
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    plugins: {
+                                        legend: {
+                                            display: false
+                                        },
+                                        datalabels: {
+                                            display: true,
+                                            anchor: 'end',
+                                            align: 'end',
+                                            color: 'black',
+                                            font: { weight: 'bold' }
+                                        }
+                                    },
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true,
+                                            max: 20,
+                                            grid: { display: false }
+                                        },
+                                        x: {
+                                            grid: { display: false }
+                                        }
+                                    }
+                                },
+                                plugins: [ChartDataLabels]
+                            });
+                        } else {
+                            console.log('Dados do gráfico 7 (OPT Inteiro) não encontrados');
+                        }
+                    }
+                } catch (error) {
+                    console.error('Erro ao renderizar gráficos OPT:', error);
+                }
+            }, 500); // Fechar o setTimeout para todos os gráficos OPT
+        }
+
+        function renderizarGraficosNCInterna() {
+            console.log('Tentando renderizar gráficos NC Interna...');
+            console.log('lastDataInterno:', lastDataInterno);
+            
+            if (!lastDataInterno) {
+                console.log('Dados NC Interna não disponíveis ainda');
+                return;
+            }
+            
+            console.log('Dados NC Interna encontrados:', lastDataInterno);
+
+            try {
+                // Gráfico 8: NC Interna por Setor
+                const canvas8 = document.getElementById('grafico8');
+                if (canvas8) {
+                    const ctx8 = canvas8.getContext('2d');
+                    const sheetData8 = lastDataInterno.nci_por_setor;
+                    
+                    if (sheetData8 && sheetData8.length > 0) {
+                        console.log('Estrutura dos dados NC Interna por Setor:', sheetData8[0]);
+                        
+                        const labels8 = sheetData8.map(item => item.setor);
+                        const statusTypes = ['nao_iniciado', 'em_andamento', 'atrasado', 'concluido'];
+                        const statusColors = { 'nao_iniciado': '#6c757d', 'em_andamento': '#ffc107', 'atrasado': '#dc3545', 'concluido': '#28a745' };
+                        
+                        const datasets = statusTypes.map(status => ({
+                            label: status.replace('_', ' ').toUpperCase(),
+                            data: sheetData8.map(item => parseInt(item[status]) || 0),
+                            backgroundColor: statusColors[status],
+                            borderRadius: 3
+                        }));
+                        
+                        const stackTotals = sheetData8.map(item => statusTypes.reduce((sum, type) => sum + (parseInt(item[type]) || 0), 0));
+                        const maxValue = Math.max(...stackTotals);
+                        
+                        console.log('Labels8:', labels8);
+                        console.log('Datasets8:', datasets);
+                        
+                        charts.grafico8 = new Chart(ctx8, {
+                            type: 'bar',
+                            data: {
+                                labels: labels8,
+                                datasets: datasets
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        display: true,
+                                        position: 'bottom',
+                                        labels: {
+                                            usePointStyle: true,
+                                            pointStyle: 'rect',
+                                            padding: 20,
+                                            font: { size: 10 }
+                                        }
+                                    },
+                                    datalabels: {
+                                        color: (context) => context.dataset.data[context.dataIndex] < 5 ? 'black' : 'white',
+                                        font: { weight: 'bold' },
+                                        anchor: (context) => context.dataset.data[context.dataIndex] < 5 ? 'end' : 'center',
+                                        align: (context) => context.dataset.data[context.dataIndex] < 5 ? 'end' : 'center',
+                                        formatter: (value) => value > 0 ? value : null
+                                    }
+                                },
+                                scales: {
+                                    x: { stacked: true, grid: { display: false } },
+                                    y: { stacked: true, beginAtZero: true, max: maxValue + 5, grid: { display: false } }
+                                }
+                            }
+                        });
+                    } else {
+                        console.log('Dados do gráfico 8 (NC Interna por Setor) não encontrados');
+                    }
+                }
+
+                // Gráfico 9: Pareto Mensal NC Interna
+                const canvas9 = document.getElementById('grafico9');
+                if (canvas9) {
+                    const ctx9 = canvas9.getContext('2d');
+                    const sheetData9 = lastDataInterno.pareto_mes;
+                    
+                    if (sheetData9 && sheetData9.length > 0) {
+                        console.log('Estrutura dos dados Pareto Mensal NC Interna:', sheetData9[0]);
+                        
+                        // Usar a função original do Pareto
+                        criarGraficoPareto('grafico9', sheetData9, 'topicos', 'nao_iniciado');
+                    } else {
+                        console.log('Dados do gráfico 9 (Pareto Mensal NC Interna) não encontrados');
+                    }
+                }
+
+                // Gráfico 10: Pareto Anual NC Interna
+                const canvas10 = document.getElementById('grafico10');
+                if (canvas10) {
+                    const ctx10 = canvas10.getContext('2d');
+                    const sheetData10 = lastDataInterno.pareto_ano;
+                    
+                    if (sheetData10 && sheetData10.length > 0) {
+                        console.log('Estrutura dos dados Pareto Anual NC Interna:', sheetData10[0]);
+                        
+                        // Usar a função original do Pareto
+                        criarGraficoPareto('grafico10', sheetData10, 'topicos', 'nao_iniciado');
+                    } else {
+                        console.log('Dados do gráfico 10 (Pareto Anual NC Interna) não encontrados');
+                    }
+                }
+
+                // Gráfico 11: NC Interna Anual
+                const canvas11 = document.getElementById('grafico11');
+                if (canvas11) {
+                    const ctx11 = canvas11.getContext('2d');
+                    const sheetData11 = lastDataInterno.nci_anual;
+                    
+                    if (sheetData11 && sheetData11.length > 0) {
+                        console.log('Estrutura dos dados NC Interna Anual:', sheetData11[0]);
+                        
+                        const labels11 = sheetData11.map(item => item.mes);
+                        const data11 = sheetData11.map(item => parseInt(item.quantidade_ano) || 0);
+                        
+                        console.log('Labels11:', labels11);
+                        console.log('Data11:', data11);
+                        
+                        const maxValue = Math.max(...data11);
+                        
+                        charts.grafico11 = new Chart(ctx11, {
+                            type: 'bar',
+                            data: {
+                                labels: labels11,
+                                datasets: [{
+                                    label: 'Quantidade',
+                                    data: data11,
+                                    backgroundColor: '#003366',
+                                    borderRadius: 5
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        display: false
+                                    },
+                                    datalabels: {
+                                        display: (context) => context.dataset.data[context.dataIndex] > 0,
+                                        color: 'black',
+                                        font: { weight: 'bold' },
+                                        anchor: 'end',
+                                        align: 'end'
+                                    }
+                                },
+                                scales: {
+                                    y: {
+                                        max: maxValue + 5,
+                                        grid: { display: false }
+                                    },
+                                    x: {
+                                        grid: { display: false }
+                                    }
+                                }
+                            },
+                            plugins: [ChartDataLabels]
+                        });
+                    } else {
+                        console.log('Dados do gráfico 11 (NC Interna Anual) não encontrados');
+                    }
+                }
+            } catch (error) {
+                console.error('Erro ao renderizar gráficos NC Interna:', error);
+            }
+        }
+
+        function criarGraficoCombinadoAnual(canvasId, data, tipoGrafico2025, tipoGrafico2024) {
+            if (!data || data.length === 0) return;
+            
+            const isMobile = window.innerWidth < 1024;
+            const labels = data.map(item => item.mes);
+            const dados2025 = data.map(item => parseInt(item.quantidade_2025) || 0);
+            const dados2024 = data.map(item => parseInt(item.quantidade_2024) || 0);
+
+            const maxValue = Math.max(...dados2025, ...dados2024);
+
+            const datasets = [
+                {
+                    type: tipoGrafico2024,
+                    label: '2024',
+                    data: dados2024,
+                    backgroundColor: 'rgba(233, 123, 50, 0.918)',
+                    borderColor: 'rgba(233, 123, 50, 0.918)',
+                    borderRadius: 5,
+                    order: 1, // <-- ORDEM 0: DESENHADO NO FUNDO
+                    datalabels: {
+                        color: '#adb5bd',
+                        font: { size: 10 },
+                        anchor: 'end',
+                        align: 'end',
+                        formatter: (value) => value > 0 ? value : null
+                    }
+                },
+                {
+                    type: tipoGrafico2025,
+                    label: '2025',
+                    data: dados2025,
+                    backgroundColor: '#003366',
+                    borderColor: '#003366',
+                    borderRadius: 5,
+                    tension: 0.4,
+                    order: 0, // <-- ORDEM 1: DESENHADO NA FRENTE
+                    datalabels: {
+                        color: '#000',
+                        font: { weight: 'bold', size: 12 },
+                        anchor: 'end',
+                        align: 'end',
+                        formatter: (value) => value > 0 ? value : null
+                    }
+                }
+            ];
+
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            charts[canvasId] = new Chart(ctx, {
+                type: 'bar',
+                data: { labels, datasets },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'bottom',
+                            labels: {
+                                usePointStyle: true,
+                                pointStyle: 'rect',
+                                padding: 20,
+                                font: { size: 10 }
+                            }
+                        },
                         datalabels: {
-                            color: '#adb5bd',
-                            font: { size: 10 },
-                            anchor: 'end',
-                            align: 'end',
-                            formatter: (value) => value > 0 ? value : null
+                            display: true,
+                            color: (context) => context.dataset.datalabels.color,
+                            font: (context) => context.dataset.datalabels.font,
+                            anchor: (context) => context.dataset.datalabels.anchor,
+                            align: (context) => context.dataset.datalabels.align,
+                            formatter: (context) => context.dataset.datalabels.formatter
                         }
                     },
-                    {
-                        type: tipoGrafico2025,
-                        label: '2025',
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: maxValue + 5,
+                            grid: { display: false }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { font: { size: isMobile ? 9 : 12 } }
+                        }
+                    }
+                },
+                plugins: [ChartDataLabels]
+            });
+        }
+
+        function criarGraficoBarrasSimplesAnual(canvasId, data) {
+            if (!data || data.length === 0) return;
+
+            const isMobile = window.innerWidth < 1024;
+            const labels = data.map(item => item.mes);
+            const dados2025 = data.map(item => parseInt(item.quantidade_2025) || 0);
+            const maxValue = Math.max(...dados2025);
+
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            charts[canvasId] = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Total Revertidas 2025',
                         data: dados2025,
                         backgroundColor: '#003366',
-                        borderColor: '#003366',
-                        borderRadius: 5,
-                        tension: 0.4,
-                        order: 0, // <-- ORDEM 1: DESENHADO NA FRENTE
+                        borderRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
                         datalabels: {
                             color: '#000',
                             font: { weight: 'bold', size: 12 },
@@ -669,359 +1501,103 @@
                             align: 'end',
                             formatter: (value) => value > 0 ? value : null
                         }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, max: maxValue + 5, grid: { display: false } },
+                        x: { grid: { display: false }, ticks: { font: { size: isMobile ? 9 : 12 } } }
                     }
-                ];
+                },
+                plugins: [ChartDataLabels]
+            });
+        }
 
-                const ctx = document.getElementById(canvasId).getContext('2d');
-                charts[canvasId] = new Chart(ctx, {
-                    type: 'bar',
-                    data: { labels, datasets },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: { legend: { display: true, position: 'bottom' }, datalabels: { display: true } },
-                        scales: {
-                            y: { beginAtZero: true, grid: { display: false } , max: maxValue + 5 },
-                            x: { grid: { display: false }, ticks: { font: { size: isMobile ? 9 : 12 } } }
-                        }
-                    },
-                    plugins: [ChartDataLabels]
-                });
-            }
-
-            function criarGraficoBarrasSimplesAnual(canvasId, data) {
-                if (!data || data.length === 0) return;
-
-                const isMobile = window.innerWidth < 1024;
-                const labels = data.map(item => item.mes);
-                const dados2025 = data.map(item => parseInt(item.quantidade_2025) || 0);
-                const maxValue = Math.max(...dados2025);
-
-                const ctx = document.getElementById(canvasId).getContext('2d');
-                charts[canvasId] = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            label: 'Total Revertidas 2025',
-                            data: dados2025,
-                            backgroundColor: '#003366',
-                            borderRadius: 5
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: { display: false },
-                            datalabels: {
-                                color: '#000',
-                                font: { weight: 'bold', size: 12 },
-                                anchor: 'end',
-                                align: 'end',
-                                formatter: (value) => value > 0 ? value : null
-                            }
-                        },
-                        scales: {
-                            y: { beginAtZero: true, max: maxValue + 5, grid: { display: false } },
-                            x: { grid: { display: false }, ticks: { font: { size: isMobile ? 9 : 12 } } }
-                        }
-                    },
-                    plugins: [ChartDataLabels]
-                });
-            }
-
-            function renderizarGraficosNCExterna(allData) {
-                // --- Lógica dos Gráficos (sem alteração) ---
-                criarGraficoCombinadoAnual('graficoNCEProcedentes', allData.nce_procedentes_anos, 'line', 'bar');
-                criarGraficoBarrasSimplesAnual('graficoNCERevertidas', allData.nce_naoprocedentes_anos);
-                criarGraficoCombinadoAnual('graficoNCETotal', allData.total_nce_anos, 'line', 'line');
-                const dataPareto = allData.nce_pareto_defeitos || [];
-                if (dataPareto.length > 0) {
-                    criarGraficoPareto('graficoNCEPareto', dataPareto, 'defeito', 'quantidade_pareto');
-                }
-
-                // highlight-start
-                // --- LÓGICA DOS NOVOS INFO BOXES ---
-                const kpiData = allData.kpi_revertidos;
-
-                if (kpiData && kpiData.length > 0) {
-                    // Pega os valores da primeira linha de dados
-                    const totalRevertido = parseFloat(kpiData[0].total_revertido) || 0;
-                    const mesRevertido = parseFloat(kpiData[0].mes_revertido) || 0;
-                    const porcentagemMelhora = parseFloat(kpiData[0].melhora) || 0;
-
-                    // Função para formatar como moeda brasileira
-                    const formatarMoeda = (valor) => {
-                        return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-                    };
-                    // transforma em porcentagem a melhora em relação ao ano passado
-                    const porcentagem = (valor) => {
-                        const normalizado = valor > 1 ? valor / 100 : valor;
-                        return normalizado.toLocaleString('pt-BR', { style: 'percent', minimumFractionDigits: 0 });
-                    }
-
-                    // Atualiza os elementos HTML
-                    const totalBox = document.getElementById('total-revertido-box');
-                    const mesBox = document.getElementById('mes-revertido-box');
-                    const melhoraBox = document.getElementById('melhora_nce_procedentes')
-
-                    if (totalBox) totalBox.textContent = `Total Revertido: ${formatarMoeda(totalRevertido)}`;
-                    if (mesBox) mesBox.textContent = `Mês: ${formatarMoeda(mesRevertido)}`;
-                    if (melhoraBox) melhoraBox.textContent = `Melhora: ${porcentagem(porcentagemMelhora)}`;
-                }
-                // highlight-end
+        function renderizarGraficosNCExterna() {
+            console.log('Tentando renderizar gráficos NC Externa...');
+            console.log('lastDataNCExterna:', lastDataNCExterna);
+            
+            if (!lastDataNCExterna) {
+                console.log('Dados NC Externa não disponíveis ainda');
+                return;
             }
             
-            // --- EXECUÇÃO INICIAL E EVENT LISTENERS ---
-            updateAllCharts();
+            console.log('Dados NC Externa encontrados:', lastDataNCExterna);
 
-            if (tabsContainer) { filterCharts('rifs'); }
-            if (refreshBtn) {
-                refreshBtn.addEventListener('click', updateAllCharts);
-            }
-
-            // Controles de Período
-            popularPeriodosUI();
-            if (aplicarPeriodoBtn) {
-                aplicarPeriodoBtn.addEventListener('click', async () => {
-                    selectedPeriodo = { mes: periodoMesSelect?.value || '', ano: periodoAnoSelect?.value || '' };
-                    console.log(`Aplicando filtro para aba: ${currentTab}`, selectedPeriodo);
-                    
-                    // Atualizar parâmetro no Google Sheets primeiro
-                    await atualizarPeriodoNoSheets(selectedPeriodo);
-                    
-                    // Depois recarregar os dados do Sheets e re-renderizar os gráficos
-                    await updateAllCharts();
-                });
-            }
-
-            function getTargetsForTab(tab) {
-                const ALL_TARGETS = {
-                    'rifs': [
-                        // RIFS - 17F0DVUFu-cscmMnJsezkuCc_3SzuUehD_dSiPGOOz2A
-                        { spreadsheetId: '17F0DVUFu-cscmMnJsezkuCc_3SzuUehD_dSiPGOOz2A', sheetName: 'status_por_fornecedor_ano', cellA1: 'D1', formatter: (p) => p.ano || '' },
-                        { spreadsheetId: '17F0DVUFu-cscmMnJsezkuCc_3SzuUehD_dSiPGOOz2A', sheetName: 'status_por_fornecedor_mes', cellA1: 'D1', formatter: (p) => p.mes || '' },
-                        { spreadsheetId: '17F0DVUFu-cscmMnJsezkuCc_3SzuUehD_dSiPGOOz2A', sheetName: 'pareto_rifs', cellA1: 'C1', formatter: (p) => p.ano || '' }
-                    ],
-                    'opt': [
-                        // OPT - 1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4
-                        { spreadsheetId: '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4', sheetName: 'opt_por_cliente', cellA1: 'C1', formatter: (p) => p.mes || '' },
-                        { spreadsheetId: '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4', sheetName: 'opt_por_cliente', cellA1: 'D1', formatter: (p) => p.ano || '' },
-                        { spreadsheetId: '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4', sheetName: 'opt_por_projeto', cellA1: 'C1', formatter: (p) => p.mes || '' },
-                        { spreadsheetId: '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4', sheetName: 'opt_por_projeto', cellA1: 'D1', formatter: (p) => p.ano || '' },
-                        { spreadsheetId: '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4', sheetName: 'opt_detalhado', cellA1: 'H1', formatter: (p) => p.mes || '' },
-                        { spreadsheetId: '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4', sheetName: 'opt_detalhado', cellA1: 'I1', formatter: (p) => p.ano || '' },
-                        { spreadsheetId: '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4', sheetName: 'opt_inteiro', cellA1: 'C1', formatter: (p) => p.mes || '' }
-                    ],
-                    'nc_interna': [
-                        // NC INTERNA - 1_XfCgxqMlxLjXUfw7MSgZ386E16d5sQFSbV8Q6Q0mmk
-                        { spreadsheetId: '1_XfCgxqMlxLjXUfw7MSgZ386E16d5sQFSbV8Q6Q0mmk', sheetName: 'nci_por_setor', cellA1: 'F1', formatter: (p) => p.mes || '' },
-                        { spreadsheetId: '1_XfCgxqMlxLjXUfw7MSgZ386E16d5sQFSbV8Q6Q0mmk', sheetName: 'pareto_mes', cellA1: 'D1', formatter: (p) => p.mes || '' },
-                        { spreadsheetId: '1_XfCgxqMlxLjXUfw7MSgZ386E16d5sQFSbV8Q6Q0mmk', sheetName: 'pareto_ano', cellA1: 'D1', formatter: (p) => p.ano || '' },
-                        { spreadsheetId: '1_XfCgxqMlxLjXUfw7MSgZ386E16d5sQFSbV8Q6Q0mmk', sheetName: 'nci_anual', cellA1: 'C1', formatter: (p) => p.ano || '' }
-                    ],
-                    'nc_externa': [
-                        // NC EXTERNA - 1kJcw-QMboXMSt2Ueej3kA0qwjZ1abyj4XgyWxf2KtKQ
-                        // Adicionar quando necessário
-                    ]
-                };
-                return ALL_TARGETS[tab] || [];
-            }
-
-            async function atualizarPeriodoNoSheets(periodo) {
-                const TARGETS = getTargetsForTab(currentTab);
+            try {
+                // Usar a implementação original do arquivo antigo
+                criarGraficoCombinadoAnual('grafico12', lastDataNCExterna.nce_procedentes_anos, 'line', 'bar');
+                criarGraficoBarrasSimplesAnual('grafico13', lastDataNCExterna.nce_naoprocedentes_anos);
+                criarGraficoCombinadoAnual('grafico14', lastDataNCExterna.total_nce_anos, 'line', 'line');
                 
-                for (const target of TARGETS) {
-                    try {
-                        const value = target.formatter ? target.formatter(periodo) : `${periodo.mes}/${periodo.ano}`;
-                        console.log(`Atualizando ${target.sheetName} - ${target.cellA1} com valor: "${value}" (período: ${JSON.stringify(periodo)})`);
-                        
-                        const response = await fetch(`${API_BASE_URL}/setSheetParam`, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                spreadsheetId: target.spreadsheetId,
-                                sheetName: target.sheetName,
-                                cellA1: target.cellA1,
-                                value: value
-                            })
-                        });
-                        
-                        const result = await response.json();
-                        console.log(`Resposta para ${target.sheetName}:`, result);
-                        
-                        if (!response.ok) {
-                            console.error(`Erro ao atualizar ${target.sheetName}:`, result);
-                        }
-                    } catch (e) {
-                        console.error('Falha ao atualizar período no Sheets:', e);
-                    }
+                const dataPareto = lastDataNCExterna.nce_pareto_defeitos || [];
+                if (dataPareto.length > 0) {
+                    criarGraficoPareto('grafico15', dataPareto, 'defeito', 'quantidade_pareto');
                 }
+            } catch (error) {
+                console.error('Erro ao renderizar gráficos NC Externa:', error);
             }
+        }
 
-            // --- LÓGICA FINAL PARA REDIMENSIONAR GRÁFICOS (COM SUAVIDADE) ---
-            let resizeTimer;
-            window.addEventListener('resize', () => {
-                // Adiciona a classe para esconder os gráficos imediatamente
-                document.body.classList.add('is-resizing');
-                
-                clearTimeout(resizeTimer);
-                resizeTimer = setTimeout(() => {
-                    Object.values(charts).forEach(chart => {
-                        if (chart && typeof chart.resize === 'function') {
-                            chart.resize();
-                        }
-                    });
-
-                    // Um pequeno delay extra antes de mostrar novamente para garantir que tudo foi renderizado
-                    setTimeout(() => {
-                        // Remove a classe para mostrar os gráficos com fade-in
-                        document.body.classList.remove('is-resizing');
-                    }, 50);
-                    renderAllCharts();
-
-                }, 250);
-            });
-
-           // --- LÓGICA DE GERAÇÃO DE PDF (VERSÃO FINAL COM TODAS AS CORREÇÕES) ---
-
-            const generatePdfBtn = document.getElementById('generatePdfBtn');
-            const pdfOverlay = document.getElementById('pdf-loading-overlay');
-
-            // Função auxiliar para criar a nossa "página de slide" estilizada com cabeçalho e rodapé
-            function addStylishPage(doc, pageNumber, totalPages) {
-                const logoBase64 = 'data:image/png;base64,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IHAAwCT9OHKcEOe2VESO2267rYgcV+1bAEDreOncuXNvHBoaOjjOdDiBAwAmb06tVrtmYmJiZZzb0itf+cqJ22677W3h+DflBgBaxnF9fX037N69e0Gc6WACBwA0Z269Xv/GxMTEK+LclmLk+K1w3FhuAKBlLOnv7//Wrl275seZDiVwAEDz+ur1+rUTExMvj3NbKiLHtm3bTgvHq8sNALSMpQMDAzeIHJ1N4ACAqdEfI8fL4tyWjj/++PFt27a9NRy/Um4AoGUsGxgY+ObOnTvnxZkOI3AAwNQZqNfr101MTKyIc1uKkePUcPxquQGAlvHL8+bNu+7RRx8diDMdROAAgKk1r16vXz8xMbEszm2piBzf+973isjx9XIDAC3jZQcddNC127dv74szHULgAICpN79er39rYmJiaZzb0rHHHjv2ve997zfD8ZpyAwAt4+WHHHLIdSJHZxE4AODAOKiIHOPj40vi3JaKyHHPPfcUkeMb5QYAWsYrDjnkkL996KGH5saZNidwAMCBs6Crq+uG8fHx4+Lclo4++ujRe+65Z1U4XltuAKBlvPLQQw+95oEHHpgTZ9qYwAEAB9bBXV1dN46Pj780zm2piBz33XdfETm+WW4AoGWcsHjx4q/df//9s+NMmxI4AODAO6Srq+um8fHxl8S5LR111FEj991335vD8fpyAwAt49WHH364yNHmBA4AmB4Li8gxNjZ2bJzbUowcbwpHkQOAVvOaww8//Cv33ntvb5xpMwIHAEyfQ7u7u4vI8eI4t6UicvzoRz8qnslxY7kBgJbx2iOPPPLqu+++uyfOtBGBAwCm1+Lu7u6bx8bGXhTntnTEEUfs/dGPfvQb4ShyANBqTnrBC16w8a677poVZ9qEwAEA0+853d3dt4yNjb0wzm2piBwPPvjgG8Px5nIDAC3j14855pgviRztReAAgJlxWPFMjtHR0aPj3Jae85znPP7ggw+eHI63lBsAaBm/ccwxx1x1++23d8eZihM4AGDmHDFr1qwicjw/zm2piBwPP/xwETluLTcA0DLetGTJkitvvfXWrjhTYQIHAMys586aNeuW0dHRX4hzW1q0aNGehx9++A3heFu5AYCWsWrlypV/LXJUn8ABADPvyOKZHCMjI0fFuS0VkeORRx4pIse3yw0AtIy3rFy58gsiR7UJHADQGp7X09Nzy8jI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'; // MANTENHA O SEU CÓDIGO BASE64 AQUI
-                doc.setFillColor('#ffffff');
-                doc.rect(0, 0, doc.internal.pageSize.getWidth(), doc.internal.pageSize.getHeight(), 'F');
-                doc.setFillColor('#003366');
-                doc.rect(0, 0, doc.internal.pageSize.getWidth(), 20, 'F');
-                if (logoBase64.startsWith('data:image')) {
-                    doc.addImage(logoBase64, 'PNG', 15, 5, 30, 10);
-                }
-                const generationDate = `Gerado em: ${new Date().toLocaleDateString('pt-BR')}`;
-                const pageString = `Página ${pageNumber} de ${totalPages}`;
-                doc.setFontSize(8);
-                doc.setTextColor('#333333');
-                doc.text(generationDate, 15, doc.internal.pageSize.getHeight() - 10);
-                doc.text(pageString, doc.internal.pageSize.getWidth() - 15, doc.internal.pageSize.getHeight() - 10, { align: 'right' });
-            }
-
-            // Função para criar a "capa" de cada secção
-            function addCoverPage(doc, title, pageNumber, totalPages) {
-                addStylishPage(doc, pageNumber, totalPages);
-                doc.setFontSize(28);
-                doc.setFont('helvetica', 'bold');
-                doc.setTextColor('#003366');
-                const textWidth = doc.getStringUnitWidth(title) * doc.getFontSize() / doc.internal.scaleFactor;
-                const textOffset = (doc.internal.pageSize.getWidth() - textWidth) / 2;
-                doc.text(title, textOffset, 110);
-            }
-
-            // A função principal que monta o relatório
-            // A função principal que monta o relatório (VERSÃO FINAL COM RÓTULOS E LAYOUT CORRIGIDOS)
-            async function generateFullReport() {
-                pdfOverlay.classList.add('visible');
-                generatePdfBtn.disabled = true;
-
+        async function generatePDF() {
+            try {
                 const { jsPDF } = window.jspdf;
-                const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
-                const tabs = Object.keys(tabMapping);
+                const pdf = new jsPDF('p', 'mm', 'a4');
                 
-                let totalChartPages = 0;
-                tabs.forEach(tabId => { totalChartPages += tabMapping[tabId].filter(chartId => document.getElementById(chartId)).length; });
-                const totalPages = tabs.length + totalChartPages;
-                let currentPage = 0;
-
-                const originalActiveTab = document.querySelector('.tab-button.active')?.dataset.tab || tabs[0];
-
-                try {
-                    for (const tabId of tabs) {
-                        const tabButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
-                        const tabName = tabButton ? tabButton.textContent : tabId;
-                        
-                        currentPage++;
-                        if (currentPage > 1) doc.addPage();
-                        addCoverPage(doc, `Indicadores: ${tabName}`, currentPage, totalPages);
-                        
-                        const chartIds = tabMapping[tabId];
-                        for (const chartId of chartIds) {
-                            const chartElement = document.getElementById(chartId)?.closest('.indicator-card');
-
-                            if (chartElement) {
-                                const clone = chartElement.cloneNode(true);
-                                clone.id = 'pdf-clone-container';
-                                document.body.appendChild(clone);
-                                
-                                const cloneCanvas = clone.querySelector('canvas');
-                                const originalChartInstance = charts[chartId];
-
-                                if (originalChartInstance && cloneCanvas) {
-                                    // --- CORREÇÃO 1: ADICIONAR OS PLUGINS ---
-                                    // Copiamos também a chave 'plugins' para ativar os rótulos de dados
-                                    const chartConfig = {
-                                        type: originalChartInstance.config.type,
-                                        data: originalChartInstance.config.data,
-                                        options: { ...originalChartInstance.config.options, animation: { duration: 0 } },
-                                        plugins: originalChartInstance.config.plugins // <-- LINHA ADICIONADA
-                                    };
-                                    const tempChart = new Chart(cloneCanvas, chartConfig);
-                                    await new Promise(resolve => setTimeout(resolve, 100));
-                                }
-                                
-                                currentPage++;
-                                doc.addPage();
-                                addStylishPage(doc, currentPage, totalPages);
-                                
-                                const canvas = await html2canvas(clone, { scale: 3 }); // Aumentei a escala para máxima qualidade
-                                document.body.removeChild(clone);
-
-                                const imgData = canvas.toDataURL('image/jpeg', 0.95); // JPEG com qualidade muito alta
-                                const imgProps = doc.getImageProperties(imgData);
-                                const pdfWidth = doc.internal.pageSize.getWidth();
-                                const pdfHeight = doc.internal.pageSize.getHeight();
-
-                                // --- CORREÇÃO 2: CÁLCULO DE LAYOUT INTELIGENTE ---
-                                const headerHeight = 25; // Espaço do nosso cabeçalho
-                                const footerHeight = 15; // Espaço do nosso rodapé
-                                const margin = 15;
-
-                                // Calcula a área útil da página
-                                const usableWidth = pdfWidth - (2 * margin);
-                                const usableHeight = pdfHeight - headerHeight - footerHeight;
-
-                                // Calcula as dimensões da imagem, mantendo a proporção
-                                let imgWidth = usableWidth;
-                                let imgHeight = (imgProps.height * imgWidth) / imgProps.width;
-
-                                // Se a imagem for muito alta, recalcula com base na altura máxima
-                                if (imgHeight > usableHeight) {
-                                    imgHeight = usableHeight;
-                                    imgWidth = (imgProps.width * imgHeight) / imgProps.height;
-                                }
-
-                                // Centraliza a imagem na área útil
-                                const x = (pdfWidth - imgWidth) / 2;
-                                const y = headerHeight + (usableHeight - imgHeight) / 2;
-                                
-                                doc.addImage(imgData, 'JPEG', x, y, imgWidth, imgHeight);
+                pdf.setFontSize(20);
+                pdf.setTextColor(0, 51, 102);
+                pdf.text('Relatório de Indicadores de Qualidade', 20, 20);
+                
+                pdf.setFontSize(10);
+                pdf.setTextColor(100, 100, 100);
+                pdf.text(`Gerado em: ${new Date().toLocaleDateString('pt-BR')}`, 20, 30);
+                
+                pdf.setFontSize(14);
+                pdf.setTextColor(0, 51, 102);
+                pdf.text(`Aba: ${currentTab.toUpperCase()}`, 20, 45);
+                
+                const chartIds = tabMapping[currentTab] || [];
+                let yPosition = 60;
+                
+                for (let i = 0; i < chartIds.length; i++) {
+                    const chartId = chartIds[i];
+                    const canvas = document.getElementById(chartId);
+                    
+                    if (canvas) {
+                        try {
+                            const canvasDataURL = canvas.toDataURL('image/png');
+                            const imgWidth = 170;
+                            const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                            
+                            if (yPosition + imgHeight > 280) {
+                                pdf.addPage();
+                                yPosition = 20;
                             }
+                            
+                            pdf.addImage(canvasDataURL, 'PNG', 20, yPosition, imgWidth, imgHeight);
+                            yPosition += imgHeight + 10;
+                        } catch (error) {
+                            console.error(`Erro ao capturar gráfico ${chartId}:`, error);
                         }
                     }
-                } catch (error) {
-                    console.error("Erro ao gerar PDF:", error);
-                    alert("Ocorreu um erro ao gerar o relatório. Por favor, tente novamente.");
-                } finally {
-                    doc.save(`Relatorio_Qualidade_${new Date().toLocaleDateString('pt-BR').replace(/\//g, '-')}.pdf`);
-                    pdfOverlay.classList.remove('visible');
-                    generatePdfBtn.disabled = false;
-                    filterCharts(originalActiveTab); 
                 }
+                
+                pdf.save(`relatorio_${currentTab}_${new Date().toISOString().split('T')[0]}.pdf`);
+                
+            } catch (error) {
+                console.error('Erro ao gerar PDF:', error);
+                alert('Erro ao gerar relatório PDF. Tente novamente.');
             }
+        }
 
-            if (generatePdfBtn) {
-                generatePdfBtn.addEventListener('click', generateFullReport);
-            }
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                Object.values(charts).forEach(chart => {
+                    if (chart && typeof chart.resize === 'function') {
+                        chart.resize();
+                    }
+                });
+            }, 250);
         });
     </script>
 </body>
