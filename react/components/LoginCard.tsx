@@ -1,18 +1,19 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { LogIn } from 'lucide-react';
+import { useAnimations } from '../hooks/useAnimations';
 
 interface LoginCardProps {
   onLogin: () => void;
 }
 
 const LoginCard: React.FC<LoginCardProps> = ({ onLogin }) => {
+  const { fadeInUp, scaleIn } = useAnimations();
+
   return (
     <motion.div
       className="relative bg-white/10 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-white/20 overflow-hidden"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: 0.2 }}
+      {...fadeInUp}
       whileHover={{ scale: 1.02 }}
     >
       {/* Efeito de brilho no card */}
@@ -42,18 +43,16 @@ const LoginCard: React.FC<LoginCardProps> = ({ onLogin }) => {
       <div className="text-center space-y-6">
         <motion.h3
           className="text-xl font-semibold text-white mb-4"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
+          {...scaleIn}
+          transition={{ delay: 0.2 }}
         >
           Acessar a Plataforma
         </motion.h3>
         
         <motion.p
           className="text-blue-200 text-sm mb-6"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
+          {...scaleIn}
+          transition={{ delay: 0.3 }}
         >
           Insira suas credenciais para continuar.
         </motion.p>
@@ -63,9 +62,8 @@ const LoginCard: React.FC<LoginCardProps> = ({ onLogin }) => {
           className="relative w-full flex justify-center items-center py-4 px-8 rounded-xl text-lg font-medium text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300 shadow-lg hover:shadow-xl overflow-hidden"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
+          {...scaleIn}
+          transition={{ delay: 0.4 }}
         >
           {/* Efeito de brilho no botão */}
           <motion.div
@@ -90,9 +88,8 @@ const LoginCard: React.FC<LoginCardProps> = ({ onLogin }) => {
       {/* Footer do Card de Login */}
       <motion.div
         className="mt-8 pt-6 border-t border-blue-700 border-opacity-20 text-center"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.7 }}
+        {...scaleIn}
+        transition={{ delay: 0.5 }}
       >
         <p className="text-blue-200 text-sm opacity-80">
           &copy; 2025 - Developed by William Ferraz

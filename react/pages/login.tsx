@@ -5,11 +5,13 @@ import { motion } from 'framer-motion';
 import AnimatedWaves from '../components/AnimatedWaves';
 import FloatingParticles from '../components/FloatingParticles';
 import LoginCard from '../components/LoginCard';
+import { useAnimations } from '../hooks/useAnimations';
 
 declare const netlifyIdentity: any;
 
 const LoginPage: React.FC = () => {
   const router = useRouter();
+  const { fadeInDown } = useAnimations();
 
   useEffect(() => {
     if (typeof netlifyIdentity !== 'undefined') {
@@ -86,9 +88,7 @@ const LoginPage: React.FC = () => {
         <div className="max-w-md w-full space-y-8">
           {/* Logo e título */}
           <motion.div
-            initial={{ opacity: 0, y: -50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            {...fadeInDown}
             className="text-center"
           >
             <img
