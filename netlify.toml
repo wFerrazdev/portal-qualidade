@@ -2,6 +2,12 @@
 # A versão HTML atual funciona normalmente
 # A versão React será configurada separadamente
 
+# Redirect específico para página de login React
+[[redirects]]
+  from = "/login-react"
+  to = "/react/login"
+  status = 200
+
 # Fallback para a versão HTML atual (funcionando)
 [[redirects]]
   from = "/*"
