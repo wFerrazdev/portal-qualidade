@@ -194,72 +194,30 @@
             text-align: center;
         }
 
-        /* Logo e título - Container externo (apenas estrutura) */
-        .logo-section {
-            margin-bottom: 2rem;
-            animation: fadeInDown 0.6s ease-out;
-            position: relative;
-            padding: 3rem;
-        }
 
-        /* Efeito de vidro - Container interno (apenas estrutura) */
-        .glass-effect {
-            padding: 2rem;
-        }
-
-        /* Logo com blur e fade suave */
-        .logo {
-            height: 9.2rem;
+        /* Logo integrada no card */
+        .login-card .logo {
+            height: 4rem;
             width: auto;
-            margin: 0 auto;
-            backdrop-filter: blur(8px);
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 60px;
-            padding: 1.2rem;
-            mask: radial-gradient(circle at center, black 60%, transparent 100%);
-            -webkit-mask: radial-gradient(circle at center, black 60%, transparent 100%);
-            box-shadow: 
-                0 0 0 1px rgba(255, 255, 255, 0.1),
-                0 0 24px rgba(255, 255, 255, 0.05),
-                0 0 48px rgba(255, 255, 255, 0.03),
-                0 0 72px rgba(255, 255, 255, 0.01);
+            margin: 0 auto 1.5rem;
+            display: block;
         }
 
-        /* Título com blur e fade suave */
-        .title {
-            margin-top: 1.5rem;
-            font-size: 1.875rem;
+        /* Título integrado no card */
+        .login-card .title {
+            margin: 0 0 1rem;
+            font-size: 1.5rem;
             font-weight: 800;
-            color: white;
-            backdrop-filter: blur(8px);
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 20px;
-            padding: 0.5rem 1rem;
-            mask: radial-gradient(circle at center, black 60%, transparent 100%);
-            -webkit-mask: radial-gradient(circle at center, black 60%, transparent 100%);
-            box-shadow: 
-                0 0 0 1px rgba(255, 255, 255, 0.1),
-                0 0 15px rgba(255, 255, 255, 0.05),
-                0 0 30px rgba(255, 255, 255, 0.03),
-                0 0 45px rgba(255, 255, 255, 0.01);
+            color: #1f2937;
+            text-align: center;
         }
 
-        /* Subtítulo com blur e fade suave */
-        .subtitle {
-            margin-top: 0.5rem;
+        /* Subtítulo integrado no card */
+        .login-card .subtitle {
+            margin: 0 0 2rem;
             font-size: 0.875rem;
-            color: #bfdbfe;
-            backdrop-filter: blur(8px);
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 15px;
-            padding: 0.25rem 0.75rem;
-            mask: radial-gradient(circle at center, black 60%, transparent 100%);
-            -webkit-mask: radial-gradient(circle at center, black 60%, transparent 100%);
-            box-shadow: 
-                0 0 0 1px rgba(255, 255, 255, 0.1),
-                0 0 10px rgba(255, 255, 255, 0.05),
-                0 0 20px rgba(255, 255, 255, 0.03),
-                0 0 30px rgba(255, 255, 255, 0.01);
+            color: #6b7280;
+            text-align: center;
         }
 
 
@@ -270,7 +228,7 @@
             position: relative;
             background: white;
             border-radius: 1.5rem;
-            padding: 2rem;
+            padding: 3rem 2rem;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
             border: 2px solid #e5e7eb;
             overflow: hidden;
@@ -293,20 +251,6 @@
             z-index: 10;
         }
 
-        .card-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #1f2937;
-            margin-bottom: 1rem;
-            animation: scaleIn 0.5s ease-out 0.4s both;
-        }
-
-        .card-description {
-            font-size: 0.875rem;
-            color: #6b7280;
-            margin-bottom: 2rem;
-            animation: scaleIn 0.5s ease-out 0.5s both;
-        }
 
         .login-button {
             position: relative;
@@ -485,21 +429,19 @@
     <!-- Container principal -->
     <div class="container">
         <div class="content">
-            <!-- Logo e título -->
-            <div class="logo-section">
-                <div class="glass-effect">
-                    <img class="logo" src="/GT Branco - Transparente.png" alt="GT Logo">
-                    <h1 class="title">Portal da Qualidade</h1>
-                    <p class="subtitle">Acesse o sistema de indicadores - Versão React</p>
-                </div>
-            </div>
-
-            <!-- Card de Login -->
+            <!-- Card de Login Integrado -->
             <div class="login-card">
                 <div class="card-content">
-                    <h2 class="card-title">Acessar a Plataforma</h2>
-                    <p class="card-description">Insira suas credenciais para continuar.</p>
+                    <!-- Logo -->
+                    <img class="logo" src="/GT Branco - Transparente.png" alt="GT Logo">
                     
+                    <!-- Título -->
+                    <h1 class="title">Portal da Qualidade</h1>
+                    
+                    <!-- Subtítulo -->
+                    <p class="subtitle">Acessar a Plataforma</p>
+                    
+                    <!-- Botão -->
                     <button class="login-button" onclick="handleLogin()">
                         <div class="button-content">
                             <svg class="button-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
