@@ -17,7 +17,7 @@ const LoginCard: React.FC<LoginCardProps> = ({ onLogin }) => {
       whileHover={{ scale: 1.02 }}
     >
       {/* Efeito de brilho no card */}
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-50 via-transparent to-blue-50 rounded-3xl" />
+      <div className="absolute inset-0 bg-gradient-to-r from-white via-transparent to-white rounded-3xl" />
       
       {/* Borda animada */}
       <motion.div
