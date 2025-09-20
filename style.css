@@ -556,6 +556,8 @@ body.dashboard-page {
   padding: 1rem 3rem;
   position: relative;
   overflow: hidden;
+  margin-top: 0;
+  margin-bottom: 2rem;
 }
 
 /* Botões das abas do dashboard - REFAZIDO */
@@ -767,6 +769,15 @@ body.dashboard-page {
 /* Content Area específico para Dashboard */
 .dashboard-page .content-area {
   background: #f8fafc;
+  position: static;
+  top: auto;
+  left: auto;
+  right: auto;
+  bottom: auto;
+  overflow: visible;
+  z-index: 1;
+  margin-top: 0;
+  padding: 2rem 3rem;
 }
 
 .indicators-grid {
