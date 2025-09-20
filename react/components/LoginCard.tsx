@@ -12,7 +12,8 @@ const LoginCard: React.FC<LoginCardProps> = ({ onLogin }) => {
 
   return (
     <motion.div
-      className="relative bg-white rounded-3xl p-8 shadow-2xl border border-blue-200 overflow-hidden"
+      className="relative bg-white rounded-3xl p-8 shadow-2xl border overflow-hidden"
+      style={{ borderColor: 'var(--primary-200)' }}
       {...fadeInUp}
       whileHover={{ scale: 1.02 }}
     >
@@ -22,7 +23,8 @@ const LoginCard: React.FC<LoginCardProps> = ({ onLogin }) => {
       
       <div className="text-center space-y-6">
         <motion.h3
-          className="text-xl font-semibold text-blue-900 mb-4"
+          className="text-xl font-semibold mb-4"
+          style={{ color: 'var(--primary-800)' }}
           {...scaleIn}
           transition={{ delay: 0.2 }}
         >
@@ -30,7 +32,8 @@ const LoginCard: React.FC<LoginCardProps> = ({ onLogin }) => {
         </motion.h3>
         
         <motion.p
-          className="text-blue-700 text-sm mb-6"
+          className="text-sm mb-6"
+          style={{ color: 'var(--primary-700)' }}
           {...scaleIn}
           transition={{ delay: 0.3 }}
         >
@@ -67,11 +70,12 @@ const LoginCard: React.FC<LoginCardProps> = ({ onLogin }) => {
 
       {/* Footer do Card de Login */}
       <motion.div
-        className="mt-8 pt-6 border-t border-blue-200 text-center"
+        className="mt-8 pt-6 border-t text-center"
+        style={{ borderTopColor: 'var(--primary-200)' }}
         {...scaleIn}
         transition={{ delay: 0.5 }}
       >
-        <p className="text-blue-600 text-sm opacity-80">
+        <p className="text-sm opacity-80" style={{ color: 'var(--primary-600)' }}>
           &copy; 2025 - Developed by William Ferraz
         </p>
       </motion.div>
