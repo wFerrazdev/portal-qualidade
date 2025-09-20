@@ -12,25 +12,25 @@ const LoginCard: React.FC<LoginCardProps> = ({ onLogin }) => {
 
   return (
     <motion.div
-      className="relative bg-white/10 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-white/20 overflow-hidden"
+      className="relative bg-white rounded-3xl p-8 shadow-2xl border border-blue-200 overflow-hidden"
       {...fadeInUp}
       whileHover={{ scale: 1.02 }}
     >
       {/* Efeito de brilho no card */}
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-transparent to-blue-500/10 rounded-3xl" />
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-50 via-transparent to-blue-50 rounded-3xl" />
       
       {/* Borda animada */}
       <motion.div
         className="absolute inset-0 rounded-3xl"
         style={{
-          background: 'linear-gradient(45deg, transparent, rgba(59, 130, 246, 0.3), transparent)',
+          background: 'linear-gradient(45deg, transparent, rgba(30, 64, 175, 0.2), transparent)',
           padding: '1px'
         }}
         animate={{
           background: [
-            'linear-gradient(45deg, transparent, rgba(59, 130, 246, 0.3), transparent)',
-            'linear-gradient(225deg, transparent, rgba(59, 130, 246, 0.3), transparent)',
-            'linear-gradient(45deg, transparent, rgba(59, 130, 246, 0.3), transparent)'
+            'linear-gradient(45deg, transparent, rgba(30, 64, 175, 0.2), transparent)',
+            'linear-gradient(225deg, transparent, rgba(30, 64, 175, 0.2), transparent)',
+            'linear-gradient(45deg, transparent, rgba(30, 64, 175, 0.2), transparent)'
           ]
         }}
         transition={{
@@ -42,7 +42,7 @@ const LoginCard: React.FC<LoginCardProps> = ({ onLogin }) => {
       
       <div className="text-center space-y-6">
         <motion.h3
-          className="text-xl font-semibold text-white mb-4"
+          className="text-xl font-semibold text-blue-900 mb-4"
           {...scaleIn}
           transition={{ delay: 0.2 }}
         >
@@ -50,7 +50,7 @@ const LoginCard: React.FC<LoginCardProps> = ({ onLogin }) => {
         </motion.h3>
         
         <motion.p
-          className="text-blue-200 text-sm mb-6"
+          className="text-blue-700 text-sm mb-6"
           {...scaleIn}
           transition={{ delay: 0.3 }}
         >
@@ -87,11 +87,11 @@ const LoginCard: React.FC<LoginCardProps> = ({ onLogin }) => {
 
       {/* Footer do Card de Login */}
       <motion.div
-        className="mt-8 pt-6 border-t border-blue-700 border-opacity-20 text-center"
+        className="mt-8 pt-6 border-t border-blue-200 text-center"
         {...scaleIn}
         transition={{ delay: 0.5 }}
       >
-        <p className="text-blue-200 text-sm opacity-80">
+        <p className="text-blue-600 text-sm opacity-80">
           &copy; 2025 - Developed by William Ferraz
         </p>
       </motion.div>
