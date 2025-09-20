@@ -482,8 +482,18 @@
         if (window.netlifyIdentity) {
             window.netlifyIdentity.on("init", user => {
                 if (user) {
-                    window.location.href = '/dashboard';
+                    window.location.href = '/index.html';
                 }
+            });
+            
+            // Escuta o evento de login bem-sucedido para redirecionar
+            window.netlifyIdentity.on('login', user => {
+                console.log('Login realizado com sucesso:', user);
+                console.log('Redirecionando para index.html...');
+                // Força o redirecionamento
+                setTimeout(() => {
+                    window.location.href = '/index.html';
+                }, 1000);
             });
         }
 
@@ -491,7 +501,7 @@
         if (window.location.hash.includes('_token=')) {
             if (window.netlifyIdentity) {
                 window.netlifyIdentity.on('login', () => {
-                    window.location.href = '/dashboard';
+                    window.location.href = '/index.html';
                 });
             }
         }
