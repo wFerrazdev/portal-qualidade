@@ -207,7 +207,7 @@
             padding: 2rem;
         }
 
-        /* Blur apenas na logo */
+        /* Logo com blur e fade suave */
         .logo {
             height: 6rem;
             width: auto;
@@ -216,13 +216,16 @@
             background: rgba(255, 255, 255, 0.02);
             border-radius: 50px;
             padding: 1rem;
+            mask: radial-gradient(circle at center, black 60%, transparent 100%);
+            -webkit-mask: radial-gradient(circle at center, black 60%, transparent 100%);
             box-shadow: 
                 0 0 0 1px rgba(255, 255, 255, 0.1),
                 0 0 20px rgba(255, 255, 255, 0.05),
-                0 0 40px rgba(255, 255, 255, 0.03);
+                0 0 40px rgba(255, 255, 255, 0.03),
+                0 0 60px rgba(255, 255, 255, 0.01);
         }
 
-        /* Blur apenas no título */
+        /* Título com blur e fade suave */
         .title {
             margin-top: 1.5rem;
             font-size: 1.875rem;
@@ -232,19 +235,35 @@
             background: rgba(255, 255, 255, 0.02);
             border-radius: 20px;
             padding: 0.5rem 1rem;
+            mask: radial-gradient(circle at center, black 60%, transparent 100%);
+            -webkit-mask: radial-gradient(circle at center, black 60%, transparent 100%);
             box-shadow: 
                 0 0 0 1px rgba(255, 255, 255, 0.1),
                 0 0 15px rgba(255, 255, 255, 0.05),
-                0 0 30px rgba(255, 255, 255, 0.03);
+                0 0 30px rgba(255, 255, 255, 0.03),
+                0 0 45px rgba(255, 255, 255, 0.01);
         }
 
-
-
+        /* Subtítulo com blur e fade suave */
         .subtitle {
             margin-top: 0.5rem;
             font-size: 0.875rem;
             color: #bfdbfe;
+            backdrop-filter: blur(8px);
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 15px;
+            padding: 0.25rem 0.75rem;
+            mask: radial-gradient(circle at center, black 60%, transparent 100%);
+            -webkit-mask: radial-gradient(circle at center, black 60%, transparent 100%);
+            box-shadow: 
+                0 0 0 1px rgba(255, 255, 255, 0.1),
+                0 0 10px rgba(255, 255, 255, 0.05),
+                0 0 20px rgba(255, 255, 255, 0.03),
+                0 0 30px rgba(255, 255, 255, 0.01);
         }
+
+
+
 
         /* Card de Login */
         .login-card {
