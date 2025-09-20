@@ -413,6 +413,39 @@ body.dashboard-page {
   flex-shrink: 0;
 }
 
+/* Tabs Section específico para Dashboard */
+.dashboard-page .tabs-section {
+  background: transparent;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Ajustar cores dos elementos das abas para dashboard */
+.dashboard-page .tab-button {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dashboard-page .tab-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.dashboard-page .tab-button.active {
+  background: rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+}
+
+.dashboard-page .filter-select {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dashboard-page .filter-select option {
+  background: #1e3a8a;
+  color: #ffffff;
+}
+
 .tabs-container {
   display: flex;
   gap: 0.25rem;
@@ -472,6 +505,11 @@ body.dashboard-page {
   bottom: 0;
   overflow-y: auto;
   z-index: 98;
+}
+
+/* Content Area específico para Dashboard */
+.dashboard-page .content-area {
+  background: transparent;
 }
 
 .indicators-grid {
