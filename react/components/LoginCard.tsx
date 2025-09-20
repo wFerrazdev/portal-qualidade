@@ -19,26 +19,6 @@ const LoginCard: React.FC<LoginCardProps> = ({ onLogin }) => {
       {/* Efeito de brilho no card */}
       <div className="absolute inset-0 bg-gradient-to-r from-white via-transparent to-white rounded-3xl" />
       
-      {/* Borda animada */}
-      <motion.div
-        className="absolute inset-0 rounded-3xl"
-        style={{
-          background: 'linear-gradient(45deg, transparent, rgba(30, 64, 175, 0.2), transparent)',
-          padding: '1px'
-        }}
-        animate={{
-          background: [
-            'linear-gradient(45deg, transparent, rgba(30, 64, 175, 0.2), transparent)',
-            'linear-gradient(225deg, transparent, rgba(30, 64, 175, 0.2), transparent)',
-            'linear-gradient(45deg, transparent, rgba(30, 64, 175, 0.2), transparent)'
-          ]
-        }}
-        transition={{
-          duration: 3,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-      />
       
       <div className="text-center space-y-6">
         <motion.h3
