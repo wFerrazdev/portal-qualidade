@@ -13,6 +13,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script type="text/javascript">
+        // Redirecionamento imediato para evitar flash da página
+        (function() {
+            // Verifica se há usuário logado no localStorage
+            const user = localStorage.getItem('netlifyUser');
+            if (!user) {
+                // Se não há usuário, redireciona imediatamente
+                window.location.href = '/login.html';
+                return;
+            }
+        })();
+        
         // Adicionamos um escutador de evento direto no objeto 'netlifyIdentity'
         // Ele garante que o código só rode quando o sistema de login estiver pronto.
         window.netlifyIdentity && netlifyIdentity.on('init', user => {
