@@ -241,6 +241,7 @@ body.dashboard-page {
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
   box-shadow: none !important;
+  z-index: 99 !important;
 }
 
 /* Textos do header do dashboard */
@@ -438,6 +439,7 @@ body.dashboard-page {
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
   box-shadow: none !important;
+  z-index: 100 !important;
 }
 
 /* Botões das abas do dashboard */
@@ -2714,7 +2716,7 @@ body.projects-page {
     left: 100px;
     right: 0;
     height: 100px;
-    z-index: 95;
+    z-index: 98;
     overflow: hidden;
     pointer-events: none;
 }
@@ -2801,8 +2803,3 @@ body.projects-page {
     animation: floatStraight 3s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
 }
 
-/* Ajustar o cabeçalho para ter posição relativa */
-.content-header {
-    position: relative;
-    z-index: 10;
-}
