@@ -616,10 +616,10 @@ body.dashboard-page {
   z-index: 98;
 }
 
-/* Content area específico para dashboard - começar logo abaixo do tabs-section */
+/* Content area específico para dashboard - começar logo abaixo do tabs-with-filters-container */
 .dashboard-page .content-area {
   background: #f8fafc;
-  top: 140px;
+  top: 108px;
   margin-top: 0;
   padding-top: 0;
 }
