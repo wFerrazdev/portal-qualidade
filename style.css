@@ -477,6 +477,8 @@ body.dashboard-page {
   -webkit-backdrop-filter: none !important;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2) !important;
   z-index: 100 !important;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
 }
 
 /* Botões das abas do dashboard */
