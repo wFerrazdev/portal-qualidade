@@ -716,12 +716,12 @@ body.dashboard-page {
 
 /* Textos dos cards do dashboard */
 .dashboard-page .card-title {
-  color: #ffffff !important;
+  color:rgb(20, 37, 92) !important;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .dashboard-page .card-description {
-  color: rgba(255, 255, 255, 0.9) !important;
+  color: rgba(20, 37, 92, 0.9) !important;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
