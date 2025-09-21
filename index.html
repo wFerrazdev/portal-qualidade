@@ -8,12 +8,14 @@
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://identity.netlify.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- jsPDF e html2canvas carregados apenas quando necessário para gerar PDF -->
     <script type="text/javascript">
         window.netlifyIdentity && netlifyIdentity.on('init', user => {
             if (!user) {
@@ -27,7 +29,7 @@
         <!-- Sidebar Moderna -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <img src="GT Branco - Transparente.png" alt="GT Logo" class="sidebar-logo-img">
+                <img src="GT Branco - Transparente.png" alt="GT Logo" class="sidebar-logo-img" width="40" height="40">
                 <h2>Portal da Qualidade</h2>
             </div>
             <nav class="sidebar-nav">
@@ -77,7 +79,7 @@
                 <span>Logado como: Will</span>
             </div>
             <div class="sidebar-footer-logo">
-                <img src="logo.png" alt="Logo" class="footer-logo">
+                <img src="logo.png" alt="Logo" class="footer-logo" width="60" height="30">
             </div>
         </aside>
 
@@ -154,7 +156,7 @@
                             </svg>
                         </button>
                         <button id="refreshChartsBtn" class="btn btn-primary btn-icon" title="Atualizar dados">
-                            <img src="atualizarbtn.png" alt="Atualizar" width="20" height="20">
+                            <img src="atualizarbtn.png" alt="Atualizar" width="20" height="20" loading="lazy">
                         </button>
                     </div>
                     <button id="generatePdfBtn" class="btn btn-secondary" title="Gerar Relatório em PDF">
@@ -1564,6 +1566,14 @@
 
         async function generatePDF() {
             try {
+                // Carregar bibliotecas dinamicamente apenas quando necessário
+                if (!window.jspdf) {
+                    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+                }
+                if (!window.html2canvas) {
+                    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
+                }
+                
                 const { jsPDF } = window.jspdf;
                 const pdf = new jsPDF('p', 'mm', 'a4');
                 
@@ -1611,6 +1621,17 @@
                 console.error('Erro ao gerar PDF:', error);
                 alert('Erro ao gerar relatório PDF. Tente novamente.');
             }
+        }
+
+        // Função para carregar scripts dinamicamente
+        function loadScript(src) {
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = src;
+                script.onload = resolve;
+                script.onerror = reject;
+                document.head.appendChild(script);
+            });
         }
 
         let resizeTimer;
