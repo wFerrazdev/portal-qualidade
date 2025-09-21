@@ -103,12 +103,27 @@
                 <path d="M0,100 Q180,50 360,100 Q540,150 720,100 Q900,50 1080,100 Q1200,100 1200,100" stroke="#0ea5e9" stroke-width="2" fill="none" />
             </svg>
 
-            <!-- Partículas flutuantes - Movimento diagonal e reto alternados (ultra otimizado para 60fps) -->
-            <div class="dashboard-particle diagonal" style="top: 67%; left: 20%; animation-delay: 0s;"></div>
-            <div class="dashboard-particle straight" style="top: 67%; left: 80%; animation-delay: 1s;"></div>
-            <div class="dashboard-particle diagonal" style="top: 67%; left: 40%; animation-delay: 2s;"></div>
-            <div class="dashboard-particle straight" style="top: 67%; left: 60%; animation-delay: 3s;"></div>
-            <div class="dashboard-particle diagonal" style="top: 67%; left: 10%; animation-delay: 4s;"></div>
+            <!-- Partículas flutuantes - Movimento diagonal e reto alternados (20 partículas) -->
+            <div class="dashboard-particle diagonal" style="top: 67%; left: 5%; animation-delay: 0s;"></div>
+            <div class="dashboard-particle straight" style="top: 67%; left: 15%; animation-delay: 0.5s;"></div>
+            <div class="dashboard-particle diagonal" style="top: 67%; left: 25%; animation-delay: 1s;"></div>
+            <div class="dashboard-particle straight" style="top: 67%; left: 35%; animation-delay: 1.5s;"></div>
+            <div class="dashboard-particle diagonal" style="top: 67%; left: 45%; animation-delay: 2s;"></div>
+            <div class="dashboard-particle straight" style="top: 67%; left: 55%; animation-delay: 2.5s;"></div>
+            <div class="dashboard-particle diagonal" style="top: 67%; left: 65%; animation-delay: 3s;"></div>
+            <div class="dashboard-particle straight" style="top: 67%; left: 75%; animation-delay: 3.5s;"></div>
+            <div class="dashboard-particle diagonal" style="top: 67%; left: 85%; animation-delay: 4s;"></div>
+            <div class="dashboard-particle straight" style="top: 67%; left: 95%; animation-delay: 4.5s;"></div>
+            <div class="dashboard-particle diagonal" style="top: 67%; left: 10%; animation-delay: 5s;"></div>
+            <div class="dashboard-particle straight" style="top: 67%; left: 20%; animation-delay: 5.5s;"></div>
+            <div class="dashboard-particle diagonal" style="top: 67%; left: 30%; animation-delay: 6s;"></div>
+            <div class="dashboard-particle straight" style="top: 67%; left: 40%; animation-delay: 6.5s;"></div>
+            <div class="dashboard-particle diagonal" style="top: 67%; left: 50%; animation-delay: 7s;"></div>
+            <div class="dashboard-particle straight" style="top: 67%; left: 60%; animation-delay: 7.5s;"></div>
+            <div class="dashboard-particle diagonal" style="top: 67%; left: 70%; animation-delay: 8s;"></div>
+            <div class="dashboard-particle straight" style="top: 67%; left: 80%; animation-delay: 8.5s;"></div>
+            <div class="dashboard-particle diagonal" style="top: 67%; left: 90%; animation-delay: 9s;"></div>
+            <div class="dashboard-particle straight" style="top: 67%; left: 100%; animation-delay: 9.5s;"></div>
         </div>
 
         <!-- Conteúdo Principal -->
@@ -391,6 +406,37 @@
 
         // Registrar o plugin ChartDataLabels globalmente
         Chart.register(ChartDataLabels);
+        
+        // Configurações globais para otimizar performance dos gráficos
+        Chart.defaults.animation = false;
+        Chart.defaults.responsive = true;
+        Chart.defaults.maintainAspectRatio = false;
+        Chart.defaults.interaction = {
+            intersect: false,
+            mode: 'index'
+        };
+        Chart.defaults.elements = {
+            point: {
+                radius: 0
+            }
+        };
+        
+        // Função para aplicar configurações de performance em todos os gráficos
+        function applyPerformanceOptions(options) {
+            return {
+                ...options,
+                animation: false,
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    intersect: false,
+                    mode: 'index'
+                },
+                elements: {
+                    point: { radius: 0 }
+                }
+            };
+        }
 
         // Variáveis globais
         let charts = {};
@@ -741,7 +787,20 @@
                             { type: 'bar', label: 'Quantidade', data: values, backgroundColor: '#003366', borderRadius: 5, yAxisID: 'y', order: 1 }
                         ]
                     },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom', labels: { usePointStyle: true, pointStyle: 'rect', padding: 20, font: { size: 10 } } }, datalabels: { display: (context) => context.dataset.type === 'bar', color: 'black', font: { weight: 'bold' }, anchor: 'end', align: 'end' } }, scales: { y: { type: 'linear', position: 'left', title: { display: true, text: 'Quantidade' }, grid: { display: false }, max: maxValue + 5 }, y1: { type: 'linear', position: 'right', grid: { drawOnChartArea: false }, max: 100, ticks: { callback: value => value + '%' }, title: { display: true, text: 'Percentual Acumulado' } }, x: { grid: { display: false } } } },
+                    options: { 
+                        responsive: true, 
+                        maintainAspectRatio: false,
+                        animation: false,
+                        plugins: { 
+                            legend: { display: true, position: 'bottom', labels: { usePointStyle: true, pointStyle: 'rect', padding: 20, font: { size: 10 } } }, 
+                            datalabels: { display: (context) => context.dataset.type === 'bar', color: 'black', font: { weight: 'bold' }, anchor: 'end', align: 'end' } 
+                        }, 
+                        scales: { 
+                            y: { type: 'linear', position: 'left', title: { display: true, text: 'Quantidade' }, grid: { display: false }, max: maxValue + 5 }, 
+                            y1: { type: 'linear', position: 'right', grid: { drawOnChartArea: false }, max: 100, ticks: { callback: value => value + '%' }, title: { display: true, text: 'Percentual Acumulado' } }, 
+                            x: { grid: { display: false } } 
+                        } 
+                    },
                     plugins: [ChartDataLabels]
                 });
             } catch (error) {
