@@ -25,6 +25,12 @@ body {
   box-shadow: 0 0 50px rgba(0, 0, 0, 0.1);
 }
 
+/* Dashboard container específico para dashboard */
+.dashboard-page .dashboard-container {
+  background: transparent;
+  box-shadow: none;
+}
+
 /* Sidebar Moderna com Hover */
 .sidebar {
   position: fixed;
@@ -241,7 +247,7 @@ body.dashboard-page {
 
 /* Header do dashboard - COMPLETAMENTE TRANSPARENTE */
 .dashboard-page .content-header {
-  background: transparent !important;
+  background: rgba(0, 0, 0, 0) !important;
   border: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
@@ -327,6 +333,13 @@ body.dashboard-page {
   border-radius: 20px;
   box-shadow: 0 4px 20px rgba(0, 51, 102, 0.1);
   border: 1px solid #e2e8f0;
+}
+
+/* Filter group específico para dashboard */
+.dashboard-page .filter-group {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 .tab-indicator {
@@ -458,7 +471,7 @@ body.dashboard-page {
 
 /* Abas do dashboard - COMPLETAMENTE TRANSPARENTES */
 .dashboard-page .tabs-section {
-  background: transparent !important;
+  background: rgba(0, 0, 0, 0) !important;
   border: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
