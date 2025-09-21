@@ -2840,6 +2840,7 @@ body.projects-page {
     border-radius: 50%;
     box-shadow: 0 0 6px rgba(96, 165, 250, 0.37);
     top: 220px; /* Começar mais abaixo do content-area */
+    opacity: 0; /* Iniciar invisíveis para evitar partículas estáticas */
 }
 
 /* Classes para diferentes tipos de movimento das partículas - Dashboard */
