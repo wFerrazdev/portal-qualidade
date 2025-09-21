@@ -13,9 +13,6 @@
     <link rel="preconnect" href="https://identity.netlify.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
-    <!-- jsPDF e html2canvas carregados apenas quando necessário para gerar PDF -->
     <script type="text/javascript">
         window.netlifyIdentity && netlifyIdentity.on('init', user => {
             if (!user) {
@@ -25,6 +22,12 @@
     </script>
 </head>
 <body class="dashboard-page">
+    <!-- Loading overlay para melhorar percepção de performance -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loading-spinner"></div>
+        <p>Carregando dashboard...</p>
+    </div>
+
     <div class="dashboard-container">
         <!-- Sidebar Moderna -->
         <aside class="sidebar" id="sidebar">
@@ -375,6 +378,10 @@
         </footer>
     </div>
 
+    <!-- Carregar Chart.js e plugins no final para não bloquear renderização -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    
     <script>
         // [Aqui vai o JavaScript completo da versão original, mas adaptado para o novo design]
         // Por enquanto, vou manter a funcionalidade básica
@@ -422,6 +429,16 @@
         document.addEventListener('DOMContentLoaded', function() {
             console.log('=== DOMContentLoaded disparado ===');
             initializeApp();
+        });
+
+        // Esconder loading quando tudo estiver carregado
+        window.addEventListener('load', function() {
+            const loadingOverlay = document.getElementById('loading-overlay');
+            if (loadingOverlay) {
+                setTimeout(() => {
+                    loadingOverlay.classList.add('hidden');
+                }, 500); // Pequeno delay para suavizar transição
+            }
         });
 
         async function initializeApp() {
