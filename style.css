@@ -253,6 +253,8 @@ body.dashboard-page {
   -webkit-backdrop-filter: none !important;
   box-shadow: none !important;
   z-index: 99 !important;
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
 }
 
 /* Header do dashboard - REFAZIDO DO ZERO */
@@ -475,10 +477,12 @@ body.dashboard-page {
   border: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2) !important;
+  box-shadow: none !important;
   z-index: 100 !important;
   margin-top: 0 !important;
   padding-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
 }
 
 /* Botões das abas do dashboard */
@@ -612,10 +616,14 @@ body.dashboard-page {
   z-index: 98;
 }
 
-/* Content Area específico para Dashboard */
+/* Content area específico para dashboard - começar logo abaixo do tabs-section */
 .dashboard-page .content-area {
   background: #f8fafc;
+  top: 140px;
+  margin-top: 0;
+  padding-top: 0;
 }
+
 
 .indicators-grid {
   display: grid;
