@@ -3,15 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dashboard de Indicadores de Qualidade - Portal da Qualidade">
+    <meta name="theme-color" content="#0f172a">
     <title>Dashboard de Indicadores - Qualidade</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://identity.netlify.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="dns-prefetch" href="https://portalqualidadewill.netlify.app">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
     <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <script type="text/javascript">
         window.netlifyIdentity && netlifyIdentity.on('init', user => {
@@ -32,7 +36,7 @@
         <!-- Sidebar Moderna -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <img src="GT Branco - Transparente.png" alt="GT Logo" class="sidebar-logo-img" width="40" height="40">
+                <img src="GT Branco - Transparente.png" alt="GT Logo" class="sidebar-logo-img" width="40" height="40" loading="eager" fetchpriority="high">
                 <h2>Portal da Qualidade</h2>
             </div>
             <nav class="sidebar-nav">
@@ -425,10 +429,15 @@
             'nc_externa': ['grafico12', 'grafico13', 'grafico14', 'grafico15']
         };
 
-        // Inicialização
+        // Inicialização otimizada para reduzir long tasks
         document.addEventListener('DOMContentLoaded', function() {
             console.log('=== DOMContentLoaded disparado ===');
-            initializeApp();
+            // Usar requestIdleCallback para não bloquear o main thread
+            if (window.requestIdleCallback) {
+                requestIdleCallback(() => initializeApp());
+            } else {
+                setTimeout(() => initializeApp(), 0);
+            }
         });
 
         // Esconder loading quando tudo estiver carregado
@@ -654,6 +663,11 @@
             if (refreshBtn) { 
                 refreshBtn.disabled = true; 
                 refreshBtn.classList.add('loading');
+            }
+            
+            // Usar requestIdleCallback para não bloquear o main thread
+            if (window.requestIdleCallback) {
+                await new Promise(resolve => requestIdleCallback(resolve));
             }
             
             try {
