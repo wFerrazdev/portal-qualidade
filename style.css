@@ -2572,51 +2572,51 @@ body.projects-page {
 .dashboard-wave.wave-1 path {
     stroke-dasharray: 2000;
     stroke-dashoffset: 2000;
-    animation: buildWave 12s linear infinite;
+    animation: buildWave 8s linear infinite;
 }
 
 .dashboard-wave.wave-2 {
     top: 35%;
-    animation-delay: 2s;
+    animation-delay: 4s;
 }
 
 .dashboard-wave.wave-2 path {
     stroke-dasharray: 2000;
     stroke-dashoffset: 2000;
-    animation: buildWave 14s linear infinite 2s;
+    animation: buildWave 8s linear infinite 4s;
 }
 
 .dashboard-wave.wave-3 {
     top: 55%;
-    animation-delay: 4s;
+    animation-delay: 8s;
 }
 
 .dashboard-wave.wave-3 path {
     stroke-dasharray: 2000;
     stroke-dashoffset: 2000;
-    animation: buildWave 13s linear infinite 4s;
+    animation: buildWave 8s linear infinite 8s;
 }
 
 .dashboard-wave.wave-4 {
     top: 75%;
-    animation-delay: 6s;
+    animation-delay: 12s;
 }
 
 .dashboard-wave.wave-4 path {
     stroke-dasharray: 2000;
     stroke-dashoffset: 2000;
-    animation: buildWave 15s linear infinite 6s;
+    animation: buildWave 8s linear infinite 12s;
 }
 
 .dashboard-wave.wave-5 {
     top: 85%;
-    animation-delay: 8s;
+    animation-delay: 16s;
 }
 
 .dashboard-wave.wave-5 path {
     stroke-dasharray: 2000;
     stroke-dashoffset: 2000;
-    animation: buildWave 11s linear infinite 8s;
+    animation: buildWave 8s linear infinite 16s;
 }
 
 /* Partículas flutuantes - Dashboard */
@@ -2633,12 +2633,51 @@ body.projects-page {
     transform: translateZ(0); /* Forçar aceleração de hardware */
 }
 
+/* Desabilitar animações em dispositivos com baixa performance */
+@media (prefers-reduced-motion: reduce) {
+    .dashboard-particle {
+        animation: none !important;
+        opacity: 0.2 !important;
+    }
+    
+    .dashboard-wave path {
+        animation: none !important;
+        stroke-dashoffset: 0 !important;
+    }
+}
+
+/* Otimizações para dispositivos móveis e baixa performance */
+@media (max-width: 768px) {
+    .dashboard-particle {
+        animation-duration: 6s !important;
+    }
+    
+    .dashboard-wave path {
+        animation-duration: 12s !important;
+    }
+}
+
+/* Desabilitar animações em dispositivos muito lentos */
+@media (max-width: 480px) {
+    .dashboard-particle {
+        animation: none !important;
+        opacity: 0.1 !important;
+    }
+    
+    .dashboard-wave path {
+        animation: none !important;
+        stroke-dashoffset: 0 !important;
+    }
+}
+
 /* Classes para diferentes tipos de movimento das partículas - Dashboard */
 .dashboard-particle.diagonal {
-    animation: floatDiagonal 3s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+    animation: floatDiagonal 4s ease-in-out infinite;
+    animation-fill-mode: both;
 }
 
 .dashboard-particle.straight {
-    animation: floatStraight 3s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+    animation: floatStraight 4s ease-in-out infinite;
+    animation-fill-mode: both;
 }
 
