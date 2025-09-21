@@ -2839,7 +2839,7 @@ body.projects-page {
     background: #60a5fa;
     border-radius: 50%;
     box-shadow: 0 0 6px rgba(96, 165, 250, 0.37);
-    top: 180px; /* Começar bem acima do limite do content-area */
+    top: 220px; /* Começar mais abaixo do content-area */
 }
 
 /* Classes para diferentes tipos de movimento das partículas - Dashboard */
