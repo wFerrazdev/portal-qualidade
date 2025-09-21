@@ -2752,7 +2752,7 @@ body.projects-page {
     top: 0;
     left: 0;
     width: 100%;
-    height: 120px;
+    height: 180px;
     z-index: 1;
     overflow: hidden;
     pointer-events: none;
@@ -2762,7 +2762,7 @@ body.projects-page {
 .dashboard-wave {
     position: absolute;
     width: 100%;
-    height: 120px;
+    height: 180px;
     opacity: 0.25;
 }
 
