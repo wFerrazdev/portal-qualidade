@@ -2465,7 +2465,7 @@ body.projects-page {
     pointer-events: none;
 }
 
-/* Background animado específico para página de reuniões - ajustado para o tamanho do content-header */
+/* Background animado específico para página de reuniões - posicionado corretamente no content-header */
 .reunioes-page .projects-header-background {
     position: absolute;
     top: 0;
@@ -2475,6 +2475,12 @@ body.projects-page {
     z-index: 1;
     overflow: hidden;
     pointer-events: none;
+}
+
+/* Garantir que o content-header da página de reuniões contenha o background animado */
+.reunioes-page .content-header {
+    position: relative;
+    overflow: hidden;
 }
 
 /* Ajustar ondas para página de reuniões - limitar área de trabalho */
