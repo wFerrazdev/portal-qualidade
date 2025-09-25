@@ -2488,7 +2488,7 @@ body.projects-page {
     position: absolute;
     width: 100%;
     height: 80px; /* Reduzir altura das ondas */
-    opacity: 0.25;
+    opacity: 0.6;
 }
 
 .reunioes-page .projects-wave.wave-1 {
@@ -2793,7 +2793,7 @@ body.projects-page {
     position: absolute;
     width: 100%;
     height: 120px;
-    opacity: 0.25;
+    opacity: 0.6;
 }
 
 .projects-wave.wave-1 {
@@ -2859,7 +2859,7 @@ body.projects-page {
     }
     50% { 
         stroke-dashoffset: 1000; 
-        opacity: 0.6; 
+        opacity: 0.9; 
     }
     100% { 
         stroke-dashoffset: 0; 
@@ -2875,11 +2875,15 @@ body.projects-page {
     background: #60a5fa;
     border-radius: 50%;
     box-shadow: 0 0 6px rgba(96, 165, 250, 0.37);
+    top: 100%; /* Começar fora da área visível */
+    opacity: 0; /* Iniciar invisíveis */
+    will-change: transform, opacity; /* Otimização de performance */
+    transform: translateZ(0); /* Forçar aceleração de hardware */
 }
 
 /* Animação reta - movimento reto ultra-suavizado com divisões de 1% */
 @keyframes floatStraight {
-    0% { transform: translate3d(0, -200px, 0); opacity: 0; }
+    0% { transform: translate3d(0, 0, 0); opacity: 0; }
     1% { transform: translate3d(0, -198px, 0); opacity: 0.03; }
     2% { transform: translate3d(0, -196px, 0); opacity: 0.06; }
     3% { transform: translate3d(0, -194px, 0); opacity: 0.09; }
@@ -2984,7 +2988,7 @@ body.projects-page {
 
 /* Animação diagonal - movimento diagonal ultra-suavizado com divisões de 1% */
 @keyframes floatDiagonal {
-    0% { transform: translate3d(0, -200px, 0); opacity: 0; }
+    0% { transform: translate3d(0, 0, 0); opacity: 0; }
     1% { transform: translate3d(1px, -198px, 0); opacity: 0.03; }
     2% { transform: translate3d(2px, -196px, 0); opacity: 0.06; }
     3% { transform: translate3d(3px, -194px, 0); opacity: 0.09; }
@@ -3090,10 +3094,12 @@ body.projects-page {
 /* Classes para diferentes tipos de movimento das partículas */
 .projects-particle.diagonal {
     animation: floatDiagonal 3s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+    animation-fill-mode: both;
 }
 
 .projects-particle.straight {
     animation: floatStraight 3s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+    animation-fill-mode: both;
 }
 
 /* ========================================
