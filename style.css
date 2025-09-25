@@ -278,6 +278,15 @@ body {
   flex-shrink: 0;
 }
 
+/* Header específico para página de reuniões - transparente para mostrar background animado */
+.reunioes-page .content-header {
+  background: transparent;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 51, 102, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
 /* Background específico para dashboard */
 body.dashboard-page {
   background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%);
@@ -2445,6 +2454,18 @@ body.projects-page {
     left: 0;
     width: 100%;
     height: 200px;
+    z-index: 1;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+/* Background animado específico para página de reuniões - ajustado para o tamanho do content-header */
+.reunioes-page .projects-header-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     z-index: 1;
     overflow: hidden;
     pointer-events: none;
