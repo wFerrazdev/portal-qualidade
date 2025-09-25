@@ -2465,6 +2465,24 @@ body.projects-page {
     pointer-events: none;
 }
 
+/* Background animado específico para página de projetos - posicionado corretamente no content-header */
+.projects-page .projects-header-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+/* Garantir que o content-header da página de projetos contenha o background animado */
+.projects-page .content-header {
+    position: relative;
+    overflow: hidden;
+}
+
 /* Background animado específico para página de reuniões - posicionado corretamente no content-header */
 .reunioes-page .projects-header-background {
     position: absolute;
