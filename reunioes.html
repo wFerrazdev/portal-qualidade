@@ -84,53 +84,6 @@
         <div class="overlay" id="overlay"></div>
 
         <div class="main-content">
-            <!-- Background animado para o cabeçalho - EXATO da página de projetos -->
-            <div class="projects-header-background">
-                <!-- Ondas animadas - EXATAS do projetos.html -->
-                <svg class="projects-wave wave-1" viewBox="0 0 1200 200" preserveAspectRatio="none">
-                    <path d="M0,100 Q100,20 200,100 Q300,180 400,100 Q500,20 600,100 Q700,180 800,100 Q900,20 1000,100 Q1100,180 1200,100" stroke="#60a5fa" stroke-width="2" fill="none" />
-                </svg>
-                <svg class="projects-wave wave-2" viewBox="0 0 1200 200" preserveAspectRatio="none">
-                    <path d="M0,100 Q150,30 300,100 Q450,170 600,100 Q750,30 900,100 Q1050,170 1200,100" stroke="#93c5fd" stroke-width="2" fill="none" />
-                </svg>
-                <svg class="projects-wave wave-3" viewBox="0 0 1200 200" preserveAspectRatio="none">
-                    <path d="M0,100 Q200,40 400,100 Q600,160 800,100 Q1000,40 1200,100" stroke="#3b82f6" stroke-width="2" fill="none" />
-                </svg>
-                <svg class="projects-wave wave-4" viewBox="0 0 1200 200" preserveAspectRatio="none">
-                    <path d="M0,100 Q120,10 240,100 Q360,190 480,100 Q600,10 720,100 Q840,190 960,100 Q1080,10 1200,100" stroke="#1d4ed8" stroke-width="2" fill="none" />
-                </svg>
-                <svg class="projects-wave wave-5" viewBox="0 0 1200 200" preserveAspectRatio="none">
-                    <path d="M0,100 Q180,50 360,100 Q540,150 720,100 Q900,50 1080,100 Q1200,100 1200,100" stroke="#0ea5e9" stroke-width="2" fill="none" />
-                </svg>
-
-                <!-- Partículas flutuantes - Movimento diagonal e reto alternados com transição máxima -->
-                <div class="projects-particle diagonal" style="top: 95%; left: 10%; animation-delay: 0s;"></div>
-                <div class="projects-particle straight" style="top: 95%; left: 80%; animation-delay: 0.5s;"></div>
-                <div class="projects-particle diagonal" style="top: 95%; left: 20%; animation-delay: 1s;"></div>
-                <div class="projects-particle straight" style="top: 95%; left: 70%; animation-delay: 1.5s;"></div>
-                <div class="projects-particle diagonal" style="top: 95%; left: 30%; animation-delay: 2s;"></div>
-                <div class="projects-particle straight" style="top: 95%; left: 90%; animation-delay: 2.5s;"></div>
-                <div class="projects-particle diagonal" style="top: 95%; left: 15%; animation-delay: 3s;"></div>
-                <div class="projects-particle straight" style="top: 95%; left: 60%; animation-delay: 3.5s;"></div>
-                <div class="projects-particle diagonal" style="top: 95%; left: 40%; animation-delay: 4s;"></div>
-                <div class="projects-particle straight" style="top: 95%; left: 50%; animation-delay: 4.5s;"></div>
-                <div class="projects-particle diagonal" style="top: 95%; left: 25%; animation-delay: 5s;"></div>
-                <div class="projects-particle straight" style="top: 95%; left: 75%; animation-delay: 5.5s;"></div>
-                <div class="projects-particle diagonal" style="top: 95%; left: 45%; animation-delay: 6s;"></div>
-                <div class="projects-particle straight" style="top: 95%; left: 85%; animation-delay: 6.5s;"></div>
-                <div class="projects-particle diagonal" style="top: 95%; left: 5%; animation-delay: 7s;"></div>
-                <div class="projects-particle straight" style="top: 95%; left: 65%; animation-delay: 7.5s;"></div>
-                <div class="projects-particle diagonal" style="top: 95%; left: 35%; animation-delay: 8s;"></div>
-                <div class="projects-particle straight" style="top: 95%; left: 95%; animation-delay: 8.5s;"></div>
-                <div class="projects-particle diagonal" style="top: 95%; left: 12%; animation-delay: 9s;"></div>
-                <div class="projects-particle straight" style="top: 95%; left: 55%; animation-delay: 9.5s;"></div>
-                <div class="projects-particle diagonal" style="top: 95%; left: 35%; animation-delay: 10s;"></div>
-                <div class="projects-particle straight" style="top: 95%; left: 65%; animation-delay: 10.5s;"></div>
-                <div class="projects-particle diagonal" style="top: 95%; left: 95%; animation-delay: 11s;"></div>
-                <div class="projects-particle straight" style="top: 95%; left: 8%; animation-delay: 11.5s;"></div>
-                <div class="projects-particle diagonal" style="top: 95%; left: 48%; animation-delay: 12s;"></div>
-            </div>
-
             <header class="content-header">
                 <button class="mobile-menu-button" id="mobileMenuButton">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -140,25 +93,26 @@
                     </svg>
                 </button>
                 
-                <div class="projects-header">
-                    <div class="header-left">
-                        <h1 class="projects-title">Reuniões da Qualidade</h1>
-                        <p class="projects-subtitle">Gerencie e acompanhe todas as reuniões, atas e arquivos da área de qualidade</p>
-                    </div>
-                    <div class="header-right">
-                        <button id="addMeetingBtn" class="projects-add-btn">
-                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                            </svg>
-                            Adicionar Reunião
-                        </button>
+                <div class="header-top">
+                    <div>
+                        <h1 class="header-title">Atas de Reunião</h1>
+                        <p class="header-subtitle">Histórico e arquivos das reuniões da Qualidade</p>
                     </div>
                 </div>
             </header>
 
+            <div class="fixed-add-button">
+                <button id="addMeetingBtn" class="btn btn-primary">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="margin-right: 8px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    Adicionar Reunião
+                </button>
+            </div>
+
             <main class="content-area">
-                <div class="projects-grid">
-                    <div class="loading-spinner"></div>
+                <div class="meetings-grid">
+                        <div class="loading-spinner"></div>
                 </div>
             </main>
 
@@ -337,7 +291,7 @@
             const cancelModalBtn = meetingModal.querySelector('#cancelModalBtn');
             const deleteMeetingBtn = document.getElementById('deleteMeetingBtn');
             const meetingForm = document.getElementById('meetingForm');
-            const meetingsGrid = document.querySelector('.projects-grid');
+            const meetingsGrid = document.querySelector('.meetings-grid');
             const modalTitle = document.getElementById('modalTitle');
 
             function formatarData(dataISO) {
@@ -393,66 +347,70 @@
                 const user = window.netlifyIdentity.currentUser();
                 if (user && user.app_metadata.roles && user.app_metadata.roles.includes('admin')) {
                     actionButtonsHtml = `
-                        <div class="card-action-buttons">
-                            <button class="edit-button" data-id="${reuniao.id}" title="Editar Reunião">
-                                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                                </svg>
-                            </button>
-                            <button class="delete-button-card" data-id="${reuniao.id}" title="Excluir Reunião">
-                                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                </svg>
-                            </button>
-                        </div>
+                        <button class="edit-button" data-id="${reuniao.id}" title="Editar Reunião">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                            </svg>
+                        </button>
+                        <button class="delete-button-card" data-id="${reuniao.id}" title="Excluir Reunião">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
+                        </button>
                     `;
                 }
 
-                return `<div class="project-card">
-                    <div class="card-image-container">
-                        <div class="meeting-icon-container">
-                            <svg width="60" height="60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                            </svg>
+                return `
+                    <div class="meeting-card">
+                        <div class="card-header">
+                        <div class="meeting-title">${reuniao.titulo}</div>
+                            <div class="meeting-status" style="background-color: ${statusInfo.bgColor}; color: ${statusInfo.color};">
+                                ${statusInfo.status}
+                            </div>
                         </div>
-                        ${actionButtonsHtml}
-                    </div>
-                    <div class="card-project-body">
-                        <h3>${reuniao.titulo}</h3>
-                        <p><strong>Status:</strong> <span style="background-color: ${statusInfo.bgColor}; color: ${statusInfo.color}; padding: 4px 8px; border-radius: 4px; font-size: 12px;">${statusInfo.status}</span></p>
-                        <hr>
-                        <div class="card-project-details">
-                            <h4>Data da Reunião:</h4>
-                            <p>${formatarData(reuniao.data_reuniao)}</p>
-                            <h4>Participantes:</h4>
-                            <div class="participantes-container">
-                                ${participantesList}
+                        <div class="card-body">
+                            <div class="meeting-date">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                </svg>
+                                <span>${formatarData(reuniao.data_reuniao)}</span>
+                            </div>
+                            <div class="meeting-participants">
+                                <h4>Participantes:</h4>
+                                <div class="participantes-container">
+                                    ${participantesList}
+                                </div>
                             </div>
                             ${reuniao.pauta ? `
-                                <h4>Pauta:</h4>
-                                <p>${reuniao.pauta}</p>
+                                <div class="meeting-agenda">
+                                    <h4>Pauta:</h4>
+                                    <p>${reuniao.pauta}</p>
+                                </div>
                             ` : ''}
-                        </div>
-                        <div class="card-progress-container">
-                            <div class="ata-section">
-                                ${reuniao.link_ata ? 
-                                    `<a href="${reuniao.link_ata}" target="_blank" rel="noopener noreferrer" class="ata-button">
-                                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                        </svg>
-                                        Ver Ata
-                                    </a>` : 
-                                    `<span class="ata-button disabled">
-                                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                        </svg>
-                                        Sem Ata
-                                    </span>`
-                                }
+                            <div class="meeting-actions">
+                                <div class="ata-section">
+                                    ${reuniao.link_ata ? 
+                                        `<a href="${reuniao.link_ata}" target="_blank" rel="noopener noreferrer" class="ata-button">
+                                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                            </svg>
+                                            Ver Ata
+                                        </a>` : 
+                                        `<span class="ata-button disabled">
+                                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                            </svg>
+                                            Sem Ata
+                                        </span>`
+                                    }
+                                </div>
+                                <div class="action-buttons-section">
+                                    ${actionButtonsHtml}
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>`;
+                `;
             }
 
             async function fetchAndRenderMeetings() {
