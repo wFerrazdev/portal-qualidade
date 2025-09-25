@@ -3145,24 +3145,30 @@ body.projects-page {
     top: 0;
     left: 0;
     width: 100%;
-    height: 180px;
+    height: 100%;
     z-index: 1;
     overflow: hidden;
     pointer-events: none;
+}
+
+/* Garantir que o content-header da página dashboard contenha o background animado */
+.dashboard-page .content-header {
+    position: relative;
+    overflow: hidden;
 }
 
 /* Ondas animadas - Dashboard */
 .dashboard-wave {
     position: absolute;
     width: 100%;
-    height: 180px;
+    height: 80px;
     opacity: 0.25;
     will-change: stroke-dashoffset; /* Otimização de performance */
     transform: translateZ(0); /* Forçar aceleração de hardware */
 }
 
 .dashboard-wave.wave-1 {
-    top: 15%;
+    top: 10%;
     animation-delay: 0s;
 }
 
@@ -3173,7 +3179,7 @@ body.projects-page {
 }
 
 .dashboard-wave.wave-2 {
-    top: 35%;
+    top: 25%;
     animation-delay: 4s;
 }
 
@@ -3184,7 +3190,7 @@ body.projects-page {
 }
 
 .dashboard-wave.wave-3 {
-    top: 55%;
+    top: 40%;
     animation-delay: 8s;
 }
 
@@ -3195,7 +3201,7 @@ body.projects-page {
 }
 
 .dashboard-wave.wave-4 {
-    top: 75%;
+    top: 55%;
     animation-delay: 12s;
 }
 
@@ -3206,7 +3212,7 @@ body.projects-page {
 }
 
 .dashboard-wave.wave-5 {
-    top: 85%;
+    top: 70%;
     animation-delay: 16s;
 }
 
