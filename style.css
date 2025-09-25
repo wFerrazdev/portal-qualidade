@@ -2516,6 +2516,132 @@ body.projects-page {
     animation-delay: 8s;
 }
 
+/* Partículas flutuantes otimizadas para página de reuniões - movimento suave com transparência */
+.reunioes-page .projects-particle {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: #60a5fa;
+    border-radius: 50%;
+    box-shadow: 0 0 6px rgba(96, 165, 250, 0.37);
+    top: 100%; /* Começar fora da área visível */
+    opacity: 0; /* Iniciar invisíveis */
+    will-change: transform, opacity; /* Otimização de performance */
+    transform: translateZ(0); /* Forçar aceleração de hardware */
+}
+
+/* Animação suave para partículas diagonais - página de reuniões */
+@keyframes floatDiagonalReunioes {
+    0% { 
+        transform: translate3d(0, 0, 0); 
+        opacity: 0; 
+    }
+    10% { 
+        transform: translate3d(10px, -20px, 0); 
+        opacity: 0.3; 
+    }
+    30% { 
+        transform: translate3d(-5px, -60px, 0); 
+        opacity: 0.6; 
+    }
+    50% { 
+        transform: translate3d(15px, -100px, 0); 
+        opacity: 0.8; 
+    }
+    70% { 
+        transform: translate3d(-8px, -140px, 0); 
+        opacity: 0.6; 
+    }
+    90% { 
+        transform: translate3d(5px, -180px, 0); 
+        opacity: 0.3; 
+    }
+    100% { 
+        transform: translate3d(0, -200px, 0); 
+        opacity: 0; 
+    }
+}
+
+/* Animação suave para partículas retas - página de reuniões */
+@keyframes floatStraightReunioes {
+    0% { 
+        transform: translate3d(0, 0, 0); 
+        opacity: 0; 
+    }
+    10% { 
+        transform: translate3d(0, -20px, 0); 
+        opacity: 0.3; 
+    }
+    30% { 
+        transform: translate3d(0, -60px, 0); 
+        opacity: 0.6; 
+    }
+    50% { 
+        transform: translate3d(0, -100px, 0); 
+        opacity: 0.8; 
+    }
+    70% { 
+        transform: translate3d(0, -140px, 0); 
+        opacity: 0.6; 
+    }
+    90% { 
+        transform: translate3d(0, -180px, 0); 
+        opacity: 0.3; 
+    }
+    100% { 
+        transform: translate3d(0, -200px, 0); 
+        opacity: 0; 
+    }
+}
+
+/* Classes para diferentes tipos de movimento das partículas - página de reuniões */
+.reunioes-page .projects-particle.diagonal {
+    animation: floatDiagonalReunioes 5s ease-in-out infinite;
+    animation-fill-mode: both;
+}
+
+.reunioes-page .projects-particle.straight {
+    animation: floatStraightReunioes 5s ease-in-out infinite;
+    animation-fill-mode: both;
+}
+
+/* Desabilitar animações em dispositivos com baixa performance - página de reuniões */
+@media (prefers-reduced-motion: reduce) {
+    .reunioes-page .projects-particle {
+        animation: none !important;
+        opacity: 0.2 !important;
+    }
+    
+    .reunioes-page .projects-wave path {
+        animation: none !important;
+        stroke-dashoffset: 0 !important;
+    }
+}
+
+/* Otimizações para dispositivos móveis e baixa performance - página de reuniões */
+@media (max-width: 768px) {
+    .reunioes-page .projects-particle {
+        animation-duration: 7s !important;
+    }
+    
+    .reunioes-page .projects-wave path {
+        animation-duration: 15s !important;
+    }
+}
+
+/* Desabilitar animações em dispositivos muito lentos - página de reuniões */
+@media (max-width: 480px) {
+    .reunioes-page .projects-particle {
+        animation: none !important;
+        opacity: 0.1 !important;
+    }
+    
+    .reunioes-page .projects-wave path {
+        animation: none !important;
+        stroke-dashoffset: 0 !important;
+    }
+}
+
 /* Ondas animadas - EXATAS do login.html */
 .projects-wave {
     position: absolute;
