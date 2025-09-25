@@ -533,7 +533,7 @@ body.dashboard-page {
   margin-top: 0 !important;
   padding-top: 0 !important;
   margin-bottom: 0 !important;
-  padding-bottom: 0 !important;
+  padding-bottom: 0.5rem !important; /* Padding inferior mínimo */
 }
 
 /* Botões das abas do dashboard */
@@ -664,12 +664,11 @@ body.dashboard-page {
   overflow-y: auto;
 }
 
-/* Content area específico para dashboard - começar bem abaixo da tabs-section */
+/* Content area específico para dashboard - começar logo abaixo da tabs-section */
 .dashboard-page .content-area {
   background: #f8fafc;
-  top: 180px;
   margin-top: 0;
-  padding-top: 2rem; /* Margem entre o grid e a divisão */
+  padding-top: 0.5rem; /* Margem mínima entre o grid e a divisão */
 }
 
 
