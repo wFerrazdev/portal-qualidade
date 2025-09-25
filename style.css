@@ -327,6 +327,7 @@ body.dashboard-page {
   font-size: 2.5rem;
   font-weight: 700;
   color: #ffffff;
+  margin: 0 0 0.5rem 0;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   letter-spacing: -0.5px;
   line-height: 1.2;
@@ -339,6 +340,24 @@ body.dashboard-page {
   font-weight: 400;
   line-height: 1.4;
   max-width: 600px;
+}
+
+/* Responsividade para dashboard - Seguindo padrão da página projetos */
+@media (max-width: 1200px) {
+    .dashboard-page .dashboard-title {
+        font-size: 2.2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-page .dashboard-title {
+        font-size: 2rem;
+    }
+
+    .dashboard-page .dashboard-subtitle {
+        font-size: 1rem;
+        max-width: 100%;
+    }
 }
 
 .header-top {
