@@ -2723,3 +2723,62 @@ body.projects-page {
     animation-fill-mode: both;
 }
 
+/* Estilos específicos para reuniões */
+.meeting-icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 8px 8px 0 0;
+}
+
+.meeting-icon-container svg {
+    opacity: 0.8;
+}
+
+/* Estilos específicos para auditorias */
+.audit-icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    border-radius: 8px 8px 0 0;
+}
+
+.audit-icon-container svg {
+    opacity: 0.8;
+}
+
+/* Badges de status para auditorias */
+.status-badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.status-badge.status-agendado {
+    background-color: #e6f3ff;
+    color: #29abe2;
+}
+
+.status-badge.status-em-andamento {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.status-badge.status-concluido {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.status-badge.status-cancelado {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+

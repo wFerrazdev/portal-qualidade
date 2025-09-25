@@ -82,6 +82,53 @@
         <div class="overlay" id="overlay"></div>
 
         <div class="main-content">
+            <!-- Background animado para o cabeçalho - EXATO da página de projetos -->
+            <div class="projects-header-background">
+                <!-- Ondas animadas - EXATAS do projetos.html -->
+                <svg class="projects-wave wave-1" viewBox="0 0 1200 200" preserveAspectRatio="none">
+                    <path d="M0,100 Q100,20 200,100 Q300,180 400,100 Q500,20 600,100 Q700,180 800,100 Q900,20 1000,100 Q1100,180 1200,100" stroke="#60a5fa" stroke-width="2" fill="none" />
+                </svg>
+                <svg class="projects-wave wave-2" viewBox="0 0 1200 200" preserveAspectRatio="none">
+                    <path d="M0,100 Q150,30 300,100 Q450,170 600,100 Q750,30 900,100 Q1050,170 1200,100" stroke="#93c5fd" stroke-width="2" fill="none" />
+                </svg>
+                <svg class="projects-wave wave-3" viewBox="0 0 1200 200" preserveAspectRatio="none">
+                    <path d="M0,100 Q200,40 400,100 Q600,160 800,100 Q1000,40 1200,100" stroke="#3b82f6" stroke-width="2" fill="none" />
+                </svg>
+                <svg class="projects-wave wave-4" viewBox="0 0 1200 200" preserveAspectRatio="none">
+                    <path d="M0,100 Q120,10 240,100 Q360,190 480,100 Q600,10 720,100 Q840,190 960,100 Q1080,10 1200,100" stroke="#1d4ed8" stroke-width="2" fill="none" />
+                </svg>
+                <svg class="projects-wave wave-5" viewBox="0 0 1200 200" preserveAspectRatio="none">
+                    <path d="M0,100 Q180,50 360,100 Q540,150 720,100 Q900,50 1080,100 Q1200,100 1200,100" stroke="#0ea5e9" stroke-width="2" fill="none" />
+                </svg>
+
+                <!-- Partículas flutuantes - Movimento diagonal e reto alternados com transição máxima -->
+                <div class="projects-particle diagonal" style="top: 95%; left: 10%; animation-delay: 0s;"></div>
+                <div class="projects-particle straight" style="top: 95%; left: 80%; animation-delay: 0.5s;"></div>
+                <div class="projects-particle diagonal" style="top: 95%; left: 20%; animation-delay: 1s;"></div>
+                <div class="projects-particle straight" style="top: 95%; left: 70%; animation-delay: 1.5s;"></div>
+                <div class="projects-particle diagonal" style="top: 95%; left: 30%; animation-delay: 2s;"></div>
+                <div class="projects-particle straight" style="top: 95%; left: 90%; animation-delay: 2.5s;"></div>
+                <div class="projects-particle diagonal" style="top: 95%; left: 15%; animation-delay: 3s;"></div>
+                <div class="projects-particle straight" style="top: 95%; left: 60%; animation-delay: 3.5s;"></div>
+                <div class="projects-particle diagonal" style="top: 95%; left: 40%; animation-delay: 4s;"></div>
+                <div class="projects-particle straight" style="top: 95%; left: 50%; animation-delay: 4.5s;"></div>
+                <div class="projects-particle diagonal" style="top: 95%; left: 25%; animation-delay: 5s;"></div>
+                <div class="projects-particle straight" style="top: 95%; left: 75%; animation-delay: 5.5s;"></div>
+                <div class="projects-particle diagonal" style="top: 95%; left: 45%; animation-delay: 6s;"></div>
+                <div class="projects-particle straight" style="top: 95%; left: 85%; animation-delay: 6.5s;"></div>
+                <div class="projects-particle diagonal" style="top: 95%; left: 5%; animation-delay: 7s;"></div>
+                <div class="projects-particle straight" style="top: 95%; left: 65%; animation-delay: 7.5s;"></div>
+                <div class="projects-particle diagonal" style="top: 95%; left: 35%; animation-delay: 8s;"></div>
+                <div class="projects-particle straight" style="top: 95%; left: 95%; animation-delay: 8.5s;"></div>
+                <div class="projects-particle diagonal" style="top: 95%; left: 12%; animation-delay: 9s;"></div>
+                <div class="projects-particle straight" style="top: 95%; left: 55%; animation-delay: 9.5s;"></div>
+                <div class="projects-particle diagonal" style="top: 95%; left: 35%; animation-delay: 10s;"></div>
+                <div class="projects-particle straight" style="top: 95%; left: 65%; animation-delay: 10.5s;"></div>
+                <div class="projects-particle diagonal" style="top: 95%; left: 95%; animation-delay: 11s;"></div>
+                <div class="projects-particle straight" style="top: 95%; left: 8%; animation-delay: 11.5s;"></div>
+                <div class="projects-particle diagonal" style="top: 95%; left: 48%; animation-delay: 12s;"></div>
+            </div>
+
             <header class="content-header">
                 <button class="mobile-menu-button" id="mobileMenuButton">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -91,24 +138,23 @@
                     </svg>
                 </button>
                 
-                <div class="header-top">
-                    <div>
-                        <h1 class="header-title">Gestão de Equipamentos - Calibração</h1>
-                        <p class="header-subtitle">Adicione, edite e consulte os equipamentos de medição</p>
+                <div class="projects-header">
+                    <div class="header-left">
+                        <h1 class="projects-title">Gestão de Equipamentos - Calibração</h1>
+                        <p class="projects-subtitle">Gerencie e acompanhe todos os equipamentos de medição e seus status de calibração</p>
+                    </div>
+                    <div class="header-right">
+                        <button id="add-equipment-btn" class="projects-add-btn">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                            </svg>
+                            Adicionar Equipamento
+                        </button>
                     </div>
                 </div>
             </header>
 
             <main class="content-area">
-                <div class="page-actions">
-                    <button class="btn btn-primary" id="add-equipment-btn">
-                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="margin-right: 8px;">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                        </svg>
-                        Adicionar Equipamento
-                    </button>
-                </div>
-
                 <div class="table-container">
                     <table>
                         <thead>
