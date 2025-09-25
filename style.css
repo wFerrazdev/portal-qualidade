@@ -1358,6 +1358,8 @@ canvas {
     background: #f8fafc;
     text-align: center;
     z-index: 100;
+    width: calc(100% - 100px);
+    box-sizing: border-box;
 }
 
 .footer p {
@@ -1365,6 +1367,19 @@ canvas {
     font-size: 0.9rem;
     margin: 0;
     font-weight: 500;
+}
+
+/* Responsividade do rodapé */
+@media (max-width: 768px) {
+    .footer {
+        margin-left: 0;
+        width: 100%;
+        padding: 10px 20px;
+    }
+    
+    .footer p {
+        font-size: 0.8rem;
+    }
 }
 
 /* Rodapé dentro do card de login */
