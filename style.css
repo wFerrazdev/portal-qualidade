@@ -272,12 +272,9 @@ body {
   background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
   padding: 0.25rem 3rem;
   border-bottom: 1px solid #e2e8f0;
-  position: fixed;
-  top: 0;
-  left: 100px;
-  right: 0;
-  z-index: 100;
-  backdrop-filter: blur(10px);
+  position: relative;
+  margin-left: 100px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   flex-shrink: 0;
 }
 
@@ -505,11 +502,8 @@ body.dashboard-page {
   background: #ffffff;
   padding: 0.5rem 1rem;
   border-bottom: 1px solid #e2e8f0;
-  position: fixed;
-  top: 100px;
-  left: 100px;
-  right: 0;
-  z-index: 99;
+  position: relative;
+  margin-left: 100px;
   flex-shrink: 0;
 }
 
@@ -647,15 +641,12 @@ body.dashboard-page {
 
 /* Cards de Gráficos Modernos */
 .content-area {
-  padding: 1rem 3rem;
+  padding: 1rem 3rem 100px 3rem;
   background: #f8fafc;
-  position: fixed;
-  top: 180px;
-  left: 100px;
-  right: 0;
-  bottom: 0;
+  position: relative;
+  margin-left: 100px;
+  min-height: calc(100vh - 200px);
   overflow-y: auto;
-  z-index: 98;
 }
 
 /* Content area específico para dashboard - começar bem abaixo da tabs-section */
@@ -1345,16 +1336,13 @@ canvas {
 }
 
 .footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    position: relative;
+    margin-left: 100px;
     padding: 15px 0;
     border-top: 1px solid #e2e8f0;
     background: #f8fafc;
     text-align: center;
     z-index: 100;
-    backdrop-filter: blur(10px);
 }
 
 .footer p {
@@ -2721,5 +2709,20 @@ body.projects-page {
 .dashboard-particle.straight {
     animation: floatStraight 4s ease-in-out infinite;
     animation-fill-mode: both;
+}
+
+/* Estilos específicos para reuniões */
+.meeting-icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 8px 8px 0 0;
+}
+
+.meeting-icon-container svg {
+    opacity: 0.8;
 }
 
