@@ -1351,15 +1351,16 @@ canvas {
 }
 
 .footer {
-    position: relative;
-    margin-left: 100px;
+    position: fixed;
+    bottom: 0;
+    left: 100px;
+    right: 0;
     padding: 15px 0;
     border-top: 1px solid #e2e8f0;
     background: #f8fafc;
     text-align: center;
     z-index: 100;
-    width: calc(100% - 100px);
-    box-sizing: border-box;
+    height: auto;
 }
 
 .footer p {
@@ -1372,8 +1373,7 @@ canvas {
 /* Responsividade do rodapé */
 @media (max-width: 768px) {
     .footer {
-        margin-left: 0;
-        width: 100%;
+        left: 0;
         padding: 10px 20px;
     }
     
