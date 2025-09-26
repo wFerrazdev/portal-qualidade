@@ -2700,32 +2700,38 @@ body.auditorias-page {
     min-height: 100vh;
 }
 
-/* Cabeçalho da página de auditorias */
+/* Header específico para página de auditorias - transparente para mostrar background animado */
 .auditorias-page .content-header {
-    position: relative;
-    overflow: hidden;
-    background: transparent;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 4px 20px rgba(0, 51, 102, 0.3);
-    margin-left: 100px;
+  background: transparent;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 51, 102, 0.3);
+  position: relative;
+  overflow: hidden;
 }
 
+/* Background animado específico para página de auditorias - posicionado corretamente no content-header */
 .auditorias-page .projects-header-background {
-    height: 100%;
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
+    height: 100%;
     z-index: 1;
     overflow: hidden;
     pointer-events: none;
+}
+
+/* Garantir que o content-header da página de auditorias contenha o background animado */
+.auditorias-page .content-header {
+    position: relative;
+    overflow: hidden;
 }
 
 /* Ajustar ondas para página de auditorias - limitar área de trabalho */
 .auditorias-page .projects-wave {
     position: absolute;
     width: 100%;
-    height: 80px;
+    height: 80px; /* Reduzir altura das ondas */
     opacity: 0.6;
     background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.3), transparent);
     animation: buildWave 3s ease-in-out infinite;
@@ -2752,6 +2758,30 @@ body.auditorias-page {
 
 .auditorias-page .projects-particle.straight {
     animation: floatUpReunioes 8s linear infinite;
+}
+
+/* Aplicar estilos da página de projetos no cabeçalho da página de auditorias */
+.auditorias-page .projects-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 3rem;
+    margin: 0;
+    min-height: 80px;
+    position: relative;
+    z-index: 10;
+}
+
+/* Content Area específico para Auditorias - ir até o rodapé */
+.auditorias-page .content-area {
+    background: #f8fafc;
+    padding: 0;
+    margin-left: 100px;
+    min-height: calc(100vh - 200px);
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+    flex: 1;
+    position: static;
 }
 
 /* Responsividade para página de auditorias */
@@ -2795,7 +2825,8 @@ body.auditorias-page {
 
 /* Ajustar margem do calendário para página de auditorias */
 .auditorias-page .calendar-container {
-    margin-left: 100px;
+    margin: 20px;
+    margin-left: 0;
     margin-right: 0;
 }
 
@@ -3144,8 +3175,7 @@ body.auditorias-page {
     
     /* Ajustar margem do calendário para mobile */
     .auditorias-page .calendar-container {
-        margin-left: 0;
-        margin: 20px 15px;
+        margin: 15px;
     }
 }
 
