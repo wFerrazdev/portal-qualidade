@@ -147,17 +147,17 @@
                     <div class="header-right">
                         <button id="addMeetingBtn" class="projects-add-btn">
                             <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                            </svg>
-                            Adicionar Reunião
-                        </button>
-                    </div>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    Adicionar Reunião
+                </button>
+            </div>
                 </div>
             </header>
 
             <main class="content-area">
                 <div class="meetings-grid">
-                    <div class="loading-spinner"></div>
+                        <div class="loading-spinner"></div>
                 </div>
             </main>
 
@@ -442,38 +442,38 @@
 
                         <!-- Card Expandido (Estado Oculto) -->
                         <div class="meeting-card-expanded" style="display: none;">
-                            <div class="card-header">
-                                <div class="meeting-title">${reuniao.titulo}</div>
-                                <div class="meeting-status" style="background-color: ${statusInfo.bgColor}; color: ${statusInfo.color};">
-                                    ${statusInfo.status}
+                        <div class="card-header">
+                        <div class="meeting-title">${reuniao.titulo}</div>
+                            <div class="meeting-status" style="background-color: ${statusInfo.bgColor}; color: ${statusInfo.color};">
+                                ${statusInfo.status}
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="meeting-date">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                </svg>
+                                <span>${formatarData(reuniao.data_reuniao)}</span>
+                            </div>
+                            <div class="meeting-participants">
+                                <h4>Participantes:</h4>
+                                <div class="participantes-container">
+                                    ${participantesList}
                                 </div>
                             </div>
-                            <div class="card-body">
-                                <div class="meeting-date">
-                                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                    </svg>
-                                    <span>${formatarData(reuniao.data_reuniao)}</span>
+                            ${reuniao.pauta ? `
+                                <div class="meeting-agenda">
+                                    <h4>Pauta:</h4>
+                                    <p>${reuniao.pauta}</p>
                                 </div>
-                                <div class="meeting-participants">
-                                    <h4>Participantes:</h4>
-                                    <div class="participantes-container">
-                                        ${participantesList}
-                                    </div>
-                                </div>
-                                ${reuniao.pauta ? `
-                                    <div class="meeting-agenda">
-                                        <h4>Pauta:</h4>
-                                        <p>${reuniao.pauta}</p>
-                                    </div>
-                                ` : ''}
+                            ` : ''}
                             </div>
                             <div class="meeting-actions">
                                 <div class="action-buttons-section">
                                     <button class="collapse-button" data-id="${reuniao.id}" title="Recolher">
-                                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                        </svg>
+                                            </svg>
                                     </button>
                                     ${actionButtonsHtml}
                                 </div>
