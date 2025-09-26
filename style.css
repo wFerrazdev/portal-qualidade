@@ -2143,10 +2143,10 @@ body.projects-page {
 
 /* Card de Reunião */
 .meeting-card {
-    background: white;
+    background: transparent;
     border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    overflow: hidden;
+    box-shadow: none;
+    overflow: visible;
     transition: all 0.3s ease;
     position: relative;
     display: flex;
@@ -2159,10 +2159,7 @@ body.projects-page {
     min-height: 250px;
 }
 
-.meeting-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-}
+/* Hover removido do meeting-card - apenas os cards internos têm hover */
 
 /* Card Colapsado - Estilo de Pedido de Restaurante */
 .meeting-card-collapsed {
@@ -2294,6 +2291,7 @@ body.projects-page {
     transform: translateY(-5px);
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
 }
+
 
 /* Cabeçalho do Card */
 .card-header {
