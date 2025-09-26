@@ -612,22 +612,35 @@
                 const collapseButton = event.target.closest('.collapse-button');
                 
                 if (viewButton) {
-                    const reuniaoId = viewButton.dataset.id;
-                    const card = document.querySelector(`.meeting-card[data-id="${reuniaoId}"]`);
-                    if (card) {
+                    // Primeiro, colapsar todos os outros cards
+                    const allCards = document.querySelectorAll('.meeting-card');
+                    allCards.forEach(card => {
                         const collapsed = card.querySelector('.meeting-card-collapsed');
                         const expanded = card.querySelector('.meeting-card-expanded');
-                        collapsed.style.display = 'none';
-                        expanded.style.display = 'block';
+                        if (collapsed && expanded) {
+                            collapsed.style.display = 'block';
+                            expanded.style.display = 'none';
+                        }
+                    });
+                    // Agora expandir apenas o card clicado
+                    const targetCard = viewButton.closest('.meeting-card');
+                    if (targetCard) {
+                        const collapsed = targetCard.querySelector('.meeting-card-collapsed');
+                        const expanded = targetCard.querySelector('.meeting-card-expanded');
+                        if (collapsed && expanded) {
+                            collapsed.style.display = 'none';
+                            expanded.style.display = 'block';
+                        }
                     }
                 } else if (collapseButton) {
-                    const reuniaoId = collapseButton.dataset.id;
-                    const card = document.querySelector(`.meeting-card[data-id="${reuniaoId}"]`);
-                    if (card) {
-                        const collapsed = card.querySelector('.meeting-card-collapsed');
-                        const expanded = card.querySelector('.meeting-card-expanded');
-                        collapsed.style.display = 'block';
-                        expanded.style.display = 'none';
+                    const targetCard = collapseButton.closest('.meeting-card');
+                    if (targetCard) {
+                        const collapsed = targetCard.querySelector('.meeting-card-collapsed');
+                        const expanded = targetCard.querySelector('.meeting-card-expanded');
+                        if (collapsed && expanded) {
+                            collapsed.style.display = 'block';
+                            expanded.style.display = 'none';
+                        }
                     }
                 } else if (editButton) {
                     const reuniaoId = editButton.dataset.id;
