@@ -142,8 +142,34 @@
             </header>
 
             <main class="content-area">
-                <div class="audits-grid">
-                    <div class="loading-spinner"></div>
+                <div class="calendar-container">
+                    <div class="calendar-header">
+                        <button id="prevMonth" class="calendar-nav-btn">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                            </svg>
+                        </button>
+                        <h2 id="currentMonth" class="calendar-title">Janeiro 2025</h2>
+                        <button id="nextMonth" class="calendar-nav-btn">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="calendar-grid">
+                        <div class="calendar-weekdays">
+                            <div class="weekday">Dom</div>
+                            <div class="weekday">Seg</div>
+                            <div class="weekday">Ter</div>
+                            <div class="weekday">Qua</div>
+                            <div class="weekday">Qui</div>
+                            <div class="weekday">Sex</div>
+                            <div class="weekday">Sáb</div>
+                        </div>
+                        <div id="calendarDays" class="calendar-days">
+                            <div class="loading-spinner"></div>
+                        </div>
+                    </div>
                 </div>
             </main>
 
@@ -433,20 +459,201 @@
                 `;
             }
 
+            let currentDate = new Date();
+            let audits = [];
+
             async function fetchAndRenderAudits() {
                 try {
                     const response = await authFetch(`${API_BASE_URL}/getAuditorias`);
                     if (!response.ok) { throw new Error('Falha ao buscar auditorias'); }
-                    const audits = await response.json();
-                    auditsGrid.innerHTML = '';
-                    if (audits.length === 0) {
-                        auditsGrid.innerHTML = '<p>Nenhuma auditoria ou visita encontrada. Adicione a primeira!</p>';
-                    } else {
-                        audits.forEach(audit => { auditsGrid.innerHTML += renderAuditCard(audit); });
-                    }
+                    audits = await response.json();
+                    renderCalendar();
                 } catch (error) {
                     console.error('Erro ao buscar auditorias:', error);
-                    auditsGrid.innerHTML = '<p style="color: red;">Não foi possível carregar os dados.</p>';
+                    document.getElementById('calendarDays').innerHTML = '<p style="color: red; text-align: center; padding: 20px;">Não foi possível carregar os dados.</p>';
+                }
+            }
+
+            function renderCalendar() {
+                const calendarDays = document.getElementById('calendarDays');
+                const currentMonth = document.getElementById('currentMonth');
+                
+                // Atualizar título do mês
+                const monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+                    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+                currentMonth.textContent = `${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
+                
+                // Limpar calendário
+                calendarDays.innerHTML = '';
+                
+                // Obter primeiro dia do mês e quantos dias tem
+                const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+                const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+                const daysInMonth = lastDay.getDate();
+                const startingDayOfWeek = firstDay.getDay();
+                
+                // Adicionar dias vazios do mês anterior
+                for (let i = 0; i < startingDayOfWeek; i++) {
+                    const emptyDay = document.createElement('div');
+                    emptyDay.className = 'calendar-day empty';
+                    calendarDays.appendChild(emptyDay);
+                }
+                
+                // Adicionar dias do mês atual
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const dayElement = document.createElement('div');
+                    dayElement.className = 'calendar-day';
+                    dayElement.innerHTML = `<div class="day-number">${day}</div>`;
+                    
+                    // Verificar se há auditorias neste dia
+                    const dayDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
+                    const dayAudits = getAuditsForDate(dayDate);
+                    
+                    if (dayAudits.length > 0) {
+                        dayElement.classList.add('has-events');
+                        const eventsContainer = document.createElement('div');
+                        eventsContainer.className = 'day-events';
+                        
+                        dayAudits.forEach(audit => {
+                            const eventElement = document.createElement('div');
+                            eventElement.className = 'calendar-event';
+                            eventElement.style.backgroundColor = getStatusColor(audit.status);
+                            eventElement.innerHTML = `
+                                <div class="event-title">${audit.titulo}</div>
+                                <div class="event-time">${audit.tipo || 'Auditoria'}</div>
+                            `;
+                            eventElement.addEventListener('click', (e) => {
+                                e.stopPropagation();
+                                showAuditDetails(audit);
+                            });
+                            eventsContainer.appendChild(eventElement);
+                        });
+                        
+                        dayElement.appendChild(eventsContainer);
+                    }
+                    
+                    // Destacar dia atual
+                    const today = new Date();
+                    if (dayDate.toDateString() === today.toDateString()) {
+                        dayElement.classList.add('today');
+                    }
+                    
+                    calendarDays.appendChild(dayElement);
+                }
+            }
+
+            function getAuditsForDate(date) {
+                return audits.filter(audit => {
+                    if (!audit.data_evento) return false;
+                    const auditDate = new Date(audit.data_evento);
+                    return auditDate.toDateString() === date.toDateString();
+                });
+            }
+
+            function getStatusColor(status) {
+                const statusLower = (status || '').toLowerCase();
+                switch (statusLower) {
+                    case 'concluído':
+                    case 'concluido':
+                    case 'finalizado':
+                        return '#22c55e';
+                    case 'em andamento':
+                    case 'andamento':
+                    case 'progresso':
+                        return '#f59e0b';
+                    case 'pendente':
+                    case 'aguardando':
+                        return '#6b7280';
+                    case 'cancelado':
+                    case 'cancelada':
+                        return '#ef4444';
+                    default:
+                        return '#8b5cf6';
+                }
+            }
+
+            function showAuditDetails(audit) {
+                const statusInfo = getStatusInfo(audit);
+                const modal = document.createElement('div');
+                modal.className = 'audit-detail-modal';
+                modal.innerHTML = `
+                    <div class="audit-detail-content">
+                        <div class="audit-detail-header">
+                            <h3>${audit.titulo}</h3>
+                            <button class="close-detail-btn">&times;</button>
+                        </div>
+                        <div class="audit-detail-body">
+                            <div class="detail-info">
+                                <strong>Tipo:</strong> ${audit.tipo || 'N/D'}
+                            </div>
+                            <div class="detail-info">
+                                <strong>Data:</strong> ${formatarData(audit.data_evento)}
+                            </div>
+                            <div class="detail-info">
+                                <strong>Status:</strong> 
+                                <span class="status-badge" style="background-color: ${statusInfo.bgColor}; color: ${statusInfo.color};">
+                                    ${statusInfo.status}
+                                </span>
+                            </div>
+                            <div class="detail-info">
+                                <strong>Responsável:</strong> ${audit.responsavel || 'N/D'}
+                            </div>
+                            ${audit.descricao ? `
+                                <div class="detail-description">
+                                    <strong>Descrição:</strong>
+                                    <p>${audit.descricao}</p>
+                                </div>
+                            ` : ''}
+                        </div>
+                        <div class="audit-detail-actions">
+                            <button class="edit-audit-btn" data-id="${audit.id}">Editar</button>
+                            <button class="delete-audit-btn" data-id="${audit.id}">Excluir</button>
+                        </div>
+                    </div>
+                `;
+                
+                document.body.appendChild(modal);
+                
+                // Event listeners
+                modal.querySelector('.close-detail-btn').addEventListener('click', () => {
+                    document.body.removeChild(modal);
+                });
+                
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        document.body.removeChild(modal);
+                    }
+                });
+                
+                modal.querySelector('.edit-audit-btn').addEventListener('click', () => {
+                    document.body.removeChild(modal);
+                    populateFormForEdit(audit);
+                });
+                
+                modal.querySelector('.delete-audit-btn').addEventListener('click', () => {
+                    if (confirm('Tem certeza que deseja excluir esta auditoria?')) {
+                        deleteAudit(audit.id);
+                        document.body.removeChild(modal);
+                    }
+                });
+            }
+
+            async function deleteAudit(auditId) {
+                try {
+                    const response = await authFetch(`${API_BASE_URL}/deleteAuditoria`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id: auditId })
+                    });
+                    if (response.ok) {
+                        fetchAndRenderAudits();
+                        alert('Auditoria excluída com sucesso!');
+                    } else {
+                        alert('Erro ao excluir auditoria.');
+                    }
+                } catch (error) {
+                    console.error('Erro ao excluir:', error);
+                    alert('Erro ao excluir auditoria.');
                 }
             }
 
@@ -528,78 +735,16 @@
             deleteAuditBtn.addEventListener('click', handleDeleteAudit);
             auditForm.addEventListener('submit', handleFormSubmit);
             window.addEventListener('click', (event) => { if (event.target == auditModal) { closeModal(); } });
-            auditsGrid.addEventListener('click', async (event) => {
-                const editButton = event.target.closest('.edit-button');
-                const deleteButton = event.target.closest('.delete-button-card');
-                const viewButton = event.target.closest('.collapsed-view-button');
-                const collapseButton = event.target.closest('.collapse-button');
-                
-                if (viewButton) {
-                    // Primeiro, colapsar todos os outros cards
-                    const allCards = document.querySelectorAll('.audit-card');
-                    allCards.forEach(card => {
-                        const collapsed = card.querySelector('.audit-card-collapsed');
-                        const expanded = card.querySelector('.audit-card-expanded');
-                        if (collapsed && expanded) {
-                            collapsed.style.display = 'block';
-                            expanded.style.display = 'none';
-                            card.classList.remove('expanded');
-                        }
-                    });
-                    // Agora expandir apenas o card clicado
-                    const targetCard = viewButton.closest('.audit-card');
-                    if (targetCard) {
-                        const collapsed = targetCard.querySelector('.audit-card-collapsed');
-                        const expanded = targetCard.querySelector('.audit-card-expanded');
-                        if (collapsed && expanded) {
-                            collapsed.style.display = 'none';
-                            expanded.style.display = 'block';
-                            targetCard.classList.add('expanded');
-                        }
-                    }
-                } else if (collapseButton) {
-                    const targetCard = collapseButton.closest('.audit-card');
-                    if (targetCard) {
-                        const collapsed = targetCard.querySelector('.audit-card-collapsed');
-                        const expanded = targetCard.querySelector('.audit-card-expanded');
-                        if (collapsed && expanded) {
-                            collapsed.style.display = 'block';
-                            expanded.style.display = 'none';
-                            targetCard.classList.remove('expanded');
-                        }
-                    }
-                } else if (editButton) {
-                    const auditId = editButton.dataset.id;
-                    try {
-                        const response = await authFetch(`${API_BASE_URL}/getUmItem?type=auditorias&id=${auditId}`);
-                        if (!response.ok) { throw new Error('Falha ao buscar dados da auditoria'); }
-                        const audit = await response.json();
-                        populateFormForEdit(audit);
-                    } catch (error) {
-                        console.error('Erro ao editar:', error);
-                        alert('Não foi possível carregar os dados para edição.');
-                    }
-                } else if (deleteButton) {
-                    const auditId = deleteButton.dataset.id;
-                    if (confirm('Tem certeza que deseja excluir esta auditoria?')) {
-                        try {
-                            const response = await authFetch(`${API_BASE_URL}/deleteAuditoria`, {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ id: auditId })
-                            });
-                            if (response.ok) {
-                                fetchAndRenderAudits();
-                                alert('Auditoria excluída com sucesso!');
-                            } else {
-                                alert('Erro ao excluir auditoria.');
-                            }
-                        } catch (error) {
-                            console.error('Erro ao excluir:', error);
-                            alert('Erro ao excluir auditoria.');
-                        }
-                    }
-                }
+            
+            // Event listeners para navegação do calendário
+            document.getElementById('prevMonth').addEventListener('click', () => {
+                currentDate.setMonth(currentDate.getMonth() - 1);
+                renderCalendar();
+            });
+            
+            document.getElementById('nextMonth').addEventListener('click', () => {
+                currentDate.setMonth(currentDate.getMonth() + 1);
+                renderCalendar();
             });
 
         });
