@@ -2151,7 +2151,7 @@ body.projects-page {
     position: relative;
     display: flex;
     flex-direction: column;
-    min-height: 250px;
+    min-height: 80px;
 }
 
 .meeting-card:hover {
@@ -2234,17 +2234,22 @@ body.projects-page {
     justify-content: center;
     width: 32px;
     height: 32px;
-    background: #f1f5f9;
+    background: #22c55e;
     border-radius: 8px;
-    color: #475569;
+    color: white;
     text-decoration: none;
     transition: all 0.2s ease;
 }
 
 .collapsed-ata-link:hover {
-    background: #e2e8f0;
-    color: #334155;
+    background: #16a34a;
+    color: white;
     transform: scale(1.05);
+}
+
+.collapsed-ata-link svg {
+    color: white;
+    stroke: white;
 }
 
 .collapsed-view-button {
@@ -2277,6 +2282,7 @@ body.projects-page {
     display: flex;
     flex-direction: column;
     min-height: 250px;
+    width: 100%;
 }
 
 .meeting-card-expanded:hover {
@@ -2390,10 +2396,10 @@ body.projects-page {
 /* Ações do Card */
 .meeting-actions {
     margin-top: auto;
-    padding-top: 15px;
+    padding: 20px 25px 25px 25px;
     border-top: 1px solid #e2e8f0;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     gap: 15px;
 }
@@ -2404,7 +2410,8 @@ body.projects-page {
 
 .action-buttons-section {
     display: flex;
-    gap: 8px;
+    gap: 12px;
+    align-items: center;
 }
 
 .ata-button {
@@ -2544,7 +2551,7 @@ body.projects-page {
     justify-content: center;
     min-width: 40px;
     color: #64748b;
-    margin-right: 8px;
+    margin-right: 12px;
 }
 
 .collapse-button:hover {
@@ -2668,6 +2675,15 @@ body.projects-page {
         padding: 6px;
         min-width: 36px;
         height: 36px;
+        margin-right: 8px;
+    }
+    
+    .meeting-actions {
+        padding: 15px 20px 20px 20px;
+    }
+    
+    .action-buttons-section {
+        gap: 8px;
     }
 }
 
