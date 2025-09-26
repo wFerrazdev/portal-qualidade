@@ -2787,6 +2787,24 @@ body.auditorias-page {
     z-index: 10;
 }
 
+/* Título da página de auditorias - mesmo da página de reuniões */
+.auditorias-page .projects-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 0.5rem 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Subtítulo da página de auditorias - mesmo da página de reuniões */
+.auditorias-page .projects-subtitle {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.1rem;
+    margin: 0;
+    font-weight: 400;
+    line-height: 1.4;
+}
+
 /* Botão da página de auditorias - mesmo da página de reuniões */
 .auditorias-page .projects-add-btn {
     background: rgba(255, 255, 255, 0.15);
