@@ -2154,6 +2154,11 @@ body.projects-page {
     min-height: 80px;
 }
 
+/* Card expandido - altura ajustada */
+.meeting-card.expanded {
+    min-height: 250px;
+}
+
 .meeting-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
