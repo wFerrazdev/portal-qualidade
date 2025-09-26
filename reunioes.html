@@ -620,6 +620,7 @@
                         if (collapsed && expanded) {
                             collapsed.style.display = 'block';
                             expanded.style.display = 'none';
+                            card.classList.remove('expanded');
                         }
                     });
                     // Agora expandir apenas o card clicado
@@ -630,6 +631,7 @@
                         if (collapsed && expanded) {
                             collapsed.style.display = 'none';
                             expanded.style.display = 'block';
+                            targetCard.classList.add('expanded');
                         }
                     }
                 } else if (collapseButton) {
@@ -640,6 +642,7 @@
                         if (collapsed && expanded) {
                             collapsed.style.display = 'block';
                             expanded.style.display = 'none';
+                            targetCard.classList.remove('expanded');
                         }
                     }
                 } else if (editButton) {
