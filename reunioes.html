@@ -406,32 +406,68 @@
                 }
 
                 return `
-                    <div class="meeting-card">
-                        <div class="card-header">
-                        <div class="meeting-title">${reuniao.titulo}</div>
-                            <div class="meeting-status" style="background-color: ${statusInfo.bgColor}; color: ${statusInfo.color};">
-                                ${statusInfo.status}
+                    <div class="meeting-card" data-id="${reuniao.id}">
+                        <!-- Card Colapsado (Estado Padrão) -->
+                        <div class="meeting-card-collapsed">
+                            <div class="collapsed-header">
+                                <div class="collapsed-title">${reuniao.titulo}</div>
+                                <div class="collapsed-status" style="background-color: ${statusInfo.bgColor}; color: ${statusInfo.color};">
+                                    ${statusInfo.status}
+                                </div>
+                            </div>
+                            <div class="collapsed-body">
+                                <div class="collapsed-date">
+                                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                    </svg>
+                                    <span>${formatarData(reuniao.data_reuniao)}</span>
+                                </div>
+                                <div class="collapsed-actions">
+                                    ${reuniao.link_ata ? `
+                                        <a href="${reuniao.link_ata}" target="_blank" class="collapsed-ata-link" title="Ver Ata">
+                                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                            </svg>
+                                        </a>
+                                    ` : ''}
+                                    <button class="collapsed-view-button" data-id="${reuniao.id}" title="Visualizar Detalhes">
+                                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                        <div class="card-body">
-                            <div class="meeting-date">
-                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                </svg>
-                                <span>${formatarData(reuniao.data_reuniao)}</span>
-                            </div>
-                            <div class="meeting-participants">
-                                <h4>Participantes:</h4>
-                                <div class="participantes-container">
-                                    ${participantesList}
+
+                        <!-- Card Expandido (Estado Oculto) -->
+                        <div class="meeting-card-expanded" style="display: none;">
+                            <div class="card-header">
+                                <div class="meeting-title">${reuniao.titulo}</div>
+                                <div class="meeting-status" style="background-color: ${statusInfo.bgColor}; color: ${statusInfo.color};">
+                                    ${statusInfo.status}
                                 </div>
                             </div>
-                            ${reuniao.pauta ? `
-                                <div class="meeting-agenda">
-                                    <h4>Pauta:</h4>
-                                    <p>${reuniao.pauta}</p>
+                            <div class="card-body">
+                                <div class="meeting-date">
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                    </svg>
+                                    <span>${formatarData(reuniao.data_reuniao)}</span>
                                 </div>
-                            ` : ''}
+                                <div class="meeting-participants">
+                                    <h4>Participantes:</h4>
+                                    <div class="participantes-container">
+                                        ${participantesList}
+                                    </div>
+                                </div>
+                                ${reuniao.pauta ? `
+                                    <div class="meeting-agenda">
+                                        <h4>Pauta:</h4>
+                                        <p>${reuniao.pauta}</p>
+                                    </div>
+                                ` : ''}
+                            </div>
                             <div class="meeting-actions">
                                 <div class="ata-section">
                                     ${reuniao.link_ata ? 
@@ -450,6 +486,11 @@
                                     }
                                 </div>
                                 <div class="action-buttons-section">
+                                    <button class="collapse-button" data-id="${reuniao.id}" title="Recolher">
+                                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                        </svg>
+                                    </button>
                                     ${actionButtonsHtml}
                                 </div>
                             </div>
@@ -583,8 +624,28 @@
             meetingsGrid.addEventListener('click', async (event) => {
                 const editButton = event.target.closest('.edit-button');
                 const deleteButton = event.target.closest('.delete-button-card');
+                const viewButton = event.target.closest('.collapsed-view-button');
+                const collapseButton = event.target.closest('.collapse-button');
                 
-                if (editButton) {
+                if (viewButton) {
+                    const reuniaoId = viewButton.dataset.id;
+                    const card = document.querySelector(`.meeting-card[data-id="${reuniaoId}"]`);
+                    if (card) {
+                        const collapsed = card.querySelector('.meeting-card-collapsed');
+                        const expanded = card.querySelector('.meeting-card-expanded');
+                        collapsed.style.display = 'none';
+                        expanded.style.display = 'block';
+                    }
+                } else if (collapseButton) {
+                    const reuniaoId = collapseButton.dataset.id;
+                    const card = document.querySelector(`.meeting-card[data-id="${reuniaoId}"]`);
+                    if (card) {
+                        const collapsed = card.querySelector('.meeting-card-collapsed');
+                        const expanded = card.querySelector('.meeting-card-expanded');
+                        collapsed.style.display = 'block';
+                        expanded.style.display = 'none';
+                    }
+                } else if (editButton) {
                     const reuniaoId = editButton.dataset.id;
                     try {
                         const response = await authFetch(`${API_BASE_URL}/getUmItem?type=reunioes&id=${reuniaoId}`);
