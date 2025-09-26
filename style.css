@@ -2691,6 +2691,96 @@ body.projects-page {
 }
 
 /* ========================================
+   ESTILOS ESPECÍFICOS PARA PÁGINA DE AUDITORIAS
+   ======================================== */
+
+/* Background gradiente azul para página de auditorias - mesmo da página de reuniões */
+body.auditorias-page {
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%);
+    min-height: 100vh;
+}
+
+/* Cabeçalho da página de auditorias */
+.auditorias-page .content-header {
+    position: relative;
+    overflow: hidden;
+    background: transparent;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 51, 102, 0.3);
+    margin-left: 100px;
+}
+
+.auditorias-page .projects-header-background {
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+/* Ajustar ondas para página de auditorias - limitar área de trabalho */
+.auditorias-page .projects-wave {
+    position: absolute;
+    width: 100%;
+    height: 80px;
+    opacity: 0.6;
+    background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.3), transparent);
+    animation: buildWave 3s ease-in-out infinite;
+}
+
+.auditorias-page .projects-wave.wave-1 { top: 10%; animation-delay: 0s; }
+.auditorias-page .projects-wave.wave-2 { top: 25%; animation-delay: 0.5s; }
+.auditorias-page .projects-wave.wave-3 { top: 40%; animation-delay: 1s; }
+.auditorias-page .projects-wave.wave-4 { top: 55%; animation-delay: 1.5s; }
+.auditorias-page .projects-wave.wave-5 { top: 70%; animation-delay: 2s; }
+
+/* Partículas para página de auditorias */
+.auditorias-page .projects-particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(59, 130, 246, 0.8);
+    border-radius: 50%;
+    top: 100%;
+    opacity: 0;
+    will-change: transform, opacity;
+    transform: translateZ(0);
+}
+
+.auditorias-page .projects-particle.straight {
+    animation: floatUpReunioes 8s linear infinite;
+}
+
+/* Responsividade para página de auditorias */
+@media (max-width: 768px) {
+    .auditorias-page .content-header {
+        margin-left: 0;
+    }
+    
+    .auditorias-page .content-area {
+        margin-left: 0;
+    }
+    
+    .auditorias-page .projects-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+        padding: 20px;
+    }
+    
+    .auditorias-page .projects-title {
+        font-size: 1.8rem;
+    }
+    
+    .auditorias-page .projects-subtitle {
+        font-size: 1rem;
+    }
+}
+
+/* ========================================
    CALENDÁRIO DE AUDITORIAS
    ======================================== */
 
@@ -2701,6 +2791,12 @@ body.projects-page {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     overflow: hidden;
     margin: 20px 0;
+}
+
+/* Ajustar margem do calendário para página de auditorias */
+.auditorias-page .calendar-container {
+    margin-left: 100px;
+    margin-right: 0;
 }
 
 /* Cabeçalho do Calendário */
@@ -3044,6 +3140,12 @@ body.projects-page {
     .edit-audit-btn,
     .delete-audit-btn {
         width: 100%;
+    }
+    
+    /* Ajustar margem do calendário para mobile */
+    .auditorias-page .calendar-container {
+        margin-left: 0;
+        margin: 20px 15px;
     }
 }
 
