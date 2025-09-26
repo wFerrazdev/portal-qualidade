@@ -22,7 +22,7 @@
         });
     </script>
 </head>
-<body class="unauthenticated">
+<body class="unauthenticated auditorias-page">
     <div class="page-container">
         
         <aside class="sidebar" id="sidebar">
@@ -93,23 +93,55 @@
                     </svg>
                 </button>
                 
-                <div class="header-top">
-                    <div>
-                        <h1 class="header-title">Auditorias e Visitas</h1>
-                        <p class="header-subtitle">Acompanhamento de auditorias, visitas técnicas e treinamentos</p>
-                    </div>
+                <div class="projects-header-background">
+                    <!-- Ondas animadas -->
+                    <div class="projects-wave wave-1"></div>
+                    <div class="projects-wave wave-2"></div>
+                    <div class="projects-wave wave-3"></div>
+                    <div class="projects-wave wave-4"></div>
+                    <div class="projects-wave wave-5"></div>
+                    
+                    <!-- Partículas animadas -->
+                    <div class="projects-particle straight" style="left: 10%; animation-delay: 0s;"></div>
+                    <div class="projects-particle straight" style="left: 20%; animation-delay: 1s;"></div>
+                    <div class="projects-particle straight" style="left: 30%; animation-delay: 2s;"></div>
+                    <div class="projects-particle straight" style="left: 40%; animation-delay: 3s;"></div>
+                    <div class="projects-particle straight" style="left: 50%; animation-delay: 4s;"></div>
+                    <div class="projects-particle straight" style="left: 60%; animation-delay: 5s;"></div>
+                    <div class="projects-particle straight" style="left: 70%; animation-delay: 6s;"></div>
+                    <div class="projects-particle straight" style="left: 80%; animation-delay: 7s;"></div>
+                    <div class="projects-particle straight" style="left: 90%; animation-delay: 8s;"></div>
+                    <div class="projects-particle straight" style="left: 15%; animation-delay: 9s;"></div>
+                    <div class="projects-particle straight" style="left: 25%; animation-delay: 10s;"></div>
+                    <div class="projects-particle straight" style="left: 35%; animation-delay: 11s;"></div>
+                    <div class="projects-particle straight" style="left: 45%; animation-delay: 12s;"></div>
+                    <div class="projects-particle straight" style="left: 55%; animation-delay: 13s;"></div>
+                    <div class="projects-particle straight" style="left: 65%; animation-delay: 14s;"></div>
+                    <div class="projects-particle straight" style="left: 75%; animation-delay: 15s;"></div>
+                    <div class="projects-particle straight" style="left: 85%; animation-delay: 16s;"></div>
+                    <div class="projects-particle straight" style="left: 95%; animation-delay: 17s;"></div>
+                    <div class="projects-particle straight" style="left: 5%; animation-delay: 18s;"></div>
+                    <div class="projects-particle straight" style="left: 12%; animation-delay: 19s;"></div>
+                    <div class="projects-particle straight" style="left: 22%; animation-delay: 20s;"></div>
+                    <div class="projects-particle straight" style="left: 32%; animation-delay: 21s;"></div>
+                    <div class="projects-particle straight" style="left: 42%; animation-delay: 22s;"></div>
+                    <div class="projects-particle straight" style="left: 52%; animation-delay: 23s;"></div>
+                    <div class="projects-particle straight" style="left: 62%; animation-delay: 24s;"></div>
                 </div>
-            </header>
-
-            <main class="content-area">
-                <div class="page-actions">
-                    <button id="addAuditBtn" class="btn btn-primary">
-                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="margin-right: 8px;">
+                
+                <div class="projects-header">
+                    <div class="projects-title">Auditorias e Visitas</div>
+                    <div class="projects-subtitle">Acompanhamento de auditorias, visitas técnicas e treinamentos</div>
+                    <button id="addAuditBtn" class="projects-add-btn">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                         </svg>
                         Adicionar Evento
                     </button>
                 </div>
+            </header>
+
+            <main class="content-area">
                 <div class="audits-grid">
                     <div class="loading-spinner"></div>
                 </div>
@@ -264,9 +296,141 @@
                 return new Date(data.getTime() + data.getTimezoneOffset() * 60000).toLocaleDateString('pt-BR');
             }
             
+            function getStatusInfo(audit) {
+                const status = audit.status || 'Pendente';
+                const statusLower = status.toLowerCase();
+                
+                switch (statusLower) {
+                    case 'concluído':
+                    case 'concluido':
+                    case 'finalizado':
+                        return {
+                            status: 'CONCLUÍDO',
+                            bgColor: '#22c55e',
+                            color: 'white'
+                        };
+                    case 'em andamento':
+                    case 'andamento':
+                    case 'progresso':
+                        return {
+                            status: 'EM ANDAMENTO',
+                            bgColor: '#f59e0b',
+                            color: 'white'
+                        };
+                    case 'pendente':
+                    case 'aguardando':
+                        return {
+                            status: 'PENDENTE',
+                            bgColor: '#6b7280',
+                            color: 'white'
+                        };
+                    case 'cancelado':
+                    case 'cancelada':
+                        return {
+                            status: 'CANCELADO',
+                            bgColor: '#ef4444',
+                            color: 'white'
+                        };
+                    default:
+                        return {
+                            status: status.toUpperCase(),
+                            bgColor: '#3b82f6',
+                            color: 'white'
+                        };
+                }
+            }
+            
             function renderAuditCard(audit) {
-                const statusClass = audit.status ? audit.status.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '-') : 'default';
-                return `<div class="audit-card status-${statusClass}"><div class="audit-card-header"><h3>${audit.titulo}</h3><div class="card-actions"><button class="edit-button" data-id="${audit.id}"><svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.536L16.732 3.732z"></path></svg></button></div></div><div class="audit-card-body"><div class="audit-info"><strong>Tipo:</strong> ${audit.tipo || 'N/D'}</div><div class="audit-info"><strong>Data:</strong> ${formatarData(audit.data_evento)}</div><div class="audit-info"><strong>Status:</strong> ${audit.status || 'N/D'}</div><div class="audit-info"><strong>Responsável:</strong> ${audit.responsavel || 'N/D'}</div><hr><p class="audit-description">${audit.descricao || ''}</p></div></div>`;
+                const statusInfo = getStatusInfo(audit);
+                
+                let actionButtonsHtml = '';
+                const user = window.netlifyIdentity.currentUser();
+                if (user && user.app_metadata.roles && user.app_metadata.roles.includes('admin')) {
+                    actionButtonsHtml = `
+                        <button class="edit-button" data-id="${audit.id}" title="Editar Auditoria">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                            </svg>
+                        </button>
+                        <button class="delete-button-card" data-id="${audit.id}" title="Excluir Auditoria">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
+                        </button>
+                    `;
+                }
+
+                return `
+                    <div class="audit-card" data-id="${audit.id}">
+                        <!-- Card Colapsado (Estado Padrão) -->
+                        <div class="audit-card-collapsed">
+                            <div class="collapsed-header">
+                                <div class="collapsed-title">${audit.titulo}</div>
+                                <div class="collapsed-status" style="background-color: ${statusInfo.bgColor}; color: ${statusInfo.color};">
+                                    ${statusInfo.status}
+                                </div>
+                            </div>
+                            <div class="collapsed-body">
+                                <div class="collapsed-date">
+                                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                    </svg>
+                                    <span>${formatarData(audit.data_evento)}</span>
+                                </div>
+                                <div class="collapsed-actions">
+                                    <button class="collapsed-view-button" data-id="${audit.id}" title="Visualizar Detalhes">
+                                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card Expandido (Estado Oculto) -->
+                        <div class="audit-card-expanded" style="display: none;">
+                            <div class="card-header">
+                                <div class="audit-title">${audit.titulo}</div>
+                                <div class="audit-status" style="background-color: ${statusInfo.bgColor}; color: ${statusInfo.color};">
+                                    ${statusInfo.status}
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="audit-date">
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                    </svg>
+                                    <span>${formatarData(audit.data_evento)}</span>
+                                </div>
+                                <div class="audit-details">
+                                    <div class="audit-info">
+                                        <strong>Tipo:</strong> ${audit.tipo || 'N/D'}
+                                    </div>
+                                    <div class="audit-info">
+                                        <strong>Responsável:</strong> ${audit.responsavel || 'N/D'}
+                                    </div>
+                                    ${audit.descricao ? `
+                                        <div class="audit-description">
+                                            <h4>Descrição:</h4>
+                                            <p>${audit.descricao}</p>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                            <div class="audit-actions">
+                                <div class="action-buttons-section">
+                                    <button class="collapse-button" data-id="${audit.id}" title="Recolher">
+                                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                        </svg>
+                                    </button>
+                                    ${actionButtonsHtml}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
             }
 
             async function fetchAndRenderAudits() {
@@ -366,7 +530,45 @@
             window.addEventListener('click', (event) => { if (event.target == auditModal) { closeModal(); } });
             auditsGrid.addEventListener('click', async (event) => {
                 const editButton = event.target.closest('.edit-button');
-                if (editButton) {
+                const deleteButton = event.target.closest('.delete-button-card');
+                const viewButton = event.target.closest('.collapsed-view-button');
+                const collapseButton = event.target.closest('.collapse-button');
+                
+                if (viewButton) {
+                    // Primeiro, colapsar todos os outros cards
+                    const allCards = document.querySelectorAll('.audit-card');
+                    allCards.forEach(card => {
+                        const collapsed = card.querySelector('.audit-card-collapsed');
+                        const expanded = card.querySelector('.audit-card-expanded');
+                        if (collapsed && expanded) {
+                            collapsed.style.display = 'block';
+                            expanded.style.display = 'none';
+                            card.classList.remove('expanded');
+                        }
+                    });
+                    // Agora expandir apenas o card clicado
+                    const targetCard = viewButton.closest('.audit-card');
+                    if (targetCard) {
+                        const collapsed = targetCard.querySelector('.audit-card-collapsed');
+                        const expanded = targetCard.querySelector('.audit-card-expanded');
+                        if (collapsed && expanded) {
+                            collapsed.style.display = 'none';
+                            expanded.style.display = 'block';
+                            targetCard.classList.add('expanded');
+                        }
+                    }
+                } else if (collapseButton) {
+                    const targetCard = collapseButton.closest('.audit-card');
+                    if (targetCard) {
+                        const collapsed = targetCard.querySelector('.audit-card-collapsed');
+                        const expanded = targetCard.querySelector('.audit-card-expanded');
+                        if (collapsed && expanded) {
+                            collapsed.style.display = 'block';
+                            expanded.style.display = 'none';
+                            targetCard.classList.remove('expanded');
+                        }
+                    }
+                } else if (editButton) {
                     const auditId = editButton.dataset.id;
                     try {
                         const response = await authFetch(`${API_BASE_URL}/getUmItem?type=auditorias&id=${auditId}`);
@@ -376,6 +578,26 @@
                     } catch (error) {
                         console.error('Erro ao editar:', error);
                         alert('Não foi possível carregar os dados para edição.');
+                    }
+                } else if (deleteButton) {
+                    const auditId = deleteButton.dataset.id;
+                    if (confirm('Tem certeza que deseja excluir esta auditoria?')) {
+                        try {
+                            const response = await authFetch(`${API_BASE_URL}/deleteAuditoria`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ id: auditId })
+                            });
+                            if (response.ok) {
+                                fetchAndRenderAudits();
+                                alert('Auditoria excluída com sucesso!');
+                            } else {
+                                alert('Erro ao excluir auditoria.');
+                            }
+                        } catch (error) {
+                            console.error('Erro ao excluir:', error);
+                            alert('Erro ao excluir auditoria.');
+                        }
                     }
                 }
             });
