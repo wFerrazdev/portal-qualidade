@@ -2709,17 +2709,7 @@ body.auditorias-page {
   overflow: hidden;
 }
 
-/* Background animado específico para página de auditorias - posicionado corretamente no content-header 
-.auditorias-page .projects-header-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-    overflow: hidden;
-    pointer-events: none;
-}*/
+
 
 /* Garantir que o content-header da página de auditorias contenha o background animado */
 .auditorias-page .content-header {
@@ -2727,13 +2717,62 @@ body.auditorias-page {
     overflow: hidden;
 }
 
-/* Remover ondas e partículas da página de auditorias */
+/* Ajustar ondas para página de auditorias - limitar área de trabalho */
 .auditorias-page .projects-wave {
-    display: none;
+    position: absolute;
+    width: 100%;
+    height: 80px; /* Reduzir altura das ondas */
+    opacity: 0.6;
 }
 
+.auditorias-page .projects-wave.wave-1 {
+    top: 10%;
+    animation-delay: 0s;
+}
+
+.auditorias-page .projects-wave.wave-2 {
+    top: 25%;
+    animation-delay: 2s;
+}
+
+.auditorias-page .projects-wave.wave-3 {
+    top: 40%;
+    animation-delay: 4s;
+}
+
+.auditorias-page .projects-wave.wave-4 {
+    top: 55%;
+    animation-delay: 6s;
+}
+
+.auditorias-page .projects-wave.wave-5 {
+    top: 70%;
+    animation-delay: 8s;
+}
+
+/* Partículas flutuantes otimizadas para página de auditorias - movimento suave com transparência */
 .auditorias-page .projects-particle {
-    display: none;
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: #60a5fa;
+    border-radius: 50%;
+    box-shadow: 0 0 6px rgba(96, 165, 250, 0.37);
+    top: 100%; /* Começar fora da área visível */
+    opacity: 0; /* Iniciar invisíveis */
+    will-change: transform, opacity; /* Otimização de performance */
+    transform: translateZ(0); /* Forçar aceleração de hardware */
+}
+
+/* Classes para diferentes tipos de movimento das partículas - página de auditorias */
+.auditorias-page .projects-particle.diagonal {
+    animation: floatDiagonalReunioes 5s ease-in-out infinite;
+    animation-fill-mode: both;
+}
+
+.auditorias-page .projects-particle.straight {
+    animation: floatStraightReunioes 5s ease-in-out infinite;
+    animation-fill-mode: both;
 }
 
 /* Aplicar estilos da página de projetos no cabeçalho da página de auditorias */
@@ -2842,6 +2881,40 @@ body.auditorias-page {
         width: 100%;
         justify-content: center;
         padding: 16px 28px;
+    }
+    
+    .auditorias-page .projects-particle {
+        animation-duration: 7s !important;
+    }
+    
+    .auditorias-page .projects-wave path {
+        animation-duration: 15s !important;
+    }
+}
+
+/* Desabilitar animações em dispositivos com baixa performance - página de auditorias */
+@media (prefers-reduced-motion: reduce) {
+    .auditorias-page .projects-particle {
+        animation: none !important;
+        opacity: 0.2 !important;
+    }
+    
+    .auditorias-page .projects-wave path {
+        animation: none !important;
+        stroke-dashoffset: 0 !important;
+    }
+}
+
+/* Desabilitar animações em dispositivos muito lentos - página de auditorias */
+@media (max-width: 480px) {
+    .auditorias-page .projects-particle {
+        animation: none !important;
+        opacity: 0.1 !important;
+    }
+    
+    .auditorias-page .projects-wave path {
+        animation: none !important;
+        stroke-dashoffset: 0 !important;
     }
 }
 
