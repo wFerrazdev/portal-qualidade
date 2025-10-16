@@ -1,27 +1,21 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
+import { useUser } from '@auth0/nextjs-auth0/client';
 
 export default function Home() {
   const router = useRouter();
+  const { user, isLoading } = useUser();
 
   useEffect(() => {
-    // Verificar autenticação e redirecionar
-    if (typeof window !== 'undefined') {
-      if (window.netlifyIdentity) {
-        window.netlifyIdentity.on('init', (user: any) => {
-          if (user) {
-            router.push('/react/dashboard');
-          } else {
-            router.push('/login.html');
-          }
-        });
+    if (!isLoading) {
+      if (user) {
+        router.push('/dashboard');
       } else {
-        // Se não tiver netlify identity, redirecionar para login
-        router.push('/login.html');
+        router.push('/login');
       }
     }
-  }, [router]);
+  }, [user, isLoading, router]);
 
   return (
     <>

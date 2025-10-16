@@ -1,11 +1,11 @@
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
-import Script from 'next/script';
+import { UserProvider } from '@auth0/nextjs-auth0/client';
 import '../styles/globals.css';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <>
+    <UserProvider>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="icon" type="image/png" href="/favicon.png" />
@@ -17,24 +17,7 @@ export default function App({ Component, pageProps }: AppProps) {
         />
       </Head>
       
-      <Script
-        src="https://identity.netlify.com/v1/netlify-identity-widget.js"
-        strategy="afterInteractive"
-      />
-      
-      <Script id="netlify-identity-init" strategy="afterInteractive">
-        {`
-          if (window.netlifyIdentity) {
-            window.netlifyIdentity.on("init", user => {
-              if (!user) {
-                window.location.href = '/login.html';
-              }
-            });
-          }
-        `}
-      </Script>
-      
       <Component {...pageProps} />
-    </>
+    </UserProvider>
   );
 }
