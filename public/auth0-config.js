@@ -1,9 +1,9 @@
 // Configuração do Auth0 para o Portal da Qualidade
 const auth0Config = {
-    domain: 'dev-oii2kkbrimlakra2.us.auth0.com', // Substitua pelo seu domínio Auth0
+    domain: 'dev-8k7x2x3x.us.auth0.com', // Substitua pelo seu domínio Auth0
     clientId: '6ysBLYrbpaDM51XQ818fpA4ngJFogQZX', // Substitua pelo seu Client ID
-    redirectUri: window.location.origin + '/callback.html',
-    audience: 'https://portalqualidadewill.vercel.app/api'
+    redirectUri: window.location.origin + '/callback.html'
+    // audience removido - não é necessário para autenticação simples
 };
 
 // Função para verificar se o usuário está autenticado
@@ -41,8 +41,8 @@ function login() {
         response_type: 'code',
         client_id: auth0Config.clientId,
         redirect_uri: auth0Config.redirectUri,
-        scope: 'openid profile email',
-        audience: auth0Config.audience
+        scope: 'openid profile email'
+        // audience removido - não é necessário para autenticação simples
     });
     
     window.location.href = `https://${auth0Config.domain}/authorize?${params}`;
