@@ -408,8 +408,8 @@
         // [Aqui vai o JavaScript completo da versão original, mas adaptado para o novo design]
         // Por enquanto, vou manter a funcionalidade básica
         
-        // Configurações globais - Usando dados mock temporariamente
-        const API_BASE_URL = 'mock'; // Usando dados mock
+        // Configurações globais - Usando APIs do Vercel
+        const API_BASE_URL = '/api';
         const SPREADSHEET_ID_EXTERNO = '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4';
         const SPREADSHEET_ID_INTERNO = '1_XfCgxqMlxLjXUfw7MSgZ386E16d5sQFSbV8Q6Q0mmk';
         const SPREADSHEET_ID_RIFS = '17F0DVUFu-cscmMnJsezkuCc_3SzuUehD_dSiPGOOz2A';
@@ -687,14 +687,21 @@
                 console.log('SPREADSHEET_ID_RIFS:', SPREADSHEET_ID_RIFS);
                 console.log('SPREADSHEET_ID_NC_EXTERNA:', SPREADSHEET_ID_NC_EXTERNA);
                 
-                // Usando dados mock temporariamente
-                console.log('Carregando dados mock...');
+                // Usando APIs reais do Vercel
+                console.log('Carregando dados reais...');
+                
+                const urls = [
+                    `${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_EXTERNO}&sheets=opt_por_cliente,opt_por_projeto,opt_detalhado,opt_inteiro`,
+                    `${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_INTERNO}&sheets=nci_por_setor,pareto_mes,pareto_ano,nci_anual`,
+                    `${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_RIFS}&sheets=status_por_fornecedor_ano,status_por_fornecedor_mes,pareto_rifs`,
+                    `${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_NC_EXTERNA}&sheets=nce_procedentes_anos,nce_naoprocedentes_anos,total_nce_anos,nce_pareto_defeitos,kpi_revertidos`
+                ];
                 
                 const [responseExterno, responseInterno, responseRifs, responseNCExterna] = await Promise.all([
-                    window.mockAPI.getSheetData({ id: SPREADSHEET_ID_EXTERNO, sheets: 'opt_por_cliente,opt_por_projeto,opt_detalhado,opt_inteiro' }),
-                    window.mockAPI.getSheetData({ id: SPREADSHEET_ID_INTERNO, sheets: 'nci_por_setor,pareto_mes,pareto_ano,nci_anual' }),
-                    window.mockAPI.getSheetData({ id: SPREADSHEET_ID_RIFS, sheets: 'status_por_fornecedor_ano,status_por_fornecedor_mes,pareto_rifs' }),
-                    window.mockAPI.getSheetData({ id: SPREADSHEET_ID_NC_EXTERNA, sheets: 'nce_procedentes_anos,nce_naoprocedentes_anos,total_nce_anos,nce_pareto_defeitos,kpi_revertidos' })
+                    fetch(urls[0]),
+                    fetch(urls[1]),
+                    fetch(urls[2]),
+                    fetch(urls[3])
                 ]);
 
                 console.log('Status das respostas:');

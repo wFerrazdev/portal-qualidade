@@ -9,5 +9,9 @@
   },
   "keywords": ["qualidade", "dashboard", "indicadores"],
   "author": "Portal da Qualidade",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "google-spreadsheet": "^4.1.2",
+    "pg": "^8.11.3"
+  }
 }

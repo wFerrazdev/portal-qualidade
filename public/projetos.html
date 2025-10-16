@@ -269,7 +269,7 @@
             // =================== LÓGICA DA PÁGINA DE PROJETOS ===================
             const CLOUDINARY_CLOUD_NAME = 'dsge4dbjy';
             const CLOUDINARY_UPLOAD_PRESET = 'ml_default';
-            const API_BASE_URL = 'mock'; // Usando dados mock
+            const API_BASE_URL = '/api'; // Usando APIs do Vercel
             const addProjectBtn = document.getElementById('addProjectBtn');
             const projectModal = document.getElementById('projectModal');
             const closeModalBtn = document.getElementById('closeModalBtn');
@@ -333,7 +333,7 @@
 
             async function fetchAndRenderProjects() {
                 try {
-                    const response = await window.mockAPI.getProjetos();
+                    const response = await fetch(`${API_BASE_URL}/getProjetos`);
                     if (!response.ok) { throw new Error(`HTTP error! status: ${response.status}`); }
                     const projects = await response.json();
                     projectsGrid.innerHTML = '';
