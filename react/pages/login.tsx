@@ -2,38 +2,23 @@ import Head from 'next/head';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
+import { useUser } from '@auth0/nextjs-auth0/client';
 import AnimatedWaves from '../components/AnimatedWaves';
 import FloatingParticles from '../components/FloatingParticles';
 import LoginCard from '../components/LoginCard';
 
-declare const netlifyIdentity: any;
-
 const LoginPage: React.FC = () => {
   const router = useRouter();
+  const { user, isLoading } = useUser();
 
   useEffect(() => {
-    if (typeof netlifyIdentity !== 'undefined') {
-      netlifyIdentity.on('init', (user: any) => {
-        if (user) {
-          router.push('/dashboard');
-        }
-      });
-
-      // Handle token in URL for external auth providers
-      if (window.location.hash.includes('_token=')) {
-        netlifyIdentity.on('login', () => {
-          router.push('/dashboard');
-        });
-      }
+    if (user && !isLoading) {
+      router.push('/dashboard');
     }
-  }, [router]);
+  }, [user, isLoading, router]);
 
   const handleLogin = () => {
-    if (typeof netlifyIdentity !== 'undefined') {
-      netlifyIdentity.open('login');
-    } else {
-      alert('Netlify Identity não carregado. Tente novamente.');
-    }
+    window.location.href = '/api/auth/login';
   };
 
   return (
