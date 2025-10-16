@@ -1,7 +1,7 @@
 // Configuração do Auth0 para o Portal da Qualidade
 const auth0Config = {
     domain: 'dev-8k7x2x3x.us.auth0.com', // Substitua pelo seu domínio Auth0
-    clientId: 'YOUR_CLIENT_ID', // Substitua pelo seu Client ID
+    clientId: '6ysBLYrbpaDM51XQ818fpA4ngJFogQZX', // Substitua pelo seu Client ID
     redirectUri: window.location.origin + '/callback.html',
     audience: 'https://portalqualidadewill.vercel.app/api'
 };
