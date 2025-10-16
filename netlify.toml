@@ -1,8 +1,0 @@
-# Configuração simplificada - Site HTML puro
-# Sem referências ao React
-
-# Fallback para a versão HTML atual (funcionando)
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
