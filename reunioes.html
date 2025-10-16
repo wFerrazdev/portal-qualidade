@@ -6,21 +6,7 @@
     <title>Reuniões | Portal da Qualidade</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="stylesheet" href="style.css">
-    <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-    <script type="text/javascript">
-        // Adicionamos um escutador de evento direto no objeto 'netlifyIdentity'
-        // Ele garante que o código só rode quando o sistema de login estiver pronto.
-        window.netlifyIdentity && netlifyIdentity.on('init', user => {
-            // Se, após a inicialização, NÃO houver usuário...
-            if (!user) {
-                // ...redireciona para o login.
-                window.location.href = '/login.html';
-            } else {
-                // Se HOUVER um usuário, nós mostramos a página.
-                document.body.classList.remove('unauthenticated');
-            }
-        });
-    </script>
+    <script src="auth0-config.js"></script>
 </head>
 <body class="unauthenticated reunioes-page">
     <div class="page-container">
@@ -298,23 +284,15 @@
             if (logoutBtn) {
                 logoutBtn.addEventListener('click', (e) => {
                     e.preventDefault();
-                    if (window.netlifyIdentity) {
-                        netlifyIdentity.logout();
-                    }
-                });
-            }
-
-            // Netlify Identity logout event
-            if (window.netlifyIdentity) {
-                netlifyIdentity.on('logout', () => {
-                    window.location.href = '/login.html';
+                    logout(); // Função definida em auth0-config.js
                 });
             }
             // --- LÓGICA DE PERMISSÕES (VISUAL) ---
-            if (window.netlifyIdentity) {
-                const user = netlifyIdentity.currentUser();
+            checkAuth().then(user => {
                 if (user) {
-                    const userRoles = user.app_metadata.roles || [];
+                    // Aqui você pode implementar lógica de permissões baseada no Auth0
+                    // Por exemplo, verificar roles ou claims do usuário
+                    const userRoles = user['https://portalqualidade.com/roles'] || [];
                     // Se o usuário NÃO tiver a permissão 'admin' na sua lista de permissões...
                     if (!userRoles.includes('admin')) {
                         // ...encontra e esconde todos os botões de ação.
@@ -327,7 +305,9 @@
                         if(grid) grid.classList.add('viewer-mode');
                     }
                 }
-            }
+            }).catch(error => {
+                console.error('Erro ao verificar permissões:', error);
+            });
             
             const API_BASE_URL = '/.netlify/functions';
             const addMeetingBtn = document.getElementById('addMeetingBtn');

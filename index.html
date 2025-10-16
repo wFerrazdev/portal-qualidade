@@ -16,14 +16,7 @@
     <link rel="dns-prefetch" href="https://portalqualidadewill.netlify.app">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
-    <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-    <script type="text/javascript">
-        window.netlifyIdentity && netlifyIdentity.on('init', user => {
-            if (!user) {
-                window.location.href = '/login.html';
-            }
-        });
-    </script>
+    <script src="auth0-config.js"></script>
 </head>
 <body class="dashboard-page">
     <!-- Loading overlay para melhorar percepção de performance -->
@@ -534,16 +527,7 @@
             if (logoutBtn) {
                 logoutBtn.addEventListener('click', (e) => {
                     e.preventDefault();
-                    if (window.netlifyIdentity) {
-                        netlifyIdentity.logout();
-                    }
-                });
-            }
-
-            // Netlify Identity logout event
-            if (window.netlifyIdentity) {
-                netlifyIdentity.on('logout', () => {
-                    window.location.href = '/login.html';
+                    logout(); // Função definida em auth0-config.js
                 });
             }
         }
