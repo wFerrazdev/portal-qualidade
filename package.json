@@ -1,0 +1,13 @@
+{
+  "name": "portal-qualidade",
+  "version": "1.0.0",
+  "description": "Portal da Qualidade - Dashboard de Indicadores",
+  "main": "index.html",
+  "scripts": {
+    "build": "echo 'Static site - no build needed'",
+    "start": "echo 'Static site - no start needed'"
+  },
+  "keywords": ["qualidade", "dashboard", "indicadores"],
+  "author": "Portal da Qualidade",
+  "license": "MIT"
+}

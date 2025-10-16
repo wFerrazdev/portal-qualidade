@@ -1,12 +1,38 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "**/*",
-      "use": "@vercel/static"
-    }
-  ],
+  "buildCommand": "echo 'Static site - no build needed'",
+  "outputDirectory": ".",
+  "installCommand": "echo 'No dependencies to install'",
+  "framework": null,
   "routes": [
+    {
+      "src": "/callback.html",
+      "dest": "/callback.html"
+    },
+    {
+      "src": "/login.html",
+      "dest": "/login.html"
+    },
+    {
+      "src": "/index.html",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/projetos.html",
+      "dest": "/projetos.html"
+    },
+    {
+      "src": "/auditoriasevisitas.html",
+      "dest": "/auditoriasevisitas.html"
+    },
+    {
+      "src": "/reunioes.html",
+      "dest": "/reunioes.html"
+    },
+    {
+      "src": "/calibracao.html",
+      "dest": "/calibracao.html"
+    },
     {
       "src": "/(.*)",
       "dest": "/$1"
