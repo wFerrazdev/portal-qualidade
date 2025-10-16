@@ -7,6 +7,7 @@
     <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="stylesheet" href="style.css">
     <script src="auth0-config.js"></script>
+    <script src="mock-data.js"></script>
 </head>
 <body class="unauthenticated projects-page">
 
@@ -268,7 +269,7 @@
             // =================== LÓGICA DA PÁGINA DE PROJETOS ===================
             const CLOUDINARY_CLOUD_NAME = 'dsge4dbjy';
             const CLOUDINARY_UPLOAD_PRESET = 'ml_default';
-            const API_BASE_URL = '/.netlify/functions';
+            const API_BASE_URL = 'mock'; // Usando dados mock
             const addProjectBtn = document.getElementById('addProjectBtn');
             const projectModal = document.getElementById('projectModal');
             const closeModalBtn = document.getElementById('closeModalBtn');
@@ -332,7 +333,7 @@
 
             async function fetchAndRenderProjects() {
                 try {
-                    const response = await authFetch(`${API_BASE_URL}/getProjetos`);
+                    const response = await window.mockAPI.getProjetos();
                     if (!response.ok) { throw new Error(`HTTP error! status: ${response.status}`); }
                     const projects = await response.json();
                     projectsGrid.innerHTML = '';
