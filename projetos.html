@@ -6,26 +6,12 @@
     <title>Projetos | Portal da Qualidade</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="stylesheet" href="style.css">
-    <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <script src="auth0-config.js"></script>
 </head>
 <body class="unauthenticated projects-page">
 
     <script>
-        // Script de Segurança Anti-Flash e Anti-Loop
-        if (window.netlifyIdentity) {
-            if (window.location.hash.includes('_token=')) {
-                netlifyIdentity.on('init', () => {
-                    netlifyIdentity.open();
-                });
-            }
-            netlifyIdentity.on('init', user => {
-                if (!user && !window.location.hash.includes('_token=')) {
-                    window.location.href = '/login.html';
-                } else {
-                    document.body.classList.remove('unauthenticated');
-                }
-            });
-        }
+        // A verificação de autenticação é feita automaticamente pelo auth0-config.js
     </script>
 
     <div class="page-container">
@@ -275,16 +261,7 @@
             if (logoutBtn) {
                 logoutBtn.addEventListener('click', (e) => {
                     e.preventDefault();
-                    if (window.netlifyIdentity) {
-                        netlifyIdentity.logout();
-                    }
-                });
-            }
-
-            // Netlify Identity logout event
-            if (window.netlifyIdentity) {
-                netlifyIdentity.on('logout', () => {
-                    window.location.href = '/login.html';
+                    logout(); // Função definida em auth0-config.js
                 });
             }
             

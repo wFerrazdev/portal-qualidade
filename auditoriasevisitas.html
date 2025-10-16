@@ -6,21 +6,7 @@
     <title>Auditorias e Visitas | Portal da Qualidade</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="stylesheet" href="style.css">
-    <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-    <script type="text/javascript">
-        // Adicionamos um escutador de evento direto no objeto 'netlifyIdentity'
-        // Ele garante que o código só rode quando o sistema de login estiver pronto.
-        window.netlifyIdentity && netlifyIdentity.on('init', user => {
-            // Se, após a inicialização, NÃO houver usuário...
-            if (!user) {
-                // ...redireciona para o login.
-                window.location.href = '/login.html';
-            } else {
-                // Se HOUVER um usuário, nós mostramos a página....
-                document.body.classList.remove('unauthenticated');
-            }
-        });
-    </script>
+    <script src="auth0-config.js"></script>
 </head>
 <body class="unauthenticated auditorias-page">
     <div class="page-container">
@@ -213,72 +199,24 @@
     <script type="module">
         // Função ajudante para fazer chamadas autenticadas
         async function authFetch(url, options = {}) {
-            const user = window.netlifyIdentity.currentUser();
-            
-            // Se não houver usuário, a chamada nem acontece (já fomos redirecionados)
-            if (!user) {
-                console.error("Tentativa de chamada de API sem usuário.");
-                return Promise.reject(new Error("Usuário não autenticado"));
-            }
-            
-            // Pega o token JWT do usuário
-            const token = await user.jwt();
-
-            // Prepara os cabeçalhos
-            const defaultHeaders = {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`, // Anexa o "crachá" aqui!
-                ...options.headers,
-            };
-
-            // Executa o fetch original, mas com os cabeçalhos de autorização
-            return fetch(url, {
-                ...options,
-                headers: defaultHeaders,
-            });
+            // Usar a função authenticatedFetch do auth0-config.js
+            return await authenticatedFetch(url, options);
         }
-        // Script de Proteção de Página (Final e com Suporte a Tokens)
-        // Script de Proteção de Página (Anti-Loop e com Suporte a Tokens)
-        if (window.location.hash.includes('_token=')) {
-            // Se tiver um token, redireciona para a página de login para que o widget possa processá-lo
-            window.location.href = '/login.html' + window.location.hash;
-        } else {
-            // Se NÃO tiver um token, fazemos a verificação de segurança normal
-            if (window.netlifyIdentity) {
-                netlifyIdentity.on('init', user => {
-                    if (!user) {
-                        // Se, após a inicialização, não houver usuário, redireciona
-                        window.location.href = '/login.html';
-                    } else {
-                        // Se houver um usuário, removemos a classe que esconde o corpo da página
-                        document.body.classList.remove('unauthenticated');
-                    }
-                });
-            }
-        }
+        // A verificação de autenticação é feita automaticamente pelo auth0-config.js
 
         // --- LÓGICA PARA EXIBIR NOME DO USUÁRIO ---
-        if (window.netlifyIdentity) {
-            // Escuta pelo evento de 'login' para garantir que temos os dados do usuário
-            netlifyIdentity.on('login', user => {
+        // Exibir informações do usuário autenticado via Auth0
+        checkAuth().then(user => {
+            if (user) {
                 const userInfoSpan = document.querySelector('.user-info span');
-                // Tenta pegar o nome completo, se não houver, usa o email.
-                const userName = user.user_metadata.full_name || user.email;
+                const userName = user.name || user.email;
                 if (userInfoSpan) {
-                    userInfoSpan.innerHTML  = `Logado como: <strong>${userName}</strong>`;
-                }
-            });
-
-            // Também verifica o usuário atual no carregamento da página, caso já esteja logado
-            const currentUser = netlifyIdentity.currentUser();
-            if (currentUser) {
-                const userInfoSpan = document.querySelector('.user-info span');
-                const userName = currentUser.user_metadata.full_name || currentUser.email;
-                if (userInfoSpan) {
-                    userInfoSpan.innerHTML  = `Logado como: <strong>${userName}</strong>`;
+                    userInfoSpan.innerHTML = `Logado como: <strong>${userName}</strong>`;
                 }
             }
-        }
+        }).catch(error => {
+            console.error('Erro ao obter informações do usuário:', error);
+        });
 
         document.addEventListener('DOMContentLoaded', () => {
             // --- LÓGICA DO MENU ---
@@ -292,13 +230,20 @@
             if (overlay) { overlay.addEventListener('click', closeMenu); }
             window.addEventListener('load', () => { if (sidebar) { sidebar.classList.remove('preload'); } });
             const logoutBtn = document.getElementById('logoutBtn');
-            if (logoutBtn) { logoutBtn.addEventListener('click', (e) => { e.preventDefault(); netlifyIdentity.logout(); }); }
-            netlifyIdentity.on('logout', () => { window.location.href = '/login.html'; });
+            if (logoutBtn) { 
+                logoutBtn.addEventListener('click', (e) => { 
+                    e.preventDefault(); 
+                    logout(); // Função definida em auth0-config.js
+                }); 
+            }
+            
             // --- LÓGICA DE PERMISSÕES (VISUAL) ---
-            if (window.netlifyIdentity) {
-                const user = netlifyIdentity.currentUser();
+            // Verificar permissões do usuário autenticado
+            checkAuth().then(user => {
                 if (user) {
-                    const userRoles = user.app_metadata.roles || [];
+                    // Aqui você pode implementar lógica de permissões baseada no Auth0
+                    // Por exemplo, verificar roles ou claims do usuário
+                    const userRoles = user['https://portalqualidade.com/roles'] || [];
                     // Se o usuário NÃO tiver a permissão 'admin' na sua lista de permissões...
                     if (!userRoles.includes('admin')) {
                         // ...encontra e esconde todos os botões de ação.
@@ -311,7 +256,9 @@
                         if(grid) grid.classList.add('viewer-mode');
                     }
                 }
-            }
+            }).catch(error => {
+                console.error('Erro ao verificar permissões:', error);
+            });
             
             const API_BASE_URL = '/.netlify/functions';
             const addAuditBtn = document.getElementById('addAuditBtn');
