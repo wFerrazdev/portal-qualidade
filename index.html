@@ -1450,16 +1450,18 @@
             if (!data || data.length === 0) return;
             
             const isMobile = window.innerWidth < 1024;
-            const labels = data.map(item => item.mes);
-            const dados2025 = data.map(item => parseInt(item.quantidade_2025) || 0);
-            const dados2024 = data.map(item => parseInt(item.quantidade_2024) || 0);
+            
+            // Mapear dados corretamente baseado na estrutura real (array de arrays)
+            const labels = data.map(item => item[0]); // Coluna 0: Mês
+            const dados2025 = data.map(item => parseInt(item[1]) || 0); // Coluna 1: Quantidade 1
+            const dados2024 = data.map(item => parseInt(item[2]) || 0); // Coluna 2: Quantidade 2
 
             const maxValue = Math.max(...dados2025, ...dados2024);
 
             const datasets = [
                 {
                     type: tipoGrafico2024,
-                    label: '2024',
+                    label: 'Quantidade 2',
                     data: dados2024,
                     backgroundColor: 'rgba(233, 123, 50, 0.918)',
                     borderColor: 'rgba(233, 123, 50, 0.918)',
@@ -1475,7 +1477,7 @@
                 },
                 {
                     type: tipoGrafico2025,
-                    label: '2025',
+                    label: 'Quantidade 1',
                     data: dados2025,
                     backgroundColor: '#003366',
                     borderColor: '#003366',
@@ -1539,8 +1541,10 @@
             if (!data || data.length === 0) return;
 
             const isMobile = window.innerWidth < 1024;
-            const labels = data.map(item => item.mes);
-            const dados2025 = data.map(item => parseInt(item.quantidade_2025) || 0);
+            
+            // Mapear dados corretamente baseado na estrutura real (array de arrays)
+            const labels = data.map(item => item[0]); // Coluna 0: Mês
+            const dados2025 = data.map(item => parseInt(item[1]) || 0); // Coluna 1: Quantidade 1
             const maxValue = Math.max(...dados2025);
 
             const ctx = document.getElementById(canvasId).getContext('2d');
@@ -1549,7 +1553,7 @@
                 data: {
                     labels: labels,
                     datasets: [{
-                        label: 'Total Revertidas 2025',
+                        label: 'Quantidade Revertidas',
                         data: dados2025,
                         backgroundColor: '#003366',
                         borderRadius: 5
@@ -1586,30 +1590,7 @@
                 return;
             }
             
-            // console.log('Dados NC Externa encontrados:', lastDataNCExterna);
-
-            // 🔍 LOGS TEMPORÁRIOS PARA INVESTIGAR ESTRUTURA DOS DADOS - APENAS GRÁFICOS PROBLEMÁTICOS
-            console.log('=== INVESTIGAÇÃO NC EXTERNA - GRÁFICOS 12, 13, 14 ===');
-            console.log('nce_procedentes_anos (Gráfico 12):', lastDataNCExterna.nce_procedentes_anos);
-            console.log('nce_naoprocedentes_anos (Gráfico 13):', lastDataNCExterna.nce_naoprocedentes_anos);
-            console.log('total_nce_anos (Gráfico 14):', lastDataNCExterna.total_nce_anos);
-            
-            // Investigar estrutura dos dados dos 3 gráficos problemáticos
-            if (lastDataNCExterna.nce_procedentes_anos && lastDataNCExterna.nce_procedentes_anos.length > 0) {
-                console.log('📊 GRÁFICO 12 - Primeiro item nce_procedentes_anos:', lastDataNCExterna.nce_procedentes_anos[0]);
-                console.log('📊 GRÁFICO 12 - Estrutura das colunas:', Object.keys(lastDataNCExterna.nce_procedentes_anos[0] || {}));
-            }
-            
-            if (lastDataNCExterna.nce_naoprocedentes_anos && lastDataNCExterna.nce_naoprocedentes_anos.length > 0) {
-                console.log('📊 GRÁFICO 13 - Primeiro item nce_naoprocedentes_anos:', lastDataNCExterna.nce_naoprocedentes_anos[0]);
-                console.log('📊 GRÁFICO 13 - Estrutura das colunas:', Object.keys(lastDataNCExterna.nce_naoprocedentes_anos[0] || {}));
-            }
-            
-            if (lastDataNCExterna.total_nce_anos && lastDataNCExterna.total_nce_anos.length > 0) {
-                console.log('📊 GRÁFICO 14 - Primeiro item total_nce_anos:', lastDataNCExterna.total_nce_anos[0]);
-                console.log('📊 GRÁFICO 14 - Estrutura das colunas:', Object.keys(lastDataNCExterna.total_nce_anos[0] || {}));
-            }
-            console.log('=== FIM INVESTIGAÇÃO - GRÁFICOS 12, 13, 14 ===');
+            console.log('Dados NC Externa encontrados:', lastDataNCExterna);
 
             try {
                 // Usar a implementação original do arquivo antigo
