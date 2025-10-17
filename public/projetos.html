@@ -252,19 +252,10 @@
                             <div class="file-upload-area" id="fileUploadArea">
                                 <input type="file" id="imagem_file" name="imagem_file" accept="image/*" class="file-input">
                                 <div class="file-upload-content">
-                                    <svg width="48" height="48" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
                                     </svg>
                                     <p class="file-upload-text">Clique para selecionar uma imagem</p>
-                                    <p class="file-upload-hint">PNG, JPG até 10MB</p>
-                                </div>
-                                <div class="file-preview" id="filePreview" style="display: none;">
-                                    <img id="previewImage" src="" alt="Preview">
-                                    <button type="button" class="remove-file" id="removeFile">
-                                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                        </svg>
-                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -333,9 +324,7 @@
                                 </svg>
                                 Lista de Conquistas
                             </label>
-                            <textarea id="principais_feitos" name="principais_feitos" rows="4" class="modern-textarea" placeholder="Digite cada feito em uma linha separada&#10;Exemplo:&#10;• Implementação do sistema&#10;• Testes realizados&#10;• Documentação criada"></textarea>
-                            <div class="textarea-focus-line"></div>
-                            <div class="textarea-hint">💡 Dica: Use "•" ou "-" para criar listas visuais</div>
+                            <textarea id="principais_feitos" name="principais_feitos" rows="4" class="modern-textarea" placeholder="Digite cada feito em uma linha separada"></textarea>
                         </div>
                     </div>
 
@@ -349,14 +338,10 @@
                                 Cancelar
                             </button>
                             <button type="submit" class="save-button modern-save">
-                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                <span class="button-text">Salvar Projeto</span>
-                                <div class="button-loading" style="display: none;">
-                                    <div class="loading-spinner"></div>
-                                    Salvando...
-                                </div>
+                                Salvar Projeto
                             </button>
                         </div>
                         <button type="button" class="delete-button modern-delete hidden" id="deleteProjectBtn">
@@ -665,35 +650,11 @@
                     });
                 }
                 
-                // Upload de arquivo com preview
+                // Upload de arquivo simplificado
                 const fileInput = document.getElementById('imagem_file');
                 const fileUploadArea = document.getElementById('fileUploadArea');
-                const filePreview = document.getElementById('filePreview');
-                const previewImage = document.getElementById('previewImage');
-                const removeFileBtn = document.getElementById('removeFile');
                 
                 if (fileInput && fileUploadArea) {
-                    // Drag and drop
-                    fileUploadArea.addEventListener('dragover', function(e) {
-                        e.preventDefault();
-                        this.classList.add('dragover');
-                    });
-                    
-                    fileUploadArea.addEventListener('dragleave', function(e) {
-                        e.preventDefault();
-                        this.classList.remove('dragover');
-                    });
-                    
-                    fileUploadArea.addEventListener('drop', function(e) {
-                        e.preventDefault();
-                        this.classList.remove('dragover');
-                        const files = e.dataTransfer.files;
-                        if (files.length > 0) {
-                            handleFileSelect(files[0]);
-                        }
-                    });
-                    
-                    // Click to upload
                     fileUploadArea.addEventListener('click', function() {
                         fileInput.click();
                     });
@@ -703,57 +664,15 @@
                             handleFileSelect(this.files[0]);
                         }
                     });
-                    
-                    // Remove file
-                    if (removeFileBtn) {
-                        removeFileBtn.addEventListener('click', function(e) {
-                            e.stopPropagation();
-                            fileInput.value = '';
-                            filePreview.style.display = 'none';
-                            fileUploadArea.querySelector('.file-upload-content').style.display = 'block';
-                        });
-                    }
                 }
                 
-                // Estados de carregamento nos botões
+                // Estados de carregamento simplificado
                 const saveButton = document.querySelector('.modern-save');
                 if (saveButton) {
-                    const buttonText = saveButton.querySelector('.button-text');
-                    const buttonLoading = saveButton.querySelector('.button-loading');
-                    
-                    // Interceptar o submit para mostrar loading
                     document.getElementById('projectForm').addEventListener('submit', function() {
-                        if (buttonText && buttonLoading) {
-                            buttonText.style.display = 'none';
-                            buttonLoading.style.display = 'flex';
-                            saveButton.disabled = true;
-                        }
+                        saveButton.disabled = true;
+                        saveButton.textContent = 'Salvando...';
                     });
-                }
-                
-                // Atualizar subtítulo baseado no modo
-                const modalTitle = document.getElementById('modalTitle');
-                const modalSubtitle = document.getElementById('modalSubtitle');
-                
-                if (modalTitle && modalSubtitle) {
-                    const originalTitle = modalTitle.textContent;
-                    const originalSubtitle = modalSubtitle.textContent;
-                    
-                    // Observer para mudanças no título
-                    const observer = new MutationObserver(function(mutations) {
-                        mutations.forEach(function(mutation) {
-                            if (mutation.type === 'childList' || mutation.type === 'characterData') {
-                                const currentTitle = modalTitle.textContent;
-                                if (currentTitle.includes('Editar')) {
-                                    modalSubtitle.textContent = 'Modifique as informações do projeto';
-                                } else {
-                                    modalSubtitle.textContent = originalSubtitle;
-                                }
-                            }
-                        });
-                    });
-                    
-                    observer.observe(modalTitle, { childList: true, characterData: true, subtree: true });
                 }
             }
             
