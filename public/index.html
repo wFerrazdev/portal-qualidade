@@ -1348,24 +1348,35 @@
                             }
                         });
                         
-                        // Converter array de arrays para array de objetos
-                        const dataForChart = sheetData8.map(row => ({
-                            setor: row[0],
-                            // Mapear as colunas baseado na estrutura real
-                            nao_iniciado: row[1] || 0,
-                            em_andamento: row[2] || 0,
-                            atrasado: row[3] || 0,
-                            concluido: row[4] || 0
-                        }));
+                        // Converter array de arrays para array de objetos usando nomes reais das colunas
+                        // Baseado nos logs, as colunas são: setor, col1, col2, col3, col4
+                        const nomesColunas = ['setor', 'col1', 'col2', 'col3', 'col4'];
+                        
+                        const dataForChart = sheetData8.map(row => {
+                            const obj = {};
+                            for (let i = 0; i < Math.min(row.length, nomesColunas.length); i++) {
+                                obj[nomesColunas[i]] = row[i];
+                            }
+                            return obj;
+                        });
                         
                         console.log('Dados convertidos NC Interna:', dataForChart[0]);
                         
                         const labels8 = dataForChart.map(item => item.setor);
-                        const statusTypes = ['nao_iniciado', 'em_andamento', 'atrasado', 'concluido'];
-                        const statusColors = { 'nao_iniciado': '#6c757d', 'em_andamento': '#ffc107', 'atrasado': '#dc3545', 'concluido': '#28a745' };
+                        const statusTypes = ['col1', 'col2', 'col3', 'col4'];
+                        
+                        // Mapear nomes das colunas para nomes mais legíveis
+                        const nomesLegenda = {
+                            'col1': 'Não Iniciado',
+                            'col2': 'Em Andamento', 
+                            'col3': 'Atrasado',
+                            'col4': 'Concluído'
+                        };
+                        
+                        const statusColors = { 'col1': '#6c757d', 'col2': '#ffc107', 'col3': '#dc3545', 'col4': '#28a745' };
                         
                         const datasets = statusTypes.map(status => ({
-                            label: status.replace('_', ' ').toUpperCase(),
+                            label: nomesLegenda[status] || status.replace('_', ' ').toUpperCase(),
                             data: dataForChart.map(item => parseInt(item[status]) || 0),
                             backgroundColor: statusColors[status],
                             borderRadius: 3
@@ -1425,8 +1436,16 @@
                     if (sheetData9 && sheetData9.length > 0) {
                         console.log('Estrutura dos dados Pareto Mensal NC Interna:', sheetData9[0]);
                         
+                        // Converter array de arrays para array de objetos
+                        const dataForPareto = sheetData9.map(row => ({
+                            topicos: row[0],
+                            quantidade_pareto: row[1]
+                        }));
+                        
+                        console.log('Dados convertidos Pareto Mensal:', dataForPareto);
+                        
                         // Usar a função original do Pareto
-                        criarGraficoPareto('grafico9', sheetData9, 'topicos', 'nao_iniciado');
+                        criarGraficoPareto('grafico9', dataForPareto, 'topicos', 'quantidade_pareto');
                     } else {
                         console.log('Dados do gráfico 9 (Pareto Mensal NC Interna) não encontrados');
                     }
@@ -1441,8 +1460,16 @@
                     if (sheetData10 && sheetData10.length > 0) {
                         console.log('Estrutura dos dados Pareto Anual NC Interna:', sheetData10[0]);
                         
+                        // Converter array de arrays para array de objetos
+                        const dataForPareto = sheetData10.map(row => ({
+                            topicos: row[0],
+                            quantidade_pareto: row[1]
+                        }));
+                        
+                        console.log('Dados convertidos Pareto Anual:', dataForPareto);
+                        
                         // Usar a função original do Pareto
-                        criarGraficoPareto('grafico10', sheetData10, 'topicos', 'nao_iniciado');
+                        criarGraficoPareto('grafico10', dataForPareto, 'topicos', 'quantidade_pareto');
                     } else {
                         console.log('Dados do gráfico 10 (Pareto Anual NC Interna) não encontrados');
                     }
@@ -1457,8 +1484,16 @@
                     if (sheetData11 && sheetData11.length > 0) {
                         console.log('Estrutura dos dados NC Interna Anual:', sheetData11[0]);
                         
-                        const labels11 = sheetData11.map(item => item.mes);
-                        const data11 = sheetData11.map(item => parseInt(item.quantidade_ano) || 0);
+                        // Converter array de arrays para array de objetos
+                        const dataForChart = sheetData11.map(row => ({
+                            mes: row[0],
+                            quantidade_nc: row[1]
+                        }));
+                        
+                        console.log('Dados convertidos NC Interna Anual:', dataForChart);
+                        
+                        const labels11 = dataForChart.map(item => item.mes);
+                        const data11 = dataForChart.map(item => parseInt(item.quantidade_nc) || 0);
                         
                         console.log('Labels11:', labels11);
                         console.log('Data11:', data11);
