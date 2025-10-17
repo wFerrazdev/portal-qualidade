@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="auth0-config.js"></script>
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <style>
         * {
             margin: 0;
@@ -454,10 +454,10 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
                                 <polyline points="10 17 15 12 10 7"></polyline>
                                 <line x1="15" x2="3" y1="12" y2="12"></line>
-            </svg>
-            Acessar
+                            </svg>
+                            Acessar
                         </div>
-        </button>
+                    </button>
                 </div>
 
                 <!-- Footer -->
@@ -469,18 +469,32 @@
     </div>
 
     <script>
-        // Função de login com Auth0
+        // Função de login
         function handleLogin() {
-            login(); // Função definida em auth0-config.js
+            if (typeof netlifyIdentity !== 'undefined') {
+                netlifyIdentity.open('login');
+            } else {
+                alert('Netlify Identity não carregado. Tente novamente.');
+            }
         }
 
-        // Verificar se já está autenticado
-        document.addEventListener('DOMContentLoaded', async function() {
-            const user = await checkAuth();
-            if (user) {
-                window.location.href = '/index.html';
+        // Inicializar Netlify Identity
+        if (window.netlifyIdentity) {
+            window.netlifyIdentity.on("init", user => {
+                if (user) {
+                    window.location.href = '/dashboard';
+                }
+            });
+        }
+
+        // Handle token in URL for external auth providers
+        if (window.location.hash.includes('_token=')) {
+            if (window.netlifyIdentity) {
+                window.netlifyIdentity.on('login', () => {
+                    window.location.href = '/dashboard';
+                });
             }
-        });
+        }
     </script>
 </body>
 </html>

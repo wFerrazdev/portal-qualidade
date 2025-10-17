@@ -7,6 +7,7 @@
     <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="stylesheet" href="style.css">
     <script src="auth0-config.js"></script>
+    <script src="mock-data.js"></script>
 </head>
 <body class="unauthenticated projects-page">
 
@@ -184,22 +185,8 @@
     <script type="module">
         // Função ajudante para fazer chamadas autenticadas
         async function authFetch(url, options = {}) {
-            const user = window.netlifyIdentity.currentUser();
-            if (!user) {
-                console.error("Tentativa de chamada de API sem usuário.");
-                return Promise.reject(new Error("Usuário não autenticado"));
-            }
-            const token = await user.jwt();
-            const defaultHeaders = {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-                ...options.headers,
-            };
-            // Para uploads de arquivos, o fetch cuida do Content-Type, então o removemos
-            if (options.body instanceof FormData) {
-                delete defaultHeaders['Content-Type'];
-            }
-            return fetch(url, { ...options, headers: defaultHeaders });
+            // Usar a função authenticatedFetch do auth0-config.js
+            return await authenticatedFetch(url, options);
         }
 
         // --- SCRIPT DE SEGURANÇA E LÓGICA DO MENU ---
@@ -234,15 +221,18 @@
                 }
             });
 
-            // Também verifica o usuário atual no carregamento da página, caso já esteja logado
-            const currentUser = netlifyIdentity.currentUser();
-            if (currentUser) {
-                const userInfoSpan = document.querySelector('.user-info span');
-                const userName = currentUser.user_metadata.full_name || currentUser.email;
-                if (userInfoSpan) {
-                    userInfoSpan.innerHTML  = `Logado como: <strong>${userName}</strong>`;
+            // Exibir informações do usuário autenticado via Auth0
+            checkAuth().then(user => {
+                if (user) {
+                    const userInfoSpan = document.querySelector('.user-info span');
+                    const userName = user.name || user.email;
+                    if (userInfoSpan) {
+                        userInfoSpan.innerHTML = `Logado como: <strong>${userName}</strong>`;
+                    }
                 }
-            }
+            }).catch(error => {
+                console.error('Erro ao obter informações do usuário:', error);
+            });
         }
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -268,7 +258,7 @@
             // =================== LÓGICA DA PÁGINA DE PROJETOS ===================
             const CLOUDINARY_CLOUD_NAME = 'dsge4dbjy';
             const CLOUDINARY_UPLOAD_PRESET = 'ml_default';
-            const API_BASE_URL = '/.netlify/functions';
+            const API_BASE_URL = '/api'; // Usando APIs do Vercel
             const addProjectBtn = document.getElementById('addProjectBtn');
             const projectModal = document.getElementById('projectModal');
             const closeModalBtn = document.getElementById('closeModalBtn');
@@ -286,23 +276,21 @@
                 else if (project.progresso >= 50) { progressBarColor = '#fd7e14'; }
 
                 let actionButtonsHtml = '';
-                const user = window.netlifyIdentity.currentUser();
-                if (user && user.app_metadata.roles && user.app_metadata.roles.includes('admin')) {
-                    actionButtonsHtml = `
-                        <div class="card-action-buttons">
-                            <button class="edit-button" data-id="${project.id}" title="Editar Projeto">
-                                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                                </svg>
-                            </button>
-                            <button class="delete-button-card" data-id="${project.id}" title="Excluir Projeto">
-                                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                </svg>
-                            </button>
-                        </div>
-                    `;
-                }
+                // Mostrar botões de ação para todos os usuários por enquanto
+                actionButtonsHtml = `
+                    <div class="card-action-buttons">
+                        <button class="edit-button" data-id="${project.id}" title="Editar Projeto">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                            </svg>
+                        </button>
+                        <button class="delete-button-card" data-id="${project.id}" title="Excluir Projeto">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
+                        </button>
+                    </div>
+                `;
 
                 return `<div class="project-card">
                     <div class="card-image-container">
@@ -332,7 +320,7 @@
 
             async function fetchAndRenderProjects() {
                 try {
-                    const response = await authFetch(`${API_BASE_URL}/getProjetos`);
+                    const response = await fetch(`${API_BASE_URL}/getProjetos`);
                     if (!response.ok) { throw new Error(`HTTP error! status: ${response.status}`); }
                     const projects = await response.json();
                     projectsGrid.innerHTML = '';
@@ -460,13 +448,8 @@
             
             fetchAndRenderProjects();
 
-            // Lógica de permissões para o botão "Adicionar"
-            const user = window.netlifyIdentity.currentUser();
-            if (user && user.app_metadata.roles && user.app_metadata.roles.includes('admin')) {
-                addProjectBtn.style.display = 'flex';
-            } else {
-                addProjectBtn.style.display = 'none';
-            }
+            // Mostrar botão "Adicionar" para todos os usuários por enquanto
+            addProjectBtn.style.display = 'flex';
 
             addProjectBtn.addEventListener('click', openModalForAdd);
             closeModalBtn.addEventListener('click', closeModal);
