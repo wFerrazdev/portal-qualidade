@@ -1169,11 +1169,20 @@
                         if (sheetData6 && sheetData6.length > 0) {
                             console.log('Estrutura dos dados OPT Detalhado:', sheetData6[0]);
                             
+                            // Converter array de arrays para array de objetos
+                            const dataForChart = sheetData6.map(row => {
+                                const obj = { cliente: row[0] };
+                                for (let i = 1; i < row.length; i++) {
+                                    obj[`tipo_${i}`] = row[i];
+                                }
+                                return obj;
+                            });
+                            
                             // Obter tipos de NC (todas as colunas exceto 'cliente')
-                            const tiposDeNC = Object.keys(sheetData6[0]).filter(key => key !== 'cliente');
+                            const tiposDeNC = Object.keys(dataForChart[0]).filter(key => key !== 'cliente');
                             
                             // Filtrar dados com total > 0 e pegar os top 6
-                            const dataFiltrado = sheetData6.filter(item => {
+                            const dataFiltrado = dataForChart.filter(item => {
                                 const totalNc = tiposDeNC.reduce((soma, tipo) => soma + (parseInt(item[tipo]) || 0), 0);
                                 return totalNc > 0;
                             });
@@ -1236,8 +1245,14 @@
                         if (sheetData7 && sheetData7.length > 0) {
                             console.log('Estrutura dos dados OPT Inteiro:', sheetData7[0]);
                             
+                            // Converter array de arrays para array de objetos
+                            const dataForChart = sheetData7.map(row => ({
+                                status: row[0],
+                                quantidadeopt_total: row[1]
+                            }));
+                            
                             // Filtrar dados com quantidade > 0 e pegar os top 6
-                            const dataFiltrado = sheetData7.filter(item => parseInt(item.quantidadeopt_total) > 0);
+                            const dataFiltrado = dataForChart.filter(item => parseInt(item.quantidadeopt_total) > 0);
                             const topData = dataFiltrado.slice(0, 6);
                             
                             const labels7 = topData.map(item => item.status);
@@ -1316,18 +1331,27 @@
                     if (sheetData8 && sheetData8.length > 0) {
                         console.log('Estrutura dos dados NC Interna por Setor:', sheetData8[0]);
                         
-                        const labels8 = sheetData8.map(item => item.setor);
+                        // Converter array de arrays para array de objetos
+                        const dataForChart = sheetData8.map(row => ({
+                            setor: row[0],
+                            nao_iniciado: row[1],
+                            em_andamento: row[2],
+                            atrasado: row[3],
+                            concluido: row[4]
+                        }));
+                        
+                        const labels8 = dataForChart.map(item => item.setor);
                         const statusTypes = ['nao_iniciado', 'em_andamento', 'atrasado', 'concluido'];
                         const statusColors = { 'nao_iniciado': '#6c757d', 'em_andamento': '#ffc107', 'atrasado': '#dc3545', 'concluido': '#28a745' };
                         
                         const datasets = statusTypes.map(status => ({
                             label: status.replace('_', ' ').toUpperCase(),
-                            data: sheetData8.map(item => parseInt(item[status]) || 0),
+                            data: dataForChart.map(item => parseInt(item[status]) || 0),
                             backgroundColor: statusColors[status],
                             borderRadius: 3
                         }));
                         
-                        const stackTotals = sheetData8.map(item => statusTypes.reduce((sum, type) => sum + (parseInt(item[type]) || 0), 0));
+                        const stackTotals = dataForChart.map(item => statusTypes.reduce((sum, type) => sum + (parseInt(item[type]) || 0), 0));
                         const maxValue = Math.max(...stackTotals);
                         
                         console.log('Labels8:', labels8);
