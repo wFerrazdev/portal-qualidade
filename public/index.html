@@ -988,8 +988,16 @@
                     if (sheetData3 && sheetData3.length > 0) {
                         console.log('Estrutura dos dados Pareto RIFS:', sheetData3[0]);
                         
+                        // Converter array de arrays para array de objetos
+                        const dataForPareto = sheetData3.map(row => ({
+                            fornecedor: row[0],
+                            quantidade_pareto: row[1]
+                        }));
+                        
+                        console.log('Dados convertidos para Pareto:', dataForPareto);
+                        
                         // Usar a função original do Pareto
-                        criarGraficoPareto('grafico3', sheetData3, 'fornecedor', 'quantidade_pareto');
+                        criarGraficoPareto('grafico3', dataForPareto, 'fornecedor', 'quantidade_pareto');
                     } else {
                         console.log('Dados do gráfico 3 (Pareto RIFs) não encontrados');
                     }
@@ -1022,8 +1030,14 @@
                         if (sheetData4 && sheetData4.length > 0) {
                             console.log('Estrutura dos dados OPT por Cliente:', sheetData4[0]);
                             
+                            // Converter array de arrays para array de objetos
+                            const dataForChart = sheetData4.map(row => ({
+                                cliente: row[0],
+                                quantidadecliente_nc: row[1]
+                            }));
+                            
                             // Filtrar dados com quantidade > 0 e pegar os top 6
-                            const dataFiltrado = sheetData4.filter(item => parseInt(item.quantidadecliente_nc) > 0);
+                            const dataFiltrado = dataForChart.filter(item => parseInt(item.quantidadecliente_nc) > 0);
                             const topData = dataFiltrado.slice(0, 6);
                             
                             const labels4 = topData.map(item => item.cliente);
@@ -1085,8 +1099,14 @@
                         if (sheetData5 && sheetData5.length > 0) {
                             console.log('Estrutura dos dados OPT por Projeto:', sheetData5[0]);
                             
+                            // Converter array de arrays para array de objetos
+                            const dataForChart = sheetData5.map(row => ({
+                                projeto: row[0],
+                                quantidadeprojeto_nc: row[1]
+                            }));
+                            
                             // Filtrar dados com quantidade > 0 e pegar os top 6
-                            const dataFiltrado = sheetData5.filter(item => parseInt(item.quantidadeprojeto_nc) > 0);
+                            const dataFiltrado = dataForChart.filter(item => parseInt(item.quantidadeprojeto_nc) > 0);
                             const topData = dataFiltrado.slice(0, 6);
                             
                             const labels5 = topData.map(item => item.projeto);
