@@ -1337,40 +1337,10 @@
                     
                     if (sheetData8 && sheetData8.length > 0) {
                         console.log('Estrutura dos dados NC Interna por Setor:', sheetData8[0]);
-                        console.log('Dados completos NC Interna por Setor:', sheetData8);
-                        
-                        // Investigar todas as colunas para encontrar os dados corretos
-                        console.log('=== INVESTIGANDO ESTRUTURA DAS COLUNAS NC INTERNA ===');
-                        console.log('Total de linhas:', sheetData8.length);
-                        console.log('Primeira linha (cabeçalho?):', sheetData8[0]);
-                        
-                        sheetData8.slice(0, 5).forEach((row, index) => {
-                            console.log(`=== LINHA ${index} ===`);
-                            console.log('Dados:', row);
-                            for (let i = 0; i < row.length; i++) {
-                                console.log(`  Coluna ${i}: "${row[i]}" (tipo: ${typeof row[i]})`);
-                            }
-                            console.log('---');
-                        });
-                        
-                        // Verificar se há dados não-zero em alguma linha
-                        console.log('=== VERIFICANDO DADOS NÃO-ZERO ===');
-                        sheetData8.forEach((row, index) => {
-                            const hasNonZero = row.slice(1, 5).some(val => val !== 0 && val !== '0' && val !== '');
-                            if (hasNonZero) {
-                                console.log(`LINHA ${index} TEM DADOS NÃO-ZERO:`, row);
-                            }
-                        });
-                        
-                        // Verificar se há dados em todas as linhas
-                        console.log('=== VERIFICANDO TODAS AS LINHAS ===');
-                        sheetData8.forEach((row, index) => {
-                            console.log(`Linha ${index}:`, row);
-                        });
                         
                         // Converter array de arrays para array de objetos usando nomes reais das colunas
-                        // Baseado nos logs, as colunas são: setor, col1, col2, col3, col4
-                        const nomesColunas = ['setor', 'col1', 'col2', 'col3', 'col4'];
+                        // Baseado na planilha: setor, atrasado, em_andamento, concluido, nao_iniciado
+                        const nomesColunas = ['setor', 'atrasado', 'em_andamento', 'concluido', 'nao_iniciado'];
                         
                         const dataForChart = sheetData8.map(row => {
                             const obj = {};
@@ -1383,17 +1353,22 @@
                         console.log('Dados convertidos NC Interna:', dataForChart[0]);
                         
                         const labels8 = dataForChart.map(item => item.setor);
-                        const statusTypes = ['col1', 'col2', 'col3', 'col4'];
+                        const statusTypes = ['atrasado', 'em_andamento', 'concluido', 'nao_iniciado'];
                         
                         // Mapear nomes das colunas para nomes mais legíveis
                         const nomesLegenda = {
-                            'col1': 'Não Iniciado',
-                            'col2': 'Em Andamento', 
-                            'col3': 'Atrasado',
-                            'col4': 'Concluído'
+                            'atrasado': 'Atrasado',
+                            'em_andamento': 'Em Andamento', 
+                            'concluido': 'Concluído',
+                            'nao_iniciado': 'Não Iniciado'
                         };
                         
-                        const statusColors = { 'col1': '#6c757d', 'col2': '#ffc107', 'col3': '#dc3545', 'col4': '#28a745' };
+                        const statusColors = { 
+                            'atrasado': '#dc3545', 
+                            'em_andamento': '#ffc107', 
+                            'concluido': '#28a745', 
+                            'nao_iniciado': '#6c757d' 
+                        };
                         
                         const datasets = statusTypes.map(status => ({
                             label: nomesLegenda[status] || status.replace('_', ' ').toUpperCase(),
