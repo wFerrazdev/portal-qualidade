@@ -1157,6 +1157,9 @@
                         const sheetData6 = lastDataExterno.opt_detalhado;
                         
                         if (sheetData6 && sheetData6.length > 0) {
+                            console.log('Estrutura dos dados OPT Detalhado:', sheetData6[0]);
+                            console.log('Dados completos OPT Detalhado:', sheetData6);
+                            
                             // Converter array de arrays para array de objetos
                             const dataForChart = sheetData6.map(row => {
                                 const obj = { cliente: row[0] };
@@ -1166,8 +1169,12 @@
                                 return obj;
                             });
                             
+                            console.log('Dados convertidos OPT Detalhado:', dataForChart[0]);
+                            
                             // Obter tipos de NC (todas as colunas exceto 'cliente')
                             const tiposDeNC = Object.keys(dataForChart[0]).filter(key => key !== 'cliente');
+                            
+                            console.log('Tipos de NC encontrados:', tiposDeNC);
                             
                             // Filtrar dados com total > 0 e pegar os top 6
                             const dataFiltrado = dataForChart.filter(item => {
@@ -1183,6 +1190,8 @@
                                 data: topData.map(item => parseInt(item[tipo]) || 0),
                                 backgroundColor: colors[index % colors.length]
                             }));
+                            
+                            console.log('Datasets criados:', datasets);
                             
                             charts.grafico6 = new Chart(ctx6, {
                                 type: 'bar',
