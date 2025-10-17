@@ -1442,6 +1442,8 @@
             const dados2025 = data.map(item => parseInt(item[1]) || 0); // Coluna 1: Quantidade 1
             const dados2024 = data.map(item => parseInt(item[2]) || 0); // Coluna 2: Quantidade 2
             
+            console.log(`DEBUG ${canvasId}:`, { labels, dados2025, dados2024 });
+            
             console.log('Labels mapeados:', labels);
             console.log('Dados 2025 mapeados:', dados2025);
             console.log('Dados 2024 mapeados:', dados2024);
