@@ -1542,6 +1542,191 @@
             }
         }
 
+        function criarGraficoCombinadoMensal(canvasId, data, tipoGrafico1, tipoGrafico2) {
+            if (!data || data.length === 0) return;
+            
+            const isMobile = window.innerWidth < 1024;
+            const labels = data.map(item => item.mes);
+            const dados1 = data.map(item => parseInt(item.quantidade_1) || 0);
+            const dados2 = data.map(item => parseInt(item.quantidade_2) || 0);
+
+            const maxValue = Math.max(...dados1, ...dados2);
+
+            const datasets = [
+                {
+                    type: tipoGrafico2,
+                    label: 'Quantidade 2',
+                    data: dados2,
+                    backgroundColor: 'rgba(233, 123, 50, 0.918)',
+                    borderColor: 'rgba(233, 123, 50, 0.918)',
+                    borderRadius: 5,
+                    order: 1,
+                    datalabels: {
+                        color: '#adb5bd',
+                        font: { size: 10 },
+                        anchor: 'end',
+                        align: 'end',
+                        formatter: (value) => value > 0 ? value : null
+                    }
+                },
+                {
+                    type: tipoGrafico1,
+                    label: 'Quantidade 1',
+                    data: dados1,
+                    backgroundColor: '#003366',
+                    borderColor: '#003366',
+                    borderRadius: 5,
+                    tension: 0.4,
+                    order: 0,
+                    datalabels: {
+                        color: '#000',
+                        font: { weight: 'bold', size: 12 },
+                        anchor: 'end',
+                        align: 'end',
+                        formatter: (value) => value > 0 ? value : null
+                    }
+                }
+            ];
+
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            charts[canvasId] = new Chart(ctx, {
+                type: 'bar',
+                data: { labels, datasets },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 20,
+                                font: { size: isMobile ? 10 : 12 }
+                            }
+                        },
+                        datalabels: {
+                            display: true
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: Math.ceil(maxValue * 1.1),
+                            ticks: {
+                                font: { size: isMobile ? 10 : 12 },
+                                color: '#6c757d'
+                            },
+                            grid: {
+                                color: 'rgba(0,0,0,0.1)',
+                                drawBorder: false
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                font: { size: isMobile ? 10 : 12 },
+                                color: '#6c757d',
+                                maxRotation: isMobile ? 45 : 0
+                            },
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                },
+                plugins: [ChartDataLabels]
+            });
+        }
+
+        function criarGraficoBarrasSimplesMensal(canvasId, data) {
+            if (!data || data.length === 0) return;
+            
+            const isMobile = window.innerWidth < 1024;
+            const labels = data.map(item => item.mes);
+            const dados1 = data.map(item => parseInt(item.quantidade_1) || 0);
+            const dados2 = data.map(item => parseInt(item.quantidade_2) || 0);
+
+            const maxValue = Math.max(...dados1, ...dados2);
+
+            const datasets = [
+                {
+                    label: 'Quantidade 1',
+                    data: dados1,
+                    backgroundColor: '#003366',
+                    borderRadius: 5,
+                    datalabels: {
+                        color: '#fff',
+                        font: { weight: 'bold', size: 12 },
+                        anchor: 'end',
+                        align: 'end',
+                        formatter: (value) => value > 0 ? value : null
+                    }
+                },
+                {
+                    label: 'Quantidade 2',
+                    data: dados2,
+                    backgroundColor: 'rgba(233, 123, 50, 0.918)',
+                    borderRadius: 5,
+                    datalabels: {
+                        color: '#fff',
+                        font: { weight: 'bold', size: 12 },
+                        anchor: 'end',
+                        align: 'end',
+                        formatter: (value) => value > 0 ? value : null
+                    }
+                }
+            ];
+
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            charts[canvasId] = new Chart(ctx, {
+                type: 'bar',
+                data: { labels, datasets },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 20,
+                                font: { size: isMobile ? 10 : 12 }
+                            },
+                            datalabels: {
+                                display: true
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: Math.ceil(maxValue * 1.1),
+                            ticks: {
+                                font: { size: isMobile ? 10 : 12 },
+                                color: '#6c757d'
+                            },
+                            grid: {
+                                color: 'rgba(0,0,0,0.1)',
+                                drawBorder: false
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                font: { size: isMobile ? 10 : 12 },
+                                color: '#6c757d',
+                                maxRotation: isMobile ? 45 : 0
+                            },
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                },
+                plugins: [ChartDataLabels]
+            });
+        }
+
         function criarGraficoCombinadoAnual(canvasId, data, tipoGrafico2025, tipoGrafico2024) {
             if (!data || data.length === 0) return;
             
@@ -1702,29 +1887,26 @@
                     });
                 }
                 
-                // Converter dados de arrays para objetos
+                // Converter dados de arrays para objetos com estrutura correta (mensal)
                 const dataProcedentes = lastDataNCExterna.nce_procedentes_anos ? 
                     lastDataNCExterna.nce_procedentes_anos.map(row => ({
-                        ano: row[0],
-                        quantidade_2022: row[1],
-                        quantidade_2023: row[2],
-                        quantidade_2024: row[3]
+                        mes: row[0],
+                        quantidade_1: row[1],
+                        quantidade_2: row[2]
                     })) : [];
                 
                 const dataNaoProcedentes = lastDataNCExterna.nce_naoprocedentes_anos ? 
                     lastDataNCExterna.nce_naoprocedentes_anos.map(row => ({
-                        ano: row[0],
-                        quantidade_2022: row[1],
-                        quantidade_2023: row[2],
-                        quantidade_2024: row[3]
+                        mes: row[0],
+                        quantidade_1: row[1],
+                        quantidade_2: row[2]
                     })) : [];
                 
                 const dataTotal = lastDataNCExterna.total_nce_anos ? 
                     lastDataNCExterna.total_nce_anos.map(row => ({
-                        ano: row[0],
-                        quantidade_2022: row[1],
-                        quantidade_2023: row[2],
-                        quantidade_2024: row[3]
+                        mes: row[0],
+                        quantidade_1: row[1],
+                        quantidade_2: row[2]
                     })) : [];
                 
                 const dataPareto = lastDataNCExterna.nce_pareto_defeitos ? 
@@ -1740,10 +1922,10 @@
                     pareto: dataPareto
                 });
                 
-                // Usar a implementação original do arquivo antigo
-                criarGraficoCombinadoAnual('grafico12', dataProcedentes, 'line', 'bar');
-                criarGraficoBarrasSimplesAnual('grafico13', dataNaoProcedentes);
-                criarGraficoCombinadoAnual('grafico14', dataTotal, 'line', 'line');
+                // Criar gráficos NC Externa com estrutura mensal correta
+                criarGraficoCombinadoMensal('grafico12', dataProcedentes, 'line', 'bar');
+                criarGraficoBarrasSimplesMensal('grafico13', dataNaoProcedentes);
+                criarGraficoCombinadoMensal('grafico14', dataTotal, 'line', 'line');
                 
                 if (dataPareto.length > 0) {
                     criarGraficoPareto('grafico15', dataPareto, 'defeito', 'quantidade_pareto');
