@@ -31,97 +31,81 @@ export default async function handler(req, res) {
         // Dados mock como fallback
         const mockData = {
             'opt_por_cliente': [
-                ['Cliente', 'Q1 2024', 'Q2 2024', 'Q3 2024', 'Q4 2024'],
-                ['Cliente A', '95%', '97%', '96%', '98%'],
-                ['Cliente B', '92%', '94%', '95%', '97%'],
-                ['Cliente C', '89%', '91%', '93%', '95%']
+                ['Cliente A', 95, 97, 96, 98],
+                ['Cliente B', 92, 94, 95, 97],
+                ['Cliente C', 89, 91, 93, 95]
             ],
             'opt_por_projeto': [
-                ['Projeto', 'Status', 'Progresso', 'Qualidade'],
-                ['Projeto Alpha', 'Em Andamento', '75%', 'A'],
-                ['Projeto Beta', 'Concluído', '100%', 'A+'],
-                ['Projeto Gamma', 'Planejamento', '25%', 'B']
+                ['Projeto Alpha', 'Em Andamento', 75, 'A'],
+                ['Projeto Beta', 'Concluído', 100, 'A+'],
+                ['Projeto Gamma', 'Planejamento', 25, 'B']
             ],
             'opt_detalhado': [
-                ['Item', 'Status', 'Responsável'],
                 ['Item 1', 'Concluído', 'João'],
                 ['Item 2', 'Em andamento', 'Maria']
             ],
             'opt_inteiro': [
-                ['Total', 'Meta'],
-                ['300', '350']
+                [300, 350]
             ],
             'nci_por_setor': [
-                ['Setor', 'NCI Q1', 'NCI Q2', 'NCI Q3', 'NCI Q4'],
-                ['Produção', '2', '1', '0', '1'],
-                ['Qualidade', '1', '0', '1', '0'],
-                ['Logística', '3', '2', '1', '2']
+                ['Produção', 2, 1, 0, 1],
+                ['Qualidade', 1, 0, 1, 0],
+                ['Logística', 3, 2, 1, 2]
             ],
             'pareto_mes': [
-                ['Defeito', 'Quantidade'],
-                ['Defeito A', '15'],
-                ['Defeito B', '10'],
-                ['Defeito C', '5']
+                ['Defeito A', 15],
+                ['Defeito B', 10],
+                ['Defeito C', 5]
             ],
             'pareto_ano': [
-                ['Defeito', 'Quantidade'],
-                ['Defeito A', '120'],
-                ['Defeito B', '80'],
-                ['Defeito C', '40']
+                ['Defeito A', 120],
+                ['Defeito B', 80],
+                ['Defeito C', 40]
             ],
             'nci_anual': [
-                ['Ano', 'Quantidade'],
-                ['2022', '30'],
-                ['2023', '25'],
-                ['2024', '20']
+                ['2022', 30],
+                ['2023', 25],
+                ['2024', 20]
             ],
             'status_por_fornecedor_ano': [
-                ['Fornecedor', 'Status', 'Quantidade'],
-                ['Fornecedor A', 'Aprovado', '15'],
-                ['Fornecedor B', 'Pendente', '8'],
-                ['Fornecedor C', 'Reprovado', '3']
+                ['Fornecedor A', 'Aprovado', 15],
+                ['Fornecedor B', 'Pendente', 8],
+                ['Fornecedor C', 'Reprovado', 3]
             ],
             'status_por_fornecedor_mes': [
-                ['Fornecedor', 'Status', 'Quantidade'],
-                ['Fornecedor A', 'Aprovado', '5'],
-                ['Fornecedor B', 'Pendente', '3'],
-                ['Fornecedor C', 'Reprovado', '1']
+                ['Fornecedor A', 'Aprovado', 5],
+                ['Fornecedor B', 'Pendente', 3],
+                ['Fornecedor C', 'Reprovado', 1]
             ],
             'pareto_rifs': [
-                ['Fornecedor', 'Quantidade'],
-                ['Fornecedor A', '15'],
-                ['Fornecedor B', '8'],
-                ['Fornecedor C', '3']
+                ['Fornecedor A', 15],
+                ['Fornecedor B', 8],
+                ['Fornecedor C', 3]
             ],
             'nce_procedentes_anos': [
-                ['Ano', 'Quantidade'],
-                ['2022', '25'],
-                ['2023', '18'],
-                ['2024', '12']
+                ['2022', 25],
+                ['2023', 18],
+                ['2024', 12]
             ],
             'nce_naoprocedentes_anos': [
-                ['Ano', 'Quantidade'],
-                ['2022', '5'],
-                ['2023', '3'],
-                ['2024', '2']
+                ['2022', 5],
+                ['2023', 3],
+                ['2024', 2]
             ],
             'total_nce_anos': [
-                ['Ano', 'Quantidade'],
-                ['2022', '30'],
-                ['2023', '21'],
-                ['2024', '14']
+                ['2022', 30],
+                ['2023', 21],
+                ['2024', 14]
             ],
             'nce_pareto_defeitos': [
-                ['Defeito', 'Quantidade'],
-                ['Defeito A', '20'],
-                ['Defeito B', '15'],
-                ['Defeito C', '10']
+                ['Defeito A', 20],
+                ['Defeito B', 15],
+                ['Defeito C', 10]
             ],
             'kpi_revertidos': [
-                ['Ano', 'Quantidade'],
-                ['2022', '5'],
-                ['2023', '8'],
-                ['2024', '10']
+                ['2022', 5],
+                ['2023', 8],
+                ['2024', 10]
             ]
         };
         
@@ -172,12 +156,15 @@ export default async function handler(req, res) {
                             // Obter o cabeçalho
                             const headerValues = sheet.headerValues;
                             
-                            // Converter as linhas em array de arrays
-                            const data = [headerValues];
+                            // Converter as linhas em formato correto para os gráficos
+                            const data = [];
                             rows.forEach(row => {
                                 const rowData = [];
                                 headerValues.forEach(header => {
-                                    rowData.push(row.get(header) || '');
+                                    const value = row.get(header) || '';
+                                    // Converter números se possível
+                                    const numValue = parseFloat(value);
+                                    rowData.push(isNaN(numValue) ? value : numValue);
                                 });
                                 data.push(rowData);
                             });
