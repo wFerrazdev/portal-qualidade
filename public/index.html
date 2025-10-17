@@ -1337,11 +1337,18 @@
                     
                     if (sheetData8 && sheetData8.length > 0) {
                         console.log('Estrutura dos dados NC Interna por Setor:', sheetData8[0]);
+                        console.log('Dados completos NC Interna por Setor:', sheetData8);
+                        
+                        // Investigar todas as colunas para encontrar os dados corretos
+                        console.log('Investigando estrutura das colunas NC Interna:');
+                        sheetData8.slice(0, 3).forEach((row, index) => {
+                            console.log(`Linha ${index}:`, row);
+                            for (let i = 0; i < row.length; i++) {
+                                console.log(`  Coluna ${i}: "${row[i]}" (tipo: ${typeof row[i]})`);
+                            }
+                        });
                         
                         // Converter array de arrays para array de objetos
-                        // Vamos verificar a estrutura real dos dados primeiro
-                        console.log('Primeira linha dos dados NC Interna:', sheetData8[0]);
-                        
                         const dataForChart = sheetData8.map(row => ({
                             setor: row[0],
                             // Mapear as colunas baseado na estrutura real
