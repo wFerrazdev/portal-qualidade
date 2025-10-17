@@ -2570,46 +2570,45 @@ body.projects-page {
     gap: 8px;
     justify-content: flex-end;
     margin-bottom: 10px;
+    align-items: center;
 }
 
 .modern-cancel {
-    padding: 8px 16px;
-    background: #f7fafc;
-    color: #4a5568;
-    border: 1px solid #e2e8f0;
+    padding: 5px;
+    background: linear-gradient(135deg, #6b7280, #4b5563);
+    color: white;
+    border: none;
     border-radius: 6px;
     font-weight: 500;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 4px;
-    transition: background 0.1s ease;
-    min-width: 80px;
     justify-content: center;
+    transition: background 0.1s ease;
+    min-width: 40px;
+    height: 40px;
 }
 
 .modern-cancel:hover {
-    background: #edf2f7;
+    background: linear-gradient(135deg, #4b5563, #374151);
 }
 
 .modern-save {
-    padding: 8px 16px;
+    padding: 5px;
     background: linear-gradient(135deg, #0f172a, #1e3a8a);
     color: white;
     border: none;
     border-radius: 6px;
     font-weight: 500;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 4px;
-    transition: background 0.1s ease;
-    position: relative;
-    overflow: hidden;
-    min-width: 90px;
     justify-content: center;
+    transition: background 0.1s ease;
+    min-width: 40px;
+    height: 40px;
 }
 
 .modern-save:hover {
@@ -2637,24 +2636,24 @@ body.projects-page {
 }
 
 .modern-delete {
-    width: 100%;
-    padding: 8px 16px;
-    background: #fed7d7;
-    color: #c53030;
-    border: 1px solid #feb2b2;
+    width: 40px;
+    height: 40px;
+    padding: 5px;
+    background: linear-gradient(135deg, #dc2626, #b91c1c);
+    color: white;
+    border: none;
     border-radius: 6px;
     font-weight: 500;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 4px;
     transition: background 0.1s ease;
 }
 
 .modern-delete:hover {
-    background: #feb2b2;
+    background: linear-gradient(135deg, #b91c1c, #991b1b);
 }
 
 /* Responsividade */
