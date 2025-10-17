@@ -786,15 +786,15 @@
         }
 
         function renderizarGraficosRifs() {
-            console.log('Tentando renderizar gráficos RIFS...');
-            console.log('lastDataRifs:', lastDataRifs);
+            // console.log('Tentando renderizar gráficos RIFS...');
+            // console.log('lastDataRifs:', lastDataRifs);
             
             if (!lastDataRifs) {
-                console.log('Dados RIFs não disponíveis ainda');
+                // console.log('Dados RIFs não disponíveis ainda');
                 return;
             }
             
-            console.log('Dados RIFS encontrados:', lastDataRifs);
+            // console.log('Dados RIFS encontrados:', lastDataRifs);
 
             try {
                 // Gráfico 1: RIFs por Fornecedor - Anual
@@ -804,7 +804,7 @@
                     const sheetData = lastDataRifs.status_por_fornecedor_ano;
                     
                     if (sheetData && sheetData.length > 0) {
-                        console.log('Estrutura dos dados RIFS Anual:', sheetData[0]);
+                        // console.log('Estrutura dos dados RIFS Anual:', sheetData[0]);
                         
                         let labels, concluidoData, emTratativaData;
                         
@@ -821,9 +821,9 @@
                             emTratativaData = sheetData.map(item => parseInt(item.em_tratativa) || 0).filter((_, index) => index < labels.length);
                         }
                         
-                        console.log('Labels:', labels);
-                        console.log('Concluído:', concluidoData);
-                        console.log('Em Tratativa:', emTratativaData);
+                        // console.log('Labels:', labels);
+                        // console.log('Concluído:', concluidoData);
+                        // console.log('Em Tratativa:', emTratativaData);
                         
                     // Criar gradientes como no original
                     const gradienteConcluido = ctx1.createLinearGradient(0, 0, 0, 200);
@@ -998,15 +998,15 @@
         }
 
         function renderizarGraficosOpt() {
-            console.log('Tentando renderizar gráficos OPT...');
-            console.log('lastDataExterno:', lastDataExterno);
+            // console.log('Tentando renderizar gráficos OPT...');
+            // console.log('lastDataExterno:', lastDataExterno);
             
             if (!lastDataExterno) {
-                console.log('Dados OPT não disponíveis ainda');
+                // console.log('Dados OPT não disponíveis ainda');
                 return;
             }
             
-            console.log('Dados OPT encontrados:', lastDataExterno);
+            // console.log('Dados OPT encontrados:', lastDataExterno);
 
             // Adicionar delay para todos os gráficos OPT para consistência
             setTimeout(() => {
@@ -1274,15 +1274,15 @@
         }
 
         function renderizarGraficosNCInterna() {
-            console.log('Tentando renderizar gráficos NC Interna...');
-            console.log('lastDataInterno:', lastDataInterno);
+            // console.log('Tentando renderizar gráficos NC Interna...');
+            // console.log('lastDataInterno:', lastDataInterno);
             
             if (!lastDataInterno) {
-                console.log('Dados NC Interna não disponíveis ainda');
+                // console.log('Dados NC Interna não disponíveis ainda');
                 return;
             }
             
-            console.log('Dados NC Interna encontrados:', lastDataInterno);
+            // console.log('Dados NC Interna encontrados:', lastDataInterno);
 
             try {
                 // Gráfico 8: NC Interna por Setor
@@ -1586,7 +1586,30 @@
                 return;
             }
             
-            console.log('Dados NC Externa encontrados:', lastDataNCExterna);
+            // console.log('Dados NC Externa encontrados:', lastDataNCExterna);
+
+            // 🔍 LOGS TEMPORÁRIOS PARA INVESTIGAR ESTRUTURA DOS DADOS - APENAS GRÁFICOS PROBLEMÁTICOS
+            console.log('=== INVESTIGAÇÃO NC EXTERNA - GRÁFICOS 12, 13, 14 ===');
+            console.log('nce_procedentes_anos (Gráfico 12):', lastDataNCExterna.nce_procedentes_anos);
+            console.log('nce_naoprocedentes_anos (Gráfico 13):', lastDataNCExterna.nce_naoprocedentes_anos);
+            console.log('total_nce_anos (Gráfico 14):', lastDataNCExterna.total_nce_anos);
+            
+            // Investigar estrutura dos dados dos 3 gráficos problemáticos
+            if (lastDataNCExterna.nce_procedentes_anos && lastDataNCExterna.nce_procedentes_anos.length > 0) {
+                console.log('📊 GRÁFICO 12 - Primeiro item nce_procedentes_anos:', lastDataNCExterna.nce_procedentes_anos[0]);
+                console.log('📊 GRÁFICO 12 - Estrutura das colunas:', Object.keys(lastDataNCExterna.nce_procedentes_anos[0] || {}));
+            }
+            
+            if (lastDataNCExterna.nce_naoprocedentes_anos && lastDataNCExterna.nce_naoprocedentes_anos.length > 0) {
+                console.log('📊 GRÁFICO 13 - Primeiro item nce_naoprocedentes_anos:', lastDataNCExterna.nce_naoprocedentes_anos[0]);
+                console.log('📊 GRÁFICO 13 - Estrutura das colunas:', Object.keys(lastDataNCExterna.nce_naoprocedentes_anos[0] || {}));
+            }
+            
+            if (lastDataNCExterna.total_nce_anos && lastDataNCExterna.total_nce_anos.length > 0) {
+                console.log('📊 GRÁFICO 14 - Primeiro item total_nce_anos:', lastDataNCExterna.total_nce_anos[0]);
+                console.log('📊 GRÁFICO 14 - Estrutura das colunas:', Object.keys(lastDataNCExterna.total_nce_anos[0] || {}));
+            }
+            console.log('=== FIM INVESTIGAÇÃO - GRÁFICOS 12, 13, 14 ===');
 
             try {
                 // Usar a implementação original do arquivo antigo
