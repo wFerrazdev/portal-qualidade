@@ -788,15 +788,15 @@
         }
 
         function renderizarGraficosRifs() {
-            console.log('Tentando renderizar gráficos RIFS...');
-            console.log('lastDataRifs:', lastDataRifs);
+            // console.log('Tentando renderizar gráficos RIFS...');
+            // console.log('lastDataRifs:', lastDataRifs);
             
             if (!lastDataRifs) {
-                console.log('Dados RIFs não disponíveis ainda');
+                // console.log('Dados RIFs não disponíveis ainda');
                 return;
             }
             
-            console.log('Dados RIFS encontrados:', lastDataRifs);
+            // console.log('Dados RIFS encontrados:', lastDataRifs);
 
             try {
                 // Gráfico 1: RIFs por Fornecedor - Anual
@@ -1008,15 +1008,15 @@
         }
 
         function renderizarGraficosOpt() {
-            console.log('Tentando renderizar gráficos OPT...');
-            console.log('lastDataExterno:', lastDataExterno);
+            // console.log('Tentando renderizar gráficos OPT...');
+            // console.log('lastDataExterno:', lastDataExterno);
             
             if (!lastDataExterno) {
-                console.log('Dados OPT não disponíveis ainda');
+                // console.log('Dados OPT não disponíveis ainda');
                 return;
             }
             
-            console.log('Dados OPT encontrados:', lastDataExterno);
+            // console.log('Dados OPT encontrados:', lastDataExterno);
 
             // Adicionar delay para todos os gráficos OPT para consistência
             setTimeout(() => {
@@ -1318,15 +1318,15 @@
         }
 
         function renderizarGraficosNCInterna() {
-            console.log('Tentando renderizar gráficos NC Interna...');
-            console.log('lastDataInterno:', lastDataInterno);
+            // console.log('Tentando renderizar gráficos NC Interna...');
+            // console.log('lastDataInterno:', lastDataInterno);
             
             if (!lastDataInterno) {
-                console.log('Dados NC Interna não disponíveis ainda');
+                // console.log('Dados NC Interna não disponíveis ainda');
                 return;
             }
             
-            console.log('Dados NC Interna encontrados:', lastDataInterno);
+            // console.log('Dados NC Interna encontrados:', lastDataInterno);
 
             try {
                 // Gráfico 8: NC Interna por Setor
@@ -1336,7 +1336,7 @@
                     const sheetData8 = lastDataInterno.nci_por_setor;
                     
                     if (sheetData8 && sheetData8.length > 0) {
-                        console.log('Estrutura dos dados NC Interna por Setor:', sheetData8[0]);
+                        // console.log('Estrutura dos dados NC Interna por Setor:', sheetData8[0]);
                         
                         // Converter array de arrays para array de objetos usando nomes reais das colunas
                         // Baseado na planilha: setor, atrasado, em_andamento, concluido, nao_iniciado
@@ -1685,6 +1685,23 @@
             console.log('Dados NC Externa encontrados:', lastDataNCExterna);
 
             try {
+                console.log('=== INVESTIGANDO ESTRUTURA DOS DADOS NC EXTERNA ===');
+                console.log('nce_procedentes_anos:', lastDataNCExterna.nce_procedentes_anos);
+                console.log('nce_naoprocedentes_anos:', lastDataNCExterna.nce_naoprocedentes_anos);
+                console.log('total_nce_anos:', lastDataNCExterna.total_nce_anos);
+                console.log('nce_pareto_defeitos:', lastDataNCExterna.nce_pareto_defeitos);
+                
+                // Investigar estrutura das colunas
+                if (lastDataNCExterna.nce_procedentes_anos && lastDataNCExterna.nce_procedentes_anos.length > 0) {
+                    console.log('Estrutura nce_procedentes_anos:', lastDataNCExterna.nce_procedentes_anos[0]);
+                    lastDataNCExterna.nce_procedentes_anos.slice(0, 3).forEach((row, index) => {
+                        console.log(`Linha ${index} procedentes:`, row);
+                        for (let i = 0; i < row.length; i++) {
+                            console.log(`  Coluna ${i}: "${row[i]}" (tipo: ${typeof row[i]})`);
+                        }
+                    });
+                }
+                
                 // Converter dados de arrays para objetos
                 const dataProcedentes = lastDataNCExterna.nce_procedentes_anos ? 
                     lastDataNCExterna.nce_procedentes_anos.map(row => ({
