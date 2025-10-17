@@ -650,6 +650,130 @@
             // Funcionalidades modernas do modal
             setupModernModalFeatures();
             
+            // Função para configurar funcionalidades modernas do modal
+            function setupModernModalFeatures() {
+                // Controle do slider de progresso
+                const progressSlider = document.getElementById('progresso');
+                const progressValue = document.getElementById('progressValue');
+                
+                if (progressSlider && progressValue) {
+                    progressSlider.addEventListener('input', function() {
+                        progressValue.textContent = this.value + '%';
+                    });
+                }
+                
+                // Upload de arquivo com preview
+                const fileInput = document.getElementById('imagem_file');
+                const fileUploadArea = document.getElementById('fileUploadArea');
+                const filePreview = document.getElementById('filePreview');
+                const previewImage = document.getElementById('previewImage');
+                const removeFileBtn = document.getElementById('removeFile');
+                
+                if (fileInput && fileUploadArea) {
+                    // Drag and drop
+                    fileUploadArea.addEventListener('dragover', function(e) {
+                        e.preventDefault();
+                        this.classList.add('dragover');
+                    });
+                    
+                    fileUploadArea.addEventListener('dragleave', function(e) {
+                        e.preventDefault();
+                        this.classList.remove('dragover');
+                    });
+                    
+                    fileUploadArea.addEventListener('drop', function(e) {
+                        e.preventDefault();
+                        this.classList.remove('dragover');
+                        const files = e.dataTransfer.files;
+                        if (files.length > 0) {
+                            handleFileSelect(files[0]);
+                        }
+                    });
+                    
+                    // Click to upload
+                    fileUploadArea.addEventListener('click', function() {
+                        fileInput.click();
+                    });
+                    
+                    fileInput.addEventListener('change', function() {
+                        if (this.files.length > 0) {
+                            handleFileSelect(this.files[0]);
+                        }
+                    });
+                    
+                    // Remove file
+                    if (removeFileBtn) {
+                        removeFileBtn.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            fileInput.value = '';
+                            filePreview.style.display = 'none';
+                            fileUploadArea.querySelector('.file-upload-content').style.display = 'block';
+                        });
+                    }
+                }
+                
+                // Estados de carregamento nos botões
+                const saveButton = document.querySelector('.modern-save');
+                if (saveButton) {
+                    const buttonText = saveButton.querySelector('.button-text');
+                    const buttonLoading = saveButton.querySelector('.button-loading');
+                    
+                    // Interceptar o submit para mostrar loading
+                    document.getElementById('projectForm').addEventListener('submit', function() {
+                        if (buttonText && buttonLoading) {
+                            buttonText.style.display = 'none';
+                            buttonLoading.style.display = 'flex';
+                            saveButton.disabled = true;
+                        }
+                    });
+                }
+                
+                // Atualizar subtítulo baseado no modo
+                const modalTitle = document.getElementById('modalTitle');
+                const modalSubtitle = document.getElementById('modalSubtitle');
+                
+                if (modalTitle && modalSubtitle) {
+                    const originalTitle = modalTitle.textContent;
+                    const originalSubtitle = modalSubtitle.textContent;
+                    
+                    // Observer para mudanças no título
+                    const observer = new MutationObserver(function(mutations) {
+                        mutations.forEach(function(mutation) {
+                            if (mutation.type === 'childList' || mutation.type === 'characterData') {
+                                const currentTitle = modalTitle.textContent;
+                                if (currentTitle.includes('Editar')) {
+                                    modalSubtitle.textContent = 'Modifique as informações do projeto';
+                                } else {
+                                    modalSubtitle.textContent = originalSubtitle;
+                                }
+                            }
+                        });
+                    });
+                    
+                    observer.observe(modalTitle, { childList: true, characterData: true, subtree: true });
+                }
+            }
+            
+            function handleFileSelect(file) {
+                if (file && file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const filePreview = document.getElementById('filePreview');
+                        const previewImage = document.getElementById('previewImage');
+                        const fileUploadContent = document.querySelector('.file-upload-content');
+                        
+                        if (filePreview && previewImage && fileUploadContent) {
+                            previewImage.src = e.target.result;
+                            filePreview.style.display = 'block';
+                            fileUploadContent.style.display = 'none';
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    alert('Por favor, selecione apenas arquivos de imagem.');
+                }
+            }
+            
             projectsGrid.addEventListener('click', async (event) => {
                 const editButton = event.target.closest('.edit-button');
                 const deleteButton = event.target.closest('.delete-button-card');
