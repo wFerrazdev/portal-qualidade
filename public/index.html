@@ -1031,33 +1031,32 @@
                             console.log('Estrutura dos dados OPT por Cliente:', sheetData4[0]);
                             console.log('Dados completos OPT por Cliente:', sheetData4);
                             
+                            // Investigar todas as colunas para encontrar os dados corretos
+                            console.log('Investigando estrutura das colunas:');
+                            sheetData4.slice(0, 3).forEach((row, index) => {
+                                console.log(`Linha ${index}:`, row);
+                                console.log(`  Coluna 0 (cliente): "${row[0]}"`);
+                                console.log(`  Coluna 1: "${row[1]}" (tipo: ${typeof row[1]})`);
+                                console.log(`  Coluna 2: "${row[2]}" (tipo: ${typeof row[2]})`);
+                                console.log(`  Coluna 3: "${row[3]}" (tipo: ${typeof row[3]})`);
+                            });
+                            
                             // Converter array de arrays para array de objetos
+                            // Vamos tentar diferentes colunas para encontrar os dados corretos
                             const dataForChart = sheetData4.map(row => ({
                                 cliente: row[0],
-                                quantidadecliente_nc: row[1]
+                                col1: row[1],
+                                col2: row[2],
+                                col3: row[3]
                             }));
                             
                             console.log('Dados convertidos OPT por Cliente:', dataForChart);
                             
-                            // Se todos os dados são 0, usar dados mock
-                            const hasValidData = dataForChart.some(item => parseInt(item.quantidadecliente_nc) > 0);
+                            // Usar os dados reais, mesmo que sejam 0
+                            const labels4 = dataForChart.map(item => item.cliente);
+                            const optData4 = dataForChart.map(item => parseInt(item.col1) || 0);
                             
-                            let labels4, optData4;
-                            if (!hasValidData) {
-                                console.log('Todos os dados são 0, usando dados mock para OPT por Cliente');
-                                labels4 = ['WABTEC', 'JCB', 'ALSTOM', 'KUHN', 'BLUEWIND', 'TRAMONTINA'];
-                                optData4 = [15, 12, 8, 5, 3, 2];
-                            } else {
-                                // Filtrar dados com quantidade > 0 e pegar os top 6
-                                const dataFiltrado = dataForChart.filter(item => parseInt(item.quantidadecliente_nc) > 0);
-                                const topData = dataFiltrado.slice(0, 6);
-                                
-                                console.log('Dados filtrados OPT por Cliente:', topData);
-                                
-                                labels4 = topData.map(item => item.cliente);
-                                optData4 = topData.map(item => parseInt(item.quantidadecliente_nc));
-                            }
-                            
+                            console.log('Usando dados reais (mesmo que sejam 0):');
                             console.log('Labels4:', labels4);
                             console.log('OPT Data4:', optData4);
                             
@@ -1115,36 +1114,34 @@
                             console.log('Estrutura dos dados OPT por Projeto:', sheetData5[0]);
                             console.log('Dados completos OPT por Projeto:', sheetData5);
                             
+                            // Investigar todas as colunas para encontrar os dados corretos
+                            console.log('Investigando estrutura das colunas OPT por Projeto:');
+                            sheetData5.slice(0, 3).forEach((row, index) => {
+                                console.log(`Linha ${index}:`, row);
+                                console.log(`  Coluna 0 (projeto): "${row[0]}"`);
+                                console.log(`  Coluna 1: "${row[1]}" (tipo: ${typeof row[1]})`);
+                                console.log(`  Coluna 2: "${row[2]}" (tipo: ${typeof row[2]})`);
+                                console.log(`  Coluna 3: "${row[3]}" (tipo: ${typeof row[3]})`);
+                            });
+                            
                             // Converter array de arrays para array de objetos
                             const dataForChart = sheetData5.map(row => ({
                                 projeto: row[0],
-                                quantidadeprojeto_nc: row[1]
+                                col1: row[1],
+                                col2: row[2],
+                                col3: row[3]
                             }));
                             
                             console.log('Dados convertidos OPT por Projeto:', dataForChart);
                             
-                            // Se todos os dados são 0, usar dados mock
-                            const hasValidData = dataForChart.some(item => parseInt(item.quantidadeprojeto_nc) > 0);
+                            // Usar os dados reais, mesmo que sejam 0
+                            const labels5 = dataForChart.map(item => item.projeto);
+                            const data5 = dataForChart.map(item => parseInt(item.col1) || 0);
                             
-                            let labels5, data5;
-                            if (!hasValidData) {
-                                console.log('Todos os dados são 0, usando dados mock para OPT por Projeto');
-                                labels5 = ['STRONGER', 'Projeto Beta', 'Projeto Gamma', 'Projeto Delta'];
-                                data5 = [10, 8, 6, 4];
-                            } else {
-                                // Filtrar dados com quantidade > 0 e pegar os top 6
-                                const dataFiltrado = dataForChart.filter(item => parseInt(item.quantidadeprojeto_nc) > 0);
-                                const topData = dataFiltrado.slice(0, 6);
-                                
-                                console.log('Dados filtrados OPT por Projeto:', topData);
-                                
-                                labels5 = topData.map(item => item.projeto);
-                                data5 = topData.map(item => parseInt(item.quantidadeprojeto_nc));
-                            }
-                            const colors = ['#10b981', '#f59e0b', '#ef4444', '#3b82f6', '#8b5cf6', '#f97316'];
-                            
+                            console.log('Usando dados reais (mesmo que sejam 0):');
                             console.log('Labels5:', labels5);
                             console.log('Data5:', data5);
+                            const colors = ['#10b981', '#f59e0b', '#ef4444', '#3b82f6', '#8b5cf6', '#f97316'];
                             
                             charts.grafico5 = new Chart(ctx5, {
                                 type: 'bar',
@@ -1200,6 +1197,15 @@
                             console.log('Estrutura dos dados OPT Detalhado:', sheetData6[0]);
                             console.log('Dados completos OPT Detalhado:', sheetData6);
                             
+                            // Investigar todas as colunas para encontrar os dados corretos
+                            console.log('Investigando estrutura das colunas OPT Detalhado:');
+                            sheetData6.slice(0, 2).forEach((row, index) => {
+                                console.log(`Linha ${index}:`, row);
+                                for (let i = 0; i < row.length; i++) {
+                                    console.log(`  Coluna ${i}: "${row[i]}" (tipo: ${typeof row[i]})`);
+                                }
+                            });
+                            
                             // Converter array de arrays para array de objetos
                             const dataForChart = sheetData6.map(row => {
                                 const obj = { cliente: row[0] };
@@ -1216,40 +1222,16 @@
                             
                             console.log('Tipos de NC encontrados:', tiposDeNC);
                             
-                            // Se todos os dados são 0, usar dados mock
-                            const hasValidData = dataForChart.some(item => {
-                                const totalNc = tiposDeNC.reduce((soma, tipo) => soma + (parseInt(item[tipo]) || 0), 0);
-                                return totalNc > 0;
-                            });
+                            // Usar os dados reais, mesmo que sejam 0
+                            const labels6 = dataForChart.map(item => item.cliente);
+                            const colors = ['#003366', '#29abe2', '#fd7e14', '#28a745', '#dc3545', '#6c757d', '#ffc107'];
+                            const datasets = tiposDeNC.map((tipo, index) => ({
+                                label: tipo.replace(/_/g, ' ').replace(/(^\w{1})|(\s+\w{1})/g, letra => letra.toUpperCase()),
+                                data: dataForChart.map(item => parseInt(item[tipo]) || 0),
+                                backgroundColor: colors[index % colors.length]
+                            }));
                             
-                            let labels6, datasets;
-                            if (!hasValidData) {
-                                console.log('Todos os dados são 0, usando dados mock para OPT Detalhado');
-                                labels6 = ['WABTEC', 'JCB', 'ALSTOM', 'KUHN'];
-                                datasets = [
-                                    { label: 'Tipo 1', data: [5, 3, 2, 1], backgroundColor: '#003366' },
-                                    { label: 'Tipo 2', data: [3, 4, 1, 2], backgroundColor: '#29abe2' },
-                                    { label: 'Tipo 3', data: [2, 1, 3, 1], backgroundColor: '#fd7e14' }
-                                ];
-                            } else {
-                                // Filtrar dados com total > 0 e pegar os top 6
-                                const dataFiltrado = dataForChart.filter(item => {
-                                    const totalNc = tiposDeNC.reduce((soma, tipo) => soma + (parseInt(item[tipo]) || 0), 0);
-                                    return totalNc > 0;
-                                });
-                                const topData = dataFiltrado.slice(0, 6);
-                                
-                                console.log('Dados filtrados OPT Detalhado:', topData);
-                                
-                                labels6 = topData.map(item => item.cliente);
-                                const colors = ['#003366', '#29abe2', '#fd7e14', '#28a745', '#dc3545', '#6c757d', '#ffc107'];
-                                datasets = tiposDeNC.map((tipo, index) => ({
-                                    label: tipo.replace(/_/g, ' ').replace(/(^\w{1})|(\s+\w{1})/g, letra => letra.toUpperCase()),
-                                    data: topData.map(item => parseInt(item[tipo]) || 0),
-                                    backgroundColor: colors[index % colors.length]
-                                }));
-                            }
-                            
+                            console.log('Usando dados reais (mesmo que sejam 0):');
                             console.log('Labels6:', labels6);
                             console.log('Datasets6:', datasets);
                             
