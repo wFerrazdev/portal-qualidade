@@ -21,6 +21,7 @@ export default async function handler(req, res) {
         }
         
         console.log('Tentando conectar com Google Sheets:', id);
+        console.log('Credenciais disponíveis:', !!process.env.GOOGLE_CLIENT_EMAIL, !!process.env.GOOGLE_PRIVATE_KEY);
         
         // Dados mock como fallback
         const mockData = {
