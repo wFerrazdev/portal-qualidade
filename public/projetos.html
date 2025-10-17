@@ -160,22 +160,211 @@
     </div>
     
     <div id="projectModal" class="modal-overlay">
-        <div class="modal-content">
-            <header class="modal-header">
+        <div class="modal-content modern-modal">
+            <header class="modal-header modern-header">
+                <div class="modal-title-section">
+                    <div class="modal-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="modal-title-content">
                 <h2 id="modalTitle">Adicionar Novo Projeto</h2>
-                <button id="closeModalBtn" class="close-button">&times;</button>
+                        <p class="modal-subtitle" id="modalSubtitle">Preencha as informações do projeto</p>
+                    </div>
+                </div>
+                <button class="close-button modern-close" id="closeModalBtn">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
             </header>
-            <main class="modal-body">
-                <form id="projectForm">
-                    <div class="form-group"><label for="titulo">Título do Projeto</label><input type="text" id="titulo" name="titulo" required></div>
-                    <div class="form-group"><label for="status">Status</label><select id="status" name="status"><option value="A Fazer">A Fazer</option><option value="Em Andamento">Em Andamento</option><option value="Concluído">Concluído</option></select></div>
-                    <div class="form-group"><label for="imagem_file">Foto do Projeto</label><input type="file" id="imagem_file" name="imagem_file" accept="image/*"></div>
-                    <div class="form-group"><label for="progresso">Progresso (%)</label><input type="number" id="progresso" name="progresso" min="0" max="100" value="0"></div>
-                    <div class="form-group"><label for="principais_feitos">Principais Feitos (um por linha)</label><textarea id="principais_feitos" name="principais_feitos" rows="4"></textarea></div>
-                    <div class="form-actions">
-                        <button type="button" id="deleteProjectBtn" class="delete-button hidden"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
-                        <button type="button" id="cancelModalBtn" class="cancel-button">Cancelar</button>
-                        <button type="submit" class="save-button">Salvar Projeto</button>
+            
+            <main class="modal-body modern-body">
+                <form id="projectForm" class="modern-form">
+                    <!-- Seção Principal -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            Informações Básicas
+                        </h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group modern-group">
+                                <label for="titulo" class="modern-label">
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                    </svg>
+                                    Título do Projeto
+                                </label>
+                                <input type="text" id="titulo" name="titulo" class="modern-input" placeholder="Digite o título do projeto" required>
+                                <div class="input-focus-line"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group modern-group">
+                                <label for="status" class="modern-label">
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                                    </svg>
+                                    Status
+                                </label>
+                                <div class="select-wrapper">
+                                    <select id="status" name="status" class="modern-select">
+                                        <option value="A Fazer">📋 A Fazer</option>
+                                        <option value="Em Andamento">🚀 Em Andamento</option>
+                                        <option value="Concluído">✅ Concluído</option>
+                                    </select>
+                                    <div class="select-arrow">
+                                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group modern-group">
+                                <label for="progresso" class="modern-label">
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                                    </svg>
+                                    Progresso
+                                </label>
+                                <div class="progress-container">
+                                    <input type="range" id="progresso" name="progresso" min="0" max="100" value="0" class="modern-range">
+                                    <div class="progress-display">
+                                        <span id="progressValue">0%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group modern-group">
+                            <label for="imagem_file" class="modern-label file-label">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                </svg>
+                                Foto do Projeto
+                            </label>
+                            <div class="file-upload-area" id="fileUploadArea">
+                                <input type="file" id="imagem_file" name="imagem_file" accept="image/*" class="file-input">
+                                <div class="file-upload-content">
+                                    <svg width="48" height="48" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                                    </svg>
+                                    <p class="file-upload-text">Clique para selecionar uma imagem</p>
+                                    <p class="file-upload-hint">PNG, JPG até 10MB</p>
+                                </div>
+                                <div class="file-preview" id="filePreview" style="display: none;">
+                                    <img id="previewImage" src="" alt="Preview">
+                                    <button type="button" class="remove-file" id="removeFile">
+                                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Seção de Responsável e Datas -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            Responsável e Cronograma
+                        </h3>
+
+                        <div class="form-row">
+                            <div class="form-group modern-group">
+                                <label for="responsavel" class="modern-label">
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                    </svg>
+                                    Responsável
+                                </label>
+                                <input type="text" id="responsavel" name="responsavel" class="modern-input" placeholder="Nome do responsável" required>
+                                <div class="input-focus-line"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group modern-group">
+                                <label for="data_inicio" class="modern-label">
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                    </svg>
+                                    Data de Início
+                                </label>
+                                <input type="date" id="data_inicio" name="data_inicio" class="modern-input" required>
+                                <div class="input-focus-line"></div>
+                            </div>
+
+                            <div class="form-group modern-group">
+                                <label for="data_fim" class="modern-label">
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                    </svg>
+                                    Data de Fim
+                                </label>
+                                <input type="date" id="data_fim" name="data_fim" class="modern-input">
+                                <div class="input-focus-line"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Seção de Principais Feitos -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            Principais Feitos
+                        </h3>
+
+                        <div class="form-group modern-group">
+                            <label for="principais_feitos" class="modern-label">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                                </svg>
+                                Lista de Conquistas
+                            </label>
+                            <textarea id="principais_feitos" name="principais_feitos" rows="4" class="modern-textarea" placeholder="Digite cada feito em uma linha separada&#10;Exemplo:&#10;• Implementação do sistema&#10;• Testes realizados&#10;• Documentação criada"></textarea>
+                            <div class="textarea-focus-line"></div>
+                            <div class="textarea-hint">💡 Dica: Use "•" ou "-" para criar listas visuais</div>
+                        </div>
+                    </div>
+
+                    <!-- Botões de Ação -->
+                    <div class="form-actions modern-actions">
+                        <div class="action-buttons">
+                            <button type="button" class="cancel-button modern-cancel" id="cancelModalBtn">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                                Cancelar
+                            </button>
+                            <button type="submit" class="save-button modern-save">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span class="button-text">Salvar Projeto</span>
+                                <div class="button-loading" style="display: none;">
+                                    <div class="loading-spinner"></div>
+                                    Salvando...
+                                </div>
+                            </button>
+                        </div>
+                        <button type="button" class="delete-button modern-delete hidden" id="deleteProjectBtn">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
+                            Excluir Projeto
+                        </button>
                     </div>
                 </form>
             </main>
@@ -224,9 +413,9 @@
             // Exibir informações do usuário autenticado via Auth0
             checkAuth().then(user => {
                 if (user) {
-                    const userInfoSpan = document.querySelector('.user-info span');
+                const userInfoSpan = document.querySelector('.user-info span');
                     const userName = user.name || user.email;
-                    if (userInfoSpan) {
+                if (userInfoSpan) {
                         userInfoSpan.innerHTML = `Logado como: <strong>${userName}</strong>`;
                     }
                 }
@@ -277,20 +466,20 @@
 
                 let actionButtonsHtml = '';
                 // Mostrar botões de ação para todos os usuários por enquanto
-                actionButtonsHtml = `
-                    <div class="card-action-buttons">
-                        <button class="edit-button" data-id="${project.id}" title="Editar Projeto">
-                            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                            </svg>
-                        </button>
-                        <button class="delete-button-card" data-id="${project.id}" title="Excluir Projeto">
-                            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                            </svg>
-                        </button>
-                    </div>
-                `;
+                    actionButtonsHtml = `
+                        <div class="card-action-buttons">
+                            <button class="edit-button" data-id="${project.id}" title="Editar Projeto">
+                                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                </svg>
+                            </button>
+                            <button class="delete-button-card" data-id="${project.id}" title="Excluir Projeto">
+                                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    `;
 
                 return `<div class="project-card">
                     <div class="card-image-container">
@@ -449,7 +638,7 @@
             fetchAndRenderProjects();
 
             // Mostrar botão "Adicionar" para todos os usuários por enquanto
-            addProjectBtn.style.display = 'flex';
+                addProjectBtn.style.display = 'flex';
 
             addProjectBtn.addEventListener('click', openModalForAdd);
             closeModalBtn.addEventListener('click', closeModal);
@@ -457,6 +646,9 @@
             deleteProjectBtn.addEventListener('click', handleDeleteProject);
             projectForm.addEventListener('submit', handleFormSubmit);
             window.addEventListener('click', (event) => { if (event.target == projectModal) { closeModal(); } });
+            
+            // Funcionalidades modernas do modal
+            setupModernModalFeatures();
             
             projectsGrid.addEventListener('click', async (event) => {
                 const editButton = event.target.closest('.edit-button');
