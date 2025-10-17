@@ -786,15 +786,9 @@
         }
 
         function renderizarGraficosRifs() {
-            // console.log('Tentando renderizar gráficos RIFS...');
-            // console.log('lastDataRifs:', lastDataRifs);
-            
             if (!lastDataRifs) {
-                // console.log('Dados RIFs não disponíveis ainda');
                 return;
             }
-            
-            // console.log('Dados RIFS encontrados:', lastDataRifs);
 
             try {
                 // Gráfico 1: RIFs por Fornecedor - Anual
@@ -804,7 +798,6 @@
                     const sheetData = lastDataRifs.status_por_fornecedor_ano;
                     
                     if (sheetData && sheetData.length > 0) {
-                        // console.log('Estrutura dos dados RIFS Anual:', sheetData[0]);
                         
                         let labels, concluidoData, emTratativaData;
                         
@@ -821,9 +814,6 @@
                             emTratativaData = sheetData.map(item => parseInt(item.em_tratativa) || 0).filter((_, index) => index < labels.length);
                         }
                         
-                        // console.log('Labels:', labels);
-                        // console.log('Concluído:', concluidoData);
-                        // console.log('Em Tratativa:', emTratativaData);
                         
                     // Criar gradientes como no original
                     const gradienteConcluido = ctx1.createLinearGradient(0, 0, 0, 200);
@@ -998,15 +988,9 @@
         }
 
         function renderizarGraficosOpt() {
-            // console.log('Tentando renderizar gráficos OPT...');
-            // console.log('lastDataExterno:', lastDataExterno);
-            
             if (!lastDataExterno) {
-                // console.log('Dados OPT não disponíveis ainda');
                 return;
             }
-            
-            // console.log('Dados OPT encontrados:', lastDataExterno);
 
             // Adicionar delay para todos os gráficos OPT para consistência
             setTimeout(() => {
@@ -1274,15 +1258,9 @@
         }
 
         function renderizarGraficosNCInterna() {
-            // console.log('Tentando renderizar gráficos NC Interna...');
-            // console.log('lastDataInterno:', lastDataInterno);
-            
             if (!lastDataInterno) {
-                // console.log('Dados NC Interna não disponíveis ainda');
                 return;
             }
-            
-            // console.log('Dados NC Interna encontrados:', lastDataInterno);
 
             try {
                 // Gráfico 8: NC Interna por Setor
@@ -1447,7 +1425,15 @@
         }
 
         function criarGraficoCombinadoAnual(canvasId, data, tipoGrafico2025, tipoGrafico2024) {
-            if (!data || data.length === 0) return;
+            console.log(`=== CRIANDO GRÁFICO COMBINADO ${canvasId} ===`);
+            console.log('Dados recebidos:', data);
+            console.log('Tipo gráfico 2025:', tipoGrafico2025);
+            console.log('Tipo gráfico 2024:', tipoGrafico2024);
+            
+            if (!data || data.length === 0) {
+                console.log(`Dados vazios para ${canvasId}`);
+                return;
+            }
             
             const isMobile = window.innerWidth < 1024;
             
@@ -1455,6 +1441,10 @@
             const labels = data.map(item => item[0]); // Coluna 0: Mês
             const dados2025 = data.map(item => parseInt(item[1]) || 0); // Coluna 1: Quantidade 1
             const dados2024 = data.map(item => parseInt(item[2]) || 0); // Coluna 2: Quantidade 2
+            
+            console.log('Labels mapeados:', labels);
+            console.log('Dados 2025 mapeados:', dados2025);
+            console.log('Dados 2024 mapeados:', dados2024);
 
             const maxValue = Math.max(...dados2025, ...dados2024);
 
@@ -1538,13 +1528,22 @@
         }
 
         function criarGraficoBarrasSimplesAnual(canvasId, data) {
-            if (!data || data.length === 0) return;
+            console.log(`=== CRIANDO GRÁFICO BARRAS SIMPLES ${canvasId} ===`);
+            console.log('Dados recebidos:', data);
+            
+            if (!data || data.length === 0) {
+                console.log(`Dados vazios para ${canvasId}`);
+                return;
+            }
 
             const isMobile = window.innerWidth < 1024;
             
             // Mapear dados corretamente baseado na estrutura real (array de arrays)
             const labels = data.map(item => item[0]); // Coluna 0: Mês
             const dados2025 = data.map(item => parseInt(item[1]) || 0); // Coluna 1: Quantidade 1
+            
+            console.log('Labels mapeados:', labels);
+            console.log('Dados 2025 mapeados:', dados2025);
             const maxValue = Math.max(...dados2025);
 
             const ctx = document.getElementById(canvasId).getContext('2d');
@@ -1582,26 +1581,52 @@
         }
 
         function renderizarGraficosNCExterna() {
-            console.log('Tentando renderizar gráficos NC Externa...');
-            console.log('lastDataNCExterna:', lastDataNCExterna);
+            console.log('🚨 NC EXTERNA - Iniciando renderização...');
             
             if (!lastDataNCExterna) {
-                console.log('Dados NC Externa não disponíveis ainda');
+                console.log('❌ Dados NC Externa não disponíveis');
                 return;
             }
             
-            console.log('Dados NC Externa encontrados:', lastDataNCExterna);
+            console.log('✅ Dados NC Externa encontrados:', lastDataNCExterna);
 
             try {
-                // Usar a implementação original do arquivo antigo
-                criarGraficoCombinadoAnual('grafico12', lastDataNCExterna.nce_procedentes_anos, 'line', 'bar');
-                criarGraficoBarrasSimplesAnual('grafico13', lastDataNCExterna.nce_naoprocedentes_anos);
-                criarGraficoCombinadoAnual('grafico14', lastDataNCExterna.total_nce_anos, 'line', 'line');
+                console.log('=== CRIANDO GRÁFICOS NC EXTERNA ===');
                 
+                // Gráfico 12: NC Externa Procedentes
+                console.log('Criando gráfico 12 com dados:', lastDataNCExterna.nce_procedentes_anos);
+                if (lastDataNCExterna.nce_procedentes_anos && lastDataNCExterna.nce_procedentes_anos.length > 0) {
+                    criarGraficoCombinadoAnual('grafico12', lastDataNCExterna.nce_procedentes_anos, 'line', 'bar');
+                } else {
+                    console.log('Dados nce_procedentes_anos vazios ou inválidos');
+                }
+                
+                // Gráfico 13: NC Externa Revertidas
+                console.log('Criando gráfico 13 com dados:', lastDataNCExterna.nce_naoprocedentes_anos);
+                if (lastDataNCExterna.nce_naoprocedentes_anos && lastDataNCExterna.nce_naoprocedentes_anos.length > 0) {
+                    criarGraficoBarrasSimplesAnual('grafico13', lastDataNCExterna.nce_naoprocedentes_anos);
+                } else {
+                    console.log('Dados nce_naoprocedentes_anos vazios ou inválidos');
+                }
+                
+                // Gráfico 14: Total NC Externa
+                console.log('Criando gráfico 14 com dados:', lastDataNCExterna.total_nce_anos);
+                if (lastDataNCExterna.total_nce_anos && lastDataNCExterna.total_nce_anos.length > 0) {
+                    criarGraficoCombinadoAnual('grafico14', lastDataNCExterna.total_nce_anos, 'line', 'line');
+                } else {
+                    console.log('Dados total_nce_anos vazios ou inválidos');
+                }
+                
+                // Gráfico 15: Pareto NC Externa
                 const dataPareto = lastDataNCExterna.nce_pareto_defeitos || [];
+                console.log('Criando gráfico 15 (Pareto) com dados:', dataPareto);
                 if (dataPareto.length > 0) {
                     criarGraficoPareto('grafico15', dataPareto, 'defeito', 'quantidade_pareto');
+                } else {
+                    console.log('Dados nce_pareto_defeitos vazios ou inválidos');
                 }
+                
+                console.log('=== FIM CRIAÇÃO GRÁFICOS NC EXTERNA ===');
             } catch (error) {
                 console.error('Erro ao renderizar gráficos NC Externa:', error);
             }
