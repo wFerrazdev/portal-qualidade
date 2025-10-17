@@ -1353,6 +1353,21 @@
                             console.log('---');
                         });
                         
+                        // Verificar se há dados não-zero em alguma linha
+                        console.log('=== VERIFICANDO DADOS NÃO-ZERO ===');
+                        sheetData8.forEach((row, index) => {
+                            const hasNonZero = row.slice(1, 5).some(val => val !== 0 && val !== '0' && val !== '');
+                            if (hasNonZero) {
+                                console.log(`LINHA ${index} TEM DADOS NÃO-ZERO:`, row);
+                            }
+                        });
+                        
+                        // Verificar se há dados em todas as linhas
+                        console.log('=== VERIFICANDO TODAS AS LINHAS ===');
+                        sheetData8.forEach((row, index) => {
+                            console.log(`Linha ${index}:`, row);
+                        });
+                        
                         // Converter array de arrays para array de objetos usando nomes reais das colunas
                         // Baseado nos logs, as colunas são: setor, col1, col2, col3, col4
                         const nomesColunas = ['setor', 'col1', 'col2', 'col3', 'col4'];
