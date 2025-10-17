@@ -60,6 +60,10 @@ export default async function handler(req, res) {
         // Tentar conectar com Google Sheets se as credenciais estiverem disponíveis
         if (process.env.GOOGLE_CLIENT_EMAIL && process.env.GOOGLE_PRIVATE_KEY) {
             try {
+                console.log('=== TENTANDO CONECTAR COM GOOGLE SHEETS ===');
+                console.log('Planilha ID:', id);
+                console.log('Abas solicitadas:', sheets);
+                
                 // Importar a biblioteca do Google Sheets
                 const { GoogleSpreadsheet } = await import('google-spreadsheet');
                 
@@ -69,10 +73,24 @@ export default async function handler(req, res) {
                     private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n')
                 };
                 
+                console.log('Credenciais configuradas, tentando autenticar...');
+                
                 // Conectar com a planilha
                 const doc = new GoogleSpreadsheet(id);
                 await doc.useServiceAccountAuth(credentials);
+                console.log('Autenticação bem-sucedida!');
+                
                 await doc.loadInfo();
+                console.log('Planilha carregada:', doc.title);
+                console.log('Total de abas:', doc.sheetCount);
+                
+                // Listar todas as abas disponíveis
+                const availableSheets = [];
+                for (let i = 0; i < doc.sheetCount; i++) {
+                    const sheet = doc.sheetsByIndex[i];
+                    availableSheets.push(sheet.title);
+                }
+                console.log('Abas disponíveis:', availableSheets);
                 
                 // Obter as abas solicitadas
                 const sheetNames = sheets.split(',');
@@ -80,9 +98,13 @@ export default async function handler(req, res) {
                 
                 for (const sheetName of sheetNames) {
                     try {
+                        console.log(`Tentando obter dados da aba: ${sheetName}`);
                         const sheet = doc.sheetsByTitle[sheetName];
                         if (sheet) {
+                            console.log(`Aba encontrada: ${sheetName}, linhas: ${sheet.rowCount}`);
                             const rows = await sheet.getRows();
+                            console.log(`Dados obtidos da aba ${sheetName}:`, rows.length, 'linhas');
+                            
                             const data = rows.map(row => {
                                 const values = [];
                                 for (let i = 0; i < row._rawData.length; i++) {
@@ -91,7 +113,9 @@ export default async function handler(req, res) {
                                 return values;
                             });
                             result[sheetName] = data;
+                            console.log(`Dados processados da aba ${sheetName}:`, data.length, 'linhas');
                         } else {
+                            console.log(`Aba não encontrada: ${sheetName}`);
                             // Usar dados mock se a aba não existir
                             result[sheetName] = mockData[sheetName] || [];
                         }
@@ -101,12 +125,17 @@ export default async function handler(req, res) {
                     }
                 }
                 
+                console.log('Resultado final:', Object.keys(result));
                 return res.status(200).json(result);
                 
             } catch (error) {
-                console.error('Erro ao conectar com Google Sheets:', error);
+                console.error('=== ERRO AO CONECTAR COM GOOGLE SHEETS ===');
+                console.error('Erro:', error.message);
+                console.error('Stack:', error.stack);
                 // Fallback para dados mock
             }
+        } else {
+            console.log('Credenciais não disponíveis, usando dados mock');
         }
         
         // Retornar dados mock se não conseguir conectar com Google Sheets
