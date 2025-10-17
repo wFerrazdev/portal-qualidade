@@ -17,6 +17,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
     <script src="auth0-config.js"></script>
+    <script src="mock-data.js"></script>
 </head>
 <body class="dashboard-page">
     <!-- Loading overlay para melhorar percepção de performance -->
@@ -407,8 +408,8 @@
         // [Aqui vai o JavaScript completo da versão original, mas adaptado para o novo design]
         // Por enquanto, vou manter a funcionalidade básica
         
-        // Configurações globais
-        const API_BASE_URL = 'https://portalqualidadewill.netlify.app/.netlify/functions';
+        // Configurações globais - Usando APIs do Vercel
+        const API_BASE_URL = '/api';
         const SPREADSHEET_ID_EXTERNO = '1sFitRzLoY1Xpqezv7AeT1Gp7pQWoBs6D92xr_uATPv4';
         const SPREADSHEET_ID_INTERNO = '1_XfCgxqMlxLjXUfw7MSgZ386E16d5sQFSbV8Q6Q0mmk';
         const SPREADSHEET_ID_RIFS = '17F0DVUFu-cscmMnJsezkuCc_3SzuUehD_dSiPGOOz2A';
@@ -686,14 +687,15 @@
                 console.log('SPREADSHEET_ID_RIFS:', SPREADSHEET_ID_RIFS);
                 console.log('SPREADSHEET_ID_NC_EXTERNA:', SPREADSHEET_ID_NC_EXTERNA);
                 
+                // Usando APIs reais do Vercel
+                console.log('Carregando dados reais...');
+                
                 const urls = [
                     `${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_EXTERNO}&sheets=opt_por_cliente,opt_por_projeto,opt_detalhado,opt_inteiro`,
                     `${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_INTERNO}&sheets=nci_por_setor,pareto_mes,pareto_ano,nci_anual`,
                     `${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_RIFS}&sheets=status_por_fornecedor_ano,status_por_fornecedor_mes,pareto_rifs`,
                     `${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_NC_EXTERNA}&sheets=nce_procedentes_anos,nce_naoprocedentes_anos,total_nce_anos,nce_pareto_defeitos,kpi_revertidos`
                 ];
-                
-                console.log('URLs das APIs:', urls);
                 
                 const [responseExterno, responseInterno, responseRifs, responseNCExterna] = await Promise.all([
                     fetch(urls[0]),
@@ -986,8 +988,16 @@
                     if (sheetData3 && sheetData3.length > 0) {
                         console.log('Estrutura dos dados Pareto RIFS:', sheetData3[0]);
                         
+                        // Converter array de arrays para array de objetos
+                        const dataForPareto = sheetData3.map(row => ({
+                            fornecedor: row[0],
+                            quantidade_pareto: row[1]
+                        }));
+                        
+                        console.log('Dados convertidos para Pareto:', dataForPareto);
+                        
                         // Usar a função original do Pareto
-                        criarGraficoPareto('grafico3', sheetData3, 'fornecedor', 'quantidade_pareto');
+                        criarGraficoPareto('grafico3', dataForPareto, 'fornecedor', 'quantidade_pareto');
                     } else {
                         console.log('Dados do gráfico 3 (Pareto RIFs) não encontrados');
                     }
@@ -1018,17 +1028,18 @@
                         const sheetData4 = lastDataExterno.opt_por_cliente;
                         
                         if (sheetData4 && sheetData4.length > 0) {
-                            console.log('Estrutura dos dados OPT por Cliente:', sheetData4[0]);
+                            // Converter array de arrays para array de objetos
+                            const dataForChart = sheetData4.map(row => ({
+                                cliente: row[0],
+                                quantidadecliente_nc: row[1]
+                            }));
                             
                             // Filtrar dados com quantidade > 0 e pegar os top 6
-                            const dataFiltrado = sheetData4.filter(item => parseInt(item.quantidadecliente_nc) > 0);
+                            const dataFiltrado = dataForChart.filter(item => parseInt(item.quantidadecliente_nc) > 0);
                             const topData = dataFiltrado.slice(0, 6);
                             
                             const labels4 = topData.map(item => item.cliente);
                             const optData4 = topData.map(item => parseInt(item.quantidadecliente_nc));
-                            
-                            console.log('Labels4:', labels4);
-                            console.log('OPT Data4:', optData4);
                             
                             charts.grafico4 = new Chart(ctx4, {
                                 type: 'bar',
@@ -1081,18 +1092,19 @@
                         const sheetData5 = lastDataExterno.opt_por_projeto;
                         
                         if (sheetData5 && sheetData5.length > 0) {
-                            console.log('Estrutura dos dados OPT por Projeto:', sheetData5[0]);
+                            // Converter array de arrays para array de objetos
+                            const dataForChart = sheetData5.map(row => ({
+                                projeto: row[0],
+                                quantidadeprojeto_nc: row[1]
+                            }));
                             
                             // Filtrar dados com quantidade > 0 e pegar os top 6
-                            const dataFiltrado = sheetData5.filter(item => parseInt(item.quantidadeprojeto_nc) > 0);
+                            const dataFiltrado = dataForChart.filter(item => parseInt(item.quantidadeprojeto_nc) > 0);
                             const topData = dataFiltrado.slice(0, 6);
                             
                             const labels5 = topData.map(item => item.projeto);
                             const data5 = topData.map(item => parseInt(item.quantidadeprojeto_nc));
                             const colors = ['#10b981', '#f59e0b', '#ef4444', '#3b82f6', '#8b5cf6', '#f97316'];
-                            
-                            console.log('Labels5:', labels5);
-                            console.log('Data5:', data5);
                             
                             charts.grafico5 = new Chart(ctx5, {
                                 type: 'bar',
@@ -1146,12 +1158,28 @@
                         
                         if (sheetData6 && sheetData6.length > 0) {
                             console.log('Estrutura dos dados OPT Detalhado:', sheetData6[0]);
+                            console.log('Dados completos OPT Detalhado:', sheetData6);
+                            
+                            // Converter array de arrays para array de objetos usando nomes reais das colunas
+                            const nomesColunas = ['cliente', 'rastreabilidade', 'documentacao', 'materia_prima', 'produto_nc', 'procedimento', 'armazenamento'];
+                            
+                            const dataForChart = sheetData6.map(row => {
+                                const obj = {};
+                                for (let i = 0; i < Math.min(row.length, nomesColunas.length); i++) {
+                                    obj[nomesColunas[i]] = row[i];
+                                }
+                                return obj;
+                            });
+                            
+                            console.log('Dados convertidos OPT Detalhado:', dataForChart[0]);
                             
                             // Obter tipos de NC (todas as colunas exceto 'cliente')
-                            const tiposDeNC = Object.keys(sheetData6[0]).filter(key => key !== 'cliente');
+                            const tiposDeNC = nomesColunas.filter(key => key !== 'cliente');
+                            
+                            console.log('Tipos de NC encontrados:', tiposDeNC);
                             
                             // Filtrar dados com total > 0 e pegar os top 6
-                            const dataFiltrado = sheetData6.filter(item => {
+                            const dataFiltrado = dataForChart.filter(item => {
                                 const totalNc = tiposDeNC.reduce((soma, tipo) => soma + (parseInt(item[tipo]) || 0), 0);
                                 return totalNc > 0;
                             });
@@ -1159,14 +1187,24 @@
                             
                             const labels6 = topData.map(item => item.cliente);
                             const colors = ['#003366', '#29abe2', '#fd7e14', '#28a745', '#dc3545', '#6c757d', '#ffc107'];
+                            
+                            // Mapear nomes das colunas para nomes mais legíveis
+                            const nomesLegenda = {
+                                'rastreabilidade': 'Rastreabilidade',
+                                'documentacao': 'Documentação',
+                                'materia_prima': 'Matéria Prima',
+                                'produto_nc': 'Produto NC',
+                                'procedimento': 'Procedimento',
+                                'armazenamento': 'Armazenamento'
+                            };
+                            
                             const datasets = tiposDeNC.map((tipo, index) => ({
-                                label: tipo.replace(/_/g, ' ').replace(/(^\w{1})|(\s+\w{1})/g, letra => letra.toUpperCase()),
+                                label: nomesLegenda[tipo] || tipo.replace(/_/g, ' ').replace(/(^\w{1})|(\s+\w{1})/g, letra => letra.toUpperCase()),
                                 data: topData.map(item => parseInt(item[tipo]) || 0),
                                 backgroundColor: colors[index % colors.length]
                             }));
                             
-                            console.log('Labels6:', labels6);
-                            console.log('Datasets6:', datasets);
+                            console.log('Datasets criados:', datasets);
                             
                             charts.grafico6 = new Chart(ctx6, {
                                 type: 'bar',
@@ -1214,8 +1252,14 @@
                         if (sheetData7 && sheetData7.length > 0) {
                             console.log('Estrutura dos dados OPT Inteiro:', sheetData7[0]);
                             
+                            // Converter array de arrays para array de objetos
+                            const dataForChart = sheetData7.map(row => ({
+                                status: row[0],
+                                quantidadeopt_total: row[1]
+                            }));
+                            
                             // Filtrar dados com quantidade > 0 e pegar os top 6
-                            const dataFiltrado = sheetData7.filter(item => parseInt(item.quantidadeopt_total) > 0);
+                            const dataFiltrado = dataForChart.filter(item => parseInt(item.quantidadeopt_total) > 0);
                             const topData = dataFiltrado.slice(0, 6);
                             
                             const labels7 = topData.map(item => item.status);
@@ -1293,19 +1337,52 @@
                     
                     if (sheetData8 && sheetData8.length > 0) {
                         console.log('Estrutura dos dados NC Interna por Setor:', sheetData8[0]);
+                        console.log('Dados completos NC Interna por Setor:', sheetData8);
                         
-                        const labels8 = sheetData8.map(item => item.setor);
-                        const statusTypes = ['nao_iniciado', 'em_andamento', 'atrasado', 'concluido'];
-                        const statusColors = { 'nao_iniciado': '#6c757d', 'em_andamento': '#ffc107', 'atrasado': '#dc3545', 'concluido': '#28a745' };
+                        // Investigar todas as colunas para encontrar os dados corretos
+                        console.log('Investigando estrutura das colunas NC Interna:');
+                        sheetData8.slice(0, 3).forEach((row, index) => {
+                            console.log(`Linha ${index}:`, row);
+                            for (let i = 0; i < row.length; i++) {
+                                console.log(`  Coluna ${i}: "${row[i]}" (tipo: ${typeof row[i]})`);
+                            }
+                        });
+                        
+                        // Converter array de arrays para array de objetos usando nomes reais das colunas
+                        // Baseado nos logs, as colunas são: setor, col1, col2, col3, col4
+                        const nomesColunas = ['setor', 'col1', 'col2', 'col3', 'col4'];
+                        
+                        const dataForChart = sheetData8.map(row => {
+                            const obj = {};
+                            for (let i = 0; i < Math.min(row.length, nomesColunas.length); i++) {
+                                obj[nomesColunas[i]] = row[i];
+                            }
+                            return obj;
+                        });
+                        
+                        console.log('Dados convertidos NC Interna:', dataForChart[0]);
+                        
+                        const labels8 = dataForChart.map(item => item.setor);
+                        const statusTypes = ['col1', 'col2', 'col3', 'col4'];
+                        
+                        // Mapear nomes das colunas para nomes mais legíveis
+                        const nomesLegenda = {
+                            'col1': 'Não Iniciado',
+                            'col2': 'Em Andamento', 
+                            'col3': 'Atrasado',
+                            'col4': 'Concluído'
+                        };
+                        
+                        const statusColors = { 'col1': '#6c757d', 'col2': '#ffc107', 'col3': '#dc3545', 'col4': '#28a745' };
                         
                         const datasets = statusTypes.map(status => ({
-                            label: status.replace('_', ' ').toUpperCase(),
-                            data: sheetData8.map(item => parseInt(item[status]) || 0),
+                            label: nomesLegenda[status] || status.replace('_', ' ').toUpperCase(),
+                            data: dataForChart.map(item => parseInt(item[status]) || 0),
                             backgroundColor: statusColors[status],
                             borderRadius: 3
                         }));
                         
-                        const stackTotals = sheetData8.map(item => statusTypes.reduce((sum, type) => sum + (parseInt(item[type]) || 0), 0));
+                        const stackTotals = dataForChart.map(item => statusTypes.reduce((sum, type) => sum + (parseInt(item[type]) || 0), 0));
                         const maxValue = Math.max(...stackTotals);
                         
                         console.log('Labels8:', labels8);
@@ -1359,8 +1436,16 @@
                     if (sheetData9 && sheetData9.length > 0) {
                         console.log('Estrutura dos dados Pareto Mensal NC Interna:', sheetData9[0]);
                         
+                        // Converter array de arrays para array de objetos
+                        const dataForPareto = sheetData9.map(row => ({
+                            topicos: row[0],
+                            quantidade_pareto: row[1]
+                        }));
+                        
+                        console.log('Dados convertidos Pareto Mensal:', dataForPareto);
+                        
                         // Usar a função original do Pareto
-                        criarGraficoPareto('grafico9', sheetData9, 'topicos', 'nao_iniciado');
+                        criarGraficoPareto('grafico9', dataForPareto, 'topicos', 'quantidade_pareto');
                     } else {
                         console.log('Dados do gráfico 9 (Pareto Mensal NC Interna) não encontrados');
                     }
@@ -1375,8 +1460,16 @@
                     if (sheetData10 && sheetData10.length > 0) {
                         console.log('Estrutura dos dados Pareto Anual NC Interna:', sheetData10[0]);
                         
+                        // Converter array de arrays para array de objetos
+                        const dataForPareto = sheetData10.map(row => ({
+                            topicos: row[0],
+                            quantidade_pareto: row[1]
+                        }));
+                        
+                        console.log('Dados convertidos Pareto Anual:', dataForPareto);
+                        
                         // Usar a função original do Pareto
-                        criarGraficoPareto('grafico10', sheetData10, 'topicos', 'nao_iniciado');
+                        criarGraficoPareto('grafico10', dataForPareto, 'topicos', 'quantidade_pareto');
                     } else {
                         console.log('Dados do gráfico 10 (Pareto Anual NC Interna) não encontrados');
                     }
@@ -1391,8 +1484,16 @@
                     if (sheetData11 && sheetData11.length > 0) {
                         console.log('Estrutura dos dados NC Interna Anual:', sheetData11[0]);
                         
-                        const labels11 = sheetData11.map(item => item.mes);
-                        const data11 = sheetData11.map(item => parseInt(item.quantidade_ano) || 0);
+                        // Converter array de arrays para array de objetos
+                        const dataForChart = sheetData11.map(row => ({
+                            mes: row[0],
+                            quantidade_nc: row[1]
+                        }));
+                        
+                        console.log('Dados convertidos NC Interna Anual:', dataForChart);
+                        
+                        const labels11 = dataForChart.map(item => item.mes);
+                        const data11 = dataForChart.map(item => parseInt(item.quantidade_nc) || 0);
                         
                         console.log('Labels11:', labels11);
                         console.log('Data11:', data11);
@@ -1589,12 +1690,49 @@
             console.log('Dados NC Externa encontrados:', lastDataNCExterna);
 
             try {
-                // Usar a implementação original do arquivo antigo
-                criarGraficoCombinadoAnual('grafico12', lastDataNCExterna.nce_procedentes_anos, 'line', 'bar');
-                criarGraficoBarrasSimplesAnual('grafico13', lastDataNCExterna.nce_naoprocedentes_anos);
-                criarGraficoCombinadoAnual('grafico14', lastDataNCExterna.total_nce_anos, 'line', 'line');
+                // Converter dados de arrays para objetos
+                const dataProcedentes = lastDataNCExterna.nce_procedentes_anos ? 
+                    lastDataNCExterna.nce_procedentes_anos.map(row => ({
+                        ano: row[0],
+                        quantidade_2022: row[1],
+                        quantidade_2023: row[2],
+                        quantidade_2024: row[3]
+                    })) : [];
                 
-                const dataPareto = lastDataNCExterna.nce_pareto_defeitos || [];
+                const dataNaoProcedentes = lastDataNCExterna.nce_naoprocedentes_anos ? 
+                    lastDataNCExterna.nce_naoprocedentes_anos.map(row => ({
+                        ano: row[0],
+                        quantidade_2022: row[1],
+                        quantidade_2023: row[2],
+                        quantidade_2024: row[3]
+                    })) : [];
+                
+                const dataTotal = lastDataNCExterna.total_nce_anos ? 
+                    lastDataNCExterna.total_nce_anos.map(row => ({
+                        ano: row[0],
+                        quantidade_2022: row[1],
+                        quantidade_2023: row[2],
+                        quantidade_2024: row[3]
+                    })) : [];
+                
+                const dataPareto = lastDataNCExterna.nce_pareto_defeitos ? 
+                    lastDataNCExterna.nce_pareto_defeitos.map(row => ({
+                        defeito: row[0],
+                        quantidade_pareto: row[1]
+                    })) : [];
+                
+                console.log('Dados convertidos NC Externa:', {
+                    procedentes: dataProcedentes,
+                    naoProcedentes: dataNaoProcedentes,
+                    total: dataTotal,
+                    pareto: dataPareto
+                });
+                
+                // Usar a implementação original do arquivo antigo
+                criarGraficoCombinadoAnual('grafico12', dataProcedentes, 'line', 'bar');
+                criarGraficoBarrasSimplesAnual('grafico13', dataNaoProcedentes);
+                criarGraficoCombinadoAnual('grafico14', dataTotal, 'line', 'line');
+                
                 if (dataPareto.length > 0) {
                     criarGraficoPareto('grafico15', dataPareto, 'defeito', 'quantidade_pareto');
                 }
