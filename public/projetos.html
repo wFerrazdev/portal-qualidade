@@ -417,8 +417,8 @@
                     const userName = user.name || user.email;
                 if (userInfoSpan) {
                         userInfoSpan.innerHTML = `Logado como: <strong>${userName}</strong>`;
-                    }
                 }
+            }
             }).catch(error => {
                 console.error('Erro ao obter informações do usuário:', error);
             });
@@ -657,8 +657,11 @@
                 const progressValue = document.getElementById('progressValue');
                 
                 if (progressSlider && progressValue) {
+                    // Usar requestAnimationFrame para melhor performance
                     progressSlider.addEventListener('input', function() {
-                        progressValue.textContent = this.value + '%';
+                        requestAnimationFrame(() => {
+                            progressValue.textContent = this.value + '%';
+                        });
                     });
                 }
                 
