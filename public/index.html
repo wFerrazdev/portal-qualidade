@@ -1340,12 +1340,17 @@
                         console.log('Dados completos NC Interna por Setor:', sheetData8);
                         
                         // Investigar todas as colunas para encontrar os dados corretos
-                        console.log('Investigando estrutura das colunas NC Interna:');
-                        sheetData8.slice(0, 3).forEach((row, index) => {
-                            console.log(`Linha ${index}:`, row);
+                        console.log('=== INVESTIGANDO ESTRUTURA DAS COLUNAS NC INTERNA ===');
+                        console.log('Total de linhas:', sheetData8.length);
+                        console.log('Primeira linha (cabeçalho?):', sheetData8[0]);
+                        
+                        sheetData8.slice(0, 5).forEach((row, index) => {
+                            console.log(`=== LINHA ${index} ===`);
+                            console.log('Dados:', row);
                             for (let i = 0; i < row.length; i++) {
                                 console.log(`  Coluna ${i}: "${row[i]}" (tipo: ${typeof row[i]})`);
                             }
+                            console.log('---');
                         });
                         
                         // Converter array de arrays para array de objetos usando nomes reais das colunas
