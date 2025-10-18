@@ -2563,48 +2563,53 @@ body.projects-page {
     align-items: center;
 }
 
-/* Botão Primário - Ação Principal (Apenas Ícone) */
+/* Botão Primário - Ação Principal (Ícone + Texto) */
 .modern-save {
-    width: 32px;
-    height: 32px;
-    padding: 0;
-    background: #0f172a;
+    padding: 12px 20px;
+    background: #1d3557;
     color: white;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
     cursor: pointer;
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 8px;
     transition: all 0.2s ease;
+    min-width: 120px;
+    justify-content: center;
 }
 
 .modern-save:hover {
-    background: #1e293b;
-    transform: scale(1.05);
-    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.3);
+    background: #1e3a8a;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(29, 53, 87, 0.3);
 }
 
-/* Botão Secundário - Ação de Escape (Apenas Ícone) */
+/* Botão Secundário - Ação de Escape (Ícone + Texto) */
 .modern-cancel {
-    width: 32px;
-    height: 32px;
-    padding: 0;
-    background: #6b7280;
-    color: white;
+    padding: 12px 20px;
+    background: #e2e8f0;
+    color: #475569;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
     cursor: pointer;
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 8px;
     transition: all 0.2s ease;
+    min-width: 120px;
+    justify-content: center;
 }
 
 .modern-cancel:hover {
-    background: #4b5563;
-    transform: scale(1.05);
-    box-shadow: 0 2px 8px rgba(107, 114, 128, 0.3);
+    background: #cbd5e1;
+    color: #334155;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(71, 85, 105, 0.2);
 }
 
 .button-loading {
@@ -2627,66 +2632,67 @@ body.projects-page {
     100% { transform: rotate(360deg); }
 }
 
-/* Botão Destrutivo - Ação de Perigo (Apenas Ícone) */
+/* Botão Destrutivo - Ação de Perigo (Ícone + Texto) */
 .modern-delete {
-    width: 32px;
-    height: 32px;
-    padding: 0;
+    padding: 12px 20px;
     background: #dc2626;
     color: white;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
     cursor: pointer;
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 8px;
     transition: all 0.2s ease;
+    min-width: 120px;
+    justify-content: center;
 }
 
 .modern-delete:hover {
     background: #b91c1c;
-    transform: scale(1.05);
-    box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
 }
 
-/* Estilos para os SVGs dos botões - minimalistas como nos cards */
-.modern-save,
-.modern-cancel,
-.modern-delete {
-    color: white !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-}
-
+/* Estilos para os SVGs dos botões - ícones + texto */
 .modern-save svg,
 .modern-cancel svg,
 .modern-delete svg {
-    width: 16px !important;
-    height: 16px !important;
-    stroke: white !important;
-    fill: none !important;
-    stroke-width: 2 !important;
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
+    width: 16px;
+    height: 16px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+    flex-shrink: 0;
 }
 
-/* Forçar cor branca nos ícones */
-.modern-save svg path,
-.modern-cancel svg path,
-.modern-delete svg path {
-    stroke: white !important;
-    fill: none !important;
+/* Cores específicas para cada botão */
+.modern-save svg {
+    stroke: white;
 }
 
-/* Forçar visibilidade dos ícones */
-.modern-actions button {
-    min-width: 32px !important;
-    min-height: 32px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
+.modern-cancel svg {
+    stroke: #475569;
+}
+
+.modern-delete svg {
+    stroke: white;
+}
+
+/* Layout dos botões no rodapé */
+.modern-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 12px;
+    align-items: center;
 }
 
 /* Responsividade */
@@ -2724,9 +2730,9 @@ body.projects-page {
     .modern-cancel,
     .modern-save,
     .modern-delete {
-        width: 36px;
-        height: 36px;
-        justify-content: center;
+        min-width: 100px;
+        padding: 10px 16px;
+        font-size: 0.85rem;
     }
     
     .form-section {
