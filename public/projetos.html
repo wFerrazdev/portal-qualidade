@@ -492,18 +492,42 @@
             }
 
             async function fetchAndRenderProjects() {
+                console.log('=== FETCHANDRENDERPROJECTS INICIADA ===');
+                console.log('API_BASE_URL:', API_BASE_URL);
+                console.log('URL completa:', `${API_BASE_URL}/getProjetos`);
+                
                 try {
-                    const response = await fetch(`${API_BASE_URL}/getProjetos`);
-                    if (!response.ok) { throw new Error(`HTTP error! status: ${response.status}`); }
+                    console.log('Fazendo chamada para API...');
+                    const response = await authFetch(`${API_BASE_URL}/getProjetos`);
+                    console.log('Resposta recebida:', response);
+                    console.log('Status da resposta:', response.status);
+                    console.log('OK:', response.ok);
+                    
+                    if (!response.ok) { 
+                        console.error('Resposta não OK:', response.status, response.statusText);
+                        throw new Error(`HTTP error! status: ${response.status}`); 
+                    }
+                    
+                    console.log('Convertendo resposta para JSON...');
                     const projects = await response.json();
+                    console.log('Projetos recebidos:', projects);
+                    console.log('Número de projetos:', projects.length);
+                    
                     projectsGrid.innerHTML = '';
                     if (projects.length === 0) {
+                        console.log('Nenhum projeto encontrado');
                         projectsGrid.innerHTML = '<p>Nenhum projeto encontrado. Adicione o primeiro!</p>';
                     } else {
-                        projects.forEach(project => { projectsGrid.innerHTML += renderProjectCard(project); });
+                        console.log('Renderizando projetos...');
+                        projects.forEach(project => { 
+                            console.log('Renderizando projeto:', project);
+                            projectsGrid.innerHTML += renderProjectCard(project); 
+                        });
+                        console.log('Projetos renderizados com sucesso');
                     }
                 } catch (error) {
                     console.error('Erro ao buscar projetos:', error);
+                    console.error('Stack trace:', error.stack);
                     projectsGrid.innerHTML = '<p style="color: red;">Não foi possível carregar os projetos.</p>';
                 }
             }
@@ -698,7 +722,16 @@
                 }
             }
             
-            fetchAndRenderProjects();
+            // Aguardar carregamento completo da página
+            document.addEventListener('DOMContentLoaded', async function() {
+                console.log('DOM carregado, iniciando fetchAndRenderProjects...');
+                await new Promise(resolve => setTimeout(resolve, 100));
+                try {
+                    await fetchAndRenderProjects();
+                } catch (error) {
+                    console.error('Erro ao carregar projetos na inicialização:', error);
+                }
+            });
 
             // Mostrar botão "Adicionar" para todos os usuários por enquanto
                 addProjectBtn.style.display = 'flex';

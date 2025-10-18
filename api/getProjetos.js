@@ -14,19 +14,32 @@ module.exports = async (req, res) => {
     }
     
     try {
+        console.log('=== API GETPROJETOS INICIADA ===');
+        console.log('Método:', req.method);
+        console.log('URL:', req.url);
+        console.log('Headers:', req.headers);
+        
         // Conectar com PostgreSQL
-        const { Pool } = await import('pg');
+        const { Pool } = require('pg');
+        console.log('Pool importado com sucesso');
+        
         const pool = new Pool({
             connectionString: process.env.DATABASE_URL,
             ssl: {
                 rejectUnauthorized: false
             }
         });
+        console.log('Pool criado com sucesso');
         
         // Buscar projetos
+        console.log('Executando query: SELECT * FROM projetos ORDER BY id DESC');
         const result = await pool.query('SELECT * FROM projetos ORDER BY id DESC');
+        console.log('Query executada com sucesso');
+        console.log('Número de projetos encontrados:', result.rows.length);
+        console.log('Projetos:', result.rows);
         
         await pool.end();
+        console.log('Pool fechado');
         
         return res.status(200).json(result.rows);
         
