@@ -1724,6 +1724,43 @@ body.projects-page {
     transform: scale(1.05);
 }
 
+/* Overlay de Hover - NOVO DESIGN MINIMALISTA */
+.card-image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 10;
+}
+
+.project-card:hover .card-image-overlay {
+    opacity: 1;
+}
+
+/* Ícones do Overlay */
+.overlay-icon {
+    width: 24px;
+    height: 24px;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+}
+
+.overlay-icon:hover {
+    transform: scale(1.1);
+}
+
 /* Corpo do Card */
 .card-project-body {
     padding: 25px;
@@ -1820,63 +1857,7 @@ body.projects-page {
 }
 
 /* Botões de Ação do Card */
-.card-action-buttons {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    display: flex;
-    gap: 8px;
-    opacity: 0;
-    transition: all 0.3s ease;
-}
-
-.project-card:hover .card-action-buttons {
-    opacity: 1;
-}
-
-.edit-button,
-.delete-button-card {
-    background: rgba(255, 255, 255, 0.9);
-    border: none;
-    border-radius: 8px;
-    padding: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
-  display: flex;
-  align-items: center;
-    justify-content: center;
-}
-
-.edit-button:hover {
-    background: white;
-    transform: scale(1.1);
-    box-shadow: 0 4px 12px rgba(41, 171, 226, 0.3);
-}
-
-.delete-button-card:hover {
-    background: #fed7d7;
-    transform: scale(1.1);
-    box-shadow: 0 4px 12px rgba(229, 62, 62, 0.3);
-}
-
-.edit-button svg {
-    width: 18px;
-    height: 18px;
-    color: #29abe2;
-    display: block;
-    stroke: currentColor;
-    fill: none;
-}
-
-.delete-button-card svg {
-    width: 18px;
-    height: 18px;
-    color: #e53e3e;
-    display: block;
-    stroke: currentColor;
-    fill: none;
-}
+/* Botões de Ação do Card - REMOVIDOS (agora usando overlay minimalista) */
 
 /* Modal */
 .modal-overlay {
@@ -2557,8 +2538,12 @@ body.projects-page {
 }
 
 /* Botões Modernos */
+/* NOVO DESIGN PADRONIZADO DOS BOTÕES */
 .modern-actions {
-    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 30px;
     background: #f8fafc;
     border-radius: 0 0 12px 12px;
     border-top: 1px solid #e2e8f0;
@@ -2567,52 +2552,57 @@ body.projects-page {
 
 .action-buttons {
     display: flex;
-    gap: 8px;
-    justify-content: flex-end;
-    margin-bottom: 10px;
+    gap: 12px;
     align-items: center;
 }
 
-.modern-cancel {
-    padding: 5px;
-    background: linear-gradient(135deg, #6b7280, #4b5563);
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-weight: 500;
-    font-size: 0.8rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.1s ease;
-    min-width: 40px;
-    height: 40px;
-}
-
-.modern-cancel:hover {
-    background: linear-gradient(135deg, #4b5563, #374151);
-}
-
+/* Botão Primário - Ação Principal */
 .modern-save {
-    padding: 5px;
-    background: linear-gradient(135deg, #0f172a, #1e3a8a);
+    padding: 12px 24px;
+    background: #0f172a;
     color: white;
     border: none;
-    border-radius: 6px;
-    font-weight: 500;
-    font-size: 0.8rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
     cursor: pointer;
     display: flex;
     align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    min-width: 140px;
     justify-content: center;
-    transition: background 0.1s ease;
-    min-width: 40px;
-    height: 40px;
 }
 
 .modern-save:hover {
-    background: linear-gradient(135deg, #1e293b, #2563eb);
+    background: #1e293b;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.3);
+}
+
+/* Botão Secundário - Ação de Escape */
+.modern-cancel {
+    padding: 12px 24px;
+    background: transparent;
+    color: #6b7280;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    min-width: 120px;
+    justify-content: center;
+}
+
+.modern-cancel:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+    color: #4b5563;
+    transform: translateY(-1px);
 }
 
 .button-loading {
@@ -2635,25 +2625,28 @@ body.projects-page {
     100% { transform: rotate(360deg); }
 }
 
+/* Botão Destrutivo - Ação de Perigo */
 .modern-delete {
-    width: 40px;
-    height: 40px;
-    padding: 5px;
-    background: linear-gradient(135deg, #dc2626, #b91c1c);
+    padding: 12px 24px;
+    background: #dc2626;
     color: white;
     border: none;
-    border-radius: 6px;
-    font-weight: 500;
-    font-size: 0.8rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
     cursor: pointer;
     display: flex;
     align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    min-width: 140px;
     justify-content: center;
-    transition: background 0.1s ease;
 }
 
 .modern-delete:hover {
-    background: linear-gradient(135deg, #b91c1c, #991b1b);
+    background: #b91c1c;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
 }
 
 /* Responsividade */
@@ -2677,14 +2670,23 @@ body.projects-page {
         border-radius: 0;
     }
     
+    .modern-actions {
+        flex-direction: column;
+        gap: 16px;
+        align-items: stretch;
+    }
+    
     .action-buttons {
         flex-direction: column;
+        gap: 12px;
     }
     
     .modern-cancel,
-    .modern-save {
+    .modern-save,
+    .modern-delete {
         width: 100%;
         justify-content: center;
+        min-width: auto;
     }
     
     .form-section {
