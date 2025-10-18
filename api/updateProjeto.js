@@ -11,7 +11,7 @@ const pool = new Pool({
 module.exports = async (req, res) => {
     try {
         const { id } = req.query;
-        const { titulo, status, progresso, responsavel, data_inicio, data_fim, imagem_url } = req.body;
+        const { titulo, status, progresso, principais_feitos, imagem_url } = req.body;
         
         if (!id) {
             return res.status(400).json({ error: 'Missing required parameter: id' });
@@ -19,8 +19,8 @@ module.exports = async (req, res) => {
         
         const client = await pool.connect();
         const result = await client.query(
-            'UPDATE projetos SET titulo = $1, status = $2, progresso = $3, responsavel = $4, data_inicio = $5, data_fim = $6, imagem_url = $7 WHERE id = $8 RETURNING *',
-            [titulo, status, progresso, responsavel, data_inicio, data_fim, imagem_url, id]
+            'UPDATE projetos SET titulo = $1, status = $2, progresso = $3, principais_feitos = $4, imagem_url = $5 WHERE id = $6 RETURNING *',
+            [titulo, status, progresso, principais_feitos, imagem_url, id]
         );
         client.release();
         

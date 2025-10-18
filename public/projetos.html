@@ -552,9 +552,7 @@
                     status: projectForm.querySelector('#status').value,
                     imagem_url: imageUrl,
                     progresso: progressoValue,
-                    data_inicio: projectForm.querySelector('#data_inicio').value,
-                    data_fim: projectForm.querySelector('#data_fim').value,
-                    responsavel: projectForm.querySelector('#responsavel').value
+                    principais_feitos: projectForm.querySelector('#principais_feitos').value.split('\n').filter(line => line.trim() !== '')
                 };
                 try {
                     let response;
