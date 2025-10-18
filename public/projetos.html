@@ -687,36 +687,32 @@
                     });
                 }
                 
-                // Upload de arquivo - CORRIGIDO para evitar clique duplo
+                // Upload de arquivo - SIMPLIFICADO
                 const fileInput = document.getElementById('imagem_file');
                 const fileUploadArea = document.getElementById('fileUploadArea');
                 
                 if (fileInput && fileUploadArea) {
-                    // Função para lidar com clique na área de upload
-                    function handleFileUploadClick(event) {
+                    // Limpar event listeners existentes
+                    fileUploadArea.onclick = null;
+                    fileInput.onchange = null;
+                    
+                    // Configurar clique na área de upload
+                    fileUploadArea.onclick = function(event) {
                         event.preventDefault();
                         event.stopPropagation();
-                        console.log('Clique na área de upload detectado');
+                        console.log('Clique na área de upload - abrindo seletor de arquivo');
                         fileInput.click();
-                    }
+                    };
                     
-                    // Função para lidar com mudança no input
-                    function handleFileInputChange(event) {
+                    // Configurar mudança no input
+                    fileInput.onchange = function(event) {
                         console.log('Arquivo selecionado:', event.target.files);
                         if (event.target.files.length > 0) {
                             handleFileSelect(event.target.files[0]);
                         }
-                    }
+                    };
                     
-                    // Remover event listeners existentes para evitar duplicação
-                    fileUploadArea.removeEventListener('click', handleFileUploadClick);
-                    fileInput.removeEventListener('change', handleFileInputChange);
-                    
-                    // Adicionar event listeners
-                    fileUploadArea.addEventListener('click', handleFileUploadClick);
-                    fileInput.addEventListener('change', handleFileInputChange);
-                    
-                    console.log('Event listeners de upload configurados');
+                    console.log('Upload configurado - clique único');
                 }
                 
                 // Estados de carregamento simplificado

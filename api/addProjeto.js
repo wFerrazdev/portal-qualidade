@@ -41,6 +41,10 @@ export default async function handler(req, res) {
         
     } catch (error) {
         console.error('Erro na API addProjeto:', error);
-        return res.status(500).json({ error: 'Internal server error' });
+        return res.status(500).json({ 
+            error: 'Internal server error',
+            details: error.message,
+            stack: error.stack
+        });
     }
 }
