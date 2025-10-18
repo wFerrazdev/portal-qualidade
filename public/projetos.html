@@ -628,12 +628,21 @@
                 // Resetar upload de foto
                 const fileInput = document.getElementById('imagem_file');
                 const fileUploadText = document.querySelector('.file-upload-text');
+                const fileUploadArea = document.getElementById('fileUploadArea');
+                
                 if (fileInput) {
                     fileInput.value = '';
                 }
                 if (fileUploadText) {
                     fileUploadText.textContent = 'Clique para selecionar uma imagem';
                     fileUploadText.style.color = '';
+                    fileUploadText.style.fontWeight = '';
+                }
+                
+                // Remover preview da imagem
+                const existingPreview = fileUploadArea?.querySelector('.image-preview');
+                if (existingPreview) {
+                    existingPreview.remove();
                 }
                 
                 projectModal.style.display = 'flex';
@@ -645,12 +654,21 @@
                 // Resetar upload de foto
                 const fileInput = document.getElementById('imagem_file');
                 const fileUploadText = document.querySelector('.file-upload-text');
+                const fileUploadArea = document.getElementById('fileUploadArea');
+                
                 if (fileInput) {
                     fileInput.value = '';
                 }
                 if (fileUploadText) {
                     fileUploadText.textContent = 'Clique para selecionar uma imagem';
                     fileUploadText.style.color = '';
+                    fileUploadText.style.fontWeight = '';
+                }
+                
+                // Remover preview da imagem
+                const existingPreview = fileUploadArea?.querySelector('.image-preview');
+                if (existingPreview) {
+                    existingPreview.remove();
                 }
             }
             
@@ -669,6 +687,56 @@
             // Funcionalidades modernas do modal
             setupModernModalFeatures();
             
+            // Função para lidar com seleção de arquivo
+            function handleFileSelect(file) {
+                if (file && file.type.startsWith('image/')) {
+                    const fileUploadText = document.querySelector('.file-upload-text');
+                    const fileUploadArea = document.getElementById('fileUploadArea');
+                    
+                    if (fileUploadText) {
+                        // Atualizar o texto para mostrar o nome do arquivo
+                        fileUploadText.textContent = `✓ ${file.name}`;
+                        fileUploadText.style.color = '#10b981';
+                        fileUploadText.style.fontWeight = '600';
+                    }
+                    
+                    // Criar preview da imagem
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        // Remover preview anterior se existir
+                        const existingPreview = fileUploadArea.querySelector('.image-preview');
+                        if (existingPreview) {
+                            existingPreview.remove();
+                        }
+                        
+                        // Criar novo preview
+                        const preview = document.createElement('div');
+                        preview.className = 'image-preview';
+                        preview.style.cssText = `
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            right: 0;
+                            bottom: 0;
+                            background: url('${e.target.result}') center/cover;
+                            border-radius: 8px;
+                            z-index: 1;
+                        `;
+                        fileUploadArea.appendChild(preview);
+                    };
+                    reader.readAsDataURL(file);
+                    
+                    console.log('Arquivo selecionado:', file.name);
+                } else {
+                    alert('Por favor, selecione apenas arquivos de imagem.');
+                    // Resetar o input se não for imagem
+                    const fileInput = document.getElementById('imagem_file');
+                    if (fileInput) {
+                        fileInput.value = '';
+                    }
+                }
+            }
+
             // Função para configurar funcionalidades modernas do modal
             function setupModernModalFeatures() {
                 // Controle do slider de progresso
@@ -719,28 +787,6 @@
                         saveButton.disabled = true;
                         saveButton.textContent = 'Salvando...';
                     });
-                }
-            }
-            
-            function handleFileSelect(file) {
-                if (file && file.type.startsWith('image/')) {
-                    const fileUploadText = document.querySelector('.file-upload-text');
-                    
-                    if (fileUploadText) {
-                        // Atualizar o texto para mostrar o nome do arquivo
-                        fileUploadText.textContent = `✓ ${file.name}`;
-                        fileUploadText.style.color = '#10b981';
-                        fileUploadText.style.fontWeight = '600';
-                    }
-                    
-                    console.log('Arquivo selecionado:', file.name);
-                } else {
-                    alert('Por favor, selecione apenas arquivos de imagem.');
-                    // Resetar o input se não for imagem
-                    const fileInput = document.getElementById('imagem_file');
-                    if (fileInput) {
-                        fileInput.value = '';
-                    }
                 }
             }
             
