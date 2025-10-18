@@ -857,22 +857,50 @@
                     console.log('Input disabled:', fileInput.disabled);
                     console.log('Input style:', fileInput.style.display);
                     
-                    // TESTE MANUAL - criar botão de teste
+                    // TESTE MANUAL - criar input temporário
                     const testButton = document.createElement('button');
                     testButton.textContent = 'TESTE MANUAL';
                     testButton.style.cssText = 'position: fixed; top: 10px; right: 10px; z-index: 9999; background: red; color: white; padding: 10px;';
+                    
+                    // Criar input temporário
+                    const tempInput = document.createElement('input');
+                    tempInput.type = 'file';
+                    tempInput.accept = 'image/*';
+                    tempInput.style.display = 'none';
+                    document.body.appendChild(tempInput);
+                    
+                    // Configurar evento no input temporário
+                    tempInput.onchange = function(event) {
+                        console.log('=== INPUT TEMPORÁRIO FUNCIONOU ===');
+                        console.log('Arquivo selecionado no input temporário:', event.target.files);
+                        if (event.target.files.length > 0) {
+                            console.log('Transferindo arquivo para input original...');
+                            // Transferir arquivo para input original
+                            const dataTransfer = new DataTransfer();
+                            dataTransfer.items.add(event.target.files[0]);
+                            fileInput.files = dataTransfer.files;
+                            
+                            // Disparar evento manualmente
+                            const changeEvent = new Event('change', { bubbles: true });
+                            fileInput.dispatchEvent(changeEvent);
+                        }
+                    };
+                    
                     testButton.onclick = function() {
-                        console.log('TESTE MANUAL - clicando input diretamente');
-                        fileInput.click();
+                        console.log('TESTE MANUAL - clicando input temporário');
+                        tempInput.click();
                     };
                     document.body.appendChild(testButton);
                     
-                    // Remover botão após 10 segundos
+                    // Remover elementos após 15 segundos
                     setTimeout(() => {
                         if (testButton.parentNode) {
                             testButton.parentNode.removeChild(testButton);
                         }
-                    }, 10000);
+                        if (tempInput.parentNode) {
+                            tempInput.parentNode.removeChild(tempInput);
+                        }
+                    }, 15000);
                     
                     // Testar se os event listeners foram configurados
                     console.log('Event listeners configurados:');
