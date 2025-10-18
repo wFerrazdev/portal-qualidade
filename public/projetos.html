@@ -549,7 +549,6 @@
                 if (progressoValue > 100) { progressoValue = 100; } else if (progressoValue < 0) { progressoValue = 0; }
                 const projectData = {
                     titulo: projectForm.querySelector('#titulo').value,
-                    descricao: projectForm.querySelector('#principais_feitos').value.split('\n').filter(line => line.trim() !== '').join('\n'),
                     status: projectForm.querySelector('#status').value,
                     imagem_url: imageUrl,
                     progresso: progressoValue,
