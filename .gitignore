@@ -1,1 +1,25 @@
-node_modules
+# Arquivos do sistema
+AppData/
+.vscode/
+node_modules/
+*.log
+
+# Arquivos temporários
+*.tmp
+*.temp
+
+# Cache do sistema
+Cache/
+Cache_Data/
+
+# Arquivos de configuração local
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Arquivos específicos do projeto
+# public/ - removido para permitir commit
+api/
+package.json
+.gitignore
