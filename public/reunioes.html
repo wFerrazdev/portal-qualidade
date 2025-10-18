@@ -184,14 +184,22 @@
 
         // Função ajudante para fazer chamadas autenticadas
         async function authFetch(url, options = {}) {
-            // Verificar se authenticatedFetch está disponível
-            if (typeof authenticatedFetch === 'undefined') {
-                console.error('authenticatedFetch não está disponível. Verifique se auth0-config.js foi carregado.');
-                return Promise.reject(new Error('authenticatedFetch não está disponível'));
+            const user = window.netlifyIdentity.currentUser();
+            if (!user) {
+                console.error("Tentativa de chamada de API sem usuário.");
+                return Promise.reject(new Error("Usuário não autenticado"));
             }
-            
-            // Usar a função authenticatedFetch do auth0-config.js
-            return await authenticatedFetch(url, options);
+            const token = await user.jwt();
+            const defaultHeaders = {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+                ...options.headers,
+            };
+            // Para uploads de arquivos, o fetch cuida do Content-Type, então o removemos
+            if (options.body instanceof FormData) {
+                delete defaultHeaders['Content-Type'];
+            }
+            return fetch(url, { ...options, headers: defaultHeaders });
         }
         // Script de Proteção de Página (Final e com Suporte a Tokens)
         // Script de Proteção de Página (Anti-Loop e com Suporte a Tokens)
@@ -273,11 +281,10 @@
                 });
             }
             // --- LÓGICA DE PERMISSÕES (VISUAL) ---
-            checkAuth().then(user => {
+            if (window.netlifyIdentity) {
+                const user = netlifyIdentity.currentUser();
                 if (user) {
-                    // Aqui você pode implementar lógica de permissões baseada no Auth0
-                    // Por exemplo, verificar roles ou claims do usuário
-                    const userRoles = user['https://portalqualidade.com/roles'] || [];
+                    const userRoles = user.app_metadata.roles || [];
                     // Se o usuário NÃO tiver a permissão 'admin' na sua lista de permissões...
                     if (!userRoles.includes('admin')) {
                         // ...encontra e esconde todos os botões de ação.
@@ -290,9 +297,7 @@
                         if(grid) grid.classList.add('viewer-mode');
                     }
                 }
-            }).catch(error => {
-                console.error('Erro ao verificar permissões:', error);
-            });
+            }
             
             const API_BASE_URL = '/api';
             const addMeetingBtn = document.getElementById('addMeetingBtn');
@@ -346,7 +351,7 @@
                 ).join('');
             }
 
-            async function renderMeetingCard(reuniao) {
+            function renderMeetingCard(reuniao) {
                 const statusInfo = getStatusInfo(reuniao);
                 
                 // Organizar participantes em colunas (máximo 5 por coluna)
@@ -354,9 +359,8 @@
                 const participantesList = organizarParticipantesEmColunas(participantes);
                 
                 let actionButtonsHtml = '';
-                // Verificar se o usuário é admin (usando Auth0)
-                const user = await checkAuth();
-                if (user && user.roles && user.roles.includes('admin')) {
+                const user = window.netlifyIdentity.currentUser();
+                if (user && user.app_metadata.roles && user.app_metadata.roles.includes('admin')) {
                     actionButtonsHtml = `
                         <button class="edit-button" data-id="${reuniao.id}" title="Editar Reunião">
                             <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -458,7 +462,7 @@
                         meetingsGrid.innerHTML = '<p style="padding: 20px; text-align: center; color: #666;">Nenhuma reunião encontrada. Adicione a primeira!</p>';
                     } else {
                         for (const reuniao of reunioes) {
-                            meetingsGrid.innerHTML += await renderMeetingCard(reuniao);
+                            meetingsGrid.innerHTML += renderMeetingCard(reuniao);
                         }
                     }
                 } catch (error) { 
