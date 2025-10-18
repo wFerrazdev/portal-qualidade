@@ -669,6 +669,7 @@
                 
                 // Configurar upload APÓS o modal estar visível
                 setTimeout(() => {
+                    console.log('Chamando setupFileUpload...');
                     setupFileUpload();
                 }, 100);
             }
@@ -711,6 +712,10 @@
             
             // Funcionalidades modernas do modal
             setupModernModalFeatures();
+            
+            // Configurar upload na inicialização
+            console.log('Configurando upload na inicialização...');
+            setupFileUpload();
             
             // Função para lidar com seleção de arquivo
             function handleFileSelect(file) {
@@ -785,12 +790,21 @@
 
             // Função para configurar upload de arquivo
             function setupFileUpload() {
+                console.log('=== SETUP FILE UPLOAD ===');
+                
                 const fileInput = document.getElementById('imagem_file');
                 const fileUploadArea = document.getElementById('fileUploadArea');
                 
-                console.log('Configurando upload - elementos encontrados:', { fileInput, fileUploadArea });
+                console.log('Elementos encontrados:', { 
+                    fileInput: !!fileInput, 
+                    fileUploadArea: !!fileUploadArea,
+                    fileInputId: fileInput?.id,
+                    fileUploadAreaId: fileUploadArea?.id
+                });
                 
                 if (fileInput && fileUploadArea) {
+                    console.log('Elementos encontrados, configurando event listeners...');
+                    
                     // Limpar event listeners existentes
                     fileUploadArea.onclick = null;
                     fileInput.onchange = null;
@@ -799,12 +813,13 @@
                     fileUploadArea.onclick = function(event) {
                         event.preventDefault();
                         event.stopPropagation();
-                        console.log('Clique na área de upload - abrindo seletor de arquivo');
+                        console.log('CLIQUE NA ÁREA DE UPLOAD DETECTADO');
                         
                         // Tentar diferentes métodos para abrir o seletor
                         try {
+                            console.log('Executando fileInput.click()...');
                             fileInput.click();
-                            console.log('fileInput.click() executado');
+                            console.log('fileInput.click() executado com sucesso');
                         } catch (error) {
                             console.error('Erro ao executar fileInput.click():', error);
                         }
@@ -813,8 +828,10 @@
                     // Configurar mudança no input
                     fileInput.onchange = function(event) {
                         console.log('=== ARQUIVO SELECIONADO ===');
+                        console.log('Event target:', event.target);
                         console.log('Arquivo selecionado:', event.target.files);
                         console.log('Quantidade de arquivos:', event.target.files.length);
+                        
                         if (event.target.files.length > 0) {
                             console.log('Chamando handleFileSelect...');
                             handleFileSelect(event.target.files[0]);
@@ -822,6 +839,11 @@
                             console.log('Nenhum arquivo selecionado');
                         }
                     };
+                    
+                    // Testar se os event listeners foram configurados
+                    console.log('Event listeners configurados:');
+                    console.log('- fileUploadArea.onclick:', typeof fileUploadArea.onclick);
+                    console.log('- fileInput.onchange:', typeof fileInput.onchange);
                     
                     console.log('Upload configurado com sucesso');
                 } else {
