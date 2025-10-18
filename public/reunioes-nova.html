@@ -7,6 +7,7 @@
     <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="stylesheet" href="style.css">
     <script src="auth0-config.js"></script>
+    <script src="mock-data.js"></script>
 </head>
 <body class="unauthenticated reunioes-page">
     <div class="page-container">
@@ -174,6 +175,7 @@
             const deleteMeetingBtn = document.getElementById('deleteMeetingBtn');
             const meetingForm = document.getElementById('meetingForm');
             const meetingsGrid = document.getElementById('meetingsGrid');
+            console.log('🔍 [DEBUG] meetingsGrid element:', meetingsGrid);
             const modalTitle = document.getElementById('modalTitle');
 
             // Funções auxiliares
@@ -269,27 +271,40 @@
 
             async function fetchAndRenderMeetings() {
                 try {
-                    console.log('Buscando reuniões...');
+                    console.log('🔍 [DEBUG] Iniciando busca de reuniões...');
+                    console.log('🔍 [DEBUG] API_BASE_URL:', API_BASE_URL);
+                    console.log('🔍 [DEBUG] URL completa:', `${API_BASE_URL}/getReunioes`);
+                    
                     const response = await authFetch(`${API_BASE_URL}/getReunioes`);
+                    
+                    console.log('🔍 [DEBUG] Response status:', response.status);
+                    console.log('🔍 [DEBUG] Response ok:', response.ok);
                     
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
                     
                     const reunioes = await response.json();
-                    console.log('Reuniões encontradas:', reunioes);
+                    console.log('🔍 [DEBUG] Reuniões encontradas:', reunioes);
+                    console.log('🔍 [DEBUG] Quantidade de reuniões:', reunioes.length);
                     
                     meetingsGrid.innerHTML = '';
                     
                     if (reunioes.length === 0) {
+                        console.log('🔍 [DEBUG] Nenhuma reunião encontrada');
                         meetingsGrid.innerHTML = '<p>Nenhuma reunião encontrada. Adicione a primeira!</p>';
                     } else {
-                        reunioes.forEach(reuniao => {
-                            meetingsGrid.innerHTML += renderMeetingCard(reuniao);
+                        console.log('🔍 [DEBUG] Renderizando', reunioes.length, 'reuniões');
+                        reunioes.forEach((reuniao, index) => {
+                            console.log(`🔍 [DEBUG] Renderizando reunião ${index + 1}:`, reuniao);
+                            const cardHtml = renderMeetingCard(reuniao);
+                            console.log(`🔍 [DEBUG] HTML do card ${index + 1}:`, cardHtml);
+                            meetingsGrid.innerHTML += cardHtml;
                         });
+                        console.log('🔍 [DEBUG] HTML final do grid:', meetingsGrid.innerHTML);
                     }
                 } catch (error) {
-                    console.error('Erro ao buscar reuniões:', error);
+                    console.error('❌ [ERROR] Erro ao buscar reuniões:', error);
                     meetingsGrid.innerHTML = '<p style="color: red;">Não foi possível carregar as reuniões.</p>';
                 }
             }
