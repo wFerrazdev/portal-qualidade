@@ -450,19 +450,44 @@
             }
 
             async function fetchAndRenderMeetings() {
+                console.log('=== FETCHANDRENDERMEETINGS INICIADA ===');
+                console.log('API_BASE_URL:', API_BASE_URL);
+                console.log('URL completa:', `${API_BASE_URL}/getReunioes`);
+                console.log('meetingsGrid encontrado:', !!meetingsGrid);
+                console.log('meetingsGrid elemento:', meetingsGrid);
+                
                 try {
+                    console.log('Fazendo chamada para API...');
                     const response = await authFetch(`${API_BASE_URL}/getReunioes`);
+                    console.log('Resposta recebida:', response);
+                    console.log('Status da resposta:', response.status);
+                    console.log('OK:', response.ok);
+                    
+                    if (!response.ok) { 
+                        console.error('Resposta não OK:', response.status, response.statusText);
+                        throw new Error(`HTTP error! status: ${response.status}`); 
+                    }
+                    
+                    console.log('Convertendo resposta para JSON...');
                     const reunioes = await response.json();
+                    console.log('Reuniões recebidas:', reunioes);
+                    console.log('Número de reuniões:', reunioes.length);
+                    
                     meetingsGrid.innerHTML = '';
                     if (reunioes.length === 0) {
+                        console.log('Nenhuma reunião encontrada');
                         meetingsGrid.innerHTML = '<p style="padding: 20px; text-align: center; color: #666;">Nenhuma reunião encontrada. Adicione a primeira!</p>';
                     } else {
+                        console.log('Renderizando reuniões...');
                         for (const reuniao of reunioes) {
+                            console.log('Renderizando reunião:', reuniao);
                             meetingsGrid.innerHTML += await renderMeetingCard(reuniao);
                         }
+                        console.log('Reuniões renderizadas com sucesso');
                     }
                 } catch (error) { 
                     console.error('Erro ao buscar reuniões:', error); 
+                    console.error('Stack trace:', error.stack);
                     meetingsGrid.innerHTML = '<p style="padding: 20px; color: red; text-align: center;">Não foi possível carregar as reuniões.</p>'; 
                 }
             }
