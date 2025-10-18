@@ -14,9 +14,9 @@ export default async function handler(req, res) {
     }
     
     try {
-        const { nome, descricao, status, progresso, data_inicio, data_fim, responsavel, imagem_url } = req.body;
+        const { titulo, descricao, status, progresso, data_inicio, data_fim, responsavel, imagem_url } = req.body;
         
-        if (!nome || !descricao || !status || !responsavel) {
+        if (!titulo || !descricao || !status || !responsavel) {
             return res.status(400).json({ error: 'Missing required fields' });
         }
         
@@ -31,8 +31,8 @@ export default async function handler(req, res) {
         
         // Inserir projeto
         const result = await pool.query(
-            'INSERT INTO projetos (nome, descricao, status, progresso, data_inicio, data_fim, responsavel, imagem_url) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
-            [nome, descricao, status, progresso || 0, data_inicio, data_fim, responsavel, imagem_url]
+            'INSERT INTO projetos (titulo, descricao, status, progresso, data_inicio, data_fim, responsavel, imagem_url) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
+            [titulo, descricao, status, progresso || 0, data_inicio, data_fim, responsavel, imagem_url]
         );
         
         await pool.end();
