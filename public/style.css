@@ -1724,41 +1724,42 @@ body.projects-page {
     transform: scale(1.05);
 }
 
-/* Overlay de Hover - NOVO DESIGN MINIMALISTA */
-.card-image-overlay {
+/* Ícones pequenos no canto inferior direito */
+.card-action-icons {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
+    bottom: 8px;
+    right: 8px;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    gap: 6px;
     z-index: 10;
 }
 
-.project-card:hover .card-image-overlay {
-    opacity: 1;
-}
-
-/* Ícones do Overlay */
-.overlay-icon {
-    width: 24px;
-    height: 24px;
+.action-icon {
+    width: 28px;
+    height: 28px;
+    background: rgba(0, 0, 0, 0.7);
+    border: none;
+    border-radius: 4px;
     color: white;
     cursor: pointer;
-    transition: transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(4px);
+}
+
+.action-icon:hover {
+    background: rgba(0, 0, 0, 0.9);
+    transform: scale(1.1);
+}
+
+.action-icon svg {
+    width: 14px;
+    height: 14px;
     stroke: currentColor;
     fill: none;
     stroke-width: 2;
-}
-
-.overlay-icon:hover {
-    transform: scale(1.1);
 }
 
 /* Corpo do Card */
@@ -2556,53 +2557,48 @@ body.projects-page {
     align-items: center;
 }
 
-/* Botão Primário - Ação Principal */
+/* Botão Primário - Ação Principal (Apenas Ícone) */
 .modern-save {
-    padding: 12px 24px;
+    width: 32px;
+    height: 32px;
+    padding: 0;
     background: #0f172a;
     color: white;
     border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 0.9rem;
+    border-radius: 6px;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 8px;
-    transition: all 0.2s ease;
-    min-width: 140px;
     justify-content: center;
+    transition: all 0.2s ease;
 }
 
 .modern-save:hover {
     background: #1e293b;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.3);
+    transform: scale(1.05);
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.3);
 }
 
-/* Botão Secundário - Ação de Escape */
+/* Botão Secundário - Ação de Escape (Apenas Ícone) */
 .modern-cancel {
-    padding: 12px 24px;
-    background: transparent;
-    color: #6b7280;
-    border: 2px solid #e2e8f0;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 0.9rem;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    background: #6b7280;
+    color: white;
+    border: none;
+    border-radius: 6px;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 8px;
-    transition: all 0.2s ease;
-    min-width: 120px;
     justify-content: center;
+    transition: all 0.2s ease;
 }
 
 .modern-cancel:hover {
-    background: #f8fafc;
-    border-color: #cbd5e1;
-    color: #4b5563;
-    transform: translateY(-1px);
+    background: #4b5563;
+    transform: scale(1.05);
+    box-shadow: 0 2px 8px rgba(107, 114, 128, 0.3);
 }
 
 .button-loading {
@@ -2625,28 +2621,26 @@ body.projects-page {
     100% { transform: rotate(360deg); }
 }
 
-/* Botão Destrutivo - Ação de Perigo */
+/* Botão Destrutivo - Ação de Perigo (Apenas Ícone) */
 .modern-delete {
-    padding: 12px 24px;
+    width: 32px;
+    height: 32px;
+    padding: 0;
     background: #dc2626;
     color: white;
     border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 0.9rem;
+    border-radius: 6px;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 8px;
-    transition: all 0.2s ease;
-    min-width: 140px;
     justify-content: center;
+    transition: all 0.2s ease;
 }
 
 .modern-delete:hover {
     background: #b91c1c;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+    transform: scale(1.05);
+    box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
 }
 
 /* Responsividade */
@@ -2684,9 +2678,9 @@ body.projects-page {
     .modern-cancel,
     .modern-save,
     .modern-delete {
-        width: 100%;
+        width: 36px;
+        height: 36px;
         justify-content: center;
-        min-width: auto;
     }
     
     .form-section {
