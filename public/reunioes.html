@@ -137,7 +137,7 @@
             align-items: center;
             gap: 8px;
             padding: 8px 16px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
             color: white;
             border: none;
             border-radius: 8px;
@@ -149,7 +149,7 @@
 
         .view-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.3);
         }
 
         .edit-button-minimal, .delete-button-minimal {
@@ -588,12 +588,12 @@
         }
 
         .modern-save-button {
-            background: #29abe2;
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
             color: white;
         }
 
         .modern-save-button:hover {
-            background: #1e90c7;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
             transform: translateY(-2px);
         }
 
@@ -767,17 +767,17 @@
                     <div class="header-right">
                         <button id="addMeetingBtn" class="projects-add-btn">
                             <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                            </svg>
-                            Adicionar Reunião
-                        </button>
-                    </div>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    Adicionar Reunião
+                </button>
+            </div>
                 </div>
             </header>
 
             <main class="content-area">
                 <div class="projects-grid" id="meetingsGrid">
-                    <div class="loading-spinner"></div>
+                        <div class="loading-spinner"></div>
                 </div>
             </main>
 
@@ -810,7 +810,7 @@
                     </svg>
                 </div>
                 <div class="header-text">
-                    <h2 id="modalTitle">Adicionar Nova Reunião</h2>
+                <h2 id="modalTitle">Adicionar Nova Reunião</h2>
                     <p class="header-subtitle">Preencha as informações da reunião</p>
                 </div>
                 <button id="closeModalBtn" class="modern-close-button">
@@ -840,7 +840,7 @@
                             </label>
                             <input type="text" id="titulo" name="titulo" class="modern-input" placeholder="Digite o título da reunião" required>
                             <div class="input-focus-line"></div>
-                        </div>
+                    </div>
 
                         <div class="form-group modern-group">
                             <label for="data_reuniao" class="modern-label">
@@ -851,8 +851,8 @@
                             </label>
                             <input type="date" id="data_reuniao" name="data_reuniao" class="modern-input" required>
                             <div class="input-focus-line"></div>
-                        </div>
-                    </div>
+        </div>
+    </div>
 
                     <!-- Seção: Participantes e Conteúdo -->
                     <div class="form-section">
@@ -997,7 +997,7 @@
                 const statusInfo = getStatusInfo(reuniao);
                 const participantes = reuniao.participantes || [];
                 const participantesCount = participantes.length;
-                
+
                 return `
                     <div class="meeting-card-minimal">
                         <div class="meeting-card-header-minimal">
@@ -1010,10 +1010,10 @@
                             </div>
                             <div class="meeting-date-minimal">
                                 <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                </svg>
-                                <span>${formatarData(reuniao.data_reuniao)}</span>
-                            </div>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                    </svg>
+                                    <span>${formatarData(reuniao.data_reuniao)}</span>
+                                </div>
                         </div>
                         
                         <div class="meeting-card-content-minimal">
@@ -1024,36 +1024,36 @@
                                     </svg>
                                     <span>${participantesCount} participante${participantesCount !== 1 ? 's' : ''}</span>
                                 </div>
-                                ${reuniao.link_ata ? `
+                                    ${reuniao.link_ata ? `
                                     <div class="info-item">
-                                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                        </svg>
+                                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                            </svg>
                                         <span>Ata disponível</span>
                                     </div>
-                                ` : ''}
+                                    ` : ''}
                             </div>
                         </div>
                         
                         <div class="meeting-card-actions-minimal">
                             <button class="view-button" data-id="${reuniao.id}" title="Visualizar Reunião">
-                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                                </svg>
+                                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                        </svg>
                                 <span>Visualizar</span>
-                            </button>
+                                    </button>
                             <div class="action-buttons-group">
                                 <button class="edit-button-minimal" data-id="${reuniao.id}" title="Editar Reunião">
-                                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                                    </svg>
+                                </svg>
                                 </button>
                                 <button class="delete-button-minimal" data-id="${reuniao.id}" title="Excluir Reunião">
-                                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                    </svg>
-                                </button>
+                                            </svg>
+                                    </button>
                             </div>
                         </div>
                     </div>
@@ -1078,8 +1078,8 @@
                             meetingsGrid.innerHTML += renderMeetingCard(reuniao);
                         });
                     }
-                } catch (error) {
-                    console.error('Erro ao buscar reuniões:', error);
+                } catch (error) { 
+                    console.error('Erro ao buscar reuniões:', error); 
                     meetingsGrid.innerHTML = '<p style="color: red;">Não foi possível carregar as reuniões.</p>';
                 }
             }
