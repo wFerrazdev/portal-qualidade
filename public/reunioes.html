@@ -127,6 +127,11 @@
             background: rgba(248, 250, 252, 0.5);
         }
 
+        .action-buttons-group {
+            display: flex;
+            gap: 8px;
+        }
+
         .view-button {
             display: flex;
             align-items: center;
@@ -375,11 +380,19 @@
             max-width: 800px;
             width: 90%;
             max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modern-modal-body {
+            padding: 32px;
+            background: white;
             overflow-y: auto;
+            flex: 1;
         }
 
         .modern-modal-header {
-            background: linear-gradient(135deg, #1e40af 0%, #3730a3 100%);
+            background: #29abe2;
             color: white;
             padding: 24px 32px;
             display: flex;
@@ -440,10 +453,6 @@
             transform: scale(1.1);
         }
 
-        .modern-modal-body {
-            padding: 32px;
-            background: white;
-        }
 
         .form-section {
             margin-bottom: 32px;
@@ -579,13 +588,13 @@
         }
 
         .modern-save-button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #29abe2;
             color: white;
         }
 
         .modern-save-button:hover {
+            background: #1e90c7;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
         }
 
         .modern-delete-button.hidden {
@@ -1034,16 +1043,18 @@
                                 </svg>
                                 <span>Visualizar</span>
                             </button>
-                            <button class="edit-button-minimal" data-id="${reuniao.id}" title="Editar Reunião">
-                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                                </svg>
-                            </button>
-                            <button class="delete-button-minimal" data-id="${reuniao.id}" title="Excluir Reunião">
-                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                </svg>
-                            </button>
+                            <div class="action-buttons-group">
+                                <button class="edit-button-minimal" data-id="${reuniao.id}" title="Editar Reunião">
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                    </svg>
+                                </button>
+                                <button class="delete-button-minimal" data-id="${reuniao.id}" title="Excluir Reunião">
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 `;
