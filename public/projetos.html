@@ -242,12 +242,12 @@
                         </div>
 
                         <div class="form-group modern-group">
-                            <label for="imagem_file" class="modern-label file-label">
+                            <div class="modern-label file-label">
                                 <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                                 </svg>
                                 Foto do Projeto
-                            </label>
+                            </div>
                             <div class="file-upload-area" id="fileUploadArea">
                                 <input type="file" id="imagem_file" name="imagem_file" accept="image/*" class="file-input">
                                 <div class="file-upload-content">
@@ -548,11 +548,14 @@
                 let progressoValue = parseInt(projectForm.querySelector('#progresso').value) || 0;
                 if (progressoValue > 100) { progressoValue = 100; } else if (progressoValue < 0) { progressoValue = 0; }
                 const projectData = {
-                    titulo: projectForm.querySelector('#titulo').value,
+                    nome: projectForm.querySelector('#titulo').value,
+                    descricao: projectForm.querySelector('#principais_feitos').value.split('\n').filter(line => line.trim() !== '').join('\n'),
                     status: projectForm.querySelector('#status').value,
                     imagem_url: imageUrl,
                     progresso: progressoValue,
-                    principais_feitos: projectForm.querySelector('#principais_feitos').value.split('\n').filter(line => line.trim() !== '')
+                    data_inicio: projectForm.querySelector('#data_inicio').value,
+                    data_fim: projectForm.querySelector('#data_fim').value,
+                    responsavel: projectForm.querySelector('#responsavel').value
                 };
                 try {
                     let response;
@@ -562,18 +565,30 @@
                             const oldProject = await oldProjectResponse.json();
                             projectData.imagem_url = oldProject.imagem_url;
                         }
-                        response = await authFetch(`${API_BASE_URL}/updateProjeto?id=${editingId}`, { method: 'PUT', body: JSON.stringify(projectData) });
+                        response = await authFetch(`${API_BASE_URL}/updateProjeto?id=${editingId}`, { 
+                            method: 'PUT', 
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(projectData) 
+                        });
                     } else {
-                        response = await authFetch(`${API_BASE_URL}/addProjeto`, { method: 'POST', body: JSON.stringify(projectData) });
+                        response = await authFetch(`${API_BASE_URL}/addProjeto`, { 
+                            method: 'POST', 
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(projectData) 
+                        });
                     }
-                    if (!response.ok) { throw new Error('Falha na API ao salvar projeto'); }
+                    if (!response.ok) { 
+                        const errorText = await response.text();
+                        console.error('Erro da API:', response.status, errorText);
+                        throw new Error(`Falha na API ao salvar projeto: ${response.status}`);
+                    }
                     closeModal();
                     await fetchAndRenderProjects();
                 } catch (error) {
                     console.error('Erro ao salvar projeto:', error);
-                    alert('Não foi possível salvar o projeto.');
+                    alert('Não foi possível salvar o projeto: ' + error.message);
                 } finally {
-                    saveButton.textContent = 'Salvar Projeto';
+                    saveButton.textContent = 'Salvar';
                     saveButton.disabled = false;
                 }
             }
@@ -672,20 +687,32 @@
                     });
                 }
                 
-                // Upload de arquivo simplificado
+                // Upload de arquivo - CORRIGIDO para evitar clique duplo
                 const fileInput = document.getElementById('imagem_file');
                 const fileUploadArea = document.getElementById('fileUploadArea');
                 
                 if (fileInput && fileUploadArea) {
-                    fileUploadArea.addEventListener('click', function() {
-                        fileInput.click();
-                    });
+                    // Remover event listeners existentes para evitar duplicação
+                    fileUploadArea.removeEventListener('click', handleFileUploadClick);
+                    fileInput.removeEventListener('change', handleFileInputChange);
                     
-                    fileInput.addEventListener('change', function() {
-                        if (this.files.length > 0) {
-                            handleFileSelect(this.files[0]);
+                    // Função para lidar com clique na área de upload
+                    function handleFileUploadClick(event) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        fileInput.click();
+                    }
+                    
+                    // Função para lidar com mudança no input
+                    function handleFileInputChange(event) {
+                        if (event.target.files.length > 0) {
+                            handleFileSelect(event.target.files[0]);
                         }
-                    });
+                    }
+                    
+                    // Adicionar event listeners
+                    fileUploadArea.addEventListener('click', handleFileUploadClick);
+                    fileInput.addEventListener('change', handleFileInputChange);
                 }
                 
                 // Estados de carregamento simplificado
