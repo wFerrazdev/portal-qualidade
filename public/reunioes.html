@@ -369,6 +369,267 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(14, 165, 233, 0.2);
         }
+
+        /* Estilos Modernos para Modal de Edição/Adição */
+        .modern-modal-content {
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modern-modal-header {
+            background: linear-gradient(135deg, #1e40af 0%, #3730a3 100%);
+            color: white;
+            padding: 24px 32px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            border-radius: 12px 12px 0 0;
+            position: relative;
+        }
+
+        .header-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .header-text {
+            flex: 1;
+        }
+
+        .header-text h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 0 4px 0;
+            color: white;
+        }
+
+        .header-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin: 0;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .modern-close-button {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .modern-close-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        .modern-modal-body {
+            padding: 32px;
+            background: white;
+        }
+
+        .form-section {
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+        }
+
+        .form-section:last-of-type {
+            border-bottom: none;
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin: 0 0 20px 0;
+        }
+
+        .section-title svg {
+            color: #667eea;
+            flex-shrink: 0;
+        }
+
+        .form-group.modern-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .modern-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .modern-label svg {
+            color: #667eea;
+            flex-shrink: 0;
+        }
+
+        .modern-input, .modern-textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #1f2937;
+            background: #ffffff;
+            transition: all 0.2s ease;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .modern-input:focus, .modern-textarea:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .modern-textarea {
+            resize: vertical;
+            min-height: 80px;
+            font-family: inherit;
+        }
+
+        .input-focus-line {
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+        }
+
+        .modern-input:focus + .input-focus-line,
+        .modern-textarea:focus + .input-focus-line {
+            width: 100%;
+        }
+
+        .modern-form-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 24px;
+            border-top: 1px solid rgba(0, 0, 0, 0.06);
+        }
+
+        .action-buttons-right {
+            display: flex;
+            gap: 12px;
+        }
+
+        .modern-delete-button, .modern-cancel-button, .modern-save-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .modern-delete-button {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+        }
+
+        .modern-delete-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+
+        .modern-cancel-button {
+            background: #f3f4f6;
+            color: #374151;
+            border: 1px solid #d1d5db;
+        }
+
+        .modern-cancel-button:hover {
+            background: #e5e7eb;
+            transform: translateY(-2px);
+        }
+
+        .modern-save-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .modern-save-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .modern-delete-button.hidden {
+            display: none;
+        }
+
+        /* Responsividade para Modal */
+        @media (max-width: 768px) {
+            .modern-modal-content {
+                width: 95%;
+                margin: 10px;
+            }
+            
+            .modern-modal-header {
+                padding: 20px 24px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+            
+            .modern-close-button {
+                position: static;
+                align-self: flex-end;
+            }
+            
+            .modern-modal-body {
+                padding: 24px 20px;
+            }
+            
+            .modern-form-actions {
+                flex-direction: column;
+                gap: 12px;
+                align-items: stretch;
+            }
+            
+            .action-buttons-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .modern-delete-button, .modern-cancel-button, .modern-save-button {
+                justify-content: center;
+            }
+        }
     </style>
 </head>
 <body class="unauthenticated reunioes-page">
@@ -532,42 +793,134 @@
 
     <!-- Modal de Edição/Adição -->
     <div id="meetingModal" class="modal-overlay">
-        <div class="modal-content">
-            <header class="modal-header">
-                <h2 id="modalTitle">Adicionar Nova Reunião</h2>
-                <button id="closeModalBtn" class="close-button">&times;</button>
+        <div class="modal-content modern-modal-content">
+            <header class="modern-modal-header">
+                <div class="header-icon">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                </div>
+                <div class="header-text">
+                    <h2 id="modalTitle">Adicionar Nova Reunião</h2>
+                    <p class="header-subtitle">Preencha as informações da reunião</p>
+                </div>
+                <button id="closeModalBtn" class="modern-close-button">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
             </header>
-            <main class="modal-body">
+            
+            <main class="modern-modal-body">
                 <form id="meetingForm">
-                    <div class="form-group">
-                        <label for="titulo">Título</label>
-                        <input type="text" id="titulo" name="titulo" required>
+                    <!-- Seção: Informações Básicas -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            Informações Básicas
+                        </h3>
+
+                        <div class="form-group modern-group">
+                            <label for="titulo" class="modern-label">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                Título da Reunião
+                            </label>
+                            <input type="text" id="titulo" name="titulo" class="modern-input" placeholder="Digite o título da reunião" required>
+                            <div class="input-focus-line"></div>
+                        </div>
+
+                        <div class="form-group modern-group">
+                            <label for="data_reuniao" class="modern-label">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                </svg>
+                                Data da Reunião
+                            </label>
+                            <input type="date" id="data_reuniao" name="data_reuniao" class="modern-input" required>
+                            <div class="input-focus-line"></div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="data_reuniao">Data da Reunião</label>
-                        <input type="date" id="data_reuniao" name="data_reuniao" required>
+
+                    <!-- Seção: Participantes e Conteúdo -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                            </svg>
+                            Participantes e Conteúdo
+                        </h3>
+
+                        <div class="form-group modern-group">
+                            <label for="participantes" class="modern-label">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+                                </svg>
+                                Participantes
+                            </label>
+                            <textarea id="participantes" name="participantes" class="modern-textarea" rows="3" placeholder="Digite os participantes (um por linha)"></textarea>
+                            <div class="input-focus-line"></div>
+                        </div>
+
+                        <div class="form-group modern-group">
+                            <label for="pauta" class="modern-label">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                Pauta / Resumo
+                            </label>
+                            <textarea id="pauta" name="pauta" class="modern-textarea" rows="4" placeholder="Descreva a pauta ou resumo da reunião"></textarea>
+                            <div class="input-focus-line"></div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="participantes">Participantes (um por linha)</label>
-                        <textarea id="participantes" name="participantes" rows="3"></textarea>
+
+                    <!-- Seção: Documentos -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            Documentos
+                        </h3>
+
+                        <div class="form-group modern-group">
+                            <label for="link_ata" class="modern-label">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                </svg>
+                                Link da Ata
+                            </label>
+                            <input type="url" id="link_ata" name="link_ata" class="modern-input" placeholder="https://exemplo.com/ata.pdf">
+                            <div class="input-focus-line"></div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="pauta">Pauta / Resumo</label>
-                        <textarea id="pauta" name="pauta" rows="4"></textarea>
-                    </div>
-                    <hr style="margin: 30px 0; border-color: #eef2f7;">
-                    <div class="form-group">
-                        <label for="link_ata">Link Externo para a Ata</label>
-                        <input type="url" id="link_ata" name="link_ata">
-                    </div>
-                    <div class="form-actions">
-                        <button type="button" id="deleteMeetingBtn" class="delete-button hidden">
-                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+
+                    <!-- Botões de Ação -->
+                    <div class="modern-form-actions">
+                        <button type="button" id="deleteMeetingBtn" class="modern-delete-button hidden">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                             </svg>
+                            <span>Excluir</span>
                         </button>
-                        <button type="button" id="cancelModalBtn" class="cancel-button">Cancelar</button>
-                        <button type="submit" class="save-button">Salvar</button>
+                        
+                        <div class="action-buttons-right">
+                            <button type="button" id="cancelModalBtn" class="modern-cancel-button">
+                                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                                <span>Cancelar</span>
+                            </button>
+                            <button type="submit" class="modern-save-button">
+                                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span>Salvar</span>
+                            </button>
+                        </div>
                     </div>
                 </form>
             </main>
