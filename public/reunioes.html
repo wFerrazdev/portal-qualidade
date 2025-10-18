@@ -510,7 +510,7 @@
                     link_ata: finalLinkAta
                 };
                 try {
-                    const url = editingId ? `${API_BASE_URL}/updateReuniao?id=${editingId}` : `${API_BASE_URL}/addReuniao`;
+                    const url = editingId ? `${API_BASE_URL}/updateItem?id=${editingId}&table=reunioes` : `${API_BASE_URL}/addReuniao`;
                     const method = editingId ? 'PUT' : 'POST';
                     const response = await authFetch(url, { method: method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(meetingData) });
                     if (!response.ok) { throw new Error('Falha na API'); }
@@ -526,7 +526,7 @@
             async function handleDeleteFromList(reuniaoId) {
                 if (confirm('Tem certeza que deseja excluir esta reunião?')) {
                     try {
-                        await authFetch(`${API_BASE_URL}/deleteReuniao?id=${reuniaoId}`, { method: 'DELETE' });
+                        await authFetch(`${API_BASE_URL}/deleteItem?id=${reuniaoId}&table=reunioes`, { method: 'DELETE' });
                         await fetchAndRenderMeetings();
                     } catch (error) {
                         alert('Não foi possível excluir a reunião.');
@@ -537,7 +537,7 @@
             async function handleDeleteMeetingFromCard(reuniaoId) {
                 if (confirm('Tem certeza que deseja excluir esta reunião? Esta ação não pode ser desfeita.')) {
                     try {
-                        const response = await authFetch(`${API_BASE_URL}/deleteReuniao?id=${reuniaoId}`, { method: 'DELETE' });
+                        const response = await authFetch(`${API_BASE_URL}/deleteItem?id=${reuniaoId}&table=reunioes`, { method: 'DELETE' });
                         if (!response.ok) { throw new Error('Falha ao excluir a reunião.'); }
                         await fetchAndRenderMeetings();
                     } catch (error) {

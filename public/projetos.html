@@ -582,7 +582,7 @@
                             const oldProject = await oldProjectResponse.json();
                             projectData.imagem_url = oldProject.imagem_url;
                         }
-                        response = await authFetch(`${API_BASE_URL}/updateProjeto?id=${editingId}`, { 
+                        response = await authFetch(`${API_BASE_URL}/updateItem?id=${editingId}&table=projetos`, { 
                             method: 'PUT', 
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify(projectData) 
@@ -615,7 +615,7 @@
                 if (!editingId) return;
                 if (confirm('Tem certeza que deseja excluir este projeto? Esta ação não pode ser desfeita.')) {
                     try {
-                        const response = await authFetch(`${API_BASE_URL}/deleteProjeto?id=${editingId}`, { method: 'DELETE' });
+                        const response = await authFetch(`${API_BASE_URL}/deleteItem?id=${editingId}&table=projetos`, { method: 'DELETE' });
                         if (!response.ok) { throw new Error('Falha ao excluir o projeto.'); }
                         closeModal();
                         await fetchAndRenderProjects();
@@ -629,7 +629,7 @@
             async function handleDeleteProjectFromCard(projectId) {
                 if (confirm('Tem certeza que deseja excluir este projeto? Esta ação não pode ser desfeita.')) {
                     try {
-                        const response = await authFetch(`${API_BASE_URL}/deleteProjeto?id=${projectId}`, { method: 'DELETE' });
+                        const response = await authFetch(`${API_BASE_URL}/deleteItem?id=${projectId}&table=projetos`, { method: 'DELETE' });
                         if (!response.ok) { throw new Error('Falha ao excluir o projeto.'); }
                         await fetchAndRenderProjects();
                     } catch (error) {
