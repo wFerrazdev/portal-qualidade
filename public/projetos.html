@@ -455,7 +455,7 @@
 
                 return `<div class="project-card">
                     <div class="card-image-container">
-                        <img src="${project.imagem_url || 'https://via.placeholder.com/600x400/CCCCCC/FFFFFF?text=Sem+Imagem'}" alt="Imagem do Projeto ${project.titulo}">
+                        <img src="${project.imagem_url || 'https://via.placeholder.com/600x400/CCCCCC/FFFFFF?text=Sem+Imagem'}" alt="Imagem do Projeto ${project.nome || project.titulo}">
                         <!-- Ícones pequenos no canto inferior direito -->
                         <div class="card-action-icons">
                             <button class="action-icon edit-project" data-id="${project.id}" title="Editar Projeto">
@@ -471,7 +471,7 @@
                         </div>
                     </div>
                     <div class="card-project-body">
-                        <h3>${project.titulo}</h3>
+                        <h3>${project.nome || project.titulo}</h3>
                         <p><strong>Status:</strong> ${project.status}</p>
                         <hr>
                         <div class="card-project-details">
@@ -509,7 +509,7 @@
             }
 
             function populateFormForEdit(project) {
-                projectForm.querySelector('#titulo').value = project.titulo;
+                projectForm.querySelector('#titulo').value = project.nome || project.titulo;
                 projectForm.querySelector('#status').value = project.status;
                 projectForm.querySelector('#progresso').value = project.progresso;
                 projectForm.querySelector('#principais_feitos').value = (project.principais_feitos || []).join('\n');
@@ -548,7 +548,7 @@
                 let progressoValue = parseInt(projectForm.querySelector('#progresso').value) || 0;
                 if (progressoValue > 100) { progressoValue = 100; } else if (progressoValue < 0) { progressoValue = 0; }
                 const projectData = {
-                    nome: projectForm.querySelector('#titulo').value,
+                    titulo: projectForm.querySelector('#titulo').value,
                     descricao: projectForm.querySelector('#principais_feitos').value.split('\n').filter(line => line.trim() !== '').join('\n'),
                     status: projectForm.querySelector('#status').value,
                     imagem_url: imageUrl,
@@ -692,27 +692,31 @@
                 const fileUploadArea = document.getElementById('fileUploadArea');
                 
                 if (fileInput && fileUploadArea) {
-                    // Remover event listeners existentes para evitar duplicação
-                    fileUploadArea.removeEventListener('click', handleFileUploadClick);
-                    fileInput.removeEventListener('change', handleFileInputChange);
-                    
                     // Função para lidar com clique na área de upload
                     function handleFileUploadClick(event) {
                         event.preventDefault();
                         event.stopPropagation();
+                        console.log('Clique na área de upload detectado');
                         fileInput.click();
                     }
                     
                     // Função para lidar com mudança no input
                     function handleFileInputChange(event) {
+                        console.log('Arquivo selecionado:', event.target.files);
                         if (event.target.files.length > 0) {
                             handleFileSelect(event.target.files[0]);
                         }
                     }
                     
+                    // Remover event listeners existentes para evitar duplicação
+                    fileUploadArea.removeEventListener('click', handleFileUploadClick);
+                    fileInput.removeEventListener('change', handleFileInputChange);
+                    
                     // Adicionar event listeners
                     fileUploadArea.addEventListener('click', handleFileUploadClick);
                     fileInput.addEventListener('change', handleFileInputChange);
+                    
+                    console.log('Event listeners de upload configurados');
                 }
                 
                 // Estados de carregamento simplificado
