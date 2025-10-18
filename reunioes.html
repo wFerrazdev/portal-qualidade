@@ -185,28 +185,21 @@
         // Função ajudante para fazer chamadas autenticadas
         async function authFetch(url, options = {}) {
             const user = window.netlifyIdentity.currentUser();
-            
-            // Se não houver usuário, a chamada nem acontece (já fomos redirecionados)
             if (!user) {
                 console.error("Tentativa de chamada de API sem usuário.");
                 return Promise.reject(new Error("Usuário não autenticado"));
             }
-            
-            // Pega o token JWT do usuário
             const token = await user.jwt();
-
-            // Prepara os cabeçalhos
             const defaultHeaders = {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`, // Anexa o "crachá" aqui!
+                'Authorization': `Bearer ${token}`,
                 ...options.headers,
             };
-
-            // Executa o fetch original, mas com os cabeçalhos de autorização
-            return fetch(url, {
-                ...options,
-                headers: defaultHeaders,
-            });
+            // Para uploads de arquivos, o fetch cuida do Content-Type, então o removemos
+            if (options.body instanceof FormData) {
+                delete defaultHeaders['Content-Type'];
+            }
+            return fetch(url, { ...options, headers: defaultHeaders });
         }
         // Script de Proteção de Página (Final e com Suporte a Tokens)
         // Script de Proteção de Página (Anti-Loop e com Suporte a Tokens)
@@ -288,11 +281,10 @@
                 });
             }
             // --- LÓGICA DE PERMISSÕES (VISUAL) ---
-            checkAuth().then(user => {
+            if (window.netlifyIdentity) {
+                const user = netlifyIdentity.currentUser();
                 if (user) {
-                    // Aqui você pode implementar lógica de permissões baseada no Auth0
-                    // Por exemplo, verificar roles ou claims do usuário
-                    const userRoles = user['https://portalqualidade.com/roles'] || [];
+                    const userRoles = user.app_metadata.roles || [];
                     // Se o usuário NÃO tiver a permissão 'admin' na sua lista de permissões...
                     if (!userRoles.includes('admin')) {
                         // ...encontra e esconde todos os botões de ação.
@@ -305,9 +297,7 @@
                         if(grid) grid.classList.add('viewer-mode');
                     }
                 }
-            }).catch(error => {
-                console.error('Erro ao verificar permissões:', error);
-            });
+            }
             
             const API_BASE_URL = '/.netlify/functions';
             const addMeetingBtn = document.getElementById('addMeetingBtn');
