@@ -184,29 +184,14 @@
 
         // Função ajudante para fazer chamadas autenticadas
         async function authFetch(url, options = {}) {
-            const user = window.netlifyIdentity.currentUser();
-            
-            // Se não houver usuário, a chamada nem acontece (já fomos redirecionados)
-            if (!user) {
-                console.error("Tentativa de chamada de API sem usuário.");
-                return Promise.reject(new Error("Usuário não autenticado"));
+            // Verificar se authenticatedFetch está disponível
+            if (typeof authenticatedFetch === 'undefined') {
+                console.error('authenticatedFetch não está disponível. Verifique se auth0-config.js foi carregado.');
+                return Promise.reject(new Error('authenticatedFetch não está disponível'));
             }
             
-            // Pega o token JWT do usuário
-            const token = await user.jwt();
-
-            // Prepara os cabeçalhos
-            const defaultHeaders = {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`, // Anexa o "crachá" aqui!
-                ...options.headers,
-            };
-
-            // Executa o fetch original, mas com os cabeçalhos de autorização
-            return fetch(url, {
-                ...options,
-                headers: defaultHeaders,
-            });
+            // Usar a função authenticatedFetch do auth0-config.js
+            return await authenticatedFetch(url, options);
         }
         // Script de Proteção de Página (Final e com Suporte a Tokens)
         // Script de Proteção de Página (Anti-Loop e com Suporte a Tokens)
@@ -361,7 +346,7 @@
                 ).join('');
             }
 
-            function renderMeetingCard(reuniao) {
+            async function renderMeetingCard(reuniao) {
                 const statusInfo = getStatusInfo(reuniao);
                 
                 // Organizar participantes em colunas (máximo 5 por coluna)
@@ -369,8 +354,9 @@
                 const participantesList = organizarParticipantesEmColunas(participantes);
                 
                 let actionButtonsHtml = '';
-                const user = window.netlifyIdentity.currentUser();
-                if (user && user.app_metadata.roles && user.app_metadata.roles.includes('admin')) {
+                // Verificar se o usuário é admin (usando Auth0)
+                const user = await checkAuth();
+                if (user && user.roles && user.roles.includes('admin')) {
                     actionButtonsHtml = `
                         <button class="edit-button" data-id="${reuniao.id}" title="Editar Reunião">
                             <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -471,7 +457,9 @@
                     if (reunioes.length === 0) {
                         meetingsGrid.innerHTML = '<p style="padding: 20px; text-align: center; color: #666;">Nenhuma reunião encontrada. Adicione a primeira!</p>';
                     } else {
-                        reunioes.forEach(reuniao => { meetingsGrid.innerHTML += renderMeetingCard(reuniao); });
+                        for (const reuniao of reunioes) {
+                            meetingsGrid.innerHTML += await renderMeetingCard(reuniao);
+                        }
                     }
                 } catch (error) { 
                     console.error('Erro ao buscar reuniões:', error); 
@@ -571,7 +559,18 @@
                 meetingForm.reset();
             }
 
-            fetchAndRenderMeetings();
+            // Aguardar o carregamento completo da página antes de executar
+            document.addEventListener('DOMContentLoaded', async function() {
+                // Aguardar um pouco mais para garantir que auth0-config.js foi carregado
+                await new Promise(resolve => setTimeout(resolve, 100));
+                
+                try {
+                    await fetchAndRenderMeetings();
+                } catch (error) {
+                    console.error('Erro ao carregar reuniões na inicialização:', error);
+                }
+            });
+            
             addMeetingBtn.addEventListener('click', openModalForAdd);
             closeModalBtn.addEventListener('click', closeModal);
             cancelModalBtn.addEventListener('click', closeModal);
