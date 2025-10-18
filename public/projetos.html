@@ -825,7 +825,7 @@
                         }
                     };
                     
-                    // Configurar mudança no input
+                    // Configurar mudança no input - MÚLTIPLOS MÉTODOS
                     fileInput.onchange = function(event) {
                         console.log('=== ARQUIVO SELECIONADO ===');
                         console.log('Event target:', event.target);
@@ -839,6 +839,40 @@
                             console.log('Nenhum arquivo selecionado');
                         }
                     };
+                    
+                    // ADICIONAR addEventListener também (backup)
+                    fileInput.addEventListener('change', function(event) {
+                        console.log('=== ADDEVENTLISTENER CHANGE ===');
+                        console.log('Arquivo selecionado via addEventListener:', event.target.files);
+                        if (event.target.files.length > 0) {
+                            console.log('Chamando handleFileSelect via addEventListener...');
+                            handleFileSelect(event.target.files[0]);
+                        }
+                    });
+                    
+                    // TESTE DIRETO - verificar se input está funcionando
+                    console.log('Testando input diretamente...');
+                    console.log('Input type:', fileInput.type);
+                    console.log('Input accept:', fileInput.accept);
+                    console.log('Input disabled:', fileInput.disabled);
+                    console.log('Input style:', fileInput.style.display);
+                    
+                    // TESTE MANUAL - criar botão de teste
+                    const testButton = document.createElement('button');
+                    testButton.textContent = 'TESTE MANUAL';
+                    testButton.style.cssText = 'position: fixed; top: 10px; right: 10px; z-index: 9999; background: red; color: white; padding: 10px;';
+                    testButton.onclick = function() {
+                        console.log('TESTE MANUAL - clicando input diretamente');
+                        fileInput.click();
+                    };
+                    document.body.appendChild(testButton);
+                    
+                    // Remover botão após 10 segundos
+                    setTimeout(() => {
+                        if (testButton.parentNode) {
+                            testButton.parentNode.removeChild(testButton);
+                        }
+                    }, 10000);
                     
                     // Testar se os event listeners foram configurados
                     console.log('Event listeners configurados:');
