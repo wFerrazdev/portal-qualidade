@@ -2022,7 +2022,14 @@ body.projects-page {
 }
 
 .delete-button.hidden {
-    display: none;
+    display: none !important;
+}
+
+/* Garantir que o botão de excluir seja escondido no modal de adição */
+.modern-delete.hidden {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
 }
 
 /* Botão Adicionar Projeto */
@@ -2657,10 +2664,20 @@ body.projects-page {
 .modern-delete svg {
     width: 16px !important;
     height: 16px !important;
-    stroke: currentColor !important;
+    stroke: white !important;
     fill: none !important;
     stroke-width: 2 !important;
     display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Forçar cor branca nos ícones */
+.modern-save svg path,
+.modern-cancel svg path,
+.modern-delete svg path {
+    stroke: white !important;
+    fill: none !important;
 }
 
 /* Forçar visibilidade dos ícones */

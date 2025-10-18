@@ -609,11 +609,34 @@
                 delete projectForm.dataset.editingId;
                 modalTitle.textContent = 'Adicionar Novo Projeto';
                 deleteProjectBtn.classList.add('hidden');
+                
+                // Resetar upload de foto
+                const fileInput = document.getElementById('imagem_file');
+                const fileUploadText = document.querySelector('.file-upload-text');
+                if (fileInput) {
+                    fileInput.value = '';
+                }
+                if (fileUploadText) {
+                    fileUploadText.textContent = 'Clique para selecionar uma imagem';
+                    fileUploadText.style.color = '';
+                }
+                
                 projectModal.style.display = 'flex';
             }
             function closeModal() {
                 projectModal.style.display = 'none';
                 projectForm.reset();
+                
+                // Resetar upload de foto
+                const fileInput = document.getElementById('imagem_file');
+                const fileUploadText = document.querySelector('.file-upload-text');
+                if (fileInput) {
+                    fileInput.value = '';
+                }
+                if (fileUploadText) {
+                    fileUploadText.textContent = 'Clique para selecionar uma imagem';
+                    fileUploadText.style.color = '';
+                }
             }
             
             fetchAndRenderProjects();
@@ -674,20 +697,23 @@
             
             function handleFileSelect(file) {
                 if (file && file.type.startsWith('image/')) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        const fileUploadContent = document.querySelector('.file-upload-content');
-                        const fileUploadText = document.querySelector('.file-upload-text');
-                        
-                        if (fileUploadContent && fileUploadText) {
-                            // Atualizar o texto para mostrar o nome do arquivo
-                            fileUploadText.textContent = file.name;
-                            fileUploadText.style.color = '#10b981';
-                        }
-                    };
-                    reader.readAsDataURL(file);
+                    const fileUploadText = document.querySelector('.file-upload-text');
+                    
+                    if (fileUploadText) {
+                        // Atualizar o texto para mostrar o nome do arquivo
+                        fileUploadText.textContent = `✓ ${file.name}`;
+                        fileUploadText.style.color = '#10b981';
+                        fileUploadText.style.fontWeight = '600';
+                    }
+                    
+                    console.log('Arquivo selecionado:', file.name);
                 } else {
                     alert('Por favor, selecione apenas arquivos de imagem.');
+                    // Resetar o input se não for imagem
+                    const fileInput = document.getElementById('imagem_file');
+                    if (fileInput) {
+                        fileInput.value = '';
+                    }
                 }
             }
             
