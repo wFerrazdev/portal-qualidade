@@ -646,6 +646,11 @@
                 }
                 
                 projectModal.style.display = 'flex';
+                
+                // Configurar upload APÓS o modal estar visível
+                setTimeout(() => {
+                    setupFileUpload();
+                }, 100);
             }
             function closeModal() {
                 projectModal.style.display = 'none';
@@ -737,6 +742,47 @@
                 }
             }
 
+            // Função para configurar upload de arquivo
+            function setupFileUpload() {
+                const fileInput = document.getElementById('imagem_file');
+                const fileUploadArea = document.getElementById('fileUploadArea');
+                
+                console.log('Configurando upload - elementos encontrados:', { fileInput, fileUploadArea });
+                
+                if (fileInput && fileUploadArea) {
+                    // Limpar event listeners existentes
+                    fileUploadArea.onclick = null;
+                    fileInput.onchange = null;
+                    
+                    // Configurar clique na área de upload
+                    fileUploadArea.onclick = function(event) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        console.log('Clique na área de upload - abrindo seletor de arquivo');
+                        
+                        // Tentar diferentes métodos para abrir o seletor
+                        try {
+                            fileInput.click();
+                            console.log('fileInput.click() executado');
+                        } catch (error) {
+                            console.error('Erro ao executar fileInput.click():', error);
+                        }
+                    };
+                    
+                    // Configurar mudança no input
+                    fileInput.onchange = function(event) {
+                        console.log('Arquivo selecionado:', event.target.files);
+                        if (event.target.files.length > 0) {
+                            handleFileSelect(event.target.files[0]);
+                        }
+                    };
+                    
+                    console.log('Upload configurado com sucesso');
+                } else {
+                    console.error('Elementos de upload não encontrados:', { fileInput, fileUploadArea });
+                }
+            }
+
             // Função para configurar funcionalidades modernas do modal
             function setupModernModalFeatures() {
                 // Controle do slider de progresso
@@ -750,34 +796,6 @@
                             progressValue.textContent = this.value + '%';
                         });
                     });
-                }
-                
-                // Upload de arquivo - SIMPLIFICADO
-                const fileInput = document.getElementById('imagem_file');
-                const fileUploadArea = document.getElementById('fileUploadArea');
-                
-                if (fileInput && fileUploadArea) {
-                    // Limpar event listeners existentes
-                    fileUploadArea.onclick = null;
-                    fileInput.onchange = null;
-                    
-                    // Configurar clique na área de upload
-                    fileUploadArea.onclick = function(event) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                        console.log('Clique na área de upload - abrindo seletor de arquivo');
-                        fileInput.click();
-                    };
-                    
-                    // Configurar mudança no input
-                    fileInput.onchange = function(event) {
-                        console.log('Arquivo selecionado:', event.target.files);
-                        if (event.target.files.length > 0) {
-                            handleFileSelect(event.target.files[0]);
-                        }
-                    };
-                    
-                    console.log('Upload configurado - clique único');
                 }
                 
                 // Estados de carregamento simplificado
