@@ -7,6 +7,7 @@
     <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="stylesheet" href="style.css">
     <script src="auth0-config.js"></script>
+    <script src="mock-data.js"></script>
 </head>
 <body class="unauthenticated reunioes-page">
     <div class="page-container">
@@ -71,52 +72,6 @@
 
         <div class="main-content">
             <header class="content-header">
-                <!-- Background animado para o cabeçalho - EXATO da página de projetos -->
-                <div class="projects-header-background">
-                    <!-- Ondas animadas - EXATAS do projetos.html -->
-                    <svg class="projects-wave wave-1" viewBox="0 0 1200 200" preserveAspectRatio="none">
-                        <path d="M0,100 Q100,20 200,100 Q300,180 400,100 Q500,20 600,100 Q700,180 800,100 Q900,20 1000,100 Q1100,180 1200,100" stroke="#60a5fa" stroke-width="2" fill="none" />
-                    </svg>
-                    <svg class="projects-wave wave-2" viewBox="0 0 1200 200" preserveAspectRatio="none">
-                        <path d="M0,100 Q150,30 300,100 Q450,170 600,100 Q750,30 900,100 Q1050,170 1200,100" stroke="#93c5fd" stroke-width="2" fill="none" />
-                    </svg>
-                    <svg class="projects-wave wave-3" viewBox="0 0 1200 200" preserveAspectRatio="none">
-                        <path d="M0,100 Q200,40 400,100 Q600,160 800,100 Q1000,40 1200,100" stroke="#3b82f6" stroke-width="2" fill="none" />
-                    </svg>
-                    <svg class="projects-wave wave-4" viewBox="0 0 1200 200" preserveAspectRatio="none">
-                        <path d="M0,100 Q120,10 240,100 Q360,190 480,100 Q600,10 720,100 Q840,190 960,100 Q1080,10 1200,100" stroke="#1d4ed8" stroke-width="2" fill="none" />
-                    </svg>
-                    <svg class="projects-wave wave-5" viewBox="0 0 1200 200" preserveAspectRatio="none">
-                        <path d="M0,100 Q180,50 360,100 Q540,150 720,100 Q900,50 1080,100 Q1200,100 1200,100" stroke="#0ea5e9" stroke-width="2" fill="none" />
-                    </svg>
-
-                    <!-- Partículas flutuantes - Movimento reto de baixo para cima -->
-                    <div class="projects-particle straight" style="top: 100%; left: 10%; animation-delay: 0s;"></div>
-                    <div class="projects-particle straight" style="top: 100%; left: 80%; animation-delay: 0.5s;"></div>
-                    <div class="projects-particle straight" style="top: 100%; left: 20%; animation-delay: 1s;"></div>
-                    <div class="projects-particle straight" style="top: 100%; left: 70%; animation-delay: 1.5s;"></div>
-                    <div class="projects-particle straight" style="top: 100%; left: 30%; animation-delay: 2s;"></div>
-                    <div class="projects-particle straight" style="top: 100%; left: 90%; animation-delay: 2.5s;"></div>
-                    <div class="projects-particle straight" style="top: 100%; left: 15%; animation-delay: 3s;"></div>
-                    <div class="projects-particle straight" style="top: 100%; left: 60%; animation-delay: 3.5s;"></div>
-                    <div class="projects-particle straight" style="top: 100%; left: 40%; animation-delay: 4s;"></div>
-                    <div class="projects-particle straight" style="top: 100%; left: 50%; animation-delay: 4.5s;"></div>
-                    <div class="projects-particle straight" style="top: 100%; left: 25%; animation-delay: 5s;"></div>
-                    <div class="projects-particle straight" style="top: 100%; left: 75%; animation-delay: 5.5s;"></div>
-                    <div class="projects-particle straight" style="top: 100%; left: 45%; animation-delay: 6s;"></div>
-                    <div class="projects-particle straight" style="top: 100%; left: 85%; animation-delay: 6.5s;"></div>
-                    <div class="projects-particle straight" style="top: 100%; left: 5%; animation-delay: 7s;"></div>
-                    <div class="projects-particle straight" style="top: 100%; left: 65%; animation-delay: 7.5s;"></div>
-                    <div class="projects-particle straight" style="top: 100%; left: 35%; animation-delay: 8s;"></div>
-                    <div class="projects-particle straight" style="top: 100%; left: 95%; animation-delay: 8.5s;"></div>
-                    <div class="projects-particle straight" style="top: 100%; left: 12%; animation-delay: 9s;"></div>
-                    <div class="projects-particle straight" style="top: 100%; left: 55%; animation-delay: 9.5s;"></div>
-                    <div class="projects-particle straight" style="top: 100%; left: 35%; animation-delay: 10s;"></div>
-                    <div class="projects-particle straight" style="top: 100%; left: 65%; animation-delay: 10.5s;"></div>
-                    <div class="projects-particle straight" style="top: 100%; left: 95%; animation-delay: 11s;"></div>
-                    <div class="projects-particle straight" style="top: 100%; left: 8%; animation-delay: 11.5s;"></div>
-                    <div class="projects-particle straight" style="top: 100%; left: 48%; animation-delay: 12s;"></div>
-                </div>
                 <button class="mobile-menu-button" id="mobileMenuButton">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -133,17 +88,17 @@
                     <div class="header-right">
                         <button id="addMeetingBtn" class="projects-add-btn">
                             <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                    </svg>
-                    Adicionar Reunião
-                </button>
-            </div>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                            </svg>
+                            Adicionar Reunião
+                        </button>
+                    </div>
                 </div>
             </header>
 
             <main class="content-area">
-                <div class="meetings-grid">
-                        <div class="loading-spinner"></div>
+                <div class="projects-grid" id="meetingsGrid">
+                    <div class="loading-spinner"></div>
                 </div>
             </main>
 
@@ -161,15 +116,33 @@
             </header>
             <main class="modal-body">
                 <form id="meetingForm">
-                    <div class="form-group"><label for="titulo">Título</label><input type="text" id="titulo" name="titulo" required></div>
-                    <div class="form-group"><label for="data_reuniao">Data da Reunião</label><input type="date" id="data_reuniao" name="data_reuniao" required></div>
-                    <div class="form-group"><label for="participantes">Participantes (um por linha)</label><textarea id="participantes" name="participantes" rows="3"></textarea></div>
-                    <div class="form-group"><label for="pauta">Pauta / Resumo</label><textarea id="pauta" name="pauta" rows="4"></textarea></div>
+                    <div class="form-group">
+                        <label for="titulo">Título</label>
+                        <input type="text" id="titulo" name="titulo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="data_reuniao">Data da Reunião</label>
+                        <input type="date" id="data_reuniao" name="data_reuniao" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="participantes">Participantes (um por linha)</label>
+                        <textarea id="participantes" name="participantes" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="pauta">Pauta / Resumo</label>
+                        <textarea id="pauta" name="pauta" rows="4"></textarea>
+                    </div>
                     <hr style="margin: 30px 0; border-color: #eef2f7;">
-                    <div class="form-group"><label for="link_ata">Opção 1: Link Externo para a Ata</label><input type="url" id="link_ata" name="link_ata"></div>
-                    <div class="form-group"><label for="file_ata">Opção 2: Ou faça upload de um arquivo</label><input type="file" id="file_ata" name="file_ata"></div>
+                    <div class="form-group">
+                        <label for="link_ata">Link Externo para a Ata</label>
+                        <input type="url" id="link_ata" name="link_ata">
+                    </div>
                     <div class="form-actions">
-                        <button type="button" id="deleteMeetingBtn" class="delete-button hidden"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
+                        <button type="button" id="deleteMeetingBtn" class="delete-button hidden">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
+                        </button>
                         <button type="button" id="cancelModalBtn" class="cancel-button">Cancelar</button>
                         <button type="submit" class="save-button">Salvar</button>
                     </div>
@@ -178,141 +151,37 @@
         </div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
-
-        // Função ajudante para fazer chamadas autenticadas
+    <script>
+        // Função ajudante para fazer chamadas autenticadas - USANDO AUTH0
         async function authFetch(url, options = {}) {
-            const user = window.netlifyIdentity.currentUser();
-            if (!user) {
-                console.error("Tentativa de chamada de API sem usuário.");
-                return Promise.reject(new Error("Usuário não autenticado"));
-            }
-            const token = await user.jwt();
-            const defaultHeaders = {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-                ...options.headers,
-            };
-            // Para uploads de arquivos, o fetch cuida do Content-Type, então o removemos
-            if (options.body instanceof FormData) {
-                delete defaultHeaders['Content-Type'];
-            }
-            return fetch(url, { ...options, headers: defaultHeaders });
+            // Usar a função authenticatedFetch do auth0-config.js
+            return await authenticatedFetch(url, options);
         }
-        // Script de Proteção de Página (Final e com Suporte a Tokens)
-        // Script de Proteção de Página (Anti-Loop e com Suporte a Tokens)
+
+        // Script de Proteção de Página - USANDO AUTH0
         if (window.location.hash.includes('_token=')) {
-            // Se tiver um token, redireciona para a página de login para que o widget possa processá-lo
             window.location.href = '/login.html' + window.location.hash;
-        } else {
-            // Se NÃO tiver um token, fazemos a verificação de segurança normal
-            if (window.netlifyIdentity) {
-                netlifyIdentity.on('init', user => {
-                    if (!user) {
-                        // Se, após a inicialização, não houver usuário, redireciona
-                        window.location.href = '/login.html';
-                    } else {
-                        // Se houver um usuário, removemos a classe que esconde o corpo da página
-                        document.body.classList.remove('unauthenticated');
-                    }
-                });
-            }
         }
-
-        // --- LÓGICA PARA EXIBIR NOME DO USUÁRIO ---
-        if (window.netlifyIdentity) {
-            // Escuta pelo evento de 'login' para garantir que temos os dados do usuário
-            netlifyIdentity.on('login', user => {
-                const userInfoSpan = document.querySelector('.user-info span');
-                // Tenta pegar o nome completo, se não houver, usa o email.
-                const userName = user.user_metadata.full_name || user.email;
-                if (userInfoSpan) {
-                    userInfoSpan.innerHTML  = `Logado como: <strong>${userName}</strong>`;
-                }
-            });
-
-            // Também verifica o usuário atual no carregamento da página, caso já esteja logado
-            const currentUser = netlifyIdentity.currentUser();
-            if (currentUser) {
-                const userInfoSpan = document.querySelector('.user-info span');
-                const userName = currentUser.user_metadata.full_name || currentUser.email;
-                if (userInfoSpan) {
-                    userInfoSpan.innerHTML  = `Logado como: <strong>${userName}</strong>`;
-                }
-            }
-        }
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyCoymJyMK4oDbCHuXJluh35G2wgw5Tk2Rs",
-            authDomain: "portal-qualidade.firebaseapp.com",
-            projectId: "portal-qualidade",
-            storageBucket: "portal-qualidade.firebasestorage.app",
-            messagingSenderId: "390611459292",
-            appId: "1:390611459292:web:34e0f7232c4d1d8db92819",
-            measurementId: "G-5E0E47DWE0"
-        };
-        const app = initializeApp(firebaseConfig);
-        const storage = getStorage(app);
-
-        if (window.netlifyIdentity) {
-            netlifyIdentity.on('init', user => {
-                if (!user) { window.location.href = '/login.html'; }
-            });
-        }
+        
+        // A verificação de autenticação é feita automaticamente pelo auth0-config.js
 
         document.addEventListener('DOMContentLoaded', () => {
-            const body = document.body;
-            const sidebar = document.querySelector('.sidebar');
-            const mobileMenuButton = document.getElementById('mobileMenuButton');
-            const overlay = document.getElementById('overlay');
-            function openMenu() { body.classList.add('menu-open'); sidebar.classList.add('mobile-nav-open'); overlay.classList.add('active'); }
-            function closeMenu() { body.classList.remove('menu-open'); sidebar.classList.remove('mobile-nav-open'); overlay.classList.remove('active'); }
-            if (mobileMenuButton) { mobileMenuButton.addEventListener('click', openMenu); }
-            if (overlay) { overlay.addEventListener('click', closeMenu); }
-            window.addEventListener('load', () => { if (sidebar) { sidebar.classList.remove('preload'); } });
-            // Logout functionality
-            const logoutBtn = document.getElementById('logoutBtn');
-            if (logoutBtn) {
-                logoutBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    logout(); // Função definida em auth0-config.js
-                });
-            }
-            // --- LÓGICA DE PERMISSÕES (VISUAL) ---
-            if (window.netlifyIdentity) {
-                const user = netlifyIdentity.currentUser();
-                if (user) {
-                    const userRoles = user.app_metadata.roles || [];
-                    // Se o usuário NÃO tiver a permissão 'admin' na sua lista de permissões...
-                    if (!userRoles.includes('admin')) {
-                        // ...encontra e esconde todos os botões de ação.
-                        const addBtn = document.querySelector('.add-button');
-                        if (addBtn) addBtn.style.display = 'none';
-
-                        // Também esconde os botões de editar/excluir que são criados dinamicamente
-                        // Adicionando uma classe ao container principal para o CSS esconder os botões
-                        const grid = document.querySelector('.projects-grid, .audits-grid, .meetings-list');
-                        if(grid) grid.classList.add('viewer-mode');
-                    }
-                }
-            }
-            
+            // Configurações - USANDO AUTH0 COMO A PÁGINA DE PROJETOS
             const API_BASE_URL = '/api';
             const addMeetingBtn = document.getElementById('addMeetingBtn');
             const meetingModal = document.getElementById('meetingModal');
-            const closeModalBtn = meetingModal.querySelector('#closeModalBtn');
-            const cancelModalBtn = meetingModal.querySelector('#cancelModalBtn');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const cancelModalBtn = document.getElementById('cancelModalBtn');
             const deleteMeetingBtn = document.getElementById('deleteMeetingBtn');
             const meetingForm = document.getElementById('meetingForm');
-            const meetingsGrid = document.querySelector('.meetings-grid');
+            const meetingsGrid = document.getElementById('meetingsGrid');
             const modalTitle = document.getElementById('modalTitle');
 
+            // Funções auxiliares
             function formatarData(dataISO) {
                 if (!dataISO) return 'N/D';
                 const data = new Date(dataISO);
-                return new Date(data.getTime() + data.getTimezoneOffset() * 60000).toLocaleDateString('pt-BR');
+                return data.toLocaleDateString('pt-BR');
             }
 
             function getStatusInfo(reuniao) {
@@ -333,121 +202,66 @@
                 }
             }
 
-            function organizarParticipantesEmColunas(participantes) {
-                if (!participantes || participantes.length === 0) return '';
-                
-                const maxPorColuna = 5;
-                const colunas = [];
-                
-                for (let i = 0; i < participantes.length; i += maxPorColuna) {
-                    const coluna = participantes.slice(i, i + maxPorColuna);
-                    colunas.push(coluna);
-                }
-                
-                return colunas.map(coluna => 
-                    `<div class="participantes-coluna">
-                        ${coluna.map(p => `<div class="participante-item">${p}</div>`).join('')}
-                    </div>`
-                ).join('');
-            }
-
             function renderMeetingCard(reuniao) {
                 const statusInfo = getStatusInfo(reuniao);
-                
-                // Organizar participantes em colunas (máximo 5 por coluna)
                 const participantes = reuniao.participantes || [];
-                const participantesList = organizarParticipantesEmColunas(participantes);
+                const participantesHtml = participantes.map(p => `<li>${p}</li>`).join('');
                 
                 let actionButtonsHtml = '';
-                const user = window.netlifyIdentity.currentUser();
-                if (user && user.app_metadata.roles && user.app_metadata.roles.includes('admin')) {
-                    actionButtonsHtml = `
+                // Verificar permissões via Auth0 - por enquanto mostrar botões para todos os usuários autenticados
+                actionButtonsHtml = `
                         <button class="edit-button" data-id="${reuniao.id}" title="Editar Reunião">
-                            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                             </svg>
                         </button>
                         <button class="delete-button-card" data-id="${reuniao.id}" title="Excluir Reunião">
-                            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                             </svg>
                         </button>
                     `;
-                }
 
                 return `
-                    <div class="meeting-card" data-id="${reuniao.id}">
-                        <!-- Card Colapsado (Estado Padrão) -->
-                        <div class="meeting-card-collapsed">
-                            <div class="collapsed-header">
-                                <div class="collapsed-title">${reuniao.titulo}</div>
-                                <div class="collapsed-status" style="background-color: ${statusInfo.bgColor}; color: ${statusInfo.color};">
-                                    ${statusInfo.status}
-                                </div>
-                            </div>
-                            <div class="collapsed-body">
-                                <div class="collapsed-date">
-                                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                    </svg>
-                                    <span>${formatarData(reuniao.data_reuniao)}</span>
-                                </div>
-                                <div class="collapsed-actions">
-                                    ${reuniao.link_ata ? `
-                                        <a href="${reuniao.link_ata}" target="_blank" class="collapsed-ata-link" title="Ver Ata">
-                                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                            </svg>
-                                        </a>
-                                    ` : ''}
-                                    <button class="collapsed-view-button" data-id="${reuniao.id}" title="Visualizar Detalhes">
-                                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Card Expandido (Estado Oculto) -->
-                        <div class="meeting-card-expanded" style="display: none;">
+                    <div class="project-card">
                         <div class="card-header">
-                        <div class="meeting-title">${reuniao.titulo}</div>
-                            <div class="meeting-status" style="background-color: ${statusInfo.bgColor}; color: ${statusInfo.color};">
+                            <div class="project-title">${reuniao.titulo}</div>
+                            <div class="project-status" style="background-color: ${statusInfo.bgColor}; color: ${statusInfo.color};">
                                 ${statusInfo.status}
                             </div>
                         </div>
                         <div class="card-body">
-                            <div class="meeting-date">
+                            <div class="project-date">
                                 <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                                 </svg>
                                 <span>${formatarData(reuniao.data_reuniao)}</span>
                             </div>
-                            <div class="meeting-participants">
-                                <h4>Participantes:</h4>
-                                <div class="participantes-container">
-                                    ${participantesList}
+                            ${participantes.length > 0 ? `
+                                <div class="project-details">
+                                    <h4>Participantes:</h4>
+                                    <ul>${participantesHtml}</ul>
                                 </div>
-                            </div>
+                            ` : ''}
                             ${reuniao.pauta ? `
-                                <div class="meeting-agenda">
+                                <div class="project-details">
                                     <h4>Pauta:</h4>
                                     <p>${reuniao.pauta}</p>
                                 </div>
                             ` : ''}
-                            </div>
-                            <div class="meeting-actions">
-                                <div class="action-buttons-section">
-                                    <button class="collapse-button" data-id="${reuniao.id}" title="Recolher">
-                                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                            </svg>
-                                    </button>
-                                    ${actionButtonsHtml}
+                            ${reuniao.link_ata ? `
+                                <div class="project-details">
+                                    <a href="${reuniao.link_ata}" target="_blank" class="project-link">
+                                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                        </svg>
+                                        Ver Ata
+                                    </a>
                                 </div>
-                            </div>
+                            ` : ''}
+                        </div>
+                        <div class="card-actions">
+                            ${actionButtonsHtml}
                         </div>
                     </div>
                 `;
@@ -456,18 +270,24 @@
             async function fetchAndRenderMeetings() {
                 try {
                     const response = await authFetch(`${API_BASE_URL}/getReunioes`);
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    
                     const reunioes = await response.json();
                     meetingsGrid.innerHTML = '';
+                    
                     if (reunioes.length === 0) {
-                        meetingsGrid.innerHTML = '<p style="padding: 20px; text-align: center; color: #666;">Nenhuma reunião encontrada. Adicione a primeira!</p>';
+                        meetingsGrid.innerHTML = '<p>Nenhuma reunião encontrada. Adicione a primeira!</p>';
                     } else {
-                        for (const reuniao of reunioes) {
+                        reunioes.forEach(reuniao => {
                             meetingsGrid.innerHTML += renderMeetingCard(reuniao);
-                        }
+                        });
                     }
-                } catch (error) { 
-                    console.error('Erro ao buscar reuniões:', error); 
-                    meetingsGrid.innerHTML = '<p style="padding: 20px; color: red; text-align: center;">Não foi possível carregar as reuniões.</p>'; 
+                } catch (error) {
+                    console.error('Erro ao buscar reuniões:', error);
+                    meetingsGrid.innerHTML = '<p style="color: red;">Não foi possível carregar as reuniões.</p>';
                 }
             }
 
@@ -475,9 +295,8 @@
                 meetingForm.querySelector('#titulo').value = reuniao.titulo;
                 meetingForm.querySelector('#data_reuniao').value = reuniao.data_reuniao ? reuniao.data_reuniao.split('T')[0] : '';
                 meetingForm.querySelector('#participantes').value = (reuniao.participantes || []).join('\n');
-                meetingForm.querySelector('#pauta').value = reuniao.pauta;
+                meetingForm.querySelector('#pauta').value = reuniao.pauta || '';
                 meetingForm.querySelector('#link_ata').value = reuniao.link_ata || '';
-                meetingForm.querySelector('#file_ata').value = '';
                 modalTitle.textContent = 'Editar Reunião';
                 meetingForm.dataset.editingId = reuniao.id;
                 deleteMeetingBtn.classList.remove('hidden');
@@ -489,60 +308,56 @@
                 const saveButton = event.target.querySelector('.save-button');
                 saveButton.textContent = 'Salvando...';
                 saveButton.disabled = true;
-                let finalLinkAta = meetingForm.querySelector('#link_ata').value;
-                const fileAta = meetingForm.querySelector('#file_ata').files[0];
-                if (fileAta) {
-                    try {
-                        const fileName = `${Date.now()}-${fileAta.name}`;
-                        const storageRef = ref(storage, `atas/${fileName}`);
-                        const uploadResult = await uploadBytes(storageRef, fileAta);
-                        finalLinkAta = await getDownloadURL(uploadResult.ref);
-                    } catch (error) {
-                        console.error("Erro no upload para o Firebase:", error);
-                        alert('Houve um erro ao enviar o arquivo. A reunião não foi salva.');
-                        saveButton.textContent = 'Salvar';
-                        saveButton.disabled = false;
-                        return;
-                    }
-                }
+                
                 const editingId = meetingForm.dataset.editingId;
                 const meetingData = {
                     titulo: meetingForm.querySelector('#titulo').value,
                     data_reuniao: meetingForm.querySelector('#data_reuniao').value || null,
                     participantes: meetingForm.querySelector('#participantes').value.split('\n').filter(p => p.trim() !== ''),
                     pauta: meetingForm.querySelector('#pauta').value,
-                    link_ata: finalLinkAta
+                    link_ata: meetingForm.querySelector('#link_ata').value
                 };
+                
                 try {
-                    const url = editingId ? `${API_BASE_URL}/updateItem?id=${editingId}&table=reunioes` : `${API_BASE_URL}/addReuniao`;
-                    const method = editingId ? 'PUT' : 'POST';
-                    const response = await authFetch(url, { method: method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(meetingData) });
-                    if (!response.ok) { throw new Error('Falha na API'); }
+                    let response;
+                    if (editingId) {
+                        response = await authFetch(`${API_BASE_URL}/updateItem?id=${editingId}&table=reunioes`, {
+                            method: 'PUT',
+                            body: JSON.stringify(meetingData)
+                        });
+                    } else {
+                        response = await authFetch(`${API_BASE_URL}/addReuniao`, {
+                            method: 'POST',
+                            body: JSON.stringify(meetingData)
+                        });
+                    }
+                    
+                    if (!response.ok) {
+                        throw new Error('Falha na API ao salvar reunião');
+                    }
+                    
                     closeModal();
                     await fetchAndRenderMeetings();
-                } catch (error) { alert('Não foi possível salvar a reunião.'); }
-                finally {
+                } catch (error) {
+                    console.error('Erro ao salvar reunião:', error);
+                    alert('Não foi possível salvar a reunião.');
+                } finally {
                     saveButton.textContent = 'Salvar';
                     saveButton.disabled = false;
                 }
             }
             
-            async function handleDeleteFromList(reuniaoId) {
+            async function handleDeleteMeeting(reuniaoId) {
                 if (confirm('Tem certeza que deseja excluir esta reunião?')) {
                     try {
-                        await authFetch(`${API_BASE_URL}/deleteItem?id=${reuniaoId}&table=reunioes`, { method: 'DELETE' });
-                        await fetchAndRenderMeetings();
-                    } catch (error) {
-                        alert('Não foi possível excluir a reunião.');
-                    }
-                }
-            }
-
-            async function handleDeleteMeetingFromCard(reuniaoId) {
-                if (confirm('Tem certeza que deseja excluir esta reunião? Esta ação não pode ser desfeita.')) {
-                    try {
-                        const response = await authFetch(`${API_BASE_URL}/deleteItem?id=${reuniaoId}&table=reunioes`, { method: 'DELETE' });
-                        if (!response.ok) { throw new Error('Falha ao excluir a reunião.'); }
+                        const response = await authFetch(`${API_BASE_URL}/deleteItem?id=${reuniaoId}&table=reunioes`, {
+                            method: 'DELETE'
+                        });
+                        
+                        if (!response.ok) {
+                            throw new Error('Falha ao excluir a reunião.');
+                        }
+                        
                         await fetchAndRenderMeetings();
                     } catch (error) {
                         console.error('Erro ao excluir reunião:', error);
@@ -558,23 +373,58 @@
                 deleteMeetingBtn.classList.add('hidden');
                 meetingModal.style.display = 'flex';
             }
+            
             function closeModal() {
                 meetingModal.style.display = 'none';
                 meetingForm.reset();
             }
 
-            // Aguardar o carregamento completo da página antes de executar
-            document.addEventListener('DOMContentLoaded', async function() {
-                // Aguardar um pouco mais para garantir que auth0-config.js foi carregado
-                await new Promise(resolve => setTimeout(resolve, 100));
-                
-                try {
-                    await fetchAndRenderMeetings();
-                } catch (error) {
-                    console.error('Erro ao carregar reuniões na inicialização:', error);
+            // Menu lateral - IGUAL À PÁGINA DE PROJETOS
+            const body = document.body;
+            const sidebar = document.querySelector('.sidebar');
+            const mobileMenuButton = document.getElementById('mobileMenuButton');
+            const overlay = document.getElementById('overlay');
+            
+            function openMenu() {
+                body.classList.add('menu-open');
+                sidebar.classList.add('mobile-nav-open');
+                overlay.classList.add('active');
+            }
+            
+            function closeMenu() {
+                body.classList.remove('menu-open');
+                sidebar.classList.remove('mobile-nav-open');
+                overlay.classList.remove('active');
+            }
+            
+            if (mobileMenuButton) {
+                mobileMenuButton.addEventListener('click', openMenu);
+            }
+            if (overlay) {
+                overlay.addEventListener('click', closeMenu);
+            }
+            window.addEventListener('load', () => {
+                if (sidebar) {
+                    sidebar.classList.remove('preload');
                 }
             });
             
+            // Logout functionality
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    logout();
+                });
+            }
+
+            // Lógica de permissões - USANDO AUTH0
+            // Por enquanto, todos os usuários autenticados podem ver e editar
+
+            // Inicialização
+            fetchAndRenderMeetings();
+
+            // Event listeners
             addMeetingBtn.addEventListener('click', openModalForAdd);
             closeModalBtn.addEventListener('click', closeModal);
             cancelModalBtn.addEventListener('click', closeModal);
@@ -582,96 +432,39 @@
                 const editingId = meetingForm.dataset.editingId;
                 if (editingId) {
                     closeModal();
-                    handleDeleteFromList(editingId);
+                    handleDeleteMeeting(editingId);
                 }
             });
             meetingForm.addEventListener('submit', handleFormSubmit);
-            window.addEventListener('click', (event) => { if (event.target == meetingModal) { closeModal(); } });
+            window.addEventListener('click', (event) => {
+                if (event.target == meetingModal) {
+                    closeModal();
+                }
+            });
             
             meetingsGrid.addEventListener('click', async (event) => {
                 const editButton = event.target.closest('.edit-button');
                 const deleteButton = event.target.closest('.delete-button-card');
-                const viewButton = event.target.closest('.collapsed-view-button');
-                const collapseButton = event.target.closest('.collapse-button');
                 
-                if (viewButton) {
-                    // Primeiro, colapsar todos os outros cards
-                    const allCards = document.querySelectorAll('.meeting-card');
-                    allCards.forEach(card => {
-                        const collapsed = card.querySelector('.meeting-card-collapsed');
-                        const expanded = card.querySelector('.meeting-card-expanded');
-                        if (collapsed && expanded) {
-                            collapsed.style.display = 'block';
-                            expanded.style.display = 'none';
-                            card.classList.remove('expanded');
-                        }
-                    });
-                    // Agora expandir apenas o card clicado
-                    const targetCard = viewButton.closest('.meeting-card');
-                    if (targetCard) {
-                        const collapsed = targetCard.querySelector('.meeting-card-collapsed');
-                        const expanded = targetCard.querySelector('.meeting-card-expanded');
-                        if (collapsed && expanded) {
-                            collapsed.style.display = 'none';
-                            expanded.style.display = 'block';
-                            targetCard.classList.add('expanded');
-                        }
-                    }
-                } else if (collapseButton) {
-                    const targetCard = collapseButton.closest('.meeting-card');
-                    if (targetCard) {
-                        const collapsed = targetCard.querySelector('.meeting-card-collapsed');
-                        const expanded = targetCard.querySelector('.meeting-card-expanded');
-                        if (collapsed && expanded) {
-                            collapsed.style.display = 'block';
-                            expanded.style.display = 'none';
-                            targetCard.classList.remove('expanded');
-                        }
-                    }
-                } else if (editButton) {
+                if (editButton) {
                     const reuniaoId = editButton.dataset.id;
                     try {
                         const response = await authFetch(`${API_BASE_URL}/getUmItem?type=reunioes&id=${reuniaoId}`);
+                        if (!response.ok) {
+                            throw new Error('Falha ao buscar dados da reunião');
+                        }
                         const reuniao = await response.json();
                         populateFormForEdit(reuniao);
                     } catch (error) {
-                        console.error('Erro ao carregar dados da reunião:', error);
+                        console.error('Erro ao editar:', error);
                         alert('Não foi possível carregar os dados para edição.');
                     }
                 } else if (deleteButton) {
                     const reuniaoId = deleteButton.dataset.id;
-                    await handleDeleteMeetingFromCard(reuniaoId);
+                    await handleDeleteMeeting(reuniaoId);
                 }
             });
         });
-
-        // --- LÓGICA DO MENU LATERAL ---
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('overlay');
-            const mobileMenuButton = document.getElementById('mobileMenuButton');
-            
-            if (sidebar && overlay) {
-                sidebar.classList.toggle('active');
-                overlay.classList.toggle('active');
-                
-                if (mobileMenuButton) {
-                    mobileMenuButton.classList.toggle('active');
-                }
-            }
-        }
-
-        // Event listeners para o menu lateral
-        const mobileMenuButton = document.getElementById('mobileMenuButton');
-        const overlay = document.getElementById('overlay');
-        
-        if (mobileMenuButton) {
-            mobileMenuButton.addEventListener('click', toggleSidebar);
-        }
-        
-        if (overlay) {
-            overlay.addEventListener('click', toggleSidebar);
-        }
     </script>
 </body>
 </html>
