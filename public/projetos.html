@@ -331,16 +331,22 @@
                     <div class="form-actions modern-actions">
                         <!-- Botão Destrutivo (Esquerda) -->
                         <button type="button" class="delete-button modern-delete hidden" id="deleteProjectBtn" title="Excluir Projeto">
-                            🗑️
+                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
                         </button>
                         
                         <!-- Botões de Confirmação (Direita) -->
                         <div class="action-buttons">
                             <button type="button" class="cancel-button modern-cancel" id="cancelModalBtn" title="Cancelar">
-                                ✕
+                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
                             </button>
                             <button type="submit" class="save-button modern-save" title="Salvar Projeto">
-                                💾
+                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
                             </button>
                         </div>
                     </div>
@@ -670,14 +676,13 @@
                 if (file && file.type.startsWith('image/')) {
                     const reader = new FileReader();
                     reader.onload = function(e) {
-                        const filePreview = document.getElementById('filePreview');
-                        const previewImage = document.getElementById('previewImage');
                         const fileUploadContent = document.querySelector('.file-upload-content');
+                        const fileUploadText = document.querySelector('.file-upload-text');
                         
-                        if (filePreview && previewImage && fileUploadContent) {
-                            previewImage.src = e.target.result;
-                            filePreview.style.display = 'block';
-                            fileUploadContent.style.display = 'none';
+                        if (fileUploadContent && fileUploadText) {
+                            // Atualizar o texto para mostrar o nome do arquivo
+                            fileUploadText.textContent = file.name;
+                            fileUploadText.style.color = '#10b981';
                         }
                     };
                     reader.readAsDataURL(file);

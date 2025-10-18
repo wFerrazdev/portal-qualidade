@@ -2642,25 +2642,25 @@ body.projects-page {
     box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
 }
 
-/* Estilos para os ícones Unicode dos botões */
+/* Estilos para os SVGs dos botões - minimalistas como nos cards */
 .modern-save,
 .modern-cancel,
 .modern-delete {
     color: white !important;
-    font-size: 16px !important;
-    font-weight: bold !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    text-align: center !important;
-    line-height: 1 !important;
 }
 
-/* Garantir que os ícones Unicode sejam visíveis */
-.modern-save:before,
-.modern-cancel:before,
-.modern-delete:before {
-    content: none !important;
+.modern-save svg,
+.modern-cancel svg,
+.modern-delete svg {
+    width: 16px !important;
+    height: 16px !important;
+    stroke: currentColor !important;
+    fill: none !important;
+    stroke-width: 2 !important;
+    display: block !important;
 }
 
 /* Forçar visibilidade dos ícones */
