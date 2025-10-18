@@ -151,60 +151,22 @@
     </div>
 
     <script>
-        // Função ajudante para fazer chamadas autenticadas - IGUAL À PÁGINA DE PROJETOS
+        // Função ajudante para fazer chamadas autenticadas - USANDO AUTH0
         async function authFetch(url, options = {}) {
-            const user = window.netlifyIdentity.currentUser();
-            if (!user) {
-                console.error("Tentativa de chamada de API sem usuário.");
-                return Promise.reject(new Error("Usuário não autenticado"));
-            }
-            const token = await user.jwt();
-            const defaultHeaders = {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-                ...options.headers,
-            };
-            return fetch(url, { ...options, headers: defaultHeaders });
+            // Usar a função authenticatedFetch do auth0-config.js
+            return await authenticatedFetch(url, options);
         }
 
-        // Script de Proteção de Página - IGUAL À PÁGINA DE PROJETOS
+        // Script de Proteção de Página - USANDO AUTH0
         if (window.location.hash.includes('_token=')) {
             window.location.href = '/login.html' + window.location.hash;
-        } else {
-            if (window.netlifyIdentity) {
-                netlifyIdentity.on('init', user => {
-                    if (!user) {
-                        window.location.href = '/login.html';
-                    } else {
-                        document.body.classList.remove('unauthenticated');
-                    }
-                });
-            }
         }
-
-        // Lógica para exibir nome do usuário - IGUAL À PÁGINA DE PROJETOS
-        if (window.netlifyIdentity) {
-            netlifyIdentity.on('login', user => {
-                const userInfoSpan = document.querySelector('.user-info span');
-                const userName = user.user_metadata.full_name || user.email;
-                if (userInfoSpan) {
-                    userInfoSpan.innerHTML = `Logado como: <strong>${userName}</strong>`;
-                }
-            });
-
-            const currentUser = netlifyIdentity.currentUser();
-            if (currentUser) {
-                const userInfoSpan = document.querySelector('.user-info span');
-                const userName = currentUser.user_metadata.full_name || currentUser.email;
-                if (userInfoSpan) {
-                    userInfoSpan.innerHTML = `Logado como: <strong>${userName}</strong>`;
-                }
-            }
-        }
+        
+        // A verificação de autenticação é feita automaticamente pelo auth0-config.js
 
         document.addEventListener('DOMContentLoaded', () => {
-            // Configurações - IGUAL À PÁGINA DE PROJETOS
-            const API_BASE_URL = 'https://portalqualidadewill.vercel.app/api';
+            // Configurações - USANDO AUTH0 COMO A PÁGINA DE PROJETOS
+            const API_BASE_URL = '/api';
             const addMeetingBtn = document.getElementById('addMeetingBtn');
             const meetingModal = document.getElementById('meetingModal');
             const closeModalBtn = document.getElementById('closeModalBtn');
@@ -245,9 +207,8 @@
                 const participantesHtml = participantes.map(p => `<li>${p}</li>`).join('');
                 
                 let actionButtonsHtml = '';
-                const user = window.netlifyIdentity.currentUser();
-                if (user && user.app_metadata.roles && user.app_metadata.roles.includes('admin')) {
-                    actionButtonsHtml = `
+                // Verificar permissões via Auth0 - por enquanto mostrar botões para todos os usuários autenticados
+                actionButtonsHtml = `
                         <button class="edit-button" data-id="${reuniao.id}" title="Editar Reunião">
                             <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
@@ -460,20 +421,8 @@
                 });
             }
 
-            // Lógica de permissões - IGUAL À PÁGINA DE PROJETOS
-            if (window.netlifyIdentity) {
-                const user = netlifyIdentity.currentUser();
-                if (user) {
-                    const userRoles = user.app_metadata.roles || [];
-                    if (!userRoles.includes('admin')) {
-                        const addBtn = document.querySelector('.add-button');
-                        if (addBtn) addBtn.style.display = 'none';
-                        
-                        const grid = document.querySelector('.projects-grid, .audits-grid, .meetings-list');
-                        if (grid) grid.classList.add('viewer-mode');
-                    }
-                }
-            }
+            // Lógica de permissões - USANDO AUTH0
+            // Por enquanto, todos os usuários autenticados podem ver e editar
 
             // Inicialização
             fetchAndRenderMeetings();
