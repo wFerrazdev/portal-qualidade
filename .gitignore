@@ -20,6 +20,6 @@ Cache_Data/
 
 # Arquivos específicos do projeto
 # public/ - removido para permitir commit
-api/
+# api/ - removido para permitir commit
 package.json
 .gitignore
