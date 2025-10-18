@@ -361,8 +361,19 @@
     <script type="module">
         // Função ajudante para fazer chamadas autenticadas
         async function authFetch(url, options = {}) {
-            // Usar a função authenticatedFetch do auth0-config.js
-            return await authenticatedFetch(url, options);
+            console.log('=== AUTHFETCH CHAMADA ===');
+            console.log('URL:', url);
+            console.log('Options:', options);
+            console.log('authenticatedFetch disponível:', typeof authenticatedFetch);
+            
+            try {
+                const result = await authenticatedFetch(url, options);
+                console.log('authFetch resultado:', result);
+                return result;
+            } catch (error) {
+                console.error('ERRO em authFetch:', error);
+                throw error;
+            }
         }
 
         // --- SCRIPT DE SEGURANÇA E LÓGICA DO MENU ---
@@ -498,7 +509,7 @@
                 
                 try {
                     console.log('Fazendo chamada para API...');
-                    const response = await authFetch(`${API_BASE_URL}/getProjetos`);
+                    const response = await authFetch(`${API_BASE_URL}/testProjetos`);
                     console.log('Resposta recebida:', response);
                     console.log('Status da resposta:', response.status);
                     console.log('OK:', response.ok);
@@ -724,12 +735,22 @@
             
             // Aguardar carregamento completo da página
             document.addEventListener('DOMContentLoaded', async function() {
-                console.log('DOM carregado, iniciando fetchAndRenderProjects...');
+                console.log('=== DOM CONTENT LOADED ===');
+                console.log('Timestamp:', new Date().toISOString());
+                console.log('API_BASE_URL:', API_BASE_URL);
+                console.log('authFetch disponível:', typeof authFetch);
+                console.log('authenticatedFetch disponível:', typeof authenticatedFetch);
+                console.log('projectsGrid encontrado:', !!projectsGrid);
+                console.log('projectsGrid elemento:', projectsGrid);
+                
                 await new Promise(resolve => setTimeout(resolve, 100));
+                console.log('Delay de 100ms concluído, iniciando fetchAndRenderProjects...');
+                
                 try {
                     await fetchAndRenderProjects();
                 } catch (error) {
-                    console.error('Erro ao carregar projetos na inicialização:', error);
+                    console.error('ERRO CRÍTICO ao carregar projetos na inicialização:', error);
+                    console.error('Stack trace:', error.stack);
                 }
             });
 
