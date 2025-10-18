@@ -809,105 +809,51 @@
                     fileUploadArea.onclick = null;
                     fileInput.onchange = null;
                     
-                    // Configurar clique na área de upload
+                    // Configurar clique na área de upload - SOLUÇÃO PERMANENTE
                     fileUploadArea.onclick = function(event) {
                         event.preventDefault();
                         event.stopPropagation();
-                        console.log('CLIQUE NA ÁREA DE UPLOAD DETECTADO');
+                        console.log('Clique na área de upload - usando input temporário');
                         
-                        // Tentar diferentes métodos para abrir o seletor
-                        try {
-                            console.log('Executando fileInput.click()...');
-                            fileInput.click();
-                            console.log('fileInput.click() executado com sucesso');
-                        } catch (error) {
-                            console.error('Erro ao executar fileInput.click():', error);
-                        }
-                    };
-                    
-                    // Configurar mudança no input - MÚLTIPLOS MÉTODOS
-                    fileInput.onchange = function(event) {
-                        console.log('=== ARQUIVO SELECIONADO ===');
-                        console.log('Event target:', event.target);
-                        console.log('Arquivo selecionado:', event.target.files);
-                        console.log('Quantidade de arquivos:', event.target.files.length);
+                        // Criar input temporário funcional
+                        const tempInput = document.createElement('input');
+                        tempInput.type = 'file';
+                        tempInput.accept = 'image/*';
+                        tempInput.style.display = 'none';
+                        document.body.appendChild(tempInput);
                         
-                        if (event.target.files.length > 0) {
-                            console.log('Chamando handleFileSelect...');
-                            handleFileSelect(event.target.files[0]);
-                        } else {
-                            console.log('Nenhum arquivo selecionado');
-                        }
-                    };
-                    
-                    // ADICIONAR addEventListener também (backup)
-                    fileInput.addEventListener('change', function(event) {
-                        console.log('=== ADDEVENTLISTENER CHANGE ===');
-                        console.log('Arquivo selecionado via addEventListener:', event.target.files);
-                        if (event.target.files.length > 0) {
-                            console.log('Chamando handleFileSelect via addEventListener...');
-                            handleFileSelect(event.target.files[0]);
-                        }
-                    });
-                    
-                    // TESTE DIRETO - verificar se input está funcionando
-                    console.log('Testando input diretamente...');
-                    console.log('Input type:', fileInput.type);
-                    console.log('Input accept:', fileInput.accept);
-                    console.log('Input disabled:', fileInput.disabled);
-                    console.log('Input style:', fileInput.style.display);
-                    
-                    // TESTE MANUAL - criar input temporário
-                    const testButton = document.createElement('button');
-                    testButton.textContent = 'TESTE MANUAL';
-                    testButton.style.cssText = 'position: fixed; top: 10px; right: 10px; z-index: 9999; background: red; color: white; padding: 10px;';
-                    
-                    // Criar input temporário
-                    const tempInput = document.createElement('input');
-                    tempInput.type = 'file';
-                    tempInput.accept = 'image/*';
-                    tempInput.style.display = 'none';
-                    document.body.appendChild(tempInput);
-                    
-                    // Configurar evento no input temporário
-                    tempInput.onchange = function(event) {
-                        console.log('=== INPUT TEMPORÁRIO FUNCIONOU ===');
-                        console.log('Arquivo selecionado no input temporário:', event.target.files);
-                        if (event.target.files.length > 0) {
-                            console.log('Transferindo arquivo para input original...');
-                            // Transferir arquivo para input original
-                            const dataTransfer = new DataTransfer();
-                            dataTransfer.items.add(event.target.files[0]);
-                            fileInput.files = dataTransfer.files;
+                        // Configurar evento no input temporário
+                        tempInput.onchange = function(event) {
+                            console.log('Arquivo selecionado via input temporário');
+                            if (event.target.files.length > 0) {
+                                // Transferir arquivo para input original
+                                const dataTransfer = new DataTransfer();
+                                dataTransfer.items.add(event.target.files[0]);
+                                fileInput.files = dataTransfer.files;
+                                
+                                // Disparar evento manualmente
+                                const changeEvent = new Event('change', { bubbles: true });
+                                fileInput.dispatchEvent(changeEvent);
+                            }
                             
-                            // Disparar evento manualmente
-                            const changeEvent = new Event('change', { bubbles: true });
-                            fileInput.dispatchEvent(changeEvent);
-                        }
-                    };
-                    
-                    testButton.onclick = function() {
-                        console.log('TESTE MANUAL - clicando input temporário');
+                            // Remover input temporário
+                            if (tempInput.parentNode) {
+                                tempInput.parentNode.removeChild(tempInput);
+                            }
+                        };
+                        
+                        // Clicar input temporário
                         tempInput.click();
                     };
-                    document.body.appendChild(testButton);
                     
-                    // Remover elementos após 15 segundos
-                    setTimeout(() => {
-                        if (testButton.parentNode) {
-                            testButton.parentNode.removeChild(testButton);
+                    // Configurar mudança no input
+                    fileInput.onchange = function(event) {
+                        if (event.target.files.length > 0) {
+                            handleFileSelect(event.target.files[0]);
                         }
-                        if (tempInput.parentNode) {
-                            tempInput.parentNode.removeChild(tempInput);
-                        }
-                    }, 15000);
+                    };
                     
-                    // Testar se os event listeners foram configurados
-                    console.log('Event listeners configurados:');
-                    console.log('- fileUploadArea.onclick:', typeof fileUploadArea.onclick);
-                    console.log('- fileInput.onchange:', typeof fileInput.onchange);
-                    
-                    console.log('Upload configurado com sucesso');
+                    console.log('Upload configurado com solução permanente');
                 } else {
                     console.error('Elementos de upload não encontrados:', { fileInput, fileUploadArea });
                 }
