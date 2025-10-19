@@ -312,6 +312,9 @@
         /* Calendar Styles (mantendo os existentes) */
         .calendar-container {
             padding: 2rem;
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            border-radius: 16px;
+            margin-bottom: 2rem;
         }
         
         .calendar-header {
@@ -506,6 +509,200 @@
         .empty-state p {
             margin: 0;
             font-size: 0.9rem;
+        }
+        
+        /* === ESTILOS MODERNOS PARA MODALS === */
+        
+        /* Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        /* Modal Content */
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Modal Header */
+        .modal-header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .modal-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .close-button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            transition: background 0.2s ease;
+        }
+        
+        .close-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Modal Body */
+        .modal-body {
+            padding: 2rem;
+            overflow-y: auto;
+            flex: 1;
+        }
+        
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #374151;
+            font-size: 0.9rem;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            background: white;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #1e3a8a;
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        /* Form Actions */
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        /* Modern Buttons */
+        .modern-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .modern-btn.primary {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            color: white;
+        }
+        
+        .modern-btn.primary:hover {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);
+        }
+        
+        .modern-btn.secondary {
+            background: #f8fafc;
+            color: #475569;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .modern-btn.secondary:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+        
+        .modern-btn.danger {
+            background: #fee2e2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
+        
+        .modern-btn.danger:hover {
+            background: #fecaca;
+            border-color: #f87171;
+        }
+        
+        /* Hidden class */
+        .hidden {
+            display: none !important;
+        }
+        
+        /* Responsive Modal */
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 95%;
+                margin: 1rem;
+            }
+            
+            .modal-header,
+            .modal-body {
+                padding: 1rem;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .modern-btn {
+                justify-content: center;
+            }
         }
     </style>
 </head>
@@ -771,16 +968,59 @@
             </header>
             <main class="modal-body">
                 <form id="auditForm">
-                    <div class="form-group"><label for="titulo">Título</label><input type="text" id="titulo" name="titulo" required></div>
-                    <div class="form-group"><label for="tipo">Tipo</label><select id="tipo" name="tipo"><option value="Auditoria Interna">Auditoria Interna</option><option value="Auditoria Externa">Auditoria Externa</option><option value="Visita Técnica">Visita Técnica</option><option value="Treinamento">Treinamento</option></select></div>
-                    <div class="form-group"><label for="data_evento">Data do Evento</label><input type="date" id="data_evento" name="data_evento"></div>
-                    <div class="form-group"><label for="status">Status</label><select id="status" name="status"><option value="Agendado">Agendado</option><option value="Em Andamento">Em Andamento</option><option value="Concluído">Concluído</option><option value="Cancelado">Cancelado</option></select></div>
-                    <div class="form-group"><label for="responsavel">Responsável</label><input type="text" id="responsavel" name="responsavel"></div>
-                    <div class="form-group"><label for="descricao">Descrição / Observações</label><textarea id="descricao" name="descricao" rows="4"></textarea></div>
+                    <div class="form-group">
+                        <label for="titulo">Título</label>
+                        <input type="text" id="titulo" name="titulo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tipo">Tipo</label>
+                        <select id="tipo" name="tipo">
+                            <option value="Auditoria Interna">Auditoria Interna</option>
+                            <option value="Auditoria Externa">Auditoria Externa</option>
+                            <option value="Visita Técnica">Visita Técnica</option>
+                            <option value="Treinamento">Treinamento</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="data_evento">Data do Evento</label>
+                        <input type="date" id="data_evento" name="data_evento">
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select id="status" name="status">
+                            <option value="Agendado">Agendado</option>
+                            <option value="Em Andamento">Em Andamento</option>
+                            <option value="Concluído">Concluído</option>
+                            <option value="Cancelado">Cancelado</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="responsavel">Responsável</label>
+                        <input type="text" id="responsavel" name="responsavel">
+                    </div>
+                    <div class="form-group">
+                        <label for="descricao">Descrição / Observações</label>
+                        <textarea id="descricao" name="descricao" rows="4"></textarea>
+                    </div>
                     <div class="form-actions">
-                        <button type="button" id="deleteAuditBtn" class="delete-button hidden"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
-                        <button type="button" id="cancelModalBtn" class="cancel-button">Cancelar</button>
-                        <button type="submit" class="save-button">Salvar</button>
+                        <button type="button" id="deleteAuditBtn" class="modern-btn danger hidden">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
+                            Excluir
+                        </button>
+                        <button type="button" id="cancelModalBtn" class="modern-btn secondary">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            Cancelar
+                        </button>
+                        <button type="submit" class="modern-btn primary">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Salvar
+                        </button>
                     </div>
                 </form>
             </main>
@@ -1181,8 +1421,15 @@
 
             // Função para adicionar event listeners aos cards
             function addAuditCardEventListeners(container) {
+                // Remover event listeners existentes para evitar duplicação
+                const newContainer = container.cloneNode(true);
+                container.parentNode.replaceChild(newContainer, container);
+                
                 // Event listeners para botões de ação
-                container.addEventListener('click', (e) => {
+                newContainer.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
                     const auditId = e.target.closest('[data-id]')?.getAttribute('data-id');
                     if (!auditId) return;
                     
@@ -1352,16 +1599,23 @@
             }
 
             function showAuditDetails(audit) {
+                // Fechar modal de detalhes existente se houver
+                const existingModal = document.querySelector('.audit-detail-modal');
+                if (existingModal) {
+                    existingModal.remove();
+                }
+                
                 const statusInfo = getStatusInfo(audit);
                 const modal = document.createElement('div');
-                modal.className = 'audit-detail-modal';
+                modal.className = 'audit-detail-modal modal-overlay';
+                modal.style.display = 'flex';
                 modal.innerHTML = `
-                    <div class="audit-detail-content">
-                        <div class="audit-detail-header">
+                    <div class="audit-detail-content modal-content">
+                        <div class="audit-detail-header modal-header">
                             <h3>${audit.titulo}</h3>
-                            <button class="close-detail-btn">&times;</button>
+                            <button class="close-detail-btn close-button">&times;</button>
                         </div>
-                        <div class="audit-detail-body">
+                        <div class="audit-detail-body modal-body">
                             <div class="detail-info">
                                 <strong>Tipo:</strong> ${audit.tipo || 'N/D'}
                             </div>
@@ -1384,9 +1638,19 @@
                                 </div>
                             ` : ''}
                         </div>
-                        <div class="audit-detail-actions">
-                            <button class="edit-audit-btn" data-id="${audit.id}">Editar</button>
-                            <button class="delete-audit-btn" data-id="${audit.id}">Excluir</button>
+                        <div class="audit-detail-actions form-actions">
+                            <button class="edit-audit-btn modern-btn primary" data-id="${audit.id}">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                </svg>
+                                Editar
+                            </button>
+                            <button class="delete-audit-btn modern-btn danger" data-id="${audit.id}">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                </svg>
+                                Excluir
+                            </button>
                         </div>
                     </div>
                 `;
@@ -1395,24 +1659,24 @@
                 
                 // Event listeners
                 modal.querySelector('.close-detail-btn').addEventListener('click', () => {
-                    document.body.removeChild(modal);
+                    modal.remove();
                 });
                 
                 modal.addEventListener('click', (e) => {
                     if (e.target === modal) {
-                        document.body.removeChild(modal);
+                        modal.remove();
                     }
                 });
                 
                 modal.querySelector('.edit-audit-btn').addEventListener('click', () => {
-                    document.body.removeChild(modal);
+                    modal.remove();
                     populateFormForEdit(audit);
                 });
                 
                 modal.querySelector('.delete-audit-btn').addEventListener('click', () => {
                     if (confirm('Tem certeza que deseja excluir esta auditoria?')) {
                         deleteAudit(audit.id);
-                        document.body.removeChild(modal);
+                        modal.remove();
                     }
                 });
             }
@@ -1437,6 +1701,12 @@
             }
 
             function populateFormForEdit(audit) {
+                // Fechar qualquer modal de detalhes aberto
+                const existingDetailModal = document.querySelector('.audit-detail-modal');
+                if (existingDetailModal) {
+                    existingDetailModal.remove();
+                }
+                
                 auditForm.querySelector('#titulo').value = audit.titulo;
                 auditForm.querySelector('#tipo').value = audit.tipo;
                 auditForm.querySelector('#data_evento').value = audit.data_evento ? audit.data_evento.split('T')[0] : '';
@@ -1496,6 +1766,12 @@
             }
 
             function openModalForAdd() {
+                // Fechar qualquer modal de detalhes aberto
+                const existingDetailModal = document.querySelector('.audit-detail-modal');
+                if (existingDetailModal) {
+                    existingDetailModal.remove();
+                }
+                
                 auditForm.reset();
                 delete auditForm.dataset.editingId;
                 modalTitle.textContent = 'Adicionar Novo Evento';
