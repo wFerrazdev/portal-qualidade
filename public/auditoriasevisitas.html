@@ -312,8 +312,6 @@
         /* Calendar Styles (mantendo os existentes) */
         .calendar-container {
             padding: 2rem;
-            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
-            border-radius: 16px;
             margin-bottom: 2rem;
         }
         
@@ -322,6 +320,9 @@
             align-items: center;
             justify-content: space-between;
             margin-bottom: 2rem;
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
         }
         
         .calendar-title {
@@ -333,18 +334,18 @@
         
         .calendar-nav-btn {
             padding: 0.75rem;
-            border: 1px solid #e2e8f0;
-            background: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.2s ease;
-            color: #64748b;
+            color: white;
         }
         
         .calendar-nav-btn:hover {
-            background: #f8fafc;
-            border-color: #1e3a8a;
-            color: #1e3a8a;
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+            color: white;
         }
         
         .calendar-grid {
@@ -555,6 +556,7 @@
             margin: 0;
             font-size: 1.5rem;
             font-weight: 600;
+            color: white;
         }
         
         .close-button {
@@ -1612,7 +1614,7 @@
                 modal.innerHTML = `
                     <div class="audit-detail-content modal-content">
                         <div class="audit-detail-header modal-header">
-                            <h3>${audit.titulo}</h3>
+                            <h3 style="color: white;">${audit.titulo}</h3>
                             <button class="close-detail-btn close-button">&times;</button>
                         </div>
                         <div class="audit-detail-body modal-body">
