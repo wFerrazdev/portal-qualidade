@@ -5388,3 +5388,181 @@ body.auditorias-page {
     stroke-width: 2.5;
 }
 
+/* ========================================
+   PÁGINA DE TESTE - ESTILOS ESPECÍFICOS
+   ======================================== */
+
+/* Background gradiente azul para página de teste - herdado da auditorias */
+body.teste-page {
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%);
+    color: #ffffff;
+}
+
+/* Header específico para página de teste - com animações integradas */
+.teste-page .content-header {
+    background: transparent;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 51, 102, 0.3);
+    position: relative;
+    overflow: hidden;
+    height: 90px;
+    min-height: 90px;
+    max-height: 90px;
+    padding: 0;
+}
+
+/* Background animado integrado no content-header */
+.teste-page .content-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%);
+    z-index: -1;
+}
+
+/* Ondas animadas integradas no content-header */
+.teste-page .content-header .projects-wave {
+    position: absolute;
+    width: 100%;
+    height: 80px;
+    opacity: 0.6;
+    z-index: 0;
+}
+
+.teste-page .content-header .projects-wave.wave-1 {
+    top: 10%;
+    animation-delay: 0s;
+}
+
+.teste-page .content-header .projects-wave.wave-2 {
+    top: 25%;
+    animation-delay: 2s;
+}
+
+.teste-page .content-header .projects-wave.wave-3 {
+    top: 40%;
+    animation-delay: 4s;
+}
+
+.teste-page .content-header .projects-wave.wave-4 {
+    top: 55%;
+    animation-delay: 6s;
+}
+
+.teste-page .content-header .projects-wave.wave-5 {
+    top: 70%;
+    animation-delay: 8s;
+}
+
+/* Partículas flutuantes integradas no content-header */
+.teste-page .content-header .projects-particle {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: linear-gradient(45deg, #60a5fa, #3b82f6);
+    border-radius: 50%;
+    opacity: 0.8;
+    z-index: 0;
+}
+
+.teste-page .content-header .projects-particle.straight {
+    animation: floatStraightReunioes 5s ease-in-out infinite;
+    animation-fill-mode: both;
+}
+
+/* COMENTADO: Background animado separado - agora integrado no content-header */
+/*
+.teste-page .projects-header-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 90px;
+    min-height: 90px;
+    max-height: 90px;
+    overflow: hidden;
+    z-index: 1;
+}
+*/
+
+/* COMENTADO: Ondas e partículas agora integradas no content-header */
+
+/* Header da página de teste */
+.teste-page .projects-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.25rem 0;
+    min-height: 40px;
+    position: relative;
+    z-index: 2;
+}
+
+/* Título da página de teste */
+.teste-page .projects-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0.5rem 0 0.1rem 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+}
+
+/* Subtítulo da página de teste */
+.teste-page .projects-subtitle {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.75rem;
+    margin: 0;
+    font-weight: 400;
+    line-height: 1.2;
+    max-width: 600px;
+}
+
+/* Content Area específico para página de teste */
+.teste-page .content-area {
+    background: #f8fafc;
+    padding: 0;
+    margin: 0;
+    margin-left: 100px;
+    min-height: calc(100vh - 200px);
+    color: #1e293b;
+}
+
+/* Responsividade para página de teste */
+@media (max-width: 768px) {
+    .teste-page .content-header {
+        margin-left: 0;
+    }
+    
+    .teste-page .content-area {
+        margin-left: 0;
+    }
+    
+    .teste-page .projects-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 15px;
+    }
+    
+    .teste-page .projects-title {
+        font-size: 1.1rem;
+    }
+    
+    .teste-page .projects-subtitle {
+        font-size: 0.7rem;
+    }
+    
+    .teste-page .projects-particle {
+        animation-duration: 7s !important;
+    }
+    
+    .teste-page .projects-wave path {
+        animation-duration: 15s !important;
+    }
+}
+
