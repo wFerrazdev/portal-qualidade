@@ -1,8 +1,10 @@
 {
   "git": {
     "deploymentEnabled": {
-      "main": true,
-      "master": false
+      "main": true
     }
-  }
+  },
+  "buildCommand": null,
+  "outputDirectory": ".",
+  "installCommand": null
 }
