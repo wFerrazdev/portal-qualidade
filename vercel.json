@@ -1,10 +1,15 @@
 {
-  "git": {
-    "deploymentEnabled": {
-      "main": true
+  "version": 2,
+  "builds": [
+    {
+      "src": "**/*",
+      "use": "@vercel/static"
     }
-  },
-  "buildCommand": null,
-  "outputDirectory": ".",
-  "installCommand": null
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ]
 }

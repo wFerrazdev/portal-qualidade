@@ -1,0 +1,13 @@
+# Ignorar arquivos desnecessários para deploy
+.cursor/
+.vscode/
+node_modules/
+*.log
+*.tmp
+*.temp
+Cache/
+Cache_Data/
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
