@@ -15,7 +15,7 @@ module.exports = async (req, res) => {
     
     try {
         // Conectar com PostgreSQL
-        const { Pool } = await import('pg');
+        const { Pool } = require('pg');
         const pool = new Pool({
             connectionString: process.env.DATABASE_URL,
             ssl: {
@@ -25,40 +25,15 @@ module.exports = async (req, res) => {
         
         // Buscar projetos
         const result = await pool.query('SELECT * FROM projetos ORDER BY id DESC');
-        
         await pool.end();
         
         return res.status(200).json(result.rows);
         
     } catch (error) {
         console.error('Erro na API getProjetos:', error);
-        
-        // Fallback para dados mock se houver erro
-        const mockData = [
-            {
-                id: 1,
-                nome: 'Projeto Alpha',
-                descricao: 'Desenvolvimento de novo produto',
-                status: 'Em Andamento',
-                progresso: 75,
-                data_inicio: '2024-01-15',
-                data_fim: '2024-06-30',
-                responsavel: 'João Silva',
-                imagem_url: 'https://via.placeholder.com/300x200?text=Projeto+Alpha'
-            },
-            {
-                id: 2,
-                nome: 'Projeto Beta',
-                descricao: 'Melhoria de processos',
-                status: 'Concluído',
-                progresso: 100,
-                data_inicio: '2023-10-01',
-                data_fim: '2024-02-28',
-                responsavel: 'Maria Santos',
-                imagem_url: 'https://via.placeholder.com/300x200?text=Projeto+Beta'
-            }
-        ];
-        
-        return res.status(200).json(mockData);
+        return res.status(500).json({ 
+            error: 'Failed to fetch projects', 
+            details: error.message
+        });
     }
 }

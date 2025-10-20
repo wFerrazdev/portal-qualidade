@@ -493,7 +493,7 @@
 
             async function fetchAndRenderProjects() {
                 try {
-                    const response = await fetch(`${API_BASE_URL}/getProjetos`);
+                    const response = await authFetch(`${API_BASE_URL}/getProjetos`);
                     if (!response.ok) { throw new Error(`HTTP error! status: ${response.status}`); }
                     const projects = await response.json();
                     projectsGrid.innerHTML = '';
@@ -698,7 +698,15 @@
                 }
             }
             
-            fetchAndRenderProjects();
+            // Aguardar carregamento completo da página
+            document.addEventListener('DOMContentLoaded', async function() {
+                await new Promise(resolve => setTimeout(resolve, 100));
+                try {
+                    await fetchAndRenderProjects();
+                } catch (error) {
+                    console.error('Erro ao carregar projetos na inicialização:', error);
+                }
+            });
 
             // Mostrar botão "Adicionar" para todos os usuários por enquanto
                 addProjectBtn.style.display = 'flex';
