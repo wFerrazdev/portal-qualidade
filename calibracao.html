@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calibração | Portal da Qualidade</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" href="style.css">
+    <script src="auth0-config.js"></script>
+</head>
+<body class="unauthenticated">
+    <div class="page-container">
+        
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <img src="GT Branco - Transparente.png" alt="GT Logo" class="sidebar-logo-img">
+                <h2>Portal da Qualidade</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="index.html" class="nav-item">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+                        </svg>
+                        <span>Dashboard</span>
+                    </a></li>
+                    <li><a href="projetos.html" class="nav-item">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                        <span>Projetos</span>
+                    </a></li>
+                    <li><a href="reunioes.html" class="nav-item">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                        <span>Reuniões</span>
+                    </a></li>
+                    <li><a href="auditoriasevisitas.html" class="nav-item">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                        <span>Auditorias</span>
+                    </a></li>
+                    <li><a href="calibracao.html" class="nav-item active">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span>Calibração</span>
+                    </a></li>
+                    <li><a href="#" class="nav-item" id="logoutBtn">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                        </svg>
+                        <span>Sair</span>
+                    </a></li>
+                </ul>
+            </nav>
+            <div class="user-info">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                </svg>
+                <span>Logado como: Will</span>
+            </div>
+            <div class="sidebar-footer-logo">
+                <img src="logo.png" alt="Logo" class="footer-logo">
+            </div>
+        </aside>
+
+        <div class="overlay" id="overlay"></div>
+
+        <div class="main-content">
+            <header class="content-header">
+                <button class="mobile-menu-button" id="mobileMenuButton">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+                
+                <div class="header-top">
+                    <div>
+                        <h1 class="header-title">Gestão de Equipamentos - Calibração</h1>
+                        <p class="header-subtitle">Adicione, edite e consulte os equipamentos de medição</p>
+                    </div>
+                </div>
+            </header>
+
+            <main class="content-area">
+                <div class="page-actions">
+                    <button class="btn btn-primary" id="add-equipment-btn">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="margin-right: 8px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                        </svg>
+                        Adicionar Equipamento
+                    </button>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>CÓDIGO</th>
+                                <th>Equipamento</th>
+                                <th>Setor</th>
+                                <th>Status</th>
+                                <th>Situação</th>
+                                <th>Data de Vencimento</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="equipment-table-body">
+                            </tbody>
+                    </table>
+                </div>
+                <div id="loading-spinner" class="loading-spinner" style="display: none;"></div>
+            </main>
+
+            <footer class="footer">
+                <p>&copy; 2025 - Developed by William Ferraz</p>
+            </footer>
+        </div>
+    </div>
+
+    <div id="equipment-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Adicionar Novo Equipamento</h2>
+                <button id="close-modal-btn" class="close-button">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="equipment-form">
+                    <input type="hidden" id="equipment-id">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="codigo">Código*</label>
+                            <input type="text" id="codigo" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="equipamento">Equipamento*</label>
+                            <input type="text" id="equipamento" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="fabricante_modelo">Fabricante / Modelo</label>
+                            <input type="text" id="fabricante_modelo">
+                        </div>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="data_calibracao">Data de Calibração</label>
+                            <input type="date" id="data_calibracao">
+                        </div>
+                        <div class="form-group">
+                            <label for="anos_validade">Anos de Validade</label>
+                            <input type="number" id="anos_validade" value="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="data_vencimento">Data de Vencimento</label>
+                            <input type="date" id="data_vencimento" readonly>
+                        </div>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="status">Status</label>
+                            <select id="status">
+                                <option>CALIBRADO</option>
+                                <option>VENCIDO</option>
+                                <option>IRÁ VENCER</option>
+                                <option>EM TRATATIVA</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="situacao">Situação</label>
+                            <select id="situacao">
+                                <option>Em uso</option>
+                                <option>Em manutenção</option>
+                                <option>Fora de uso</option>
+                                <option>Backup</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="data_situacao">Data da Situação</label>
+                            <input type="date" id="data_situacao">
+                        </div>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="setor">Setor</label>
+                            <input type="text" id="setor">
+                        </div>
+                        <div class="form-group">
+                            <label for="responsavel">Responsável</label>
+                            <input type="text" id="responsavel">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="observacao">Observação</label>
+                        <textarea id="observacao" rows="3"></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" id="delete-btn" class="delete-button hidden">Excluir</button>
+                        <button type="submit" class="save-button">Salvar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/calibracao.js"></script>
+    
+    <script>
+        // --- LÓGICA DO MENU LATERAL ---
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            const mobileMenuButton = document.getElementById('mobileMenuButton');
+            
+            if (sidebar && overlay) {
+                sidebar.classList.toggle('active');
+                overlay.classList.toggle('active');
+                
+                if (mobileMenuButton) {
+                    mobileMenuButton.classList.toggle('active');
+                }
+            }
+        }
+
+        // Event listeners para o menu lateral
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.getElementById('mobileMenuButton');
+            const overlay = document.getElementById('overlay');
+            
+            if (mobileMenuButton) {
+                mobileMenuButton.addEventListener('click', toggleSidebar);
+            }
+            
+            if (overlay) {
+                overlay.addEventListener('click', toggleSidebar);
+            }
+            
+            // Logout functionality
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    logout(); // Função definida em auth0-config.js
+                });
+            }
+        });
+    </script>
+</body>
+</html>

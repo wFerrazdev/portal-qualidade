@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste Reuniões</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .resultado { background: #f0f0f0; padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .erro { background: #ffebee; color: #c62828; }
+        .sucesso { background: #e8f5e8; color: #2e7d32; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Teste de APIs de Reuniões</h1>
+    
+    <div>
+        <button onclick="testarGetReunioes()">Testar GET Reuniões</button>
+        <button onclick="testarAddReuniao()">Testar ADD Reunião</button>
+        <button onclick="limparResultados()">Limpar</button>
+    </div>
+    
+    <div id="resultados"></div>
+
+    <script>
+        const API_BASE_URL = 'https://portalqualidadewill.vercel.app/api';
+        
+        function adicionarResultado(titulo, conteudo, tipo = 'resultado') {
+            const div = document.createElement('div');
+            div.className = `resultado ${tipo}`;
+            div.innerHTML = `<h3>${titulo}</h3><pre>${conteudo}</pre>`;
+            document.getElementById('resultados').appendChild(div);
+        }
+        
+        function limparResultados() {
+            document.getElementById('resultados').innerHTML = '';
+        }
+        
+        async function testarGetReunioes() {
+            try {
+                adicionarResultado('GET Reuniões', 'Fazendo requisição...', 'resultado');
+                
+                const response = await fetch(`${API_BASE_URL}/getReunioes`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    adicionarResultado('GET Reuniões - SUCESSO', JSON.stringify(data, null, 2), 'sucesso');
+                } else {
+                    adicionarResultado('GET Reuniões - ERRO', JSON.stringify(data, null, 2), 'erro');
+                }
+            } catch (error) {
+                adicionarResultado('GET Reuniões - EXCEÇÃO', error.toString(), 'erro');
+            }
+        }
+        
+        async function testarAddReuniao() {
+            try {
+                const dadosTeste = {
+                    titulo: 'Reunião de Teste',
+                    data_reuniao: '2025-01-20',
+                    participantes: ['Teste1', 'Teste2'],
+                    pauta: 'Esta é uma reunião de teste',
+                    link_ata: ''
+                };
+                
+                adicionarResultado('ADD Reunião', 'Fazendo requisição...', 'resultado');
+                adicionarResultado('Dados enviados', JSON.stringify(dadosTeste, null, 2), 'resultado');
+                
+                const response = await fetch(`${API_BASE_URL}/addReuniao`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(dadosTeste)
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    adicionarResultado('ADD Reunião - SUCESSO', JSON.stringify(data, null, 2), 'sucesso');
+                } else {
+                    adicionarResultado('ADD Reunião - ERRO', JSON.stringify(data, null, 2), 'erro');
+                }
+            } catch (error) {
+                adicionarResultado('ADD Reunião - EXCEÇÃO', error.toString(), 'erro');
+            }
+        }
+        
+        // Testar automaticamente ao carregar
+        window.addEventListener('load', () => {
+            testarGetReunioes();
+        });
+    </script>
+</body>
+</html>

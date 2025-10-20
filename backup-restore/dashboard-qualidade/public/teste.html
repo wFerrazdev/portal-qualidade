@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste | Portal da Qualidade</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" href="style.css">
+    <script src="auth0-config.js"></script>
+</head>
+<body class="unauthenticated teste-page">
+    <div class="page-container">
+        
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <img src="GT Branco - Transparente.png" alt="GT Logo" class="sidebar-logo-img">
+                <h2>Portal da Qualidade</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="index.html" class="nav-item">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+                        </svg>
+                        <span>Dashboard</span>
+                    </a></li>
+                    <li><a href="projetos.html" class="nav-item">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                        <span>Projetos</span>
+                    </a></li>
+                    <li><a href="reunioes.html" class="nav-item">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                        <span>Reuniões</span>
+                    </a></li>
+                    <li><a href="auditoriasevisitas.html" class="nav-item">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                        <span>Auditorias</span>
+                    </a></li>
+                    <li><a href="calibracao.html" class="nav-item">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span>Calibração</span>
+                    </a></li>
+                    <li><a href="teste.html" class="nav-item active">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                        </svg>
+                        <span>Teste</span>
+                    </a></li>
+                    <li><a href="login.html" class="nav-item">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                        </svg>
+                        <span>Sair</span>
+                    </a></li>
+                </ul>
+            </nav>
+            <div class="user-info">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                </svg>
+                <span>Logado como: Will</span>
+            </div>
+            <div class="sidebar-footer-logo">
+                <img src="logo.png" alt="Logo" class="footer-logo">
+            </div>
+        </aside>
+
+        <div class="overlay" id="overlay"></div>
+
+        <div class="main-content">
+            <header class="content-header">
+                <!-- Ondas animadas integradas no content-header -->
+                <svg class="projects-wave wave-1" viewBox="0 0 1200 200" preserveAspectRatio="none">
+                    <path d="M0,100 Q100,20 200,100 Q300,180 400,100 Q500,20 600,100 Q700,180 800,100 Q900,20 1000,100 Q1100,180 1200,100" stroke="#60a5fa" stroke-width="2" fill="none" />
+                </svg>
+                <svg class="projects-wave wave-2" viewBox="0 0 1200 200" preserveAspectRatio="none">
+                    <path d="M0,100 Q150,30 300,100 Q450,170 600,100 Q750,30 900,100 Q1050,170 1200,100" stroke="#93c5fd" stroke-width="2" fill="none" />
+                </svg>
+                <svg class="projects-wave wave-3" viewBox="0 0 1200 200" preserveAspectRatio="none">
+                    <path d="M0,100 Q200,40 400,100 Q600,160 800,100 Q1000,40 1200,100" stroke="#3b82f6" stroke-width="2" fill="none" />
+                </svg>
+                <svg class="projects-wave wave-4" viewBox="0 0 1200 200" preserveAspectRatio="none">
+                    <path d="M0,100 Q120,10 240,100 Q360,190 480,100 Q600,10 720,100 Q840,190 960,100 Q1080,10 1200,100" stroke="#1d4ed8" stroke-width="2" fill="none" />
+                </svg>
+                <svg class="projects-wave wave-5" viewBox="0 0 1200 200" preserveAspectRatio="none">
+                    <path d="M0,100 Q180,50 360,100 Q540,150 720,100 Q900,50 1080,100 Q1200,100 1200,100" stroke="#0ea5e9" stroke-width="2" fill="none" />
+                </svg>
+
+                <!-- Partículas flutuantes integradas no content-header -->
+                <div class="projects-particle straight" style="top: 100%; left: 10%; animation-delay: 0s;"></div>
+                <div class="projects-particle straight" style="top: 100%; left: 80%; animation-delay: 0.5s;"></div>
+                <div class="projects-particle straight" style="top: 100%; left: 20%; animation-delay: 1s;"></div>
+                <div class="projects-particle straight" style="top: 100%; left: 90%; animation-delay: 1.5s;"></div>
+                <div class="projects-particle straight" style="top: 100%; left: 30%; animation-delay: 2s;"></div>
+                <div class="projects-particle straight" style="top: 100%; left: 70%; animation-delay: 2.5s;"></div>
+                <div class="projects-particle straight" style="top: 100%; left: 40%; animation-delay: 3s;"></div>
+                <div class="projects-particle straight" style="top: 100%; left: 60%; animation-delay: 3.5s;"></div>
+                <div class="projects-particle straight" style="top: 100%; left: 50%; animation-delay: 4s;"></div>
+                <div class="projects-particle straight" style="top: 100%; left: 15%; animation-delay: 4.5s;"></div>
+                <div class="projects-particle straight" style="top: 100%; left: 85%; animation-delay: 5s;"></div>
+                <div class="projects-particle straight" style="top: 100%; left: 25%; animation-delay: 5.5s;"></div>
+                <div class="projects-particle straight" style="top: 100%; left: 75%; animation-delay: 6s;"></div>
+                <div class="projects-particle straight" style="top: 100%; left: 35%; animation-delay: 6.5s;"></div>
+                <div class="projects-particle straight" style="top: 100%; left: 65%; animation-delay: 7s;"></div>
+                <div class="projects-particle straight" style="top: 100%; left: 45%; animation-delay: 7.5s;"></div>
+                <div class="projects-particle straight" style="top: 100%; left: 55%; animation-delay: 8s;"></div>
+                <div class="projects-particle straight" style="top: 100%; left: 5%; animation-delay: 8.5s;"></div>
+                <div class="projects-particle straight" style="top: 100%; left: 95%; animation-delay: 9s;"></div>
+                <div class="projects-particle straight" style="top: 100%; left: 12%; animation-delay: 9.5s;"></div>
+                <div class="projects-particle straight" style="top: 100%; left: 88%; animation-delay: 10s;"></div>
+                <div class="projects-particle straight" style="top: 100%; left: 22%; animation-delay: 10.5s;"></div>
+                <div class="projects-particle straight" style="top: 100%; left: 78%; animation-delay: 11s;"></div>
+                <div class="projects-particle straight" style="top: 100%; left: 32%; animation-delay: 11.5s;"></div>
+                <div class="projects-particle straight" style="top: 100%; left: 68%; animation-delay: 12s;"></div>
+                
+                <div class="projects-header">
+                    <div class="header-left">
+                        <h1 class="projects-title">Teste</h1>
+                        <p class="projects-subtitle">Área de desenvolvimento e testes do sistema</p>
+                    </div>
+                </div>
+            </header>
+
+            <main class="content-area">
+                <!-- Área de conteúdo vazia para você decidir o que colocar -->
+            </main>
+
+            <footer class="footer">
+                <p>&copy; 2025 - Developed by William Ferraz</p>
+            </footer>
+        </div>
+    </div>
+
+    <script type="module">
+        // Função ajudante para fazer chamadas autenticadas
+        async function authFetch(url, options = {}) {
+            // Usar a função authenticatedFetch do auth0-config.js
+            return await authenticatedFetch(url, options);
+        }
+        // A verificação de autenticação é feita automaticamente pelo auth0-config.js
+
+        // --- LÓGICA PARA EXIBIR NOME DO USUÁRIO ---
+        // Exibir informações do usuário autenticado via Auth0
+        checkAuth().then(user => {
+            if (user) {
+                const userInfoSpan = document.querySelector('.user-info span');
+                const userName = user.name || user.email;
+                if (userInfoSpan) {
+                    userInfoSpan.innerHTML = `Logado como: <strong>${userName}</strong>`;
+                }
+            }
+        }).catch(error => {
+            console.error('Erro ao obter informações do usuário:', error);
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- LÓGICA DO MENU ---
+            const body = document.body;
+            const sidebar = document.querySelector('.sidebar');
+            const mobileMenuButton = document.getElementById('mobileMenuButton');
+            const overlay = document.getElementById('overlay');
+            function openMenu() { body.classList.add('menu-open'); sidebar.classList.add('mobile-nav-open'); overlay.classList.add('active'); }
+            function closeMenu() { body.classList.remove('menu-open'); sidebar.classList.remove('mobile-nav-open'); overlay.classList.remove('active'); }
+            if (mobileMenuButton) { mobileMenuButton.addEventListener('click', openMenu); }
+            if (overlay) { overlay.addEventListener('click', closeMenu); }
+            window.addEventListener('load', () => { if (sidebar) { sidebar.classList.remove('preload'); } });
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) { 
+                logoutBtn.addEventListener('click', (e) => { 
+                    e.preventDefault(); 
+                    logout(); // Função definida em auth0-config.js
+                }); 
+            }
+            
+            // --- LÓGICA DE PERMISSÕES (VISUAL) ---
+            // Verificar permissões do usuário autenticado
+            checkAuth().then(user => {
+                if (user) {
+                    // Aqui você pode implementar lógica de permissões baseada no Auth0
+                    // Por exemplo, verificar roles ou claims do usuário
+                    const userRoles = user['https://portalqualidade.com/roles'] || [];
+                    // Se o usuário NÃO tiver a permissão 'admin' na sua lista de permissões...
+                    if (!userRoles.includes('admin')) {
+                        // ...encontra e esconde todos os botões de ação.
+                        const addBtn = document.querySelector('.add-button');
+                        if (addBtn) addBtn.style.display = 'none';
+
+                        // Também esconde os botões de editar/excluir que são criados dinamicamente
+                        // Adicionando uma classe ao container principal para o CSS esconder os botões
+                        const grid = document.querySelector('.projects-grid, .audits-grid, .meetings-list');
+                        if(grid) grid.classList.add('viewer-mode');
+                    }
+                }
+            }).catch(error => {
+                console.error('Erro ao verificar permissões:', error);
+            });
+            
+
+        });
+
+        // --- LÓGICA DO MENU LATERAL ---
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            const mobileMenuButton = document.getElementById('mobileMenuButton');
+            
+            if (sidebar && overlay) {
+                sidebar.classList.toggle('active');
+                overlay.classList.toggle('active');
+                
+                if (mobileMenuButton) {
+                    mobileMenuButton.classList.toggle('active');
+                }
+            }
+        }
+
+        // Event listeners para o menu lateral
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const overlay = document.getElementById('overlay');
+        
+        if (mobileMenuButton) {
+            mobileMenuButton.addEventListener('click', toggleSidebar);
+        }
+        
+        if (overlay) {
+            overlay.addEventListener('click', toggleSidebar);
+        }
+    </script>
+</body>
+</html>
