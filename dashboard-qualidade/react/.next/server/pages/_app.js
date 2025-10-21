@@ -1,9 +1,0 @@
-(()=>{var e={};e.id=888,e.ids=[888],e.modules={6814:(e,t,i)=>{"use strict";i.r(t),i.d(t,{default:()=>a});var r=i(997),s=i(968),n=i.n(s),o=i(4298),c=i.n(o);function a({Component:e,pageProps:t}){return(0,r.jsxs)(r.Fragment,{children:[(0,r.jsxs)(n(),{children:[r.jsx("meta",{name:"viewport",content:"width=device-width, initial-scale=1.0"}),r.jsx("link",{rel:"icon",type:"image/png",href:"/favicon.png"}),r.jsx("link",{rel:"preconnect",href:"https://fonts.googleapis.com"}),r.jsx("link",{rel:"preconnect",href:"https://fonts.gstatic.com",crossOrigin:"anonymous"}),r.jsx("link",{href:"https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap",rel:"stylesheet"})]}),r.jsx(c(),{src:"https://identity.netlify.com/v1/netlify-identity-widget.js",strategy:"afterInteractive"}),r.jsx(c(),{id:"netlify-identity-init",strategy:"afterInteractive",children:`
-          if (window.netlifyIdentity) {
-            window.netlifyIdentity.on("init", user => {
-              if (!user) {
-                window.location.href = '/login.html';
-              }
-            });
-          }
-        `}),r.jsx(e,{...t})]})}i(6764)},6764:()=>{},7093:(e,t,i)=>{"use strict";e.exports=i(2785)},2785:e=>{"use strict";e.exports=require("next/dist/compiled/next-server/pages.runtime.prod.js")},968:e=>{"use strict";e.exports=require("next/head")},6689:e=>{"use strict";e.exports=require("react")},6405:e=>{"use strict";e.exports=require("react-dom")},997:e=>{"use strict";e.exports=require("react/jsx-runtime")},167:(e,t)=>{"use strict";t._=t._interop_require_default=function(e){return e&&e.__esModule?e:{default:e}}}};var t=require("../webpack-runtime.js");t.C(e);var i=e=>t(t.s=e),r=t.X(0,[298],()=>i(6814));module.exports=r})();
