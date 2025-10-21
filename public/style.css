@@ -1383,6 +1383,7 @@ canvas {
     text-align: center;
     z-index: 100;
     height: auto;
+    margin: 0; /* Remove qualquer margem */
 }
 
 .footer p {
@@ -5528,8 +5529,26 @@ body.teste-page {
     padding: 0;
     margin: 0;
     margin-left: 100px;
-    min-height: calc(100vh - 200px);
+    min-height: calc(100vh - 90px - 60px); /* 90px header + 60px footer */
     color: #1e293b;
+    margin-bottom: 0; /* Remove qualquer margem inferior */
+    padding-bottom: 0; /* Remove padding inferior */
+}
+
+/* Garantir que não há lacuna entre content-area e footer na página de teste */
+.teste-page .content-area {
+    position: relative;
+    z-index: 1;
+}
+
+.teste-page .footer {
+    position: fixed;
+    bottom: 0;
+    left: 100px;
+    right: 0;
+    z-index: 100;
+    margin: 0;
+    padding: 15px 0;
 }
 
 /* Responsividade para página de teste */
@@ -5576,7 +5595,8 @@ body.teste-page {
     height: 100%;
     background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
     overflow: auto;
-    padding: 2rem;
+    padding: 2rem 2rem 0 2rem; /* Mantém padding lateral e superior, remove inferior */
+    margin-bottom: 0; /* Remove margem inferior */
 }
 
 /* Loading state */
