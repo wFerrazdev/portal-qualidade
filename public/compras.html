@@ -237,7 +237,8 @@
 
                         <!-- Orders Table -->
                         <div class="orders-table-container">
-                            <table class="orders-table">
+                            <div class="orders-table-wrapper">
+                                <table class="orders-table">
                                 <thead>
                                     <tr>
                                         <th>Número</th>
@@ -253,6 +254,7 @@
                                     <!-- Orders will be populated here -->
                                 </tbody>
                             </table>
+                            </div>
                             <div id="empty-state" class="empty-state" style="display: none;">
                                 <div class="empty-icon">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -278,7 +280,19 @@
             // Usar a função authenticatedFetch do auth0-config.js
             return await authenticatedFetch(url, options);
         }
-        // A verificação de autenticação é feita automaticamente pelo auth0-config.js
+        // Verificação de autenticação
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                const user = await checkAuth();
+                if (!user) {
+                    window.location.href = '/login.html';
+                    return;
+                }
+            } catch (error) {
+                console.error('Erro na verificação de autenticação:', error);
+                window.location.href = '/login.html';
+            }
+        });
 
         // --- LÓGICA PARA EXIBIR NOME DO USUÁRIO ---
         // Exibir informações do usuário autenticado via Auth0
@@ -375,7 +389,7 @@
                 this.searchTerm = '';
                 this.statusFilter = 'TODOS';
                 this.showModal = false;
-                this.showDetailModal = false;
+                this.showDetailModalFlag = false;
                 this.selectedOrder = null;
                 this.newOrder = {
                     descricao: '',
@@ -614,13 +628,13 @@
                             ${this.formatDate(order.dataCriacao)}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <button onclick="window.gestaoComprasApp.showDetailModal(${order.numero})" class="text-blue-600 hover:text-indigo-600 flex items-center gap-1.5 text-sm font-semibold group">
+                            <button onclick="window.gestaoComprasApp.openDetailModal(${order.numero})" class="text-blue-600 hover:text-indigo-600 inline-flex items-center gap-1.5 text-sm font-semibold group transition-all duration-200 hover:gap-2">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                                 </svg>
                                 <span>Ver</span>
-                                <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                                 </svg>
                             </button>
@@ -636,18 +650,18 @@
                 this.renderModals();
             }
 
-            showDetailModal(orderNumber) {
+            openDetailModal(orderNumber) {
                 const order = this.orders.find(o => o.numero === orderNumber);
                 if (!order) return;
 
                 this.selectedOrder = order;
-                this.showDetailModal = true;
+                this.showDetailModalFlag = true;
                 this.renderModals();
             }
 
             closeModals() {
                 this.showModal = false;
-                this.showDetailModal = false;
+                this.showDetailModalFlag = false;
                 this.renderModals();
             }
 
@@ -718,7 +732,7 @@
                 }
 
                 // Modal de detalhes
-                if (this.showDetailModal && this.selectedOrder) {
+                if (this.showDetailModalFlag && this.selectedOrder) {
                     const order = this.selectedOrder;
                     const modalHTML = `
                         <div class="modal-overlay" style="position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center; z-index: 50; padding: 1rem; overflow-y: auto;">

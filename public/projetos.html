@@ -12,7 +12,19 @@
 <body class="unauthenticated projects-page">
 
     <script>
-        // A verificação de autenticação é feita automaticamente pelo auth0-config.js
+        // Verificação de autenticação
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                const user = await checkAuth();
+                if (!user) {
+                    window.location.href = '/login.html';
+                    return;
+                }
+            } catch (error) {
+                console.error('Erro na verificação de autenticação:', error);
+                window.location.href = '/login.html';
+            }
+        });
     </script>
 
     <div class="page-container">

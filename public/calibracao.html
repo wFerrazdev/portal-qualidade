@@ -233,6 +233,20 @@
             }
         }
 
+        // Verificação de autenticação
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                const user = await checkAuth();
+                if (!user) {
+                    window.location.href = '/login.html';
+                    return;
+                }
+            } catch (error) {
+                console.error('Erro na verificação de autenticação:', error);
+                window.location.href = '/login.html';
+            }
+        });
+
         // Event listeners para o menu lateral
         document.addEventListener('DOMContentLoaded', function() {
             const mobileMenuButton = document.getElementById('mobileMenuButton');

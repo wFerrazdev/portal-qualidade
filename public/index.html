@@ -453,14 +453,25 @@
             'nc_externa': ['grafico12', 'grafico13', 'grafico14', 'grafico15']
         };
 
-        // Inicialização otimizada para reduzir long tasks
-        document.addEventListener('DOMContentLoaded', function() {
-            // console.log('=== DOMContentLoaded disparado ===');
-            // Usar requestIdleCallback para não bloquear o main thread
-            if (window.requestIdleCallback) {
-                requestIdleCallback(() => initializeApp());
-            } else {
-                setTimeout(() => initializeApp(), 0);
+        // Verificação de autenticação
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                const user = await checkAuth();
+                if (!user) {
+                    window.location.href = '/login.html';
+                    return;
+                }
+                
+                // console.log('=== DOMContentLoaded disparado ===');
+                // Usar requestIdleCallback para não bloquear o main thread
+                if (window.requestIdleCallback) {
+                    requestIdleCallback(() => initializeApp());
+                } else {
+                    setTimeout(() => initializeApp(), 0);
+                }
+            } catch (error) {
+                console.error('Erro na verificação de autenticação:', error);
+                window.location.href = '/login.html';
             }
         });
 
