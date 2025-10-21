@@ -437,19 +437,19 @@
 
             async loadOrders() {
                 try {
-                    // Buscar pedidos da API
-                    const response = await fetch('/api/compras/getOrders');
+                    // Buscar pedidos da API consolidada
+                    const response = await fetch('/api/compras');
                     if (response.ok) {
                         const data = await response.json();
                         
                         // Buscar histórico para cada pedido
                         for (const order of data) {
-                            const historyResponse = await fetch(`/api/compras/getOrderHistory?numero=${order.numero}`);
+                            const historyResponse = await fetch(`/api/compras/history?numero=${order.numero}`);
                             if (historyResponse.ok) {
                                 const history = await historyResponse.json();
                                 order.historico = history.map(h => ({
-                                    data: h.data_mudanca,
-                                    status: h.status_novo,
+                                    data: h.dataMudanca,
+                                    status: h.statusNovo,
                                     observacao: h.observacao
                                 }));
                             } else {
@@ -913,8 +913,8 @@
                 };
 
                 try {
-                    // Tentar salvar na API
-                    const response = await fetch('/api/compras/addOrder', {
+                    // Tentar salvar na API consolidada
+                    const response = await fetch('/api/compras', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -955,8 +955,8 @@
 
             async updateOrderStatus(order, newStatus, observacao = '') {
                 try {
-                    // Tentar atualizar na API
-                    const response = await fetch('/api/compras/updateOrderStatus', {
+                    // Tentar atualizar na API consolidada
+                    const response = await fetch('/api/compras', {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json'
