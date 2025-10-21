@@ -130,7 +130,140 @@
             </header>
 
             <main class="content-area">
-                <!-- Área de conteúdo vazia para você decidir. o que colocar -->
+                <!-- Sistema de Gestão de Compras -->
+                <div id="gestao-compras-app" class="gestao-compras-container">
+                    <!-- Loading state -->
+                    <div id="loading-state" class="loading-state">
+                        <div class="loading-spinner"></div>
+                        <p>Carregando sistema de gestão...</p>
+                </div>
+                    
+                    <!-- Main App Content (hidden initially) -->
+                    <div id="app-content" class="app-content" style="display: none;">
+                        <!-- Header -->
+                        <div class="app-header">
+                    <div class="header-left">
+                                <h1 class="app-title">Pedidos de Compra</h1>
+                                <p class="app-subtitle">Gerencie solicitações e acompanhe o fluxo completo</p>
+                    </div>
+                            <button id="nova-solicitacao-btn" class="btn-nova-solicitacao">
+                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                                Nova Solicitação
+                        </button>
+                        </div>
+
+                        <!-- Stats Cards -->
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-content">
+                                    <div class="stat-info">
+                                        <p class="stat-label">Total de Pedidos</p>
+                                        <p class="stat-value" id="total-pedidos">0</p>
+                                    </div>
+                                    <div class="stat-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                                        </svg>
+                                    </div>
+                    </div>
+                </div>
+
+                            <div class="stat-card">
+                                <div class="stat-content">
+                                    <div class="stat-info">
+                                        <p class="stat-label">Aguardando</p>
+                                        <p class="stat-value" id="aguardando-count">0</p>
+                                    </div>
+                                    <div class="stat-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <polyline points="12,6 12,12 16,14"></polyline>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="stat-card">
+                                <div class="stat-content">
+                                    <div class="stat-info">
+                                        <p class="stat-label">Em Andamento</p>
+                                        <p class="stat-value" id="andamento-count">0</p>
+                                    </div>
+                                    <div class="stat-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="22,12 18,12 15,21 9,3 6,12 2,12"></polyline>
+                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="stat-card">
+                                <div class="stat-content">
+                                    <div class="stat-info">
+                                        <p class="stat-label">Concluídos</p>
+                                        <p class="stat-value" id="concluidos-count">0</p>
+                                    </div>
+                                    <div class="stat-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                            <polyline points="22,4 12,14.01 9,11.01"></polyline>
+                                </svg>
+                                    </div>
+                        </div>
+                    </div>
+                </div>
+
+                        <!-- Filters -->
+                        <div class="filters-section">
+                            <div class="search-container">
+                                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="11" cy="11" r="8"></circle>
+                                    <path d="m21 21-4.35-4.35"></path>
+                                </svg>
+                                <input type="text" id="search-input" placeholder="Buscar por número, descrição ou fornecedor..." class="search-input">
+                            </div>
+                            <div class="filter-container">
+                                <svg class="filter-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polygon points="22,3 2,3 10,12.46 10,19 14,21 14,12.46 22,3"></polygon>
+                                </svg>
+                                <select id="status-filter" class="status-filter">
+                                    <option value="TODOS">Todos os Status</option>
+                                </select>
+                            </div>
+        </div>
+
+                        <!-- Orders Table -->
+                        <div class="orders-table-container">
+                            <table class="orders-table">
+                                <thead>
+                                    <tr>
+                                        <th>Número</th>
+                                        <th>Descrição</th>
+                                        <th>Fornecedor</th>
+                                        <th>Valor</th>
+                                        <th>Status</th>
+                                        <th>Data</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="orders-tbody">
+                                    <!-- Orders will be populated here -->
+                                </tbody>
+                            </table>
+                            <div id="empty-state" class="empty-state" style="display: none;">
+                                <div class="empty-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                                    </svg>
+                                </div>
+                                <p>Nenhum pedido encontrado</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </main>
 
         <footer class="footer">
@@ -224,15 +357,317 @@
 
         // Event listeners para o menu lateral..
         const mobileMenuButton = document.getElementById('mobileMenuButton');
-        const overlay = document.getElementById('overlay');
-        
-        if (mobileMenuButton) {
+            const overlay = document.getElementById('overlay');
+
+            if (mobileMenuButton) {
             mobileMenuButton.addEventListener('click', toggleSidebar);
         }
         
         if (overlay) {
             overlay.addEventListener('click', toggleSidebar);
         }
+
+        // --- SISTEMA DE GESTÃO DE COMPRAS ---
+        class GestaoComprasApp {
+            constructor() {
+                this.orders = [];
+                this.filteredOrders = [];
+                this.searchTerm = '';
+                this.statusFilter = 'TODOS';
+                this.showModal = false;
+                this.showDetailModal = false;
+                this.selectedOrder = null;
+                this.newOrder = {
+                    descricao: '',
+                    fornecedor: '',
+                    valor: '',
+                    observacoes: ''
+                };
+
+                this.STATUSES = {
+                    AGUARDANDO_APROVACAO_SC: { label: 'Aguardando Aprovação SC', color: 'bg-amber-50 text-amber-700 border-amber-200' },
+                    SC_APROVADA: { label: 'SC Aprovada', color: 'bg-blue-50 text-blue-700 border-blue-200' },
+                    AGUARDANDO_APROVACAO_OC: { label: 'Aguardando Aprovação OC', color: 'bg-orange-50 text-orange-700 border-orange-200' },
+                    OC_APROVADA: { label: 'OC Aprovada', color: 'bg-purple-50 text-purple-700 border-purple-200' },
+                    PEDIDO_EMITIDO: { label: 'Pedido Emitido', color: 'bg-indigo-50 text-indigo-700 border-indigo-200' },
+                    AGUARDANDO_PAGAMENTO: { label: 'Aguardando Pagamento', color: 'bg-pink-50 text-pink-700 border-pink-200' },
+                    PAGO: { label: 'Pago', color: 'bg-cyan-50 text-cyan-700 border-cyan-200' },
+                    AGUARDANDO_ENTREGA: { label: 'Aguardando Entrega', color: 'bg-teal-50 text-teal-700 border-teal-200' },
+                    ENTREGUE: { label: 'Entregue', color: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
+                    CANCELADO: { label: 'Cancelado', color: 'bg-red-50 text-red-700 border-red-200' }
+                };
+
+                this.init();
+            }
+
+            async init() {
+                try {
+                    await this.loadOrders();
+                    this.setupEventListeners();
+                    this.populateStatusFilter();
+                    this.updateStats();
+                    this.renderOrders();
+                    this.hideLoading();
+                } catch (error) {
+                    console.error('Erro ao inicializar app:', error);
+                    this.hideLoading();
+                }
+            }
+
+            hideLoading() {
+                const loadingState = document.getElementById('loading-state');
+                const appContent = document.getElementById('app-content');
+                if (loadingState) loadingState.style.display = 'none';
+                if (appContent) appContent.style.display = 'block';
+            }
+
+            async loadOrders() {
+                try {
+                    // Simular carregamento de dados (você pode integrar com sua API aqui)
+                    const storedOrders = localStorage.getItem('gestao-compras-orders');
+                    if (storedOrders) {
+                        this.orders = JSON.parse(storedOrders);
+                    } else {
+                        // Dados de exemplo
+                        this.orders = [
+                            {
+                                numero: 1001,
+                                descricao: 'Equipamentos de laboratório',
+                                fornecedor: 'LabTech Solutions',
+                                valor: 15000.00,
+                                status: 'AGUARDANDO_APROVACAO_SC',
+                                dataCriacao: new Date().toISOString(),
+                                observacoes: 'Equipamentos para novo laboratório',
+                                historico: [{
+                                    data: new Date().toISOString(),
+                                    status: 'AGUARDANDO_APROVACAO_SC',
+                                    observacao: 'Solicitação de compra criada pelo setor de Qualidade'
+                                }]
+                            },
+                            {
+                                numero: 1002,
+                                descricao: 'Material de consumo',
+                                fornecedor: 'SupplyCorp',
+                                valor: 2500.00,
+                                status: 'SC_APROVADA',
+                                dataCriacao: new Date(Date.now() - 86400000).toISOString(),
+                                observacoes: 'Material para testes de qualidade',
+                                historico: [
+                                    {
+                                        data: new Date(Date.now() - 86400000).toISOString(),
+                                        status: 'AGUARDANDO_APROVACAO_SC',
+                                        observacao: 'Solicitação de compra criada pelo setor de Qualidade'
+                                    },
+                                    {
+                                        data: new Date().toISOString(),
+                                        status: 'SC_APROVADA',
+                                        observacao: 'Aprovado pelo Supervisor de Compras'
+                                    }
+                                ]
+                            }
+                        ];
+                        this.saveOrders();
+                    }
+                    this.filteredOrders = [...this.orders];
+                } catch (error) {
+                    console.error('Erro ao carregar pedidos:', error);
+                    this.orders = [];
+                    this.filteredOrders = [];
+                }
+            }
+
+            saveOrders() {
+                localStorage.setItem('gestao-compras-orders', JSON.stringify(this.orders));
+            }
+
+            setupEventListeners() {
+                // Nova solicitação
+                const novaSolicitacaoBtn = document.getElementById('nova-solicitacao-btn');
+                if (novaSolicitacaoBtn) {
+                    novaSolicitacaoBtn.addEventListener('click', () => this.showCreateModal());
+                }
+
+                // Search
+                const searchInput = document.getElementById('search-input');
+                if (searchInput) {
+                    searchInput.addEventListener('input', (e) => {
+                        this.searchTerm = e.target.value;
+                        this.filterOrders();
+                    });
+                }
+
+                // Status filter
+                const statusFilter = document.getElementById('status-filter');
+                if (statusFilter) {
+                    statusFilter.addEventListener('change', (e) => {
+                        this.statusFilter = e.target.value;
+                        this.filterOrders();
+                    });
+                }
+            }
+
+            populateStatusFilter() {
+                const statusFilter = document.getElementById('status-filter');
+                if (!statusFilter) return;
+
+                // Limpar opções existentes (exceto "Todos os Status")
+                while (statusFilter.children.length > 1) {
+                    statusFilter.removeChild(statusFilter.lastChild);
+                }
+
+                // Adicionar opções de status
+                Object.keys(this.STATUSES).forEach(status => {
+                    const count = this.orders.filter(o => o.status === status).length;
+                    const option = document.createElement('option');
+                    option.value = status;
+                    option.textContent = `${this.STATUSES[status].label} (${count})`;
+                    statusFilter.appendChild(option);
+                });
+            }
+
+            filterOrders() {
+                let filtered = [...this.orders];
+
+                if (this.searchTerm) {
+                    filtered = filtered.filter(order => 
+                        order.numero.toString().includes(this.searchTerm) ||
+                        order.descricao.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+                        order.fornecedor.toLowerCase().includes(this.searchTerm.toLowerCase())
+                    );
+                }
+
+                if (this.statusFilter !== 'TODOS') {
+                    filtered = filtered.filter(order => order.status === this.statusFilter);
+                }
+
+                this.filteredOrders = filtered;
+                this.renderOrders();
+            }
+
+            updateStats() {
+                const totalPedidos = document.getElementById('total-pedidos');
+                const aguardandoCount = document.getElementById('aguardando-count');
+                const andamentoCount = document.getElementById('andamento-count');
+                const concluidosCount = document.getElementById('concluidos-count');
+
+                if (totalPedidos) totalPedidos.textContent = this.orders.length;
+
+                const aguardando = this.orders.filter(o => 
+                    o.status === 'AGUARDANDO_APROVACAO_SC' || o.status === 'AGUARDANDO_APROVACAO_OC'
+                ).length;
+                if (aguardandoCount) aguardandoCount.textContent = aguardando;
+
+                const andamento = this.orders.filter(o => 
+                    ['SC_APROVADA', 'OC_APROVADA', 'PEDIDO_EMITIDO', 'AGUARDANDO_PAGAMENTO', 'PAGO', 'AGUARDANDO_ENTREGA'].includes(o.status)
+                ).length;
+                if (andamentoCount) andamentoCount.textContent = andamento;
+
+                const concluidos = this.orders.filter(o => o.status === 'ENTREGUE').length;
+                if (concluidosCount) concluidosCount.textContent = concluidos;
+            }
+
+            renderOrders() {
+                const tbody = document.getElementById('orders-tbody');
+                const emptyState = document.getElementById('empty-state');
+                
+                if (!tbody) return;
+
+                tbody.innerHTML = '';
+
+                if (this.filteredOrders.length === 0) {
+                    if (emptyState) emptyState.style.display = 'block';
+                    return;
+                }
+
+                if (emptyState) emptyState.style.display = 'none';
+
+                this.filteredOrders.forEach((order, idx) => {
+                    const row = document.createElement('tr');
+                    row.className = 'hover:bg-gradient-to-r hover:from-blue-50/50 hover:to-indigo-50/30 transition-all duration-200';
+                    
+                    row.innerHTML = `
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center text-white text-xs font-bold">
+                                    ${idx + 1}
+                                </div>
+                                <span class="font-bold text-gray-900">#${order.numero}</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="text-sm text-gray-900 font-medium max-w-xs truncate">${order.descricao}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-700">${order.fornecedor}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                                ${this.formatCurrency(order.valor)}
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-3 py-1.5 rounded-lg text-xs font-semibold border ${this.STATUSES[order.status].color}">
+                                ${this.STATUSES[order.status].label}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                            ${this.formatDate(order.dataCriacao)}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <button onclick="gestaoComprasApp.showDetailModal(${order.numero})" class="text-blue-600 hover:text-indigo-600 flex items-center gap-1.5 text-sm font-semibold group">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                </svg>
+                                <span>Ver</span>
+                                <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </button>
+                        </td>
+                    `;
+                    
+                    tbody.appendChild(row);
+                });
+            }
+
+            showCreateModal() {
+                // Implementar modal de criação
+                alert('Modal de criação será implementado em breve!');
+            }
+
+            showDetailModal(orderNumber) {
+                const order = this.orders.find(o => o.numero === orderNumber);
+                if (!order) return;
+
+                this.selectedOrder = order;
+                // Implementar modal de detalhes
+                alert(`Detalhes do pedido #${orderNumber} serão implementados em breve!`);
+            }
+
+            formatDate(dateString) {
+                return new Date(dateString).toLocaleDateString('pt-BR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            }
+
+            formatCurrency(value) {
+                return new Intl.NumberFormat('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL'
+                }).format(value);
+            }
+        }
+
+        // Inicializar o app quando a página carregar
+        let gestaoComprasApp;
+        document.addEventListener('DOMContentLoaded', () => {
+            gestaoComprasApp = new GestaoComprasApp();
+        });
     </script>
 </body>
 </html>

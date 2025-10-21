@@ -2,7 +2,7 @@
    DASHBOARD MODERNO - DESIGN COMPLETO
    ======================================== */
 
-/* Loading Overlay para Performance. */
+/* Loading Overlay para Performance.git */
 .loading-overlay {
     position: fixed;
     top: 0;
@@ -5563,6 +5563,404 @@ body.teste-page {
     
     .teste-page .projects-wave path {
         animation-duration: 15s !important;
+    }
+}
+
+/* ========================================
+   SISTEMA DE GESTÃO DE COMPRAS - ESTILOS
+   ======================================== */
+
+/* Container principal */
+.gestao-compras-container {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+    overflow: auto;
+    padding: 2rem;
+}
+
+/* Loading state */
+.loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    color: #64748b;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #e2e8f0;
+    border-top: 4px solid #3b82f6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* App content */
+.app-content {
+    display: block;
+}
+
+/* Header do app */
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+}
+
+.header-left h1.app-title {
+    font-size: 2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #6366f1 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0 0 0.5rem 0;
+}
+
+.header-left p.app-subtitle {
+    color: #64748b;
+    font-size: 0.875rem;
+    margin: 0;
+}
+
+/* Botão nova solicitação */
+.btn-nova-solicitacao {
+    background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.75rem;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+}
+
+.btn-nova-solicitacao:hover {
+    background: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%);
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+    transform: translateY(-2px);
+}
+
+.btn-nova-solicitacao .icon {
+    width: 20px;
+    height: 20px;
+}
+
+/* Grid de estatísticas */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+.stat-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.stat-info p.stat-label {
+    font-size: 0.75rem;
+    color: #64748b;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0 0 0.5rem 0;
+}
+
+.stat-info p.stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.stat-card:nth-child(1) .stat-value {
+    background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.stat-card:nth-child(2) .stat-value {
+    color: #f59e0b;
+}
+
+.stat-card:nth-child(3) .stat-value {
+    color: #6366f1;
+}
+
+.stat-card:nth-child(4) .stat-value {
+    color: #10b981;
+}
+
+.stat-icon {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card:nth-child(1) .stat-icon {
+    background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+}
+
+.stat-card:nth-child(2) .stat-icon {
+    background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+}
+
+.stat-card:nth-child(3) .stat-icon {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+}
+
+.stat-card:nth-child(4) .stat-icon {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.stat-icon svg {
+    width: 1.75rem;
+    height: 1.75rem;
+    color: white;
+}
+
+/* Seção de filtros */
+.filters-section {
+    background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+@media (min-width: 768px) {
+    .filters-section {
+        flex-direction: row;
+    }
+}
+
+.search-container, .filter-container {
+    position: relative;
+    flex: 1;
+}
+
+.search-icon, .filter-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    color: white;
+    z-index: 1;
+}
+
+.search-input, .status-filter {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 3rem;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 0.75rem;
+    color: white;
+    font-size: 0.875rem;
+    transition: all 0.3s ease;
+}
+
+.search-input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.search-input:focus, .status-filter:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
+}
+
+.status-filter {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.75rem center;
+    background-repeat: no-repeat;
+    background-size: 1rem;
+    padding-right: 2.5rem;
+}
+
+.status-filter option {
+    background: #1f2937;
+    color: white;
+}
+
+/* Container da tabela */
+.orders-table-container {
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+}
+
+/* Tabela de pedidos */
+.orders-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.orders-table thead {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.orders-table th {
+    padding: 1rem 1.5rem;
+    text-align: left;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #374151;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.orders-table td {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.orders-table tbody tr:hover {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(99, 102, 241, 0.05) 100%);
+}
+
+/* Estados dos status */
+.bg-amber-50 { background-color: #fef3c7; }
+.text-amber-700 { color: #b45309; }
+.border-amber-200 { border-color: #fde68a; }
+
+.bg-blue-50 { background-color: #dbeafe; }
+.text-blue-700 { color: #1d4ed8; }
+.border-blue-200 { border-color: #93c5fd; }
+
+.bg-orange-50 { background-color: #fed7aa; }
+.text-orange-700 { color: #c2410c; }
+.border-orange-200 { border-color: #fdba74; }
+
+.bg-purple-50 { background-color: #e9d5ff; }
+.text-purple-700 { color: #7c3aed; }
+.border-purple-200 { border-color: #c4b5fd; }
+
+.bg-indigo-50 { background-color: #e0e7ff; }
+.text-indigo-700 { color: #4338ca; }
+.border-indigo-200 { border-color: #a5b4fc; }
+
+.bg-pink-50 { background-color: #fce7f3; }
+.text-pink-700 { color: #be185d; }
+.border-pink-200 { border-color: #f9a8d4; }
+
+.bg-cyan-50 { background-color: #cffafe; }
+.text-cyan-700 { color: #0891b2; }
+.border-cyan-200 { border-color: #67e8f9; }
+
+.bg-teal-50 { background-color: #ccfbf1; }
+.text-teal-700 { color: #0f766e; }
+.border-teal-200 { border-color: #5eead4; }
+
+.bg-emerald-50 { background-color: #d1fae5; }
+.text-emerald-700 { color: #047857; }
+.border-emerald-200 { border-color: #6ee7b7; }
+
+.bg-red-50 { background-color: #fee2e2; }
+.text-red-700 { color: #dc2626; }
+.border-red-200 { border-color: #fca5a5; }
+
+/* Estado vazio */
+.empty-state {
+    text-align: center;
+    padding: 5rem 2rem;
+    color: #64748b;
+}
+
+.empty-icon {
+    width: 5rem;
+    height: 5rem;
+    background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+}
+
+.empty-icon svg {
+    width: 2.5rem;
+    height: 2.5rem;
+    color: #3b82f6;
+    opacity: 0.5;
+}
+
+.empty-state p {
+    font-weight: 500;
+    margin: 0;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .gestao-compras-container {
+        padding: 1rem;
+    }
+    
+    .app-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .filters-section {
+        flex-direction: column;
+    }
+    
+    .orders-table-container {
+        overflow-x: auto;
+    }
+    
+    .orders-table {
+        min-width: 600px;
     }
 }
 
