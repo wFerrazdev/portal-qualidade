@@ -9,9 +9,12 @@ exports.handler = async (event, context) => {
     const { httpMethod, path, body, queryStringParameters } = event;
     
     try {
+        console.log('🔗 Conectando ao banco...');
         const client = await pool.connect();
+        console.log('✅ Conexão estabelecida');
         
         // Verificar e criar tabelas se necessário (apenas na primeira execução)
+        console.log('📋 Criando/verificando tabelas...');
         await client.query(`
             CREATE TABLE IF NOT EXISTS compras_pedidos (
                 numero SERIAL PRIMARY KEY,
@@ -35,14 +38,18 @@ exports.handler = async (event, context) => {
                 FOREIGN KEY (numero_pedido) REFERENCES compras_pedidos(numero) ON DELETE CASCADE
             );
         `);
+        console.log('✅ Tabelas criadas/verificadas');
         
         // Roteamento baseado no método HTTP e path
         if (httpMethod === 'GET' && path === '/api/compras') {
+            console.log('📊 Verificando dados existentes...');
             // Verificar se há dados e inserir exemplos se necessário
             const countResult = await client.query('SELECT COUNT(*) as total FROM compras_pedidos');
             const totalRecords = parseInt(countResult.rows[0].total);
+            console.log(`📈 Total de registros: ${totalRecords}`);
             
             if (totalRecords === 0) {
+                console.log('📝 Inserindo dados de exemplo...');
                 // Inserir dados de exemplo
                 await client.query(`
                     INSERT INTO compras_pedidos (numero, descricao, fornecedor, valor, observacoes, status, data_criacao) VALUES
@@ -61,6 +68,7 @@ exports.handler = async (event, context) => {
             }
             
             // Buscar todos os pedidos
+            console.log('🔍 Buscando pedidos...');
             const result = await client.query(`
                 SELECT 
                     numero,
@@ -73,6 +81,7 @@ exports.handler = async (event, context) => {
                 FROM compras_pedidos 
                 ORDER BY data_criacao DESC
             `);
+            console.log(`✅ Encontrados ${result.rows.length} pedidos`);
             
             client.release();
             return {
@@ -212,11 +221,16 @@ exports.handler = async (event, context) => {
         }
         
     } catch (error) {
-        console.error('Erro na API de compras:', error);
+        console.error('❌ Erro na API de compras:', error);
+        console.error('❌ Stack trace:', error.stack);
         return {
             statusCode: 500,
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ error: 'Erro interno do servidor' })
+            body: JSON.stringify({ 
+                error: 'Erro interno do servidor',
+                message: error.message,
+                details: error.stack
+            })
         };
     }
 };
