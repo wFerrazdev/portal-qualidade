@@ -437,10 +437,14 @@
 
             async loadOrders() {
                 try {
+                    console.log('🔄 Carregando pedidos...');
                     // Buscar pedidos da API consolidada
                     const response = await fetch('/api/compras');
+                    console.log('📡 Resposta da API:', response.status, response.statusText);
+                    
                     if (response.ok) {
                         const data = await response.json();
+                        console.log('✅ Dados recebidos da API:', data);
                         
                         // Buscar histórico para cada pedido
                         for (const order of data) {
@@ -459,10 +463,12 @@
                         
                         this.orders = data;
                     } else {
+                        console.log('❌ API não disponível, usando localStorage');
                         // Fallback para localStorage se API não estiver disponível
                         const storedOrders = localStorage.getItem('gestao-compras-orders');
                         if (storedOrders) {
                             this.orders = JSON.parse(storedOrders);
+                            console.log('💾 Dados carregados do localStorage:', this.orders);
                         } else {
                             // Dados de exemplo
                             this.orders = [
@@ -913,6 +919,7 @@
                 };
 
                 try {
+                    console.log('💾 Salvando pedido:', order);
                     // Tentar salvar na API consolidada
                     const response = await fetch('/api/compras', {
                         method: 'POST',
@@ -922,11 +929,14 @@
                         body: JSON.stringify(order)
                     });
 
+                    console.log('📡 Resposta da API (criar):', response.status, response.statusText);
                     if (response.ok) {
+                        console.log('✅ Pedido salvo na API com sucesso');
                         // Recarregar pedidos da API
                         await this.loadOrders();
                         this.filterOrders(); // Atualiza a lista filtrada
                     } else {
+                        console.log('❌ Erro ao salvar na API, usando localStorage');
                         // Fallback para localStorage
                         this.orders = [order, ...this.orders];
                         this.saveOrders();
