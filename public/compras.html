@@ -437,60 +437,92 @@
 
             async loadOrders() {
                 try {
-                    // Simular carregamento de dados (você pode integrar com sua API aqui)
-                    const storedOrders = localStorage.getItem('gestao-compras-orders');
-                    if (storedOrders) {
-                        this.orders = JSON.parse(storedOrders);
+                    // Buscar pedidos da API
+                    const response = await fetch('/api/compras/getOrders');
+                    if (response.ok) {
+                        const data = await response.json();
+                        
+                        // Buscar histórico para cada pedido
+                        for (const order of data) {
+                            const historyResponse = await fetch(`/api/compras/getOrderHistory?numero=${order.numero}`);
+                            if (historyResponse.ok) {
+                                const history = await historyResponse.json();
+                                order.historico = history.map(h => ({
+                                    data: h.data_mudanca,
+                                    status: h.status_novo,
+                                    observacao: h.observacao
+                                }));
+                            } else {
+                                order.historico = [];
+                            }
+                        }
+                        
+                        this.orders = data;
                     } else {
-                        // Dados de exemplo
-                        this.orders = [
-                            {
-                                numero: 1001,
-                                descricao: 'Equipamentos de laboratório',
-                                fornecedor: 'LabTech Solutions',
-                                valor: 15000.00,
-                                status: 'AGUARDANDO_APROVACAO_SC',
-                                dataCriacao: new Date().toISOString(),
-                                observacoes: 'Equipamentos para novo laboratório',
-                                historico: [{
-                                    data: new Date().toISOString(),
+                        // Fallback para localStorage se API não estiver disponível
+                        const storedOrders = localStorage.getItem('gestao-compras-orders');
+                        if (storedOrders) {
+                            this.orders = JSON.parse(storedOrders);
+                        } else {
+                            // Dados de exemplo
+                            this.orders = [
+                                {
+                                    numero: 1001,
+                                    descricao: 'Equipamentos de laboratório',
+                                    fornecedor: 'LabTech Solutions',
+                                    valor: 15000.00,
                                     status: 'AGUARDANDO_APROVACAO_SC',
-                                    observacao: 'Solicitação de compra criada pelo setor de Qualidade'
-                                }]
-                            },
-                            {
-                                numero: 1002,
-                                descricao: 'Material de consumo',
-                                fornecedor: 'SupplyCorp',
-                                valor: 2500.00,
-                                status: 'SC_APROVADA',
-                                dataCriacao: new Date(Date.now() - 86400000).toISOString(),
-                                observacoes: 'Material para testes de qualidade',
-                                historico: [
-                                    {
-                                        data: new Date(Date.now() - 86400000).toISOString(),
+                                    dataCriacao: new Date().toISOString(),
+                                    observacoes: 'Equipamentos para novo laboratório',
+                                    historico: [{
+                                        data: new Date().toISOString(),
                                         status: 'AGUARDANDO_APROVACAO_SC',
                                         observacao: 'Solicitação de compra criada pelo setor de Qualidade'
-                                    },
-                                    {
-                                        data: new Date().toISOString(),
-                                        status: 'SC_APROVADA',
-                                        observacao: 'Aprovado pelo Supervisor de Compras'
-                                    }
-                                ]
-                            }
-                        ];
+                                    }]
+                                },
+                                {
+                                    numero: 1002,
+                                    descricao: 'Material de consumo',
+                                    fornecedor: 'SupplyCorp',
+                                    valor: 2500.00,
+                                    status: 'SC_APROVADA',
+                                    dataCriacao: new Date(Date.now() - 86400000).toISOString(),
+                                    observacoes: 'Material para testes de qualidade',
+                                    historico: [
+                                        {
+                                            data: new Date(Date.now() - 86400000).toISOString(),
+                                            status: 'AGUARDANDO_APROVACAO_SC',
+                                            observacao: 'Solicitação de compra criada pelo setor de Qualidade'
+                                        },
+                                        {
+                                            data: new Date().toISOString(),
+                                            status: 'SC_APROVADA',
+                                            observacao: 'Aprovado pelo Supervisor de Compras'
+                                        }
+                                    ]
+                                }
+                            ];
+                        }
+                        // Salvar no localStorage como backup
                         this.saveOrders();
                     }
                     this.filteredOrders = [...this.orders];
                 } catch (error) {
                     console.error('Erro ao carregar pedidos:', error);
-                    this.orders = [];
-                    this.filteredOrders = [];
+                    // Tentar carregar do localStorage em caso de erro
+                    const storedOrders = localStorage.getItem('gestao-compras-orders');
+                    if (storedOrders) {
+                        this.orders = JSON.parse(storedOrders);
+                        this.filteredOrders = [...this.orders];
+                    } else {
+                        this.orders = [];
+                        this.filteredOrders = [];
+                    }
                 }
             }
 
-            saveOrders() {
+            async saveOrders() {
+                // Salvar no localStorage como backup
                 localStorage.setItem('gestao-compras-orders', JSON.stringify(this.orders));
             }
 
@@ -854,7 +886,7 @@
                 }
             }
 
-            handleCreateOrder() {
+            async handleCreateOrder() {
                 const descricao = document.getElementById('modal-descricao').value;
                 const fornecedor = document.getElementById('modal-fornecedor').value;
                 const valor = document.getElementById('modal-valor').value;
@@ -881,15 +913,39 @@
                 };
 
                 try {
-                    this.orders = [order, ...this.orders];
-                    this.saveOrders();
+                    // Tentar salvar na API
+                    const response = await fetch('/api/compras/addOrder', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(order)
+                    });
+
+                    if (response.ok) {
+                        // Recarregar pedidos da API
+                        await this.loadOrders();
+                    } else {
+                        // Fallback para localStorage
+                        this.orders = [order, ...this.orders];
+                        this.saveOrders();
+                    }
+                    
+                    this.filterOrders(); // Atualiza a lista filtrada
                     this.populateStatusFilter();
                     this.updateStats();
-                    this.renderOrders();
                     this.closeModals();
                     this.newOrder = { descricao: '', fornecedor: '', valor: '', observacoes: '' };
                 } catch (error) {
-                    alert('Erro ao criar pedido');
+                    console.error('Erro ao criar pedido na API, salvando localmente:', error);
+                    // Fallback para localStorage em caso de erro
+                    this.orders = [order, ...this.orders];
+                    this.saveOrders();
+                    this.filterOrders();
+                    this.populateStatusFilter();
+                    this.updateStats();
+                    this.closeModals();
+                    this.newOrder = { descricao: '', fornecedor: '', valor: '', observacoes: '' };
                 }
             }
 
@@ -897,29 +953,67 @@
                 return this.orders.length > 0 ? Math.max(...this.orders.map(o => o.numero)) + 1 : 1001;
             }
 
-            updateOrderStatus(order, newStatus, observacao = '') {
-                const updatedOrder = {
-                    ...order,
-                    status: newStatus,
-                    historico: [
-                        ...order.historico,
-                        {
-                            data: new Date().toISOString(),
-                            status: newStatus,
-                            observacao: observacao || `Status alterado para ${this.STATUSES[newStatus].label}`
-                        }
-                    ]
-                };
-
+            async updateOrderStatus(order, newStatus, observacao = '') {
                 try {
-                    this.orders = this.orders.map(o => o.numero === order.numero ? updatedOrder : o);
-                    this.saveOrders();
+                    // Tentar atualizar na API
+                    const response = await fetch('/api/compras/updateOrderStatus', {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            numero: order.numero,
+                            newStatus: newStatus,
+                            observacao: observacao || `Status alterado para ${this.STATUSES[newStatus].label}`
+                        })
+                    });
+
+                    if (response.ok) {
+                        // Recarregar pedidos da API
+                        await this.loadOrders();
+                    } else {
+                        // Fallback para localStorage
+                        const updatedOrder = {
+                            ...order,
+                            status: newStatus,
+                            historico: [
+                                ...order.historico,
+                                {
+                                    data: new Date().toISOString(),
+                                    status: newStatus,
+                                    observacao: observacao || `Status alterado para ${this.STATUSES[newStatus].label}`
+                                }
+                            ]
+                        };
+                        this.orders = this.orders.map(o => o.numero === order.numero ? updatedOrder : o);
+                        this.saveOrders();
+                    }
+
+                    this.filterOrders();
                     this.populateStatusFilter();
                     this.updateStats();
-                    this.renderOrders();
                     this.closeModals();
                 } catch (error) {
-                    alert('Erro ao atualizar status');
+                    console.error('Erro ao atualizar status na API, salvando localmente:', error);
+                    // Fallback para localStorage em caso de erro
+                    const updatedOrder = {
+                        ...order,
+                        status: newStatus,
+                        historico: [
+                            ...order.historico,
+                            {
+                                data: new Date().toISOString(),
+                                status: newStatus,
+                                observacao: observacao || `Status alterado para ${this.STATUSES[newStatus].label}`
+                            }
+                        ]
+                    };
+                    this.orders = this.orders.map(o => o.numero === order.numero ? updatedOrder : o);
+                    this.saveOrders();
+                    this.filterOrders();
+                    this.populateStatusFilter();
+                    this.updateStats();
+                    this.closeModals();
                 }
             }
 

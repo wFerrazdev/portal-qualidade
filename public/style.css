@@ -5523,23 +5523,21 @@ body.compras-page {
     max-width: 600px;
 }
 
-/* Content Area específico para página de teste */
+/* Content Area específico para página de compras */
 .compras-page .content-area {
     background: #f8fafc;
     padding: 0;
     margin: 0;
     margin-left: 100px;
     min-height: calc(100vh - 90px - 60px); /* 90px header + 60px footer */
+    max-height: calc(100vh - 90px - 60px); /* Limita a altura */
     color: #1e293b;
     margin-bottom: 0; /* Remove qualquer margem inferior */
     padding-bottom: 0; /* Remove padding inferior */
     border-bottom: none; /* Remove qualquer borda inferior */
-}
-
-/* Garantir que não há lacuna entre content-area e footer na página de teste */
-.compras-page .content-area {
     position: relative;
     z-index: 1;
+    overflow: hidden; /* Remove scroll da página */
 }
 
 .compras-page .footer {
