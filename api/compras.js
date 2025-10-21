@@ -1,8 +1,14 @@
 const { Pool } = require('pg');
 
+// Configuração mais robusta do pool
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
-    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
+    ssl: {
+        rejectUnauthorized: false
+    },
+    max: 1, // Limitar conexões
+    idleTimeoutMillis: 30000,
+    connectionTimeoutMillis: 2000,
 });
 
 exports.handler = async (event, context) => {
@@ -10,6 +16,7 @@ exports.handler = async (event, context) => {
     
     try {
         console.log('🔗 Conectando ao banco...');
+        console.log('🔗 DATABASE_URL:', process.env.DATABASE_URL ? 'Definida' : 'Não definida');
         const client = await pool.connect();
         console.log('✅ Conexão estabelecida');
         
