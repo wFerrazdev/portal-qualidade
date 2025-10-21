@@ -2,41 +2,47 @@ const { Pool } = require('pg');
 
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
-    ssl: {
-        rejectUnauthorized: false
-    }
+    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
 });
 
 exports.handler = async (event, context) => {
-    // Habilitar CORS
-    const headers = {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-        'Content-Type': 'application/json'
-    };
-
-    if (event.httpMethod === 'OPTIONS') {
-        return { statusCode: 200, headers, body: '' };
+    if (event.httpMethod !== 'GET') {
+        return {
+            statusCode: 405,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ error: 'Method not allowed' })
+        };
     }
 
     try {
-        const result = await pool.query(
-            `SELECT * FROM purchase_orders ORDER BY numero DESC`
-        );
-
+        const client = await pool.connect();
+        
+        const result = await client.query(`
+            SELECT 
+                numero,
+                descricao,
+                fornecedor,
+                valor,
+                status,
+                data_criacao as "dataCriacao",
+                observacoes
+            FROM compras_pedidos 
+            ORDER BY data_criacao DESC
+        `);
+        
+        client.release();
+        
         return {
             statusCode: 200,
-            headers,
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(result.rows)
         };
     } catch (error) {
         console.error('Erro ao buscar pedidos:', error);
         return {
             statusCode: 500,
-            headers,
-            body: JSON.stringify({ error: 'Erro ao buscar pedidos' })
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ error: 'Erro interno do servidor' })
         };
     }
 };
-

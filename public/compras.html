@@ -129,7 +129,7 @@
                 </div>
             </header>
 
-            <main class="content-area">
+            <main class="content-area" style="overflow: hidden; max-height: calc(100vh - 90px - 60px);">
                 <!-- Sistema de Gestão de Compras -->
                 <div id="gestao-compras-app" class="gestao-compras-container">
                     <!-- Loading state -->
@@ -925,13 +925,13 @@
                     if (response.ok) {
                         // Recarregar pedidos da API
                         await this.loadOrders();
+                        this.filterOrders(); // Atualiza a lista filtrada
                     } else {
                         // Fallback para localStorage
                         this.orders = [order, ...this.orders];
                         this.saveOrders();
+                        this.filterOrders(); // Atualiza a lista filtrada
                     }
-                    
-                    this.filterOrders(); // Atualiza a lista filtrada
                     this.populateStatusFilter();
                     this.updateStats();
                     this.closeModals();
@@ -971,6 +971,7 @@
                     if (response.ok) {
                         // Recarregar pedidos da API
                         await this.loadOrders();
+                        this.filterOrders();
                     } else {
                         // Fallback para localStorage
                         const updatedOrder = {
@@ -987,9 +988,8 @@
                         };
                         this.orders = this.orders.map(o => o.numero === order.numero ? updatedOrder : o);
                         this.saveOrders();
+                        this.filterOrders();
                     }
-
-                    this.filterOrders();
                     this.populateStatusFilter();
                     this.updateStats();
                     this.closeModals();

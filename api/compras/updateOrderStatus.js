@@ -2,77 +2,70 @@ const { Pool } = require('pg');
 
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
-    ssl: {
-        rejectUnauthorized: false
-    }
+    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
 });
 
 exports.handler = async (event, context) => {
-    // Habilitar CORS
-    const headers = {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-        'Content-Type': 'application/json'
-    };
-
-    if (event.httpMethod === 'OPTIONS') {
-        return { statusCode: 200, headers, body: '' };
-    }
-
     if (event.httpMethod !== 'PUT') {
         return {
             statusCode: 405,
-            headers,
-            body: JSON.stringify({ error: 'Método não permitido' })
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ error: 'Method not allowed' })
         };
     }
 
     try {
         const { numero, newStatus, observacao } = JSON.parse(event.body);
-
-        // Buscar order_id
-        const orderResult = await pool.query(
-            'SELECT id, status FROM purchase_orders WHERE numero = $1',
-            [numero]
-        );
-
-        if (orderResult.rows.length === 0) {
+        const client = await pool.connect();
+        
+        // Buscar status atual
+        const currentOrder = await client.query(`
+            SELECT status FROM compras_pedidos WHERE numero = $1
+        `, [numero]);
+        
+        if (currentOrder.rows.length === 0) {
+            client.release();
             return {
                 statusCode: 404,
-                headers,
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ error: 'Pedido não encontrado' })
             };
         }
-
-        const orderId = orderResult.rows[0].id;
-        const oldStatus = orderResult.rows[0].status;
-
-        // Atualizar status
-        await pool.query(
-            'UPDATE purchase_orders SET status = $1, data_atualizacao = CURRENT_TIMESTAMP WHERE id = $2',
-            [newStatus, orderId]
-        );
-
+        
+        const currentStatus = currentOrder.rows[0].status;
+        
+        // Atualizar status do pedido
+        await client.query(`
+            UPDATE compras_pedidos 
+            SET status = $1 
+            WHERE numero = $2
+        `, [newStatus, numero]);
+        
         // Adicionar ao histórico
-        await pool.query(
-            `INSERT INTO purchase_order_history (order_id, status_anterior, status_novo, observacao, data_mudanca)
-             VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP)`,
-            [orderId, oldStatus, newStatus, observacao || `Status alterado para ${newStatus}`]
-        );
-
+        await client.query(`
+            INSERT INTO compras_historico (numero_pedido, status_anterior, status_novo, data_mudanca, observacao)
+            VALUES ($1, $2, $3, $4, $5)
+        `, [
+            numero,
+            currentStatus,
+            newStatus,
+            new Date().toISOString(),
+            observacao || `Status alterado de ${currentStatus} para ${newStatus}`
+        ]);
+        
+        client.release();
+        
         return {
             statusCode: 200,
-            headers,
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ success: true })
         };
     } catch (error) {
         console.error('Erro ao atualizar status:', error);
         return {
             statusCode: 500,
-            headers,
-            body: JSON.stringify({ error: 'Erro ao atualizar status', details: error.message })
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ error: 'Erro interno do servidor' })
         };
     }
 };
-
