@@ -5533,6 +5533,7 @@ body.teste-page {
     color: #1e293b;
     margin-bottom: 0; /* Remove qualquer margem inferior */
     padding-bottom: 0; /* Remove padding inferior */
+    border-bottom: none; /* Remove qualquer borda inferior */
 }
 
 /* Garantir que não há lacuna entre content-area e footer na página de teste */
@@ -5595,7 +5596,7 @@ body.teste-page {
     height: 100%;
     background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
     overflow: auto;
-    padding: 2rem 2rem 0 2rem; /* Mantém padding lateral e superior, remove inferior */
+    padding: 2rem 2rem 2rem 2rem; /* Padding uniforme de 2rem (32px) */
     margin-bottom: 0; /* Remove margem inferior */
 }
 

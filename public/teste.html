@@ -632,8 +632,8 @@
             }
 
             showCreateModal() {
-                // Implementar modal de criação
-                alert('Modal de criação será implementado em breve!');
+                this.showModal = true;
+                this.renderModals();
             }
 
             showDetailModal(orderNumber) {
@@ -641,8 +641,286 @@
                 if (!order) return;
 
                 this.selectedOrder = order;
-                // Implementar modal de detalhes
-                alert(`Detalhes do pedido #${orderNumber} serão implementados em breve!`);
+                this.showDetailModal = true;
+                this.renderModals();
+            }
+
+            closeModals() {
+                this.showModal = false;
+                this.showDetailModal = false;
+                this.renderModals();
+            }
+
+            renderModals() {
+                // Remove modals existentes
+                const existingModals = document.querySelectorAll('.modal-overlay');
+                existingModals.forEach(modal => modal.remove());
+
+                // Modal de criação
+                if (this.showModal) {
+                    const modalHTML = `
+                        <div class="modal-overlay" style="position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center; z-index: 50; padding: 1rem;">
+                            <div class="modal-content" style="background: white; border-radius: 1rem; max-width: 32rem; width: 100%; padding: 2rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);">
+                                <div style="margin-bottom: 1.5rem;">
+                                    <h2 style="font-size: 1.5rem; font-weight: 700; background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #6366f1 100%); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0 0 0.25rem 0;">
+                                        Nova Solicitação de Compra
+                                    </h2>
+                                    <p style="font-size: 0.875rem; color: #64748b; margin: 0;">Preencha os dados para criar uma nova solicitação</p>
+                                </div>
+                                <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+                                    <div>
+                                        <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">
+                                            Descrição do Item/Serviço *
+                                        </label>
+                                        <input type="text" id="modal-descricao" value="${this.newOrder.descricao}" 
+                                               style="width: 100%; padding: 0.75rem 1rem; border: 2px solid #e5e7eb; border-radius: 0.75rem; font-size: 0.875rem; transition: all 0.3s ease;"
+                                               placeholder="Ex: Material de laboratório, equipamento, etc.">
+                                    </div>
+                                    <div>
+                                        <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">
+                                            Fornecedor *
+                                        </label>
+                                        <input type="text" id="modal-fornecedor" value="${this.newOrder.fornecedor}" 
+                                               style="width: 100%; padding: 0.75rem 1rem; border: 2px solid #e5e7eb; border-radius: 0.75rem; font-size: 0.875rem; transition: all 0.3s ease;"
+                                               placeholder="Nome do fornecedor">
+                                    </div>
+                                    <div>
+                                        <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">
+                                            Valor Estimado (R$) *
+                                        </label>
+                                        <input type="number" id="modal-valor" value="${this.newOrder.valor}" step="0.01" min="0"
+                                               style="width: 100%; padding: 0.75rem 1rem; border: 2px solid #e5e7eb; border-radius: 0.75rem; font-size: 0.875rem; transition: all 0.3s ease;"
+                                               placeholder="0.00">
+                                    </div>
+                                    <div>
+                                        <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">
+                                            Observações
+                                        </label>
+                                        <textarea id="modal-observacoes" rows="3" 
+                                                  style="width: 100%; padding: 0.75rem 1rem; border: 2px solid #e5e7eb; border-radius: 0.75rem; font-size: 0.875rem; transition: all 0.3s ease; resize: vertical;"
+                                                  placeholder="Informações adicionais...">${this.newOrder.observacoes}</textarea>
+                                    </div>
+                                </div>
+                                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                                    <button onclick="gestaoComprasApp.handleCreateOrder()" 
+                                            style="flex: 1; background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%); color: white; padding: 0.75rem 1.5rem; border-radius: 0.75rem; border: none; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);">
+                                        Criar Solicitação
+                                    </button>
+                                    <button onclick="gestaoComprasApp.closeModals()" 
+                                            style="flex: 1; background: #f3f4f6; color: #374151; padding: 0.75rem 1.5rem; border-radius: 0.75rem; border: none; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
+                                        Cancelar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    document.body.insertAdjacentHTML('beforeend', modalHTML);
+                }
+
+                // Modal de detalhes
+                if (this.showDetailModal && this.selectedOrder) {
+                    const order = this.selectedOrder;
+                    const modalHTML = `
+                        <div class="modal-overlay" style="position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center; z-index: 50; padding: 1rem; overflow-y: auto;">
+                            <div class="modal-content" style="background: white; border-radius: 1rem; max-width: 80rem; width: 100%; padding: 2rem; margin: 2rem 0; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);">
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem;">
+                                    <div>
+                                        <h2 style="font-size: 1.5rem; font-weight: 700; background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #6366f1 100%); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0 0 0.75rem 0;">
+                                            Pedido #${order.numero}
+                                        </h2>
+                                        <span style="display: inline-block; padding: 0.5rem 1rem; border-radius: 0.75rem; font-size: 0.875rem; font-weight: 600; border: 2px solid; ${this.STATUSES[order.status].color.replace('bg-', 'background-color: ').replace('text-', 'color: ').replace('border-', 'border-color: ')}">
+                                            ${this.STATUSES[order.status].label}
+                                        </span>
+                                    </div>
+                                    <button onclick="gestaoComprasApp.closeModals()" 
+                                            style="color: #9ca3af; background: none; border: none; cursor: pointer; padding: 0.5rem; border-radius: 0.5rem; transition: all 0.3s ease;">
+                                        <svg width="28" height="28" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
+                                    <div style="background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%); padding: 1.5rem; border-radius: 1rem; border: 2px solid #bfdbfe;">
+                                        <h3 style="font-weight: 700; color: #1f2937; margin-bottom: 1rem; font-size: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #3b82f6;">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                                            </svg>
+                                            Informações do Pedido
+                                        </h3>
+                                        <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.875rem;">
+                                            <div>
+                                                <span style="color: #6b7280; display: block; margin-bottom: 0.25rem; font-weight: 500;">Descrição:</span>
+                                                <p style="font-weight: 600; color: #1f2937; margin: 0;">${order.descricao}</p>
+                                            </div>
+                                            <div>
+                                                <span style="color: #6b7280; display: block; margin-bottom: 0.25rem; font-weight: 500;">Fornecedor:</span>
+                                                <p style="font-weight: 600; color: #1f2937; margin: 0;">${order.fornecedor}</p>
+                                            </div>
+                                            <div>
+                                                <span style="color: #6b7280; display: block; margin-bottom: 0.25rem; font-weight: 500;">Valor:</span>
+                                                <p style="font-weight: 700; font-size: 1.25rem; background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0;">
+                                                    ${this.formatCurrency(order.valor)}
+                                                </p>
+                                            </div>
+                                            <div>
+                                                <span style="color: #6b7280; display: block; margin-bottom: 0.25rem; font-weight: 500;">Data de Criação:</span>
+                                                <p style="font-weight: 600; color: #1f2937; margin: 0;">${this.formatDate(order.dataCriacao)}</p>
+                                            </div>
+                                            ${order.observacoes ? `
+                                                <div>
+                                                    <span style="color: #6b7280; display: block; margin-bottom: 0.25rem; font-weight: 500;">Observações:</span>
+                                                    <p style="font-weight: 600; color: #1f2937; margin: 0;">${order.observacoes}</p>
+                                                </div>
+                                            ` : ''}
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <h3 style="font-weight: 700; color: #1f2937; margin-bottom: 1rem; font-size: 1rem;">Ações Rápidas</h3>
+                                        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                                            ${order.status !== 'ENTREGUE' && order.status !== 'CANCELADO' && this.getNextStatus(order.status) ? `
+                                                <button onclick="gestaoComprasApp.updateOrderStatus(gestaoComprasApp.selectedOrder, '${this.getNextStatus(order.status)}')" 
+                                                        style="width: 100%; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 1.25rem; border-radius: 0.75rem; border: none; font-weight: 600; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);">
+                                                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                                    </svg>
+                                                    Avançar: ${this.STATUSES[this.getNextStatus(order.status)].label}
+                                                </button>
+                                            ` : ''}
+                                            ${order.status !== 'CANCELADO' && order.status !== 'ENTREGUE' ? `
+                                                <button onclick="gestaoComprasApp.updateOrderStatus(gestaoComprasApp.selectedOrder, 'CANCELADO', 'Pedido cancelado')" 
+                                                        style="width: 100%; background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; padding: 1.25rem; border-radius: 0.75rem; border: none; font-weight: 600; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 4px 20px rgba(239, 68, 68, 0.3);">
+                                                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                                    </svg>
+                                                    Cancelar Pedido
+                                                </button>
+                                            ` : ''}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style="background: linear-gradient(135deg, #f9fafb 0%, #dbeafe 100%); padding: 1.5rem; border-radius: 1rem; border: 1px solid #e5e7eb;">
+                                    <h3 style="font-weight: 700; color: #1f2937; margin-bottom: 1.25rem; font-size: 1rem;">Histórico do Pedido</h3>
+                                    <div style="display: flex; flex-direction: column; gap: 1rem; max-height: 20rem; overflow-y: auto; padding-right: 0.5rem;">
+                                        ${order.historico.slice().reverse().map((item, index) => `
+                                            <div style="display: flex; gap: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #e5e7eb; ${index === order.historico.length - 1 ? 'border-bottom: none;' : ''}">
+                                                <div style="flex-shrink: 0;">
+                                                    <div style="width: 2.75rem; height: 2.75rem; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; border: 2px solid; ${this.STATUSES[item.status].color.replace('bg-', 'background-color: ').replace('text-', 'color: ').replace('border-', 'border-color: ')} box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);">
+                                                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                                        </svg>
+                                                    </div>
+                                                </div>
+                                                <div style="flex: 1; min-width: 0;">
+                                                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 0.75rem;">
+                                                        <div style="min-width: 0; flex: 1;">
+                                                            <p style="font-weight: 700; color: #1f2937; font-size: 0.875rem; margin: 0;">${this.STATUSES[item.status].label}</p>
+                                                            <p style="font-size: 0.75rem; color: #6b7280; margin: 0.25rem 0 0 0;">${item.observacao}</p>
+                                                        </div>
+                                                        <span style="font-size: 0.75rem; color: #9ca3af; white-space: nowrap;">${this.formatDate(item.data)}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+
+                                <div style="margin-top: 1.5rem; display: flex; justify-content: flex-end;">
+                                    <button onclick="gestaoComprasApp.closeModals()" 
+                                            style="background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%); color: #374151; padding: 0.625rem 1.5rem; border-radius: 0.75rem; border: none; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
+                                        Fechar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    document.body.insertAdjacentHTML('beforeend', modalHTML);
+                }
+            }
+
+            handleCreateOrder() {
+                const descricao = document.getElementById('modal-descricao').value;
+                const fornecedor = document.getElementById('modal-fornecedor').value;
+                const valor = document.getElementById('modal-valor').value;
+                const observacoes = document.getElementById('modal-observacoes').value;
+
+                if (!descricao || !fornecedor || !valor) {
+                    alert('Por favor, preencha todos os campos obrigatórios');
+                    return;
+                }
+                
+                const order = {
+                    numero: this.generateOrderNumber(),
+                    descricao: descricao,
+                    fornecedor: fornecedor,
+                    valor: parseFloat(valor),
+                    observacoes: observacoes,
+                    status: 'AGUARDANDO_APROVACAO_SC',
+                    dataCriacao: new Date().toISOString(),
+                    historico: [{
+                        data: new Date().toISOString(),
+                        status: 'AGUARDANDO_APROVACAO_SC',
+                        observacao: 'Solicitação de compra criada pelo setor de Qualidade'
+                    }]
+                };
+
+                try {
+                    this.orders = [order, ...this.orders];
+                    this.saveOrders();
+                    this.populateStatusFilter();
+                    this.updateStats();
+                    this.renderOrders();
+                    this.closeModals();
+                    this.newOrder = { descricao: '', fornecedor: '', valor: '', observacoes: '' };
+                } catch (error) {
+                    alert('Erro ao criar pedido');
+                }
+            }
+
+            generateOrderNumber() {
+                return this.orders.length > 0 ? Math.max(...this.orders.map(o => o.numero)) + 1 : 1001;
+            }
+
+            updateOrderStatus(order, newStatus, observacao = '') {
+                const updatedOrder = {
+                    ...order,
+                    status: newStatus,
+                    historico: [
+                        ...order.historico,
+                        {
+                            data: new Date().toISOString(),
+                            status: newStatus,
+                            observacao: observacao || `Status alterado para ${this.STATUSES[newStatus].label}`
+                        }
+                    ]
+                };
+
+                try {
+                    this.orders = this.orders.map(o => o.numero === order.numero ? updatedOrder : o);
+                    this.saveOrders();
+                    this.populateStatusFilter();
+                    this.updateStats();
+                    this.renderOrders();
+                    this.closeModals();
+                } catch (error) {
+                    alert('Erro ao atualizar status');
+                }
+            }
+
+            getNextStatus(currentStatus) {
+                const statusFlow = {
+                    'AGUARDANDO_APROVACAO_SC': 'SC_APROVADA',
+                    'SC_APROVADA': 'AGUARDANDO_APROVACAO_OC',
+                    'AGUARDANDO_APROVACAO_OC': 'OC_APROVADA',
+                    'OC_APROVADA': 'PEDIDO_EMITIDO',
+                    'PEDIDO_EMITIDO': 'AGUARDANDO_PAGAMENTO',
+                    'AGUARDANDO_PAGAMENTO': 'PAGO',
+                    'PAGO': 'AGUARDANDO_ENTREGA',
+                    'AGUARDANDO_ENTREGA': 'ENTREGUE'
+                };
+                return statusFlow[currentStatus];
             }
 
             formatDate(dateString) {
