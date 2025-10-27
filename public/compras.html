@@ -1195,12 +1195,7 @@
                     valor: parseFloat(valor),
                     observacoes: observacoes,
                     status: 'AGUARDANDO_APROVACAO_SC',
-                    dataCriacao: new Date().toISOString(),
-                    historico: [{
-                        data: new Date().toISOString(),
-                        status: 'AGUARDANDO_APROVACAO_SC',
-                        observacao: 'Solicitação de compra criada pelo setor de Qualidade'
-                    }]
+                    solicitante: 'Qualidade'
                 };
 
                 try {

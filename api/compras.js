@@ -60,11 +60,14 @@ module.exports = async (req, res) => {
             client = await pool.connect();
             const { numero, descricao, fornecedor, valor, status, solicitante, observacoes } = req.body;
             
+            console.log('📝 Dados recebidos para criar pedido:', req.body);
+            
             const result = await client.query(
                 'INSERT INTO pedidos_compras (numero, descricao, fornecedor, valor, status, solicitante, observacoes) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
-                [numero, descricao, fornecedor, valor, status || 'AGUARDANDO_APROVACAO', solicitante || 'Qualidade', observacoes]
+                [numero, descricao, fornecedor, valor, status || 'AGUARDANDO_APROVACAO_SC', solicitante || 'Qualidade', observacoes]
             );
             
+            console.log('✅ Pedido criado com sucesso:', result.rows[0]);
             return res.status(201).json(result.rows[0]);
             
         } else if (req.method === 'PUT') {
