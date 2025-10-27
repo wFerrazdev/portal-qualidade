@@ -49,8 +49,19 @@ module.exports = async (req, res) => {
                 return res.status(200).json(result.rows[0]);
             } else {
                 // GET - Buscar todos os pedidos
+                // Primeiro, vamos verificar a estrutura da tabela
+                const tableInfo = await client.query(`
+                    SELECT column_name, data_type 
+                    FROM information_schema.columns 
+                    WHERE table_name = 'pedidos_compras' 
+                    ORDER BY ordinal_position
+                `);
+                console.log('📋 Estrutura da tabela pedidos_compras:', tableInfo.rows);
+                
                 const result = await client.query('SELECT * FROM pedidos_compras ORDER BY data_criacao DESC');
                 console.log('📊 Total de pedidos encontrados:', result.rows.length);
+                console.log('📋 Primeiro pedido completo:', result.rows[0]);
+                console.log('📋 Campos disponíveis:', result.rows[0] ? Object.keys(result.rows[0]) : 'Nenhum pedido');
                 
                 return res.status(200).json(result.rows);
             }
