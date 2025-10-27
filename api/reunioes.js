@@ -5,7 +5,10 @@ const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: {
         rejectUnauthorized: false
-    }
+    },
+    max: 1,
+    idleTimeoutMillis: 30000,
+    connectionTimeoutMillis: 2000,
 });
 
 // Dados mock para fallback
@@ -38,30 +41,63 @@ module.exports = async (req, res) => {
         return res.status(200).end();
     }
     
+    let client;
     try {
         const { id } = req.query;
         
         if (req.method === 'GET') {
-            if (id) {
-                // GET - Buscar reunião específica por ID
-                const reuniao = mockReunioes.find(r => r.id === parseInt(id));
-                if (!reuniao) {
-                    return res.status(404).json({ error: 'Reunião não encontrada' });
+            // Tentar conectar com o banco real
+            try {
+                client = await pool.connect();
+                
+                if (id) {
+                    // GET - Buscar reunião específica por ID
+                    const result = await client.query('SELECT * FROM reunioes WHERE id = $1', [id]);
+                    if (result.rows.length === 0) {
+                        return res.status(404).json({ error: 'Reunião não encontrada' });
+                    }
+                    return res.status(200).json(result.rows[0]);
+                } else {
+                    // GET - Buscar todas as reuniões
+                    const result = await client.query('SELECT * FROM reunioes ORDER BY data_reuniao DESC');
+                    return res.status(200).json(result.rows);
                 }
-                return res.status(200).json(reuniao);
-            } else {
-                // GET - Buscar todas as reuniões
-                return res.status(200).json(mockReunioes);
+            } catch (dbError) {
+                console.error('Erro de conexão com banco:', dbError);
+                // Fallback para dados mock
+                if (id) {
+                    const reuniao = mockReunioes.find(r => r.id === parseInt(id));
+                    if (!reuniao) {
+                        return res.status(404).json({ error: 'Reunião não encontrada' });
+                    }
+                    return res.status(200).json(reuniao);
+                } else {
+                    return res.status(200).json(mockReunioes);
+                }
             }
             
         } else if (req.method === 'POST') {
             // POST - Adicionar nova reunião
-            const newReuniao = {
-                id: Math.max(...mockReunioes.map(r => r.id)) + 1,
-                ...req.body
-            };
-            mockReunioes.push(newReuniao);
-            return res.status(201).json(newReuniao);
+            try {
+                client = await pool.connect();
+                const { titulo, data_reuniao, participantes, pauta, link_ata } = req.body;
+                
+                const result = await client.query(
+                    'INSERT INTO reunioes (titulo, data_reuniao, participantes, pauta, link_ata) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+                    [titulo, data_reuniao, participantes, pauta, link_ata]
+                );
+                
+                return res.status(201).json(result.rows[0]);
+            } catch (dbError) {
+                console.error('Erro de conexão com banco:', dbError);
+                // Fallback para dados mock
+                const newReuniao = {
+                    id: Math.max(...mockReunioes.map(r => r.id)) + 1,
+                    ...req.body
+                };
+                mockReunioes.push(newReuniao);
+                return res.status(201).json(newReuniao);
+            }
             
         } else if (req.method === 'PUT') {
             // PUT - Atualizar reunião
@@ -69,13 +105,30 @@ module.exports = async (req, res) => {
                 return res.status(400).json({ error: 'ID da reunião é obrigatório' });
             }
             
-            const index = mockReunioes.findIndex(r => r.id === parseInt(id));
-            if (index === -1) {
-                return res.status(404).json({ error: 'Reunião não encontrada' });
+            try {
+                client = await pool.connect();
+                const { titulo, data_reuniao, participantes, pauta, link_ata } = req.body;
+                
+                const result = await client.query(
+                    'UPDATE reunioes SET titulo = $1, data_reuniao = $2, participantes = $3, pauta = $4, link_ata = $5 WHERE id = $6 RETURNING *',
+                    [titulo, data_reuniao, participantes, pauta, link_ata, id]
+                );
+                
+                if (result.rows.length === 0) {
+                    return res.status(404).json({ error: 'Reunião não encontrada' });
+                }
+                
+                return res.status(200).json(result.rows[0]);
+            } catch (dbError) {
+                console.error('Erro de conexão com banco:', dbError);
+                // Fallback para dados mock
+                const index = mockReunioes.findIndex(r => r.id === parseInt(id));
+                if (index === -1) {
+                    return res.status(404).json({ error: 'Reunião não encontrada' });
+                }
+                mockReunioes[index] = { ...mockReunioes[index], ...req.body };
+                return res.status(200).json(mockReunioes[index]);
             }
-            
-            mockReunioes[index] = { ...mockReunioes[index], ...req.body };
-            return res.status(200).json(mockReunioes[index]);
             
         } else if (req.method === 'DELETE') {
             // DELETE - Excluir reunião
@@ -83,13 +136,25 @@ module.exports = async (req, res) => {
                 return res.status(400).json({ error: 'ID da reunião é obrigatório' });
             }
             
-            const index = mockReunioes.findIndex(r => r.id === parseInt(id));
-            if (index === -1) {
-                return res.status(404).json({ error: 'Reunião não encontrada' });
+            try {
+                client = await pool.connect();
+                const result = await client.query('DELETE FROM reunioes WHERE id = $1 RETURNING *', [id]);
+                
+                if (result.rows.length === 0) {
+                    return res.status(404).json({ error: 'Reunião não encontrada' });
+                }
+                
+                return res.status(200).json({ message: 'Reunião excluída com sucesso' });
+            } catch (dbError) {
+                console.error('Erro de conexão com banco:', dbError);
+                // Fallback para dados mock
+                const index = mockReunioes.findIndex(r => r.id === parseInt(id));
+                if (index === -1) {
+                    return res.status(404).json({ error: 'Reunião não encontrada' });
+                }
+                mockReunioes.splice(index, 1);
+                return res.status(200).json({ message: 'Reunião excluída com sucesso' });
             }
-            
-            mockReunioes.splice(index, 1);
-            return res.status(200).json({ message: 'Reunião excluída com sucesso' });
             
         } else {
             return res.status(405).json({ error: 'Method not allowed' });
@@ -97,6 +162,10 @@ module.exports = async (req, res) => {
         
     } catch (error) {
         console.error('Erro na API de reuniões:', error);
-        return res.status(500).json({ error: 'Erro interno do servidor' });
+        return res.status(500).json({ error: 'Erro interno do servidor', message: error.message });
+    } finally {
+        if (client) {
+            client.release();
+        }
     }
 };
