@@ -5535,12 +5535,12 @@ body.compras-page {
 /* Content Area específico para página de compras - REMOVIDO: duplicado abaixo */
 
 .compras-page .footer {
-    position: relative;
-    left: 0;
+    position: fixed;
+    bottom: 0;
+    left: 100px;
     right: 0;
     z-index: 100;
     margin: 0;
-    margin-top: 0 !important;
     padding: 15px 0;
     flex-shrink: 0;
     background: #f8fafc;
@@ -5595,6 +5595,7 @@ body.compras-page {
     overflow-y: auto;
     min-height: 0;
     margin: 0;
+    margin-left: 100px;
     margin-bottom: 0;
     padding-bottom: 0;
 }
@@ -5919,6 +5920,7 @@ body.compras-page {
     padding: 0.625rem 1rem;
     border-bottom: 1px solid #f1f5f9;
     font-size: 0.875rem;
+    color: #374151;
 }
 
 .orders-table tbody tr:hover {

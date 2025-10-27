@@ -591,16 +591,16 @@
                 if (totalPedidos) totalPedidos.textContent = this.orders.length;
 
                 const aguardando = this.orders.filter(o => 
-                    o.status === 'AGUARDANDO_APROVACAO_SC' || o.status === 'AGUARDANDO_APROVACAO_OC'
+                    o.status === 'AGUARDANDO_APROVACAO'
                 ).length;
                 if (aguardandoCount) aguardandoCount.textContent = aguardando;
 
                 const andamento = this.orders.filter(o => 
-                    ['SC_APROVADA', 'OC_APROVADA', 'PEDIDO_EMITIDO', 'AGUARDANDO_PAGAMENTO', 'PAGO', 'AGUARDANDO_ENTREGA'].includes(o.status)
+                    ['APROVADO', 'EM_ANALISE'].includes(o.status)
                 ).length;
                 if (andamentoCount) andamentoCount.textContent = andamento;
 
-                const concluidos = this.orders.filter(o => o.status === 'ENTREGUE').length;
+                const concluidos = this.orders.filter(o => o.status === 'CONCLUIDO').length;
                 if (concluidosCount) concluidosCount.textContent = concluidos;
             }
 
