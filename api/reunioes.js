@@ -59,7 +59,11 @@ module.exports = async (req, res) => {
                     return res.status(200).json(result.rows[0]);
                 } else {
                     // GET - Buscar todas as reuniões
-                    const result = await client.query('SELECT * FROM reunioes ORDER BY data_reuniao DESC');
+                    // Primeiro, vamos listar todos os IDs para debug
+                    const allIds = await client.query('SELECT id FROM reunioes');
+                    console.log('📊 Todos os IDs no banco:', allIds.rows.map(r => r.id));
+                    
+                    const result = await client.query('SELECT * FROM reunioes ORDER BY COALESCE(data_reuniao, created_at) DESC NULLS LAST');
                     console.log('📊 Total de reuniões encontradas:', result.rows.length);
                     console.log('📝 IDs encontrados:', result.rows.map(r => r.id));
                     return res.status(200).json(result.rows);
