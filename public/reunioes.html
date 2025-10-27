@@ -1180,8 +1180,8 @@
                 event.preventDefault();
                 const saveButton = event.target.querySelector('.save-button');
                 if (saveButton) {
-                    saveButton.textContent = 'Salvando...';
-                    saveButton.disabled = true;
+                saveButton.textContent = 'Salvando...';
+                saveButton.disabled = true;
                 }
                 
                 const editingId = meetingForm.dataset.editingId;
@@ -1219,8 +1219,8 @@
                     alert('Não foi possível salvar a reunião.');
                 } finally {
                     if (saveButton) {
-                        saveButton.textContent = 'Salvar';
-                        saveButton.disabled = false;
+                    saveButton.textContent = 'Salvar';
+                    saveButton.disabled = false;
                     }
                 }
             }
