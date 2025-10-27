@@ -5596,7 +5596,7 @@ body.compras-page {
     min-height: 0;
     margin: 0;
     margin-left: 100px;
-    margin-bottom: 0;
+    margin-bottom: 1rem; /* Pequena margem do footer */
     padding-bottom: 0;
 }
 
@@ -5850,7 +5850,7 @@ body.compras-page {
     flex-direction: column;
     flex: 1;
     min-height: 0;
-    max-height: 600px;
+    max-height: calc(100vh - 400px); /* Altura dinâmica para ativar scrollbar com 7+ pedidos */
 }
 
 /* Wrapper interno da tabela com scroll */

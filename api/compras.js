@@ -56,7 +56,7 @@ module.exports = async (req, res) => {
                 return res.status(200).json(result.rows[0]);
             } else {
                 // GET - Buscar todos os pedidos
-                const result = await client.query('SELECT * FROM pedidos_compras ORDER BY data_criacao DESC');
+                const result = await client.query('SELECT * FROM pedidos_compras ORDER BY data_criacao ASC');
                 console.log('📊 Total de pedidos encontrados:', result.rows.length);
                 console.log('📋 Primeiro pedido completo:', result.rows[0]);
                 console.log('📋 Campos disponíveis:', result.rows[0] ? Object.keys(result.rows[0]) : 'Nenhum pedido');
