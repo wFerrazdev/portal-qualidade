@@ -441,6 +441,12 @@
                     if (response.ok) {
                         const data = await response.json();
                         console.log('✅ Dados recebidos da API:', data);
+                        console.log('🔍 Verificando campo status no primeiro pedido:', data[0] ? {
+                            id: data[0].id,
+                            numero: data[0].numero,
+                            status: data[0].status,
+                            todosOsCampos: Object.keys(data[0])
+                        } : 'Nenhum pedido');
                         
                         // Buscar histórico para cada pedido
                         for (const order of data) {
