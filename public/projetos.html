@@ -511,7 +511,7 @@
 
             async function fetchAndRenderProjects() {
                 try {
-                    const response = await fetch(`${API_BASE_URL}/getProjetos`);
+                    const response = await fetch(`${API_BASE_URL}/projetos`);
                     if (!response.ok) { throw new Error(`HTTP error! status: ${response.status}`); }
                     const projects = await response.json();
                     projectsGrid.innerHTML = '';
@@ -596,17 +596,17 @@
                     let response;
                     if (editingId) {
                         if (!imageUrl) {
-                            const oldProjectResponse = await authFetch(`${API_BASE_URL}/getUmItem?type=projetos&id=${editingId}`);
+                            const oldProjectResponse = await authFetch(`${API_BASE_URL}/utils?action=getItem&table=projetos&id=${editingId}`);
                             const oldProject = await oldProjectResponse.json();
                             projectData.imagem_url = oldProject.imagem_url;
                         }
-                        response = await authFetch(`${API_BASE_URL}/updateItem?id=${editingId}&table=projetos`, { 
+                        response = await authFetch(`${API_BASE_URL}/utils?action=updateItem&table=projetos&id=${editingId}`, { 
                             method: 'PUT', 
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify(projectData) 
                         });
                     } else {
-                        response = await authFetch(`${API_BASE_URL}/addProjeto`, { 
+                        response = await authFetch(`${API_BASE_URL}/projetos`, { 
                             method: 'POST', 
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify(projectData) 
@@ -633,7 +633,7 @@
                 if (!editingId) return;
                 if (confirm('Tem certeza que deseja excluir este projeto? Esta ação não pode ser desfeita.')) {
                     try {
-                        const response = await authFetch(`${API_BASE_URL}/deleteItem?id=${editingId}&table=projetos`, { method: 'DELETE' });
+                        const response = await authFetch(`${API_BASE_URL}/projetos?id=${editingId}`, { method: 'DELETE' });
                         if (!response.ok) { throw new Error('Falha ao excluir o projeto.'); }
                         closeModal();
                         await fetchAndRenderProjects();
@@ -647,7 +647,7 @@
             async function handleDeleteProjectFromCard(projectId) {
                 if (confirm('Tem certeza que deseja excluir este projeto? Esta ação não pode ser desfeita.')) {
                     try {
-                        const response = await authFetch(`${API_BASE_URL}/deleteItem?id=${projectId}&table=projetos`, { method: 'DELETE' });
+                        const response = await authFetch(`${API_BASE_URL}/projetos?id=${projectId}`, { method: 'DELETE' });
                         if (!response.ok) { throw new Error('Falha ao excluir o projeto.'); }
                         await fetchAndRenderProjects();
                     } catch (error) {
@@ -909,7 +909,7 @@
                 if (editIcon) {
                     const projectId = editIcon.dataset.id;
                     try {
-                        const response = await authFetch(`${API_BASE_URL}/getUmItem?type=projetos&id=${projectId}`);
+                        const response = await authFetch(`${API_BASE_URL}/utils?action=getItem&table=projetos&id=${projectId}`);
                         if (!response.ok) { throw new Error('Falha ao buscar dados do projeto'); }
                         const project = await response.json();
                         populateFormForEdit(project);
