@@ -15,8 +15,9 @@ const pool = new Pool({
 const mockAuditorias = [
     {
         id: 1,
+        titulo: 'Auditoria Interna de Processos',
         tipo: 'Auditoria Interna',
-        data: '2024-01-15',
+        data_evento: '2025-12-15',
         responsavel: 'João Silva',
         status: 'Planejada',
         area: 'Qualidade',
@@ -24,8 +25,9 @@ const mockAuditorias = [
     },
     {
         id: 2,
+        titulo: 'Visita Técnica - Área de Produção',
         tipo: 'Visita Técnica',
-        data: '2024-01-20',
+        data_evento: '2025-12-20',
         responsavel: 'Maria Santos',
         status: 'Executada',
         area: 'Produção',
