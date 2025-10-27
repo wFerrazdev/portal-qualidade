@@ -737,24 +737,25 @@
                 const order = this.orders.find(o => o.id === orderId);
                 if (!order) return;
                 
-                const stageMap = {
-                    1: 'AGUARDANDO_APROVACAO_SC',
-                    2: 'SC_APROVADA', 
-                    3: 'AGUARDANDO_APROVACAO_OC',
-                    4: 'OC_APROVADA',
-                    5: 'PEDIDO_EMITIDO',
-                    6: 'AGUARDANDO_PAGAMENTO',
-                    7: 'PAGO',
-                    8: 'AGUARDANDO_ENTREGA',
-                    9: 'ENTREGUE'
+                const previousStatusMap = {
+                    // Fluxo completo (9 etapas)
+                    'SC_APROVADA': 'AGUARDANDO_APROVACAO_SC',
+                    'AGUARDANDO_APROVACAO_OC': 'SC_APROVADA',
+                    'OC_APROVADA': 'AGUARDANDO_APROVACAO_OC',
+                    'PEDIDO_EMITIDO': 'OC_APROVADA',
+                    'AGUARDANDO_PAGAMENTO': 'PEDIDO_EMITIDO',
+                    'PAGO': 'AGUARDANDO_PAGAMENTO',
+                    'AGUARDANDO_ENTREGA': 'PAGO',
+                    'ENTREGUE': 'AGUARDANDO_ENTREGA',
+                    
+                    // Status simplificados
+                    'APROVADO': 'EM_ANALISE',
+                    'CONCLUIDO': 'APROVADO'
                 };
                 
-                const currentStage = this.getCurrentStage(order.status);
-                const previousStage = currentStage - 1;
+                const newStatus = previousStatusMap[order.status];
                 
-                if (previousStage < 1) return;
-                
-                const newStatus = stageMap[previousStage];
+                if (!newStatus) return; // Não há status anterior válido
                 
                 // Atualização otimista: atualizar UI imediatamente
                 order.status = newStatus;
@@ -1372,6 +1373,7 @@
 
             getNextStatus(currentStatus) {
                 const statusFlow = {
+                    // Fluxo completo (9 etapas)
                     'AGUARDANDO_APROVACAO_SC': 'SC_APROVADA',
                     'SC_APROVADA': 'AGUARDANDO_APROVACAO_OC',
                     'AGUARDANDO_APROVACAO_OC': 'OC_APROVADA',
@@ -1379,7 +1381,12 @@
                     'PEDIDO_EMITIDO': 'AGUARDANDO_PAGAMENTO',
                     'AGUARDANDO_PAGAMENTO': 'PAGO',
                     'PAGO': 'AGUARDANDO_ENTREGA',
-                    'AGUARDANDO_ENTREGA': 'ENTREGUE'
+                    'AGUARDANDO_ENTREGA': 'ENTREGUE',
+                    
+                    // Status simplificados
+                    'EM_ANALISE': 'APROVADO',
+                    'AGUARDANDO_APROVACAO': 'APROVADO',
+                    'APROVADO': 'CONCLUIDO'
                 };
                 return statusFlow[currentStatus];
             }

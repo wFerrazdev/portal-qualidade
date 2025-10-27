@@ -22,7 +22,14 @@ module.exports = async (req, res) => {
     }
     
     let client;
-    try {
+        // Validação de status válidos
+        const validStatuses = [
+            'AGUARDANDO_APROVACAO_SC', 'SC_APROVADA', 'AGUARDANDO_APROVACAO_OC', 'OC_APROVADA',
+            'PEDIDO_EMITIDO', 'AGUARDANDO_PAGAMENTO', 'PAGO', 'AGUARDANDO_ENTREGA', 'ENTREGUE',
+            'REJEITADO', 'CANCELADO', 'EM_ANALISE', 'AGUARDANDO_APROVACAO', 'APROVADO', 'CONCLUIDO'
+        ];
+
+        try {
         const { id, numero, action } = req.query;
         
         if (req.method === 'GET') {
@@ -64,9 +71,15 @@ module.exports = async (req, res) => {
             
             console.log('📝 Dados recebidos para criar pedido:', req.body);
             
+            // Validar status
+            const finalStatus = status || 'AGUARDANDO_APROVACAO_SC';
+            if (!validStatuses.includes(finalStatus)) {
+                return res.status(400).json({ error: `Status inválido: ${finalStatus}. Status válidos: ${validStatuses.join(', ')}` });
+            }
+            
             const result = await client.query(
                 'INSERT INTO pedidos_compras (numero, descricao, fornecedor, valor, status, solicitante, observacoes) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
-                [numero, descricao, fornecedor, valor, status || 'AGUARDANDO_APROVACAO_SC', solicitante || 'Qualidade', observacoes]
+                [numero, descricao, fornecedor, valor, finalStatus, solicitante || 'Qualidade', observacoes]
             );
             
             console.log('✅ Pedido criado com sucesso:', result.rows[0]);
@@ -87,6 +100,11 @@ module.exports = async (req, res) => {
                 const newStatus = req.body.newStatus;
                 console.log('📌 Atualizando apenas status para:', newStatus);
                 
+                // Validar status
+                if (!validStatuses.includes(newStatus)) {
+                    return res.status(400).json({ error: `Status inválido: ${newStatus}. Status válidos: ${validStatuses.join(', ')}` });
+                }
+                
                 const result = await client.query(
                     'UPDATE pedidos_compras SET status = $1 WHERE id = $2 RETURNING *',
                     [newStatus, id]
@@ -104,6 +122,11 @@ module.exports = async (req, res) => {
             const { numero, descricao, fornecedor, valor, status, solicitante, observacoes } = req.body;
             
             console.log('📝 Atualizando pedido completo. Dados:', req.body);
+            
+            // Validar status
+            if (!validStatuses.includes(status)) {
+                return res.status(400).json({ error: `Status inválido: ${status}. Status válidos: ${validStatuses.join(', ')}` });
+            }
             
             const result = await client.query(
                 'UPDATE pedidos_compras SET numero = $1, descricao = $2, fornecedor = $3, valor = $4, status = $5, solicitante = $6, observacoes = $7 WHERE id = $8 RETURNING *',
