@@ -1179,8 +1179,10 @@
             async function handleFormSubmit(event) {
                 event.preventDefault();
                 const saveButton = event.target.querySelector('.save-button');
-                saveButton.textContent = 'Salvando...';
-                saveButton.disabled = true;
+                if (saveButton) {
+                    saveButton.textContent = 'Salvando...';
+                    saveButton.disabled = true;
+                }
                 
                 const editingId = meetingForm.dataset.editingId;
                 const meetingData = {
@@ -1194,8 +1196,9 @@
                 try {
                     let response;
                     if (editingId) {
-                        response = await authFetch(`${API_BASE_URL}/utils?action=updateItem&table=reunioes&id=${editingId}`, {
+                        response = await authFetch(`${API_BASE_URL}/reunioes?id=${editingId}`, {
                             method: 'PUT',
+                            headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify(meetingData)
                         });
                     } else {
@@ -1215,8 +1218,10 @@
                     console.error('Erro ao salvar reunião:', error);
                     alert('Não foi possível salvar a reunião.');
                 } finally {
-                    saveButton.textContent = 'Salvar';
-                    saveButton.disabled = false;
+                    if (saveButton) {
+                        saveButton.textContent = 'Salvar';
+                        saveButton.disabled = false;
+                    }
                 }
             }
             
@@ -1332,7 +1337,7 @@
                 if (viewButton) {
                     const reuniaoId = viewButton.dataset.id;
                     try {
-                        const response = await authFetch(`${API_BASE_URL}/utils?action=getItem&table=reunioes&id=${reuniaoId}`);
+                        const response = await authFetch(`${API_BASE_URL}/reunioes?id=${reuniaoId}`);
                         if (!response.ok) {
                             throw new Error('Falha ao buscar dados da reunião');
                         }
@@ -1345,7 +1350,7 @@
                 } else if (editButton) {
                     const reuniaoId = editButton.dataset.id;
                     try {
-                        const response = await authFetch(`${API_BASE_URL}/utils?action=getItem&table=reunioes&id=${reuniaoId}`);
+                        const response = await authFetch(`${API_BASE_URL}/reunioes?id=${reuniaoId}`);
                         if (!response.ok) {
                             throw new Error('Falha ao buscar dados da reunião');
                         }
