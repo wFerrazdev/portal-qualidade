@@ -11,30 +11,6 @@ const pool = new Pool({
     connectionTimeoutMillis: 2000,
 });
 
-// Dados mock para fallback
-const mockAuditorias = [
-    {
-        id: 1,
-        titulo: 'Auditoria Interna de Processos',
-        tipo: 'Auditoria Interna',
-        data_evento: '2025-12-15',
-        responsavel: 'João Silva',
-        status: 'Planejada',
-        area: 'Qualidade',
-        descricao: 'Auditoria interna do sistema de qualidade'
-    },
-    {
-        id: 2,
-        titulo: 'Visita Técnica - Área de Produção',
-        tipo: 'Visita Técnica',
-        data_evento: '2025-12-20',
-        responsavel: 'Maria Santos',
-        status: 'Executada',
-        area: 'Produção',
-        descricao: 'Visita técnica para verificação de processos'
-    }
-];
-
 module.exports = async (req, res) => {
     // Configurar CORS
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -58,15 +34,15 @@ module.exports = async (req, res) => {
                 if (result.rows.length === 0) {
                     return res.status(404).json({ error: 'Auditoria não encontrada' });
                 }
-                    return res.status(200).json(result.rows[0]);
-                } else {
-                    // GET - Buscar todas as auditorias
-                    const result = await client.query('SELECT * FROM auditorias ORDER BY data_evento DESC NULLS LAST');
-                    console.log('📊 Total de auditorias encontradas:', result.rows.length);
-                    console.log('📝 Dados:', JSON.stringify(result.rows, null, 2));
-                    
-                    return res.status(200).json(result.rows);
-                }
+                return res.status(200).json(result.rows[0]);
+            } else {
+                // GET - Buscar todas as auditorias
+                const result = await client.query('SELECT * FROM auditorias ORDER BY data_evento DESC NULLS LAST');
+                console.log('📊 Total de auditorias encontradas:', result.rows.length);
+                console.log('📝 Dados:', JSON.stringify(result.rows, null, 2));
+                
+                return res.status(200).json(result.rows);
+            }
             
         } else if (req.method === 'POST') {
             // POST - Adicionar nova auditoria
