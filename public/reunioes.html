@@ -1194,12 +1194,12 @@
                 try {
                     let response;
                     if (editingId) {
-                        response = await authFetch(`${API_BASE_URL}/updateItem?id=${editingId}&table=reunioes`, {
+                        response = await authFetch(`${API_BASE_URL}/utils?action=updateItem&table=reunioes&id=${editingId}`, {
                             method: 'PUT',
                             body: JSON.stringify(meetingData)
                         });
                     } else {
-                        response = await authFetch(`${API_BASE_URL}/addReuniao`, {
+                        response = await authFetch(`${API_BASE_URL}/reunioes`, {
                             method: 'POST',
                             body: JSON.stringify(meetingData)
                         });
@@ -1223,7 +1223,7 @@
             async function handleDeleteMeeting(reuniaoId) {
                 if (confirm('Tem certeza que deseja excluir esta reunião?')) {
                     try {
-                        const response = await authFetch(`${API_BASE_URL}/deleteItem?id=${reuniaoId}&table=reunioes`, {
+                        const response = await authFetch(`${API_BASE_URL}/reunioes?id=${reuniaoId}`, {
                             method: 'DELETE'
                         });
                         
@@ -1332,7 +1332,7 @@
                 if (viewButton) {
                     const reuniaoId = viewButton.dataset.id;
                     try {
-                        const response = await authFetch(`${API_BASE_URL}/getUmItem?type=reunioes&id=${reuniaoId}`);
+                        const response = await authFetch(`${API_BASE_URL}/utils?action=getItem&table=reunioes&id=${reuniaoId}`);
                         if (!response.ok) {
                             throw new Error('Falha ao buscar dados da reunião');
                         }
@@ -1345,7 +1345,7 @@
                 } else if (editButton) {
                     const reuniaoId = editButton.dataset.id;
                     try {
-                        const response = await authFetch(`${API_BASE_URL}/getUmItem?type=reunioes&id=${reuniaoId}`);
+                        const response = await authFetch(`${API_BASE_URL}/utils?action=getItem&table=reunioes&id=${reuniaoId}`);
                         if (!response.ok) {
                             throw new Error('Falha ao buscar dados da reunião');
                         }
