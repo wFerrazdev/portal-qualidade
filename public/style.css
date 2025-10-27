@@ -5532,22 +5532,7 @@ body.compras-page {
     max-width: 600px;
 }
 
-/* Content Area específico para página de compras */
-.compras-page .content-area {
-    background: #f8fafc;
-    padding: 0;
-    margin: 0;
-    margin-left: 100px;
-    min-height: calc(100vh - 90px - 60px); /* 90px header + 60px footer */
-    max-height: calc(100vh - 90px - 60px); /* Limita a altura */
-    color: #1e293b;
-    margin-bottom: 0; /* Remove qualquer margem inferior */
-    padding-bottom: 0; /* Remove padding inferior */
-    border-bottom: none; /* Remove qualquer borda inferior */
-    position: relative;
-    z-index: 1;
-    overflow: hidden; /* Remove scroll da página */
-}
+/* Content Area específico para página de compras - REMOVIDO: duplicado abaixo */
 
 .compras-page .footer {
     position: relative;
@@ -5555,6 +5540,7 @@ body.compras-page {
     right: 0;
     z-index: 100;
     margin: 0;
+    margin-top: 0 !important;
     padding: 15px 0;
     flex-shrink: 0;
     background: #f8fafc;
@@ -5602,13 +5588,15 @@ body.compras-page {
 /* Container principal - movido para content-area */
 .compras-page .content-area {
     background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
-    padding: 2rem 2rem 0 2rem;
+    padding: 2rem;
     display: flex;
     flex-direction: column;
     flex: 1;
     overflow-y: auto;
     min-height: 0;
+    margin: 0;
     margin-bottom: 0;
+    padding-bottom: 0;
 }
 
 /* App content para ocupar toda altura disponível */
@@ -5616,7 +5604,7 @@ body.compras-page {
     display: flex;
     flex-direction: column;
     flex: 1;
-    height: 100%;
+    min-height: 0;
 }
 
 /* Loading state específico para compras */
