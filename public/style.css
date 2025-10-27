@@ -6,7 +6,9 @@
 .page-container {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
 }
 
 /* Loading Overlay para Performance.git */
@@ -5548,13 +5550,15 @@ body.compras-page {
 }
 
 .compras-page .footer {
-    position: fixed;
-    bottom: 0;
-    left: 100px;
+    position: relative;
+    left: 0;
     right: 0;
     z-index: 100;
     margin: 0;
     padding: 15px 0;
+    flex-shrink: 0;
+    background: #f8fafc;
+    border-top: 1px solid #e2e8f0;
 }
 
 /* Responsividade para página de teste */
@@ -5602,6 +5606,8 @@ body.compras-page {
     display: flex;
     flex-direction: column;
     flex: 1;
+    overflow-y: auto;
+    min-height: 0;
 }
 
 /* App content para ocupar toda altura disponível */
