@@ -71,11 +71,11 @@ module.exports = async (req, res) => {
         } else if (req.method === 'POST') {
             // POST - Adicionar nova auditoria
             client = await pool.connect();
-            const { titulo, tipo, data_evento, responsavel, status, area, descricao } = req.body;
+            const { titulo, tipo, data_evento, responsavel, status, descricao } = req.body;
             
             const result = await client.query(
-                'INSERT INTO auditorias (titulo, tipo, data_evento, responsavel, status, area, descricao) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
-                [titulo, tipo, data_evento, responsavel, status, area, descricao]
+                'INSERT INTO auditorias (titulo, tipo, data_evento, responsavel, status, descricao) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+                [titulo, tipo, data_evento, responsavel, status, descricao]
             );
             
             return res.status(201).json(result.rows[0]);
@@ -87,11 +87,11 @@ module.exports = async (req, res) => {
             }
             
             client = await pool.connect();
-            const { titulo, tipo, data_evento, responsavel, status, area, descricao } = req.body;
+            const { titulo, tipo, data_evento, responsavel, status, descricao } = req.body;
             
             const result = await client.query(
-                'UPDATE auditorias SET titulo = $1, tipo = $2, data_evento = $3, responsavel = $4, status = $5, area = $6, descricao = $7 WHERE id = $8 RETURNING *',
-                [titulo, tipo, data_evento, responsavel, status, area, descricao, id]
+                'UPDATE auditorias SET titulo = $1, tipo = $2, data_evento = $3, responsavel = $4, status = $5, descricao = $6 WHERE id = $7 RETURNING *',
+                [titulo, tipo, data_evento, responsavel, status, descricao, id]
             );
             
             if (result.rows.length === 0) {
