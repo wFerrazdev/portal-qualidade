@@ -58,14 +58,18 @@ module.exports = async (req, res) => {
                     }
                     return res.status(200).json(result.rows[0]);
                 } else {
-                    // GET - Buscar todas as reuniões
-                    // Primeiro, vamos listar todos os IDs para debug
-                    const allIds = await client.query('SELECT id FROM reunioes');
-                    console.log('📊 Todos os IDs no banco:', allIds.rows.map(r => r.id));
-                    
-                    const result = await client.query('SELECT * FROM reunioes ORDER BY COALESCE(data_reuniao, created_at) DESC NULLS LAST');
+                    // GET - Buscar todas as reuniões (sem ORDER BY primeiro para ver todos)
+                    const result = await client.query('SELECT * FROM reunioes');
                     console.log('📊 Total de reuniões encontradas:', result.rows.length);
                     console.log('📝 IDs encontrados:', result.rows.map(r => r.id));
+                    
+                    // Ordenar por data_reuniao DESC se existir, senão por created_at
+                    result.rows.sort((a, b) => {
+                        const dateA = a.data_reuniao ? new Date(a.data_reuniao) : new Date(a.created_at);
+                        const dateB = b.data_reuniao ? new Date(b.data_reuniao) : new Date(b.created_at);
+                        return dateB - dateA;
+                    });
+                    
                     return res.status(200).json(result.rows);
                 }
             } catch (dbError) {
