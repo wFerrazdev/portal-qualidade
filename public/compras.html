@@ -1262,16 +1262,16 @@
 
             async updateOrderStatus(order, newStatus, observacao = '') {
                 try {
+                    console.log('🔄 Atualizando status do pedido:', order.id, 'para:', newStatus);
+                    
                     // Tentar atualizar na API consolidada
-                    const response = await fetch('/api/compras', {
+                    const response = await fetch(`/api/compras?id=${order.id}`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
-                            numero: order.numero,
-                            newStatus: newStatus,
-                            observacao: observacao || `Status alterado para ${this.STATUSES[newStatus].label}`
+                            newStatus: newStatus
                         })
                     });
 

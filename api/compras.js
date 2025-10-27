@@ -77,7 +77,31 @@ module.exports = async (req, res) => {
             }
             
             client = await pool.connect();
+            console.log('🔄 Recebendo atualização de pedido. ID:', id);
+            console.log('📝 Dados recebidos:', req.body);
+            
+            // Se está recebendo apenas status (do avançar/regredir etapa)
+            if (req.body.newStatus) {
+                const newStatus = req.body.newStatus;
+                console.log('📌 Atualizando apenas status para:', newStatus);
+                
+                const result = await client.query(
+                    'UPDATE pedidos_compras SET status = $1 WHERE id = $2 RETURNING *',
+                    [newStatus, id]
+                );
+                
+                if (result.rows.length === 0) {
+                    return res.status(404).json({ error: 'Pedido não encontrado' });
+                }
+                
+                console.log('✅ Pedido atualizado:', result.rows[0]);
+                return res.status(200).json(result.rows[0]);
+            }
+            
+            // Atualização completa do pedido
             const { numero, descricao, fornecedor, valor, status, solicitante, observacoes } = req.body;
+            
+            console.log('📝 Atualizando pedido completo. Dados:', req.body);
             
             const result = await client.query(
                 'UPDATE pedidos_compras SET numero = $1, descricao = $2, fornecedor = $3, valor = $4, status = $5, solicitante = $6, observacoes = $7 WHERE id = $8 RETURNING *',
@@ -88,6 +112,7 @@ module.exports = async (req, res) => {
                 return res.status(404).json({ error: 'Pedido não encontrado' });
             }
             
+            console.log('✅ Pedido atualizado:', result.rows[0]);
             return res.status(200).json(result.rows[0]);
             
         } else if (req.method === 'DELETE') {
