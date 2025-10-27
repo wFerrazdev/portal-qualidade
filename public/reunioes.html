@@ -1080,7 +1080,7 @@
 
             async function fetchAndRenderMeetings() {
                 try {
-                    const response = await authFetch(`${API_BASE_URL}/getReunioes`);
+                    const response = await authFetch(`${API_BASE_URL}/reunioes`);
                     
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);

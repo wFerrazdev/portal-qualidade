@@ -1475,7 +1475,7 @@
 
             async function fetchAndRenderAudits() {
                 try {
-                    const response = await authFetch(`${API_BASE_URL}/getAuditorias`);
+                    const response = await authFetch(`${API_BASE_URL}/auditorias`);
                     if (!response.ok) { throw new Error('Falha ao buscar auditorias'); }
                     audits = await response.json();
                     
