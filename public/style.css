@@ -2,6 +2,13 @@
    DASHBOARD MODERNO - DESIGN COMPLETO
    ======================================== */
 
+/* Page Container */
+.page-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
 /* Loading Overlay para Performance.git */
 .loading-overlay {
     position: fixed;
@@ -5594,7 +5601,7 @@ body.compras-page {
     padding: 2rem;
     display: flex;
     flex-direction: column;
-    min-height: calc(100vh - 90px - 60px);
+    flex: 1;
 }
 
 /* Loading state específico para compras */
