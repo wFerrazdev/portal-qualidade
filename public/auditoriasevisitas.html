@@ -1731,7 +1731,7 @@
                     descricao: auditForm.querySelector('#descricao').value,
                 };
                 try {
-                    const url = editingId ? `${API_BASE_URL}/utils?action=updateItem&table=auditorias&id=${editingId}` : `${API_BASE_URL}/auditorias`;
+                    const url = editingId ? `${API_BASE_URL}/auditorias?id=${editingId}` : `${API_BASE_URL}/auditorias`;
                     const method = editingId ? 'PUT' : 'POST';
                     const response = await authFetch(url, { method: method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(auditData) });
                     if (!response.ok) { throw new Error('Falha na API'); }

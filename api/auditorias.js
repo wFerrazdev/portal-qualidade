@@ -1,4 +1,4 @@
-// API Consolidada para Auditorias - GET, POST
+// API Consolidada para Auditorias - GET, POST, PUT, DELETE
 const { Pool } = require('pg');
 
 const pool = new Pool({
@@ -8,10 +8,32 @@ const pool = new Pool({
     }
 });
 
+// Dados mock para fallback
+const mockAuditorias = [
+    {
+        id: 1,
+        tipo: 'Auditoria Interna',
+        data: '2024-01-15',
+        responsavel: 'João Silva',
+        status: 'Planejada',
+        area: 'Qualidade',
+        descricao: 'Auditoria interna do sistema de qualidade'
+    },
+    {
+        id: 2,
+        tipo: 'Visita Técnica',
+        data: '2024-01-20',
+        responsavel: 'Maria Santos',
+        status: 'Executada',
+        area: 'Produção',
+        descricao: 'Visita técnica para verificação de processos'
+    }
+];
+
 module.exports = async (req, res) => {
     // Configurar CORS
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     
     if (req.method === 'OPTIONS') {
@@ -19,21 +41,57 @@ module.exports = async (req, res) => {
     }
     
     try {
+        const { id } = req.query;
+        
         if (req.method === 'GET') {
-            // GET - Buscar todas as auditorias
-            const result = await pool.query('SELECT * FROM auditorias ORDER BY data DESC');
-            return res.status(200).json(result.rows);
+            if (id) {
+                // GET - Buscar auditoria específica por ID
+                const auditoria = mockAuditorias.find(a => a.id === parseInt(id));
+                if (!auditoria) {
+                    return res.status(404).json({ error: 'Auditoria não encontrada' });
+                }
+                return res.status(200).json(auditoria);
+            } else {
+                // GET - Buscar todas as auditorias
+                return res.status(200).json(mockAuditorias);
+            }
             
         } else if (req.method === 'POST') {
             // POST - Adicionar nova auditoria
-            const { tipo, data, responsavel, status, area, descricao } = req.body;
+            const newAuditoria = {
+                id: Math.max(...mockAuditorias.map(a => a.id)) + 1,
+                ...req.body
+            };
+            mockAuditorias.push(newAuditoria);
+            return res.status(201).json(newAuditoria);
             
-            const result = await pool.query(
-                'INSERT INTO auditorias (tipo, data, responsavel, status, area, descricao) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-                [tipo, data, responsavel, status, area, descricao]
-            );
+        } else if (req.method === 'PUT') {
+            // PUT - Atualizar auditoria
+            if (!id) {
+                return res.status(400).json({ error: 'ID da auditoria é obrigatório' });
+            }
             
-            return res.status(201).json(result.rows[0]);
+            const index = mockAuditorias.findIndex(a => a.id === parseInt(id));
+            if (index === -1) {
+                return res.status(404).json({ error: 'Auditoria não encontrada' });
+            }
+            
+            mockAuditorias[index] = { ...mockAuditorias[index], ...req.body };
+            return res.status(200).json(mockAuditorias[index]);
+            
+        } else if (req.method === 'DELETE') {
+            // DELETE - Excluir auditoria
+            if (!id) {
+                return res.status(400).json({ error: 'ID da auditoria é obrigatório' });
+            }
+            
+            const index = mockAuditorias.findIndex(a => a.id === parseInt(id));
+            if (index === -1) {
+                return res.status(404).json({ error: 'Auditoria não encontrada' });
+            }
+            
+            mockAuditorias.splice(index, 1);
+            return res.status(200).json({ message: 'Auditoria excluída com sucesso' });
             
         } else {
             return res.status(405).json({ error: 'Method not allowed' });
@@ -41,32 +99,6 @@ module.exports = async (req, res) => {
         
     } catch (error) {
         console.error('Erro na API de auditorias:', error);
-        
-        // Fallback para dados mock se houver erro
-        if (req.method === 'GET') {
-            const mockData = [
-                {
-                    id: 1,
-                    tipo: 'Auditoria Interna',
-                    data: '2024-01-15',
-                    responsavel: 'João Silva',
-                    status: 'Planejada',
-                    area: 'Qualidade',
-                    descricao: 'Auditoria interna do sistema de qualidade'
-                },
-                {
-                    id: 2,
-                    tipo: 'Visita Técnica',
-                    data: '2024-01-20',
-                    responsavel: 'Maria Santos',
-                    status: 'Executada',
-                    area: 'Produção',
-                    descricao: 'Visita técnica para verificação de processos'
-                }
-            ];
-            return res.status(200).json(mockData);
-        }
-        
         return res.status(500).json({ error: 'Erro interno do servidor' });
     }
 };
