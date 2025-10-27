@@ -5604,6 +5604,14 @@ body.compras-page {
     flex: 1;
 }
 
+/* App content para ocupar toda altura disponível */
+.compras-page .app-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    height: 100%;
+}
+
 /* Loading state específico para compras */
 .compras-page .loading-state {
     position: fixed;
