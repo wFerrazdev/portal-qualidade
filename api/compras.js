@@ -1,9 +1,16 @@
 // API de Compras - Versão Ultra Simples
-exports.handler = async (event, context) => {
+module.exports = async (req, res) => {
     try {
-        console.log('🔗 API Compras - Iniciando...');
+        // Configurar CORS
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
         
-        const { httpMethod, path } = event;
+        if (req.method === 'OPTIONS') {
+            return res.status(200).end();
+        }
+        
+        console.log('🔗 API Compras - Iniciando...');
         
         // Dados estáticos para teste
         const pedidos = [
@@ -28,31 +35,17 @@ exports.handler = async (event, context) => {
         ];
         
         // Resposta simples
-        return {
-            statusCode: 200,
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            },
-            body: JSON.stringify({
-                success: true,
-                data: pedidos,
-                message: 'API funcionando!'
-            })
-        };
+        return res.status(200).json({
+            success: true,
+            data: pedidos,
+            message: 'API funcionando!'
+        });
         
     } catch (error) {
         console.error('❌ Erro:', error);
-        return {
-            statusCode: 500,
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            },
-            body: JSON.stringify({
-                error: 'Erro interno',
-                message: error.message
-            })
-        };
+        return res.status(500).json({
+            error: 'Erro interno',
+            message: error.message
+        });
     }
 };
