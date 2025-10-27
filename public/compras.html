@@ -443,8 +443,11 @@
                     console.log('📡 Resposta da API:', response.status, response.statusText);
                     
                     if (response.ok) {
-                        const data = await response.json();
-                        console.log('✅ Dados recebidos da API:', data);
+                        const responseData = await response.json();
+                        console.log('✅ Dados recebidos da API:', responseData);
+                        
+                        // Extrair array de pedidos da resposta
+                        const data = responseData.data || responseData;
                         
                         // Buscar histórico para cada pedido
                         for (const order of data) {
