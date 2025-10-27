@@ -9,6 +9,7 @@ const auth0Config = {
 // Cache para evitar muitas requisições
 let userCache = null;
 let lastCheckTime = 0;
+let isChecking = false; // Flag para evitar múltiplas verificações simultâneas
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutos
 
 // Função para verificar se o usuário está autenticado
@@ -19,11 +20,22 @@ async function checkAuth() {
             return false;
         }
         
+        // Evitar múltiplas verificações simultâneas
+        if (isChecking) {
+            // Aguardar a verificação atual terminar
+            while (isChecking) {
+                await new Promise(resolve => setTimeout(resolve, 100));
+            }
+            return userCache;
+        }
+        
         // Verificar cache primeiro
         const now = Date.now();
         if (userCache && (now - lastCheckTime) < CACHE_DURATION) {
             return userCache;
         }
+        
+        isChecking = true;
         
         // Verificar se o token ainda é válido (com rate limiting)
         const response = await fetch(`https://${auth0Config.domain}/userinfo`, {
@@ -36,23 +48,28 @@ async function checkAuth() {
             const user = await response.json();
             userCache = user;
             lastCheckTime = now;
+            isChecking = false;
             return user;
         } else if (response.status === 429) {
             // Rate limit atingido - usar cache se disponível
             console.warn('Rate limit atingido, usando cache');
+            isChecking = false;
             if (userCache) {
                 return userCache;
             }
-            // Se não há cache, aguardar um pouco e tentar novamente
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            return await checkAuth();
+            // Se não há cache, retornar false para evitar loop
+            localStorage.removeItem('auth0_token');
+            userCache = null;
+            return false;
         } else {
             localStorage.removeItem('auth0_token');
             userCache = null;
+            isChecking = false;
             return false;
         }
     } catch (error) {
         console.error('Erro ao verificar autenticação:', error);
+        isChecking = false;
         // Em caso de erro, usar cache se disponível
         if (userCache) {
             console.warn('Usando cache devido a erro de conexão');
@@ -81,6 +98,7 @@ function logout() {
     localStorage.removeItem('auth0_token');
     userCache = null; // Limpar cache
     lastCheckTime = 0;
+    isChecking = false; // Limpar flag de verificação
     const params = new URLSearchParams({
         returnTo: window.location.origin + '/login.html',
         client_id: auth0Config.clientId
@@ -93,6 +111,7 @@ function logout() {
 function clearAuthCache() {
     userCache = null;
     lastCheckTime = 0;
+    isChecking = false;
 }
 
 // Função para obter token de acesso
