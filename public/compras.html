@@ -1240,7 +1240,24 @@
             }
 
             generateOrderNumber() {
-                return this.orders.length > 0 ? Math.max(...this.orders.map(o => o.numero)) + 1 : 1001;
+                if (this.orders.length === 0) {
+                    return 'SC-001';
+                }
+                
+                // Extrair números dos códigos existentes
+                const numbers = this.orders
+                    .map(o => {
+                        const match = o.numero?.match(/SC-(\d+)/);
+                        return match ? parseInt(match[1]) : 0;
+                    })
+                    .filter(n => n > 0);
+                
+                if (numbers.length === 0) {
+                    return 'SC-001';
+                }
+                
+                const nextNumber = Math.max(...numbers) + 1;
+                return `SC-${nextNumber.toString().padStart(3, '0')}`;
             }
 
             async updateOrderStatus(order, newStatus, observacao = '') {
