@@ -58,26 +58,15 @@ module.exports = async (req, res) => {
                 if (result.rows.length === 0) {
                     return res.status(404).json({ error: 'Auditoria não encontrada' });
                 }
-                // Mapear 'data' para 'data_evento' se necessário
-                const auditoria = result.rows[0];
-                if (auditoria.data && !auditoria.data_evento) {
-                    auditoria.data_evento = auditoria.data;
+                    return res.status(200).json(result.rows[0]);
+                } else {
+                    // GET - Buscar todas as auditorias
+                    const result = await client.query('SELECT * FROM auditorias ORDER BY data_evento DESC NULLS LAST');
+                    console.log('📊 Total de auditorias encontradas:', result.rows.length);
+                    console.log('📝 Dados:', JSON.stringify(result.rows, null, 2));
+                    
+                    return res.status(200).json(result.rows);
                 }
-                return res.status(200).json(auditoria);
-            } else {
-                // GET - Buscar todas as auditorias
-                const result = await client.query('SELECT * FROM auditorias ORDER BY COALESCE(data_evento, data, created_at) DESC');
-                console.log('📊 Total de auditorias encontradas:', result.rows.length);
-                console.log('📝 Dados:', JSON.stringify(result.rows, null, 2));
-                
-                // Mapear 'data' para 'data_evento' em todos os registros
-                result.rows.forEach(auditoria => {
-                    if (auditoria.data && !auditoria.data_evento) {
-                        auditoria.data_evento = auditoria.data;
-                    }
-                });
-                return res.status(200).json(result.rows);
-            }
             
         } else if (req.method === 'POST') {
             // POST - Adicionar nova auditoria
