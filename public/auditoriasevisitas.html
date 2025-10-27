@@ -1528,7 +1528,7 @@
                     dayElement.className = 'calendar-day';
                     dayElement.innerHTML = `<div class="day-number">${day}</div>`;
                     
-                    // Verificar se há auditorias neste dia
+                    // Verificar se há auditorias neste dia.
                     const dayDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
                     const dayAudits = getAuditsForDate(dayDate);
                     
