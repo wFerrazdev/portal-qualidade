@@ -6013,6 +6013,40 @@ body.compras-page {
     box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
+/* Estilos do orders-tbody */
+.orders-tbody tr {
+    border-bottom: 1px solid #e5e7eb;
+    transition: background-color 0.2s;
+    height: 60px;
+}
+
+.orders-tbody tr:hover {
+    background-color: #f9fafb;
+}
+
+.orders-tbody {
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.orders-tbody::-webkit-scrollbar {
+    width: 8px;
+}
+
+.orders-tbody::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 4px;
+}
+
+.orders-tbody::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+    border-radius: 4px;
+}
+
+.orders-tbody::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+}
+
 /* Estilos para os status na tabela */
 .orders-table .status-badge {
     padding: 0.375rem 0.75rem;
