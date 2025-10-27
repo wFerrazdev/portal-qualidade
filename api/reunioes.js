@@ -60,6 +60,8 @@ module.exports = async (req, res) => {
                 } else {
                     // GET - Buscar todas as reuniões
                     const result = await client.query('SELECT * FROM reunioes ORDER BY data_reuniao DESC');
+                    console.log('📊 Total de reuniões encontradas:', result.rows.length);
+                    console.log('📝 IDs encontrados:', result.rows.map(r => r.id));
                     return res.status(200).json(result.rows);
                 }
             } catch (dbError) {
