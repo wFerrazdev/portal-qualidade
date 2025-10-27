@@ -389,12 +389,22 @@
                 };
 
                 this.STATUSES = {
+                    AGUARDANDO_APROVACAO_SC: { label: 'Aguardando Aprovação SC', color: 'bg-amber-50 text-amber-700 border-amber-200' },
+                    SC_APROVADA: { label: 'SC Aprovada', color: 'bg-blue-50 text-blue-700 border-blue-200' },
+                    AGUARDANDO_APROVACAO_OC: { label: 'Aguardando Aprovação OC', color: 'bg-orange-50 text-orange-700 border-orange-200' },
+                    OC_APROVADA: { label: 'OC Aprovada', color: 'bg-indigo-50 text-indigo-700 border-indigo-200' },
+                    PEDIDO_EMITIDO: { label: 'Pedido Emitido', color: 'bg-purple-50 text-purple-700 border-purple-200' },
+                    AGUARDANDO_PAGAMENTO: { label: 'Aguardando Pagamento', color: 'bg-yellow-50 text-yellow-700 border-yellow-200' },
+                    PAGO: { label: 'Pago', color: 'bg-green-50 text-green-700 border-green-200' },
+                    AGUARDANDO_ENTREGA: { label: 'Aguardando Entrega', color: 'bg-cyan-50 text-cyan-700 border-cyan-200' },
+                    ENTREGUE: { label: 'Entregue', color: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
+                    REJEITADO: { label: 'Rejeitado', color: 'bg-red-50 text-red-700 border-red-200' },
+                    CANCELADO: { label: 'Cancelado', color: 'bg-gray-50 text-gray-700 border-gray-200' },
+                    // Status simplificados (fallback)
                     AGUARDANDO_APROVACAO: { label: 'Aguardando Aprovação', color: 'bg-amber-50 text-amber-700 border-amber-200' },
                     APROVADO: { label: 'Aprovado', color: 'bg-green-50 text-green-700 border-green-200' },
                     EM_ANALISE: { label: 'Em Análise', color: 'bg-yellow-50 text-yellow-700 border-yellow-200' },
-                    CONCLUIDO: { label: 'Concluído', color: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
-                    REJEITADO: { label: 'Rejeitado', color: 'bg-red-50 text-red-700 border-red-200' },
-                    CANCELADO: { label: 'Cancelado', color: 'bg-gray-50 text-gray-700 border-gray-200' }
+                    CONCLUIDO: { label: 'Concluído', color: 'bg-emerald-50 text-emerald-700 border-emerald-200' }
                 };
 
                 this.init();
@@ -591,16 +601,16 @@
                 if (totalPedidos) totalPedidos.textContent = this.orders.length;
 
                 const aguardando = this.orders.filter(o => 
-                    o.status === 'AGUARDANDO_APROVACAO'
+                    ['AGUARDANDO_APROVACAO_SC', 'AGUARDANDO_APROVACAO_OC', 'AGUARDANDO_PAGAMENTO', 'AGUARDANDO_ENTREGA'].includes(o.status)
                 ).length;
                 if (aguardandoCount) aguardandoCount.textContent = aguardando;
 
                 const andamento = this.orders.filter(o => 
-                    ['APROVADO', 'EM_ANALISE'].includes(o.status)
+                    ['SC_APROVADA', 'OC_APROVADA', 'PEDIDO_EMITIDO', 'PAGO'].includes(o.status)
                 ).length;
                 if (andamentoCount) andamentoCount.textContent = andamento;
 
-                const concluidos = this.orders.filter(o => o.status === 'CONCLUIDO').length;
+                const concluidos = this.orders.filter(o => o.status === 'ENTREGUE').length;
                 if (concluidosCount) concluidosCount.textContent = concluidos;
             }
 
@@ -652,16 +662,24 @@
                             ${this.formatDate(order.data_criacao)}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <button onclick="window.gestaoComprasApp.openDetailModal('${order.numero}')" class="text-blue-600 hover:text-indigo-600 inline-flex items-center gap-1.5 text-sm font-semibold group transition-all duration-200 hover:gap-2">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                                </svg>
-                                <span>Ver</span>
-                                <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                                </svg>
-                            </button>
+                            <div class="flex items-center gap-2">
+                                <!-- Botão Visualizar -->
+                                <button onclick="window.gestaoComprasApp.openDetailModal('${order.numero}')" 
+                                        class="w-8 h-8 bg-blue-500 hover:bg-blue-600 text-white rounded-md flex items-center justify-center transition-all duration-200 hover:shadow-md">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                    </svg>
+                                </button>
+                                
+                                <!-- Botão Excluir -->
+                                <button onclick="window.gestaoComprasApp.deleteOrder(${order.id})" 
+                                        class="w-8 h-8 bg-red-500 hover:bg-red-600 text-white rounded-md flex items-center justify-center transition-all duration-200 hover:shadow-md">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                    </svg>
+                                </button>
+                            </div>
                         </td>
                     `;
                     
@@ -716,10 +734,15 @@
                 if (!order) return;
                 
                 const stageMap = {
-                    1: 'AGUARDANDO_APROVACAO',
-                    2: 'APROVADO', 
-                    3: 'EM_ANALISE',
-                    4: 'CONCLUIDO'
+                    1: 'AGUARDANDO_APROVACAO_SC',
+                    2: 'SC_APROVADA', 
+                    3: 'AGUARDANDO_APROVACAO_OC',
+                    4: 'OC_APROVADA',
+                    5: 'PEDIDO_EMITIDO',
+                    6: 'AGUARDANDO_PAGAMENTO',
+                    7: 'PAGO',
+                    8: 'AGUARDANDO_ENTREGA',
+                    9: 'ENTREGUE'
                 };
                 
                 const currentStage = this.getCurrentStage(order.status);
@@ -736,16 +759,21 @@
                 if (!order) return;
                 
                 const stageMap = {
-                    1: 'AGUARDANDO_APROVACAO',
-                    2: 'APROVADO',
-                    3: 'EM_ANALISE', 
-                    4: 'CONCLUIDO'
+                    1: 'AGUARDANDO_APROVACAO_SC',
+                    2: 'SC_APROVADA',
+                    3: 'AGUARDANDO_APROVACAO_OC',
+                    4: 'OC_APROVADA',
+                    5: 'PEDIDO_EMITIDO',
+                    6: 'AGUARDANDO_PAGAMENTO',
+                    7: 'PAGO',
+                    8: 'AGUARDANDO_ENTREGA',
+                    9: 'ENTREGUE'
                 };
                 
                 const currentStage = this.getCurrentStage(order.status);
                 const nextStage = currentStage + 1;
                 
-                if (nextStage > 4) return;
+                if (nextStage > 9) return;
                 
                 const newStatus = stageMap[nextStage];
                 await this.updateOrderStatus(order, newStatus, `Avançado para ${this.STATUSES[newStatus].label}`);
@@ -753,12 +781,22 @@
 
             getCurrentStage(status) {
                 const statusToStage = {
+                    'AGUARDANDO_APROVACAO_SC': 1,
+                    'SC_APROVADA': 2,
+                    'AGUARDANDO_APROVACAO_OC': 3,
+                    'OC_APROVADA': 4,
+                    'PEDIDO_EMITIDO': 5,
+                    'AGUARDANDO_PAGAMENTO': 6,
+                    'PAGO': 7,
+                    'AGUARDANDO_ENTREGA': 8,
+                    'ENTREGUE': 9,
+                    'REJEITADO': 2,
+                    'CANCELADO': 2,
+                    // Status simplificados (fallback)
                     'AGUARDANDO_APROVACAO': 1,
                     'APROVADO': 2,
                     'EM_ANALISE': 3,
-                    'CONCLUIDO': 4,
-                    'REJEITADO': 2,
-                    'CANCELADO': 2
+                    'CONCLUIDO': 4
                 };
                 return statusToStage[status] || 1;
             }
@@ -835,20 +873,35 @@
                     
                     // Definir estágios do pedido
                     const stages = [
-                        { id: 1, name: 'Aguardando Aprovação', icon: 'clock' },
-                        { id: 2, name: 'Aprovado', icon: 'check' },
-                        { id: 3, name: 'Em Análise', icon: 'search' },
-                        { id: 4, name: 'Concluído', icon: 'check-circle' }
+                        { id: 1, name: 'Aguardando Aprovação SC', icon: 'clock' },
+                        { id: 2, name: 'SC Aprovada', icon: 'check' },
+                        { id: 3, name: 'Aguardando Aprovação OC', icon: 'clock' },
+                        { id: 4, name: 'OC Aprovada', icon: 'check' },
+                        { id: 5, name: 'Pedido Emitido', icon: 'document' },
+                        { id: 6, name: 'Aguardando Pagamento', icon: 'clock' },
+                        { id: 7, name: 'Pago', icon: 'check' },
+                        { id: 8, name: 'Aguardando Entrega', icon: 'clock' },
+                        { id: 9, name: 'Entregue', icon: 'check-circle' }
                     ];
                     
                     // Mapear status para estágio
                     const statusToStage = {
+                        'AGUARDANDO_APROVACAO_SC': 1,
+                        'SC_APROVADA': 2,
+                        'AGUARDANDO_APROVACAO_OC': 3,
+                        'OC_APROVADA': 4,
+                        'PEDIDO_EMITIDO': 5,
+                        'AGUARDANDO_PAGAMENTO': 6,
+                        'PAGO': 7,
+                        'AGUARDANDO_ENTREGA': 8,
+                        'ENTREGUE': 9,
+                        'REJEITADO': 2,
+                        'CANCELADO': 2,
+                        // Status simplificados (fallback)
                         'AGUARDANDO_APROVACAO': 1,
                         'APROVADO': 2,
                         'EM_ANALISE': 3,
-                        'CONCLUIDO': 4,
-                        'REJEITADO': 2,
-                        'CANCELADO': 2
+                        'CONCLUIDO': 4
                     };
                     
                     const currentStage = statusToStage[order.status] || 1;
@@ -925,7 +978,8 @@
                                                     'clock': 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z',
                                                     'check': 'M5 13l4 4L19 7',
                                                     'search': 'M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z',
-                                                    'check-circle': 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'
+                                                    'check-circle': 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',
+                                                    'document': 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'
                                                 };
                                                 return `
                                                     <div style="display: flex; align-items: center; gap: 1rem; padding: 1rem; border-radius: 0.5rem; transition: all 0.3s ease; ${
@@ -984,7 +1038,7 @@
                                         </button>
                                     ` : ''}
                                     
-                                    ${currentStage < 4 ? `
+                                    ${currentStage < 9 ? `
                                         <button onclick="window.gestaoComprasApp.advanceStage(${order.id})" 
                                                 style="padding: 0.75rem 1.5rem; background: #059669; color: white; border-radius: 0.5rem; border: none; font-weight: 600; cursor: pointer; transition: all 0.3s ease; font-size: 1rem; display: flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
                                             <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
