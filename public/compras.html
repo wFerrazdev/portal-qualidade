@@ -399,16 +399,12 @@
                 };
 
                 this.STATUSES = {
-                    AGUARDANDO_APROVACAO_SC: { label: 'Aguardando Aprovação SC', color: 'bg-amber-50 text-amber-700 border-amber-200' },
-                    SC_APROVADA: { label: 'SC Aprovada', color: 'bg-blue-50 text-blue-700 border-blue-200' },
-                    AGUARDANDO_APROVACAO_OC: { label: 'Aguardando Aprovação OC', color: 'bg-orange-50 text-orange-700 border-orange-200' },
-                    OC_APROVADA: { label: 'OC Aprovada', color: 'bg-purple-50 text-purple-700 border-purple-200' },
-                    PEDIDO_EMITIDO: { label: 'Pedido Emitido', color: 'bg-indigo-50 text-indigo-700 border-indigo-200' },
-                    AGUARDANDO_PAGAMENTO: { label: 'Aguardando Pagamento', color: 'bg-pink-50 text-pink-700 border-pink-200' },
-                    PAGO: { label: 'Pago', color: 'bg-cyan-50 text-cyan-700 border-cyan-200' },
-                    AGUARDANDO_ENTREGA: { label: 'Aguardando Entrega', color: 'bg-teal-50 text-teal-700 border-teal-200' },
-                    ENTREGUE: { label: 'Entregue', color: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
-                    CANCELADO: { label: 'Cancelado', color: 'bg-red-50 text-red-700 border-red-200' }
+                    AGUARDANDO_APROVACAO: { label: 'Aguardando Aprovação', color: 'bg-amber-50 text-amber-700 border-amber-200' },
+                    APROVADO: { label: 'Aprovado', color: 'bg-green-50 text-green-700 border-green-200' },
+                    EM_ANALISE: { label: 'Em Análise', color: 'bg-yellow-50 text-yellow-700 border-yellow-200' },
+                    CONCLUIDO: { label: 'Concluído', color: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
+                    REJEITADO: { label: 'Rejeitado', color: 'bg-red-50 text-red-700 border-red-200' },
+                    CANCELADO: { label: 'Cancelado', color: 'bg-gray-50 text-gray-700 border-gray-200' }
                 };
 
                 this.init();
@@ -443,20 +439,17 @@
                     console.log('📡 Resposta da API:', response.status, response.statusText);
                     
                     if (response.ok) {
-                        const responseData = await response.json();
-                        console.log('✅ Dados recebidos da API:', responseData);
-                        
-                        // Extrair array de pedidos da resposta
-                        const data = responseData.data || responseData;
+                        const data = await response.json();
+                        console.log('✅ Dados recebidos da API:', data);
                         
                         // Buscar histórico para cada pedido
                         for (const order of data) {
-                            const historyResponse = await fetch(`/api/compras/history?numero=${order.numero}`);
+                            const historyResponse = await fetch(`/api/compras?action=history&numero=${order.numero}`);
                             if (historyResponse.ok) {
                                 const history = await historyResponse.json();
                                 order.historico = history.map(h => ({
-                                    data: h.dataMudanca,
-                                    status: h.statusNovo,
+                                    data: h.data_mudanca,
+                                    status: h.status_novo,
                                     observacao: h.observacao
                                 }));
                             } else {
@@ -666,7 +659,7 @@
                             </span>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                            ${this.formatDate(order.dataCriacao)}
+                            ${this.formatDate(order.data_criacao)}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <button onclick="window.gestaoComprasApp.openDetailModal(${order.numero})" class="text-blue-600 hover:text-indigo-600 inline-flex items-center gap-1.5 text-sm font-semibold group transition-all duration-200 hover:gap-2">
