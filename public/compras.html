@@ -631,59 +631,41 @@
 
                 this.filteredOrders.forEach((order, idx) => {
                     const row = document.createElement('tr');
-                    row.className = 'hover:bg-gradient-to-r hover:from-blue-50/50 hover:to-indigo-50/30 transition-all duration-200';
+                    row.style.cssText = 'transition: all 0.2s ease;';
+                    row.onmouseover = () => row.style.backgroundColor = '#f8fafc';
+                    row.onmouseout = () => row.style.backgroundColor = 'transparent';
                     
                     row.innerHTML = `
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="flex items-center gap-2">
-                                <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center text-white text-xs font-bold">
-                                    ${idx + 1}
-                                </div>
-                                <span class="font-bold text-gray-900">#${order.numero}</span>
-                            </div>
+                        <td style="padding: 1rem 1.5rem; white-space: nowrap;">
+                            <span style="font-size: 0.875rem; font-weight: 700; color: #2563eb;">${order.numero}</span>
                         </td>
-                        <td class="px-6 py-4">
-                            <div class="text-sm text-gray-900 font-medium max-w-xs truncate">${order.descricao}</div>
+                        <td style="padding: 1rem 1.5rem;">
+                            <div style="font-size: 0.875rem; font-weight: 500; color: #1e293b;">${order.descricao}</div>
+                            ${order.fornecedor ? `<div style="font-size: 0.75rem; color: #64748b; margin-top: 0.25rem;">${order.fornecedor}</div>` : ''}
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-700">${order.fornecedor}</div>
+                        <td style="padding: 1rem 1.5rem; white-space: nowrap;">
+                            <span style="font-size: 0.875rem; color: #374151;">${order.quantidade || 'N/A'}</span>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                                ${this.formatCurrency(order.valor)}
-                            </div>
+                        <td style="padding: 1rem 1.5rem; white-space: nowrap;">
+                            <span style="font-size: 0.875rem; font-weight: 500; color: #059669;">${this.formatCurrency(order.valor)}</span>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="status-badge status-${order.status}">
-                                ${this.STATUSES[order.status].label}
-                            </span>
+                        <td style="padding: 1rem 1.5rem; white-space: nowrap;">
+                            <span style="font-size: 0.875rem; color: #374151;">${this.formatDate(order.data_criacao)}</span>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                            ${this.formatDate(order.data_criacao)}
+                        <td style="padding: 1rem 1.5rem; white-space: nowrap;">
+                            ${this.getStatusBadge(order.status)}
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                <!-- Botão Visualizar -->
-                                <button onclick="window.gestaoComprasApp.openDetailModal('${order.numero}')" 
-                                        style="width: 32px; height: 32px; background: #3b82f6; color: white; border: none; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"
-                                        onmouseover="this.style.background='#2563eb'; this.style.boxShadow='0 4px 8px rgba(0,0,0,0.15)'"
-                                        onmouseout="this.style.background='#3b82f6'; this.style.boxShadow='0 2px 4px rgba(0,0,0,0.1)'">
-                                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                                    </svg>
-                                </button>
-                                
-                                <!-- Botão Excluir -->
-                                <button onclick="window.gestaoComprasApp.deleteOrder(${order.id})" 
-                                        style="width: 32px; height: 32px; background: #ef4444; color: white; border: none; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"
-                                        onmouseover="this.style.background='#dc2626'; this.style.boxShadow='0 4px 8px rgba(0,0,0,0.15)'"
-                                        onmouseout="this.style.background='#ef4444'; this.style.boxShadow='0 2px 4px rgba(0,0,0,0.1)'">
-                                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                    </svg>
-                                </button>
-                            </div>
+                        <td style="padding: 1rem 1.5rem; white-space: nowrap;">
+                            <button onclick="window.gestaoComprasApp.openDetailModal('${order.numero}')" 
+                                    style="background: #2563eb; color: white; padding: 0.5rem 1.25rem; border-radius: 0.5rem; border: none; font-size: 0.875rem; font-weight: 500; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);"
+                                    onmouseover="this.style.background='#1d4ed8'; this.style.boxShadow='0 6px 8px -1px rgba(0, 0, 0, 0.15)'"
+                                    onmouseout="this.style.background='#2563eb'; this.style.boxShadow='0 4px 6px -1px rgba(0, 0, 0, 0.1)'">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                </svg>
+                                Visualizar
+                            </button>
                         </td>
                     `;
                     
@@ -781,6 +763,109 @@
                 
                 const newStatus = stageMap[nextStage];
                 await this.updateOrderStatus(order, newStatus, `Avançado para ${this.STATUSES[newStatus].label}`);
+            }
+
+            getStatusBadge(status) {
+                const statusConfig = {
+                    'AGUARDANDO_APROVACAO_SC': {
+                        label: 'Aguardando Aprovação SC',
+                        icon: 'clock',
+                        bgColor: '#fef3c7',
+                        textColor: '#92400e',
+                        borderColor: '#f59e0b'
+                    },
+                    'SC_APROVADA': {
+                        label: 'SC Aprovada',
+                        icon: 'check',
+                        bgColor: '#dcfce7',
+                        textColor: '#166534',
+                        borderColor: '#22c55e'
+                    },
+                    'AGUARDANDO_APROVACAO_OC': {
+                        label: 'Aguardando Aprovação OC',
+                        icon: 'clock',
+                        bgColor: '#fef3c7',
+                        textColor: '#92400e',
+                        borderColor: '#f59e0b'
+                    },
+                    'OC_APROVADA': {
+                        label: 'OC Aprovada',
+                        icon: 'check',
+                        bgColor: '#dcfce7',
+                        textColor: '#166534',
+                        borderColor: '#22c55e'
+                    },
+                    'PEDIDO_EMITIDO': {
+                        label: 'Pedido Emitido',
+                        icon: 'package',
+                        bgColor: '#e9d5ff',
+                        textColor: '#7c3aed',
+                        borderColor: '#a855f7'
+                    },
+                    'AGUARDANDO_PAGAMENTO': {
+                        label: 'Aguardando Pagamento',
+                        icon: 'dollar',
+                        bgColor: '#fed7aa',
+                        textColor: '#c2410c',
+                        borderColor: '#fb923c'
+                    },
+                    'PAGO': {
+                        label: 'Pago',
+                        icon: 'check',
+                        bgColor: '#dcfce7',
+                        textColor: '#166534',
+                        borderColor: '#22c55e'
+                    },
+                    'AGUARDANDO_ENTREGA': {
+                        label: 'Aguardando Entrega',
+                        icon: 'truck',
+                        bgColor: '#e0e7ff',
+                        textColor: '#3730a3',
+                        borderColor: '#6366f1'
+                    },
+                    'ENTREGUE': {
+                        label: 'Entregue',
+                        icon: 'check-circle',
+                        bgColor: '#d1fae5',
+                        textColor: '#047857',
+                        borderColor: '#10b981'
+                    },
+                    'REJEITADO': {
+                        label: 'Rejeitado',
+                        icon: 'x',
+                        bgColor: '#fee2e2',
+                        textColor: '#dc2626',
+                        borderColor: '#ef4444'
+                    },
+                    'CANCELADO': {
+                        label: 'Cancelado',
+                        icon: 'x',
+                        bgColor: '#f3f4f6',
+                        textColor: '#6b7280',
+                        borderColor: '#9ca3af'
+                    }
+                };
+
+                const config = statusConfig[status] || statusConfig['AGUARDANDO_APROVACAO_SC'];
+                
+                const iconMap = {
+                    'clock': 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z',
+                    'check': 'M5 13l4 4L19 7',
+                    'package': 'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4',
+                    'dollar': 'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1',
+                    'truck': 'M1 3h15v13H1zM16 8h4l3 3v5h-7V8z',
+                    'check-circle': 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',
+                    'x': 'M6 18L18 6M6 6l12 12'
+                };
+
+                return `
+                    <div style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.375rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; border: 1px solid ${config.borderColor}; background-color: ${config.bgColor}; color: ${config.textColor};">
+                        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="flex-shrink: 0;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${iconMap[config.icon]}"></path>
+                        </svg>
+                        <span>${config.label}</span>
+                    </div>
+                `;
             }
 
             getCurrentStage(status) {
