@@ -5625,35 +5625,6 @@ body.compras-page {
     100% { transform: rotate(360deg); }
 }
 
-/* App content */
-.app-content {
-    display: block;
-}
-
-/* Header do app */
-.app-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 2rem;
-}
-
-.header-left h1.app-title {
-    font-size: 2rem;
-    font-weight: 700;
-    background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #6366f1 100%);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin: 0 0 0.5rem 0;
-}
-
-.header-left p.app-subtitle {
-    color: #64748b;
-    font-size: 0.875rem;
-    margin: 0;
-}
-
 /* Botão nova solicitação */
 .btn-nova-solicitacao {
     background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
@@ -6055,6 +6026,7 @@ body.compras-page {
     font-weight: 600;
     border: 1px solid;
     display: inline-block;
+    text-align: center;
 }
 
 /* Status específicos com cores corretas */

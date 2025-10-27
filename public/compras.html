@@ -123,9 +123,17 @@
                 
                 <div class="projects-header">
                     <div class="header-left">
-                        <h1 class="projects-title">Compras</h1>
+                        <h1 class="projects-title">Pedidos de Compras</h1>
                         <p class="projects-subtitle">Sistema de gestão de pedidos e solicitações de compra</p>
                     </div>
+
+                    <button id="nova-solicitacao-btn" class="btn-nova-solicitacao">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Nova Solicitação
+                    </button>
                 </div>
             </header>
 
@@ -140,21 +148,8 @@
                     
                     <!-- Main App Content (hidden initially) -->
                     <div id="app-content" class="app-content" style="display: none;">
-                        <!-- Header -->
-                        <div class="app-header">
-                    <div class="header-left">
-                                <h1 class="app-title">Pedidos de Compra</h1>
-                                <p class="app-subtitle">Gerencie solicitações e acompanhe o fluxo completo</p>
-                    </div>
-                            <button id="nova-solicitacao-btn" class="btn-nova-solicitacao">
-                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <line x1="12" y1="5" x2="12" y2="19"></line>
-                                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                            </svg>
-                                Nova Solicitação
-                        </button>
-                        </div>
-
+                                          
+                        
                         <!-- Stats Cards -->
                         <div class="stats-grid">
                             <div class="stat-card">
@@ -168,55 +163,52 @@
                                             <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
                                         </svg>
                                     </div>
-                    </div>
-                </div>
-
-                            <div class="stat-card">
-                                <div class="stat-content">
-                                    <div class="stat-info">
-                                        <p class="stat-label">Aguardando</p>
-                                        <p class="stat-value" id="aguardando-count">0</p>
-                                    </div>
-                                    <div class="stat-icon">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <circle cx="12" cy="12" r="10"></circle>
-                                            <polyline points="12,6 12,12 16,14"></polyline>
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="stat-card">
-                                <div class="stat-content">
-                                    <div class="stat-info">
-                                        <p class="stat-label">Em Andamento</p>
-                                        <p class="stat-value" id="andamento-count">0</p>
-                                    </div>
-                                    <div class="stat-icon">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <polyline points="22,12 18,12 15,21 9,3 6,12 2,12"></polyline>
-                        </svg>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="stat-card">
-                                <div class="stat-content">
-                                    <div class="stat-info">
-                                        <p class="stat-label">Concluídos</p>
-                                        <p class="stat-value" id="concluidos-count">0</p>
-                                    </div>
-                                    <div class="stat-icon">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                                            <polyline points="22,4 12,14.01 9,11.01"></polyline>
-                                </svg>
-                                    </div>
                         </div>
-                    </div>
-                </div>
 
-                        <!-- Filters -->
+                        <div class="stat-card">
+                            <div class="stat-content">
+                                <div class="stat-info">
+                                    <p class="stat-label">Aguardando</p>
+                                    <p class="stat-value" id="aguardando-count">0</p>
+                                </div>
+                                <div class="stat-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <polyline points="12,6 12,12 16,14"></polyline>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-content">
+                                <div class="stat-info">
+                                    <p class="stat-label">Em Andamento</p>
+                                    <p class="stat-value" id="andamento-count">0</p>
+                                </div>
+                                <div class="stat-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="22,12 18,12 15,21 9,3 6,12 2,12"></polyline>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-content">
+                                <div class="stat-info">
+                                    <p class="stat-label">Concluídos</p>
+                                    <p class="stat-value" id="concluidos-count">0</p>
+                                </div>
+                                <div class="stat-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                        <polyline points="22,4 12,14.01 9,11.01"></polyline>
+                            </svg>
+                                </div>                            
+                        </div>
+
+                     <!-- Filters -->
                         <div class="filters-section">
                             <div class="search-container">
                                 <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -232,8 +224,8 @@
                                 <select id="status-filter" class="status-filter">
                                     <option value="TODOS">Todos os Status</option>
                                 </select>
-                            </div>
-        </div>
+                        </div>
+        
 
                         <!-- Orders Table -->
                         <div class="orders-table-container">
@@ -254,7 +246,7 @@
                                     <!-- Orders will be populated here -->
                                 </tbody>
                             </table>
-                            </div>
+                        </div>
                             <div id="empty-state" class="empty-state" style="display: none;">
                                 <div class="empty-icon">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -264,8 +256,7 @@
                                 <p>Nenhum pedido encontrado</p>
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </div>                
             </main>
 
         <footer class="footer">
