@@ -58,10 +58,21 @@ module.exports = async (req, res) => {
                     if (result.rows.length === 0) {
                         return res.status(404).json({ error: 'Auditoria não encontrada' });
                     }
-                    return res.status(200).json(result.rows[0]);
+                    // Mapear 'data' para 'data_evento' se necessário
+                    const auditoria = result.rows[0];
+                    if (auditoria.data && !auditoria.data_evento) {
+                        auditoria.data_evento = auditoria.data;
+                    }
+                    return res.status(200).json(auditoria);
                 } else {
                     // GET - Buscar todas as auditorias
-                    const result = await client.query('SELECT * FROM auditorias ORDER BY data DESC');
+                    const result = await client.query('SELECT * FROM auditorias ORDER BY COALESCE(data_evento, data, created_at) DESC');
+                    // Mapear 'data' para 'data_evento' em todos os registros
+                    result.rows.forEach(auditoria => {
+                        if (auditoria.data && !auditoria.data_evento) {
+                            auditoria.data_evento = auditoria.data;
+                        }
+                    });
                     return res.status(200).json(result.rows);
                 }
             } catch (dbError) {
@@ -82,11 +93,11 @@ module.exports = async (req, res) => {
             // POST - Adicionar nova auditoria
             try {
                 client = await pool.connect();
-                const { tipo, data, responsavel, status, area, descricao } = req.body;
+                const { titulo, tipo, data_evento, responsavel, status, area, descricao } = req.body;
                 
                 const result = await client.query(
-                    'INSERT INTO auditorias (tipo, data, responsavel, status, area, descricao) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-                    [tipo, data, responsavel, status, area, descricao]
+                    'INSERT INTO auditorias (titulo, tipo, data_evento, responsavel, status, area, descricao) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
+                    [titulo, tipo, data_evento, responsavel, status, area, descricao]
                 );
                 
                 return res.status(201).json(result.rows[0]);
@@ -109,11 +120,11 @@ module.exports = async (req, res) => {
             
             try {
                 client = await pool.connect();
-                const { tipo, data, responsavel, status, area, descricao } = req.body;
+                const { titulo, tipo, data_evento, responsavel, status, area, descricao } = req.body;
                 
                 const result = await client.query(
-                    'UPDATE auditorias SET tipo = $1, data = $2, responsavel = $3, status = $4, area = $5, descricao = $6 WHERE id = $7 RETURNING *',
-                    [tipo, data, responsavel, status, area, descricao, id]
+                    'UPDATE auditorias SET titulo = $1, tipo = $2, data_evento = $3, responsavel = $4, status = $5, area = $6, descricao = $7 WHERE id = $8 RETURNING *',
+                    [titulo, tipo, data_evento, responsavel, status, area, descricao, id]
                 );
                 
                 if (result.rows.length === 0) {

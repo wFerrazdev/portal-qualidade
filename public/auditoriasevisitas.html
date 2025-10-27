@@ -1719,8 +1719,10 @@
             async function handleFormSubmit(event) {
                 event.preventDefault();
                 const saveButton = event.target.querySelector('.save-button');
-                saveButton.textContent = 'Salvando...';
-                saveButton.disabled = true;
+                if (saveButton) {
+                    saveButton.textContent = 'Salvando...';
+                    saveButton.disabled = true;
+                }
                 const editingId = auditForm.dataset.editingId;
                 const auditData = {
                     titulo: auditForm.querySelector('#titulo').value,
@@ -1741,8 +1743,10 @@
                     console.error('Erro ao salvar auditoria:', error);
                     alert('Não foi possível salvar a auditoria.');
                 } finally {
-                    saveButton.textContent = 'Salvar';
-                    saveButton.disabled = false;
+                    if (saveButton) {
+                        saveButton.textContent = 'Salvar';
+                        saveButton.disabled = false;
+                    }
                 }
             }
 
