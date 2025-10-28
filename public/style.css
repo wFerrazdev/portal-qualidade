@@ -5899,7 +5899,6 @@ body.compras-page {
 .orders-table {
     width: 100%;
     border-collapse: collapse;
-    table-layout: fixed; /* Layout fixo para larguras consistentes */
 }
 
 .orders-table thead {
@@ -5915,7 +5914,6 @@ body.compras-page {
     color: #374151;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    width: auto; /* Largura automática baseada no conteúdo */
 }
 
 .orders-table td {
@@ -5924,7 +5922,6 @@ body.compras-page {
     font-size: 0.875rem;
     color: #374151;
     text-align: left; /* Alinhar à esquerda */
-    width: auto; /* Largura automática baseada no conteúdo */
 }
 
 .orders-table tbody tr:hover {
