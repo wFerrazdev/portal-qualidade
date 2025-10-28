@@ -6031,8 +6031,8 @@ body.compras-page {
     align-items: center;
     gap: 0.5rem;
     margin-top: 1.5rem;
-    padding: 1rem 0;
-    margin-bottom: 2.5rem; /* Mais espaço para não ficar colado na linha */
+    padding: 2.5rem 0;
+    margin-bottom: 0rem; /* Mais espaço para não ficar colado na linha */
 }
 
 .pagination-btn {
