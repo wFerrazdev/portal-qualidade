@@ -5899,6 +5899,7 @@ body.compras-page {
 .orders-table {
     width: 100%;
     border-collapse: collapse;
+    table-layout: fixed; /* Layout fixo para larguras consistentes */
 }
 
 .orders-table thead {
@@ -5908,12 +5909,13 @@ body.compras-page {
 
 .orders-table th {
     padding: 0.75rem 1rem;
-    text-align: center; /* Centralizar textos das colunas */
+    text-align: left; /* Alinhar à esquerda */
     font-size: 0.75rem;
     font-weight: 700;
     color: #374151;
     text-transform: uppercase;
     letter-spacing: 0.05em;
+    width: auto; /* Largura automática baseada no conteúdo */
 }
 
 .orders-table td {
@@ -5921,6 +5923,8 @@ body.compras-page {
     border-bottom: 1px solid #f1f5f9;
     font-size: 0.875rem;
     color: #374151;
+    text-align: left; /* Alinhar à esquerda */
+    width: auto; /* Largura automática baseada no conteúdo */
 }
 
 .orders-table tbody tr:hover {
