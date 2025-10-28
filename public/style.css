@@ -5596,7 +5596,7 @@ body.compras-page {
     min-height: 0;
     margin: 0;
     margin-left: 100px;
-    margin-bottom: 5rem; /* Mais espaço para a paginação fixa */
+    margin-bottom: 1rem; /* Margem pequena do footer */
     padding-bottom: 0;
 }
 
@@ -6032,11 +6032,7 @@ body.compras-page {
     gap: 0.5rem;
     margin-top: 1.5rem;
     padding: 1rem 0;
-    position: fixed;
-    bottom: 2rem; /* Margem pequena do footer */
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 100;
+    margin-bottom: 2rem; /* Margem em relação ao footer */
 }
 
 .pagination-btn {
