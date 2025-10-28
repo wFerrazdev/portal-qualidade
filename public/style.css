@@ -5596,7 +5596,7 @@ body.compras-page {
     min-height: 0;
     margin: 0;
     margin-left: 100px;
-    margin-bottom: 3rem; /* Respiro maior entre tabela e footer */
+    margin-bottom: 5rem; /* Mais espaço para a paginação fixa */
     padding-bottom: 0;
 }
 
@@ -6020,7 +6020,7 @@ body.compras-page {
 }
 
 .orders-tbody {
-    max-height: 400px; /* Altura para mostrar exatamente 5 pedidos */
+    max-height: 350px; /* Altura reduzida para não cortar no footer */
     overflow-y: auto;
 }
 
@@ -6032,14 +6032,19 @@ body.compras-page {
     gap: 0.5rem;
     margin-top: 1.5rem;
     padding: 1rem 0;
+    position: fixed;
+    bottom: 2rem; /* Margem pequena do footer */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
 }
 
 .pagination-btn {
-    width: 40px;
-    height: 40px;
+    width: 32px; /* Quadradinhos menores */
+    height: 32px;
     border: 2px solid #e2e8f0;
     background: white;
-    border-radius: 8px;
+    border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -6047,6 +6052,14 @@ body.compras-page {
     transition: all 0.2s ease;
     font-weight: 600;
     color: #374151;
+    font-size: 0.875rem;
+}
+
+#page-numbers {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    align-items: center;
 }
 
 .pagination-btn:hover {
