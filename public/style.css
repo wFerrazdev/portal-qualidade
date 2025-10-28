@@ -6032,7 +6032,7 @@ body.compras-page {
     gap: 0.5rem;
     margin-top: 1.5rem;
     padding: 1rem 0;
-    margin-bottom: 2rem; /* Margem em relação ao footer */
+    margin-bottom: 3rem; /* Margem específica até o início do footer */
 }
 
 .pagination-btn {
