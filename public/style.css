@@ -6032,7 +6032,7 @@ body.compras-page {
     gap: 0.5rem;
     margin-top: 1.5rem;
     padding: 1rem 0;
-    margin-bottom: 1.5rem; /* Margem até o padding do footer (barra verde) */
+    margin-bottom: 2.5rem; /* Mais espaço para não ficar colado na linha */
 }
 
 .pagination-btn {
