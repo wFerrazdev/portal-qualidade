@@ -255,6 +255,21 @@
                                 <p>Nenhum pedido encontrado</p>
                             </div>
                         </div>
+                        
+                        <!-- Sistema de Paginação -->
+                        <div id="pagination-container" class="pagination-container" style="display: none;">
+                            <button id="prev-page" class="pagination-btn" onclick="window.gestaoComprasApp.previousPage()">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                </svg>
+                            </button>
+                            <div id="page-numbers"></div>
+                            <button id="next-page" class="pagination-btn" onclick="window.gestaoComprasApp.nextPage()">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </main>
@@ -381,6 +396,11 @@
                 this.showModal = false;
                 this.showDetailModalFlag = false;
                 this.selectedOrder = null;
+                
+                // Propriedades de paginação
+                this.currentPage = 1;
+                this.ordersPerPage = 5;
+                this.totalPages = 1;
                 this.newOrder = {
                     descricao: '',
                     fornecedor: '',
@@ -595,6 +615,11 @@
                 }
 
                 this.filteredOrders = filtered;
+                
+                // Resetar para primeira página quando filtrar
+                this.currentPage = 1;
+                
+                this.updateStats();
                 this.renderOrders();
             }
 
@@ -623,6 +648,7 @@
             renderOrders() {
                 const tbody = document.getElementById('orders-tbody');
                 const emptyState = document.getElementById('empty-state');
+                const paginationContainer = document.getElementById('pagination-container');
                 
                 if (!tbody) return;
 
@@ -630,12 +656,27 @@
 
                 if (this.filteredOrders.length === 0) {
                     if (emptyState) emptyState.style.display = 'block';
+                    if (paginationContainer) paginationContainer.style.display = 'none';
                     return;
                 }
 
                 if (emptyState) emptyState.style.display = 'none';
 
-                this.filteredOrders.forEach((order, idx) => {
+                // Calcular paginação
+                this.totalPages = Math.ceil(this.filteredOrders.length / this.ordersPerPage);
+                const startIndex = (this.currentPage - 1) * this.ordersPerPage;
+                const endIndex = startIndex + this.ordersPerPage;
+                const ordersToShow = this.filteredOrders.slice(startIndex, endIndex);
+
+                // Mostrar/ocultar paginação
+                if (this.totalPages > 1) {
+                    if (paginationContainer) paginationContainer.style.display = 'flex';
+                    this.renderPagination();
+                } else {
+                    if (paginationContainer) paginationContainer.style.display = 'none';
+                }
+
+                ordersToShow.forEach((order, idx) => {
                     const row = document.createElement('tr');
                     row.style.cssText = 'transition: all 0.2s ease;';
                     row.onmouseover = () => row.style.backgroundColor = '#f8fafc';
@@ -1406,6 +1447,53 @@
                     style: 'currency',
                     currency: 'BRL'
                 }).format(value);
+            }
+
+            // Funções de paginação
+            renderPagination() {
+                const pageNumbersContainer = document.getElementById('page-numbers');
+                if (!pageNumbersContainer) return;
+
+                pageNumbersContainer.innerHTML = '';
+
+                for (let i = 1; i <= this.totalPages; i++) {
+                    const pageBtn = document.createElement('button');
+                    pageBtn.className = `pagination-btn ${i === this.currentPage ? 'active' : ''}`;
+                    pageBtn.textContent = i;
+                    pageBtn.onclick = () => this.goToPage(i);
+                    pageNumbersContainer.appendChild(pageBtn);
+                }
+
+                // Atualizar estado dos botões de navegação
+                const prevBtn = document.getElementById('prev-page');
+                const nextBtn = document.getElementById('next-page');
+                
+                if (prevBtn) {
+                    prevBtn.disabled = this.currentPage === 1;
+                }
+                if (nextBtn) {
+                    nextBtn.disabled = this.currentPage === this.totalPages;
+                }
+            }
+
+            goToPage(page) {
+                if (page < 1 || page > this.totalPages) return;
+                this.currentPage = page;
+                this.renderOrders();
+            }
+
+            previousPage() {
+                if (this.currentPage > 1) {
+                    this.currentPage--;
+                    this.renderOrders();
+                }
+            }
+
+            nextPage() {
+                if (this.currentPage < this.totalPages) {
+                    this.currentPage++;
+                    this.renderOrders();
+                }
             }
         }
 
