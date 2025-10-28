@@ -6033,7 +6033,7 @@ body.compras-page {
     gap: 0.5rem;
     margin-top: 0rem;
     padding: 1rem 0;
-    margin-bottom: 6rem; /* Mais espaço para não ficar colado na linha */
+    margin-bottom: 5rem; /* Mais espaço para não ficar colado na linha. */
 }
 
 .pagination-btn {
