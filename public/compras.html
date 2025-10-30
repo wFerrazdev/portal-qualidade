@@ -773,9 +773,18 @@
 
             async saveEdit() {
                 if (!this.selectedOrder) return;
+                const newNumero = (document.getElementById('edit-numero')?.value || '').trim();
+                // Verificar duplicidade se o número foi alterado
+                if (newNumero && newNumero !== this.selectedOrder.numero) {
+                    const dup = (this.orders || []).some(o => o.id !== this.selectedOrder.id && (o.numero || '').toString().trim().toLowerCase() === newNumero.toLowerCase());
+                    if (dup) {
+                        alert('Já existe uma solicitação com este número. Escolha outro.');
+                        return;
+                    }
+                }
                 const updated = {
                     ...this.selectedOrder,
-                    numero: (document.getElementById('edit-numero')?.value || '').trim() || this.selectedOrder.numero,
+                    numero: newNumero || this.selectedOrder.numero,
                     solicitante: document.getElementById('edit-solicitante')?.value || this.selectedOrder.solicitante,
                     descricao: document.getElementById('edit-descricao')?.value || this.selectedOrder.descricao,
                     fornecedor: document.getElementById('edit-fornecedor')?.value || this.selectedOrder.fornecedor,
@@ -805,17 +814,13 @@
                         this.showEditModalFlag = false;
                         this.renderModals();
                     } else {
-                        this.orders = this.orders.map(o => o.id === this.selectedOrder.id ? updated : o);
-                        this.saveOrders();
-                        this.filterOrders();
-                        this.showEditModalFlag = false;
+                        const text = await response.text();
+                        alert('Não foi possível salvar. Detalhes: ' + text);
+                        // Não persiste local quando a API rejeita para evitar divergência
                         this.renderModals();
                     }
                 } catch (e) {
-                    this.orders = this.orders.map(o => o.id === this.selectedOrder.id ? updated : o);
-                    this.saveOrders();
-                    this.filterOrders();
-                    this.showEditModalFlag = false;
+                    alert('Erro ao salvar alterações. Tente novamente.');
                     this.renderModals();
                 }
             }
@@ -1088,7 +1093,7 @@
                                         </label>
                                         <input type="text" id="modal-numero" 
                                                style="width: 100%; padding: 0.75rem 1rem; border: 2px solid #e5e7eb; border-radius: 0.75rem; font-size: 0.875rem; transition: all 0.3s ease;"
-                                               placeholder="Ex: SC-001 (opcional)">
+                                               placeholder="Ex: 192.088" autocomplete="off">
                                     </div>
                                     <div>
                                         <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Setor Responsável *</label>
@@ -1441,13 +1446,21 @@
                 const quantidade = document.getElementById('modal-quantidade')?.value;
                 const observacoes = document.getElementById('modal-observacoes').value;
 
-                if (!descricao || !fornecedor || !valor || !quantidade) {
-                    alert('Por favor, preencha todos os campos obrigatórios');
+                // Verificar duplicidade de número antes de criar
+                const numeroLower = numeroManual.toLowerCase();
+                const exists = (this.orders || []).some(o => (o.numero || '').toString().trim().toLowerCase() === numeroLower);
+                if (exists) {
+                    alert('Já existe uma solicitação com este número. Informe outro número.');
+                    return;
+                }
+
+                if (!numeroManual || !descricao || !fornecedor || !valor || !quantidade) {
+                    alert('Por favor, preencha o número e todos os campos obrigatórios');
                     return;
                 }
                 
                 const order = {
-                    numero: numeroManual || this.generateOrderNumber(),
+                    numero: numeroManual,
                     descricao: descricao,
                     fornecedor: fornecedor,
                     valor: parseFloat(valor),
