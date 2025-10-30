@@ -279,7 +279,7 @@ body {
 /* Header padrão (outras páginas) */
 .content-header {
   background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-  padding: 0.25rem 3rem;
+  padding: 0rem 0rem;
   border-bottom: 1px solid #e2e8f0;
   position: relative;
   margin-left: 100px;
