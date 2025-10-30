@@ -232,13 +232,14 @@
                                 <table class="orders-table">
                                 <thead>
                                     <tr>
-                                        <th>Número</th>
-                                        <th>Descrição</th>
-                                        <th>Fornecedor</th>
-                                        <th>Valor</th>
-                                        <th>Data</th>
-                                        <th>Status</th>
-                                        <th>Ações</th>
+                                        <th style="text-align: center;">Número</th>
+                                        <th style="text-align: left;">Descrição</th>
+                                        <th style="text-align: center;">Fornecedor</th>
+                                        <th style="text-align: center;">Quantidade</th>
+                                        <th style="text-align: center;">Valor</th>
+                                        <th style="text-align: center;">Data</th>
+                                        <th style="text-align: center;">Status</th>
+                                        <th style="text-align: center;">Ações</th>
                                     </tr>
                                 </thead>
                                 <tbody id="orders-tbody">
@@ -685,23 +686,26 @@
                     row.onmouseout = () => row.style.backgroundColor = 'transparent';
                     
                     row.innerHTML = `
-                        <td style="padding: 1rem 1.5rem; white-space: nowrap;">
+                        <td style="padding: 1rem 1.5rem; white-space: nowrap; text-align: center;">
                             <span style="font-size: 0.875rem; font-weight: 700; color: #2563eb;">${order.numero}</span>
                         </td>
-                        <td style="padding: 1rem 1.5rem;">
+                        <td style="padding: 1rem 1.5rem; text-align: left;">
                             <div style="font-size: 0.875rem; font-weight: 500; color: #1e293b;">${order.descricao}</div>
-                            ${order.fornecedor ? `<div style="font-size: 0.75rem; color: #64748b; margin-top: 0.25rem;">${order.fornecedor}</div>` : ''}
+                            ${order.observacoes ? `<div style=\"font-size: 0.75rem; color: #64748b; margin-top: 0.25rem;\">${order.observacoes}</div>` : ''}
                         </td>
-                        <td style="padding: 1rem 1.5rem; white-space: nowrap;">
-                            <span style="font-size: 0.875rem; color: #374151;">${order.quantidade || 'N/A'}</span>
+                        <td style="padding: 1rem 1.5rem; white-space: nowrap; text-align: center;">
+                            <span style="font-size: 0.875rem; color: #374151;">${order.fornecedor || '—'}</span>
                         </td>
-                        <td style="padding: 1rem 1.5rem; white-space: nowrap;">
+                        <td style="padding: 1rem 1.5rem; white-space: nowrap; text-align: center;">
+                            <span style="font-size: 0.875rem; color: #374151;">${(order.quantidade ?? '') !== '' ? order.quantidade : '—'}</span>
+                        </td>
+                        <td style="padding: 1rem 1.5rem; white-space: nowrap; text-align: center;">
                             <span style="font-size: 0.875rem; font-weight: 500; color: #059669;">${this.formatCurrency(order.valor)}</span>
                         </td>
-                        <td style="padding: 1rem 1.5rem; white-space: nowrap;">
+                        <td style="padding: 1rem 1.5rem; white-space: nowrap; text-align: center;">
                             <span style="font-size: 0.875rem; color: #374151;">${this.formatDate(order.data_criacao)}</span>
                         </td>
-                        <td style="padding: 1rem 1.5rem; white-space: nowrap;">
+                        <td style="padding: 1rem 1.5rem; white-space: nowrap; text-align: center;">
                             ${this.getStatusBadge(order.status)}
                             ${order.last_change ? `
                                 <div style="font-size: 0.75rem; color: #64748b; margin-top: 0.25rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
@@ -709,8 +713,8 @@
                                 </div>
                             ` : ''}
                         </td>
-                        <td style="padding: 1rem 1.5rem; white-space: nowrap;">
-                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <td style="padding: 1rem 1.5rem; white-space: nowrap; text-align: center;">
+                            <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
                                 <!-- Botão Visualizar -->
                                 <button onclick="window.gestaoComprasApp.openDetailModal('${order.numero}')" 
                                         style="width: 32px; height: 32px; background: #2563eb; color: white; border: none; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"
