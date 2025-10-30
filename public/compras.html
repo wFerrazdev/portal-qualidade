@@ -395,7 +395,9 @@
                 this.statusFilter = 'TODOS';
                 this.showModal = false;
                 this.showDetailModalFlag = false;
+                this.showEditModalFlag = false;
                 this.selectedOrder = null;
+                this.editData = {};
                 
                 // Propriedades de paginação
                 this.currentPage = 1;
@@ -701,6 +703,11 @@
                         </td>
                         <td style="padding: 1rem 1.5rem; white-space: nowrap;">
                             ${this.getStatusBadge(order.status)}
+                            ${order.last_change ? `
+                                <div style="font-size: 0.75rem; color: #64748b; margin-top: 0.25rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                    Atualizado em ${this.formatDate(order.last_change)}${order.last_user ? ` por ${order.last_user}` : ''}
+                                </div>
+                            ` : ''}
                         </td>
                         <td style="padding: 1rem 1.5rem; white-space: nowrap;">
                             <div style="display: flex; align-items: center; gap: 0.5rem;">
@@ -738,7 +745,7 @@
             }
 
             openDetailModal(orderNumber) {
-                const order = this.orders.find(o => o.numero === orderNumber);
+                const order = this.orders.find(o => o.numero?.toString() === orderNumber?.toString());
                 if (!order) return;
 
                 this.selectedOrder = order;
@@ -746,9 +753,73 @@
                 this.renderModals();
             }
 
+            openEditModal(orderId) {
+                const order = this.orders.find(o => o.id === orderId);
+                if (!order) return;
+                this.selectedOrder = order;
+                this.editData = { ...order };
+                this.showEditModalFlag = true;
+                this.renderModals();
+            }
+
+            cancelEdit() {
+                this.showEditModalFlag = false;
+                this.renderModals();
+            }
+
+            async saveEdit() {
+                if (!this.selectedOrder) return;
+                const updated = {
+                    ...this.selectedOrder,
+                    numero: (document.getElementById('edit-numero')?.value || '').trim() || this.selectedOrder.numero,
+                    solicitante: document.getElementById('edit-solicitante')?.value || this.selectedOrder.solicitante,
+                    descricao: document.getElementById('edit-descricao')?.value || this.selectedOrder.descricao,
+                    fornecedor: document.getElementById('edit-fornecedor')?.value || this.selectedOrder.fornecedor,
+                    quantidade: parseInt(document.getElementById('edit-quantidade')?.value || this.selectedOrder.quantidade || 0, 10) || this.selectedOrder.quantidade,
+                    valor: parseFloat(document.getElementById('edit-valor')?.value || this.selectedOrder.valor) || this.selectedOrder.valor,
+                    observacoes: document.getElementById('edit-observacoes')?.value || this.selectedOrder.observacoes
+                };
+
+                try {
+                    const response = await fetch(`/api/compras?id=${this.selectedOrder.id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            numero: updated.numero,
+                            solicitante: updated.solicitante,
+                            descricao: updated.descricao,
+                            fornecedor: updated.fornecedor,
+                            quantidade: updated.quantidade,
+                            valor: updated.valor,
+                            observacoes: updated.observacoes
+                        })
+                    });
+
+                    if (response.ok) {
+                        this.orders = this.orders.map(o => o.id === this.selectedOrder.id ? updated : o);
+                        this.filterOrders();
+                        this.showEditModalFlag = false;
+                        this.renderModals();
+                    } else {
+                        this.orders = this.orders.map(o => o.id === this.selectedOrder.id ? updated : o);
+                        this.saveOrders();
+                        this.filterOrders();
+                        this.showEditModalFlag = false;
+                        this.renderModals();
+                    }
+                } catch (e) {
+                    this.orders = this.orders.map(o => o.id === this.selectedOrder.id ? updated : o);
+                    this.saveOrders();
+                    this.filterOrders();
+                    this.showEditModalFlag = false;
+                    this.renderModals();
+                }
+            }
+
             closeModals() {
                 this.showModal = false;
                 this.showDetailModalFlag = false;
+                this.showEditModalFlag = false;
                 this.renderModals();
             }
 
@@ -1009,6 +1080,28 @@
                                 <div style="display: flex; flex-direction: column; gap: 1.25rem;">
                                     <div>
                                         <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">
+                                            N° da Solicitação (ID)
+                                        </label>
+                                        <input type="text" id="modal-numero" 
+                                               style="width: 100%; padding: 0.75rem 1rem; border: 2px solid #e5e7eb; border-radius: 0.75rem; font-size: 0.875rem; transition: all 0.3s ease;"
+                                               placeholder="Ex: SC-001 (opcional)">
+                                    </div>
+                                    <div>
+                                        <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Setor Responsável *</label>
+                                        <select id="modal-solicitante" 
+                                                style="width: 100%; padding: 0.75rem 1rem; border: 2px solid #e5e7eb; border-radius: 0.75rem; font-size: 0.875rem; background: #f8fafc;">
+                                            <option value="Qualidade">Qualidade</option>
+                                            <option value="Produção">Produção</option>
+                                            <option value="Manutenção">Manutenção</option>
+                                            <option value="Logística">Logística</option>
+                                            <option value="Administração">Administração</option>
+                                            <option value="Engenharia">Engenharia</option>
+                                            <option value="Comercial">Comercial</option>
+                                            <option value="TI">TI</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">
                                             Descrição do Item/Serviço *
                                         </label>
                                         <input type="text" id="modal-descricao" value="${this.newOrder.descricao}" 
@@ -1030,6 +1123,14 @@
                                         <input type="number" id="modal-valor" value="${this.newOrder.valor}" step="0.01" min="0"
                                                style="width: 100%; padding: 0.75rem 1rem; border: 2px solid #e5e7eb; border-radius: 0.75rem; font-size: 0.875rem; transition: all 0.3s ease;"
                                                placeholder="0.00">
+                                    </div>
+                                    <div>
+                                        <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">
+                                            Quantidade *
+                                        </label>
+                                        <input type="number" id="modal-quantidade" value="${this.newOrder.quantidade || ''}" min="1"
+                                               style="width: 100%; padding: 0.75rem 1rem; border: 2px solid #e5e7eb; border-radius: 0.75rem; font-size: 0.875rem; transition: all 0.3s ease;"
+                                               placeholder="0">
                                     </div>
                                     <div>
                                         <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">
@@ -1224,10 +1325,18 @@
                                 </div>
 
                                 <!-- Botões de ação -->
-                                <div style="display: flex; align-items: center; gap: 0.75rem; margin-top: 1.5rem; padding-top: 1rem; border-top: 2px solid #e2e8f0;">
+                                <div style="display: flex; align-items: center; gap: 0.75rem; margin-top: 1.5rem; padding-top: 1rem; border-top: 2px solid #e2e8f0; flex-wrap: wrap;">
                                     <button onclick="window.gestaoComprasApp.closeModals()" 
                                             style="flex: 1; padding: 0.625rem 1.25rem; background: #e2e8f0; border: 2px solid #cbd5e1; border-radius: 0.5rem; color: #475569; font-weight: 600; cursor: pointer; transition: all 0.3s ease; font-size: 0.875rem;">
                                         Fechar
+                                    </button>
+
+                                    <button onclick="window.gestaoComprasApp.openEditModal(${order.id})" 
+                                            style="padding: 0.625rem 1.25rem; background: #2563eb; color: white; border-radius: 0.5rem; border: none; font-weight: 600; cursor: pointer; transition: all 0.3s ease; font-size: 0.875rem; display: flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+                                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5M18.5 2.5a2.121 2.121 0 113 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                        </svg>
+                                        Editar
                                     </button>
                                     
                                     <button onclick="window.gestaoComprasApp.deleteOrder(${order.id})" 
@@ -1263,27 +1372,85 @@
                     `;
                     document.body.insertAdjacentHTML('beforeend', modalHTML);
                 }
+
+                // Modal de edição
+                if (this.showEditModalFlag && this.selectedOrder) {
+                    const e = this.editData || {};
+                    const options = ['Qualidade','Produção','Manutenção','Logística','Administração','Engenharia','Comercial','TI'];
+                    const modalHTML = `
+                        <div class="modal-overlay" style="position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; padding: 1rem; z-index: 50;">
+                            <div class="modal-content" style="background: white; border-radius: 1rem; max-width: 40rem; width: 100%; padding: 1.5rem; max-height: 85vh; overflow-y: auto; border: 1px solid #e2e8f0; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);">
+                                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem;">
+                                    <h2 style="font-size:1.25rem; font-weight:700; color:#1e293b; margin:0;">Editar Solicitação</h2>
+                                    <button onclick="window.gestaoComprasApp.cancelEdit()" style="color:#64748b; background:none; border:none; cursor:pointer; padding:0.5rem; border-radius:0.5rem;">
+                                        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                    </button>
+                                </div>
+                                <div style="display:flex; flex-direction:column; gap:1rem;">
+                                    <div>
+                                        <label style="display:block; font-size:0.75rem; font-weight:600; color:#475569; margin-bottom:0.5rem;">N° da Solicitação (ID)</label>
+                                        <input id="edit-numero" type="text" value="${e.numero || ''}" style="width:100%; padding:0.625rem 0.875rem; border:2px solid #e2e8f0; border-radius:0.5rem;" />
+                                    </div>
+                                    <div>
+                                        <label style="display:block; font-size:0.75rem; font-weight:600; color:#475569; margin-bottom:0.5rem;">Setor Responsável</label>
+                                        <select id="edit-solicitante" style="width:100%; padding:0.625rem 0.875rem; border:2px solid #e2e8f0; border-radius:0.5rem; background:#f8fafc;">
+                                            ${options.map(opt => `<option ${e.solicitante===opt?'selected':''} value="${opt}">${opt}</option>`).join('')}
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label style="display:block; font-size:0.75rem; font-weight:600; color:#475569; margin-bottom:0.5rem;">Descrição</label>
+                                        <input id="edit-descricao" type="text" value="${e.descricao || ''}" style="width:100%; padding:0.625rem 0.875rem; border:2px solid #e2e8f0; border-radius:0.5rem;" />
+                                    </div>
+                                    <div>
+                                        <label style="display:block; font-size:0.75rem; font-weight:600; color:#475569; margin-bottom:0.5rem;">Fornecedor</label>
+                                        <input id="edit-fornecedor" type="text" value="${e.fornecedor || ''}" style="width:100%; padding:0.625rem 0.875rem; border:2px solid #e2e8f0; border-radius:0.5rem;" />
+                                    </div>
+                                    <div>
+                                        <label style="display:block; font-size:0.75rem; font-weight:600; color:#475569; margin-bottom:0.5rem;">Quantidade</label>
+                                        <input id="edit-quantidade" type="number" min="1" value="${e.quantidade ?? ''}" style="width:100%; padding:0.625rem 0.875rem; border:2px solid #e2e8f0; border-radius:0.5rem;" />
+                                    </div>
+                                    <div>
+                                        <label style="display:block; font-size:0.75rem; font-weight:600; color:#475569; margin-bottom:0.5rem;">Valor Estimado (R$)</label>
+                                        <input id="edit-valor" type="number" step="0.01" min="0" value="${e.valor ?? ''}" style="width:100%; padding:0.625rem 0.875rem; border:2px solid #e2e8f0; border-radius:0.5rem;" />
+                                    </div>
+                                    <div>
+                                        <label style="display:block; font-size:0.75rem; font-weight:600; color:#475569; margin-bottom:0.5rem;">Observações</label>
+                                        <textarea id="edit-observacoes" rows="3" style="width:100%; padding:0.625rem 0.875rem; border:2px solid #e2e8f0; border-radius:0.5rem;">${e.observacoes || ''}</textarea>
+                                    </div>
+                                </div>
+                                <div style="display:flex; gap:0.75rem; margin-top:1rem;">
+                                    <button onclick="window.gestaoComprasApp.cancelEdit()" style="flex:1; padding:0.625rem 1.25rem; background:#e5e7eb; border:2px solid #cbd5e1; border-radius:0.5rem; color:#374151; font-weight:600;">Cancelar</button>
+                                    <button onclick="window.gestaoComprasApp.saveEdit()" style="flex:1; padding:0.625rem 1.25rem; background:#2563eb; color:#fff; border:none; border-radius:0.5rem; font-weight:600; box-shadow:0 4px 12px rgba(37,99,235,0.3);">Salvar Alterações</button>
+                                </div>
+                            </div>
+                        </div>`;
+                    document.body.insertAdjacentHTML('beforeend', modalHTML);
+                }
             }
 
             async handleCreateOrder() {
+                const numeroManual = (document.getElementById('modal-numero')?.value || '').trim();
+                const solicitante = document.getElementById('modal-solicitante')?.value || 'Qualidade';
                 const descricao = document.getElementById('modal-descricao').value;
                 const fornecedor = document.getElementById('modal-fornecedor').value;
                 const valor = document.getElementById('modal-valor').value;
+                const quantidade = document.getElementById('modal-quantidade')?.value;
                 const observacoes = document.getElementById('modal-observacoes').value;
 
-                if (!descricao || !fornecedor || !valor) {
+                if (!descricao || !fornecedor || !valor || !quantidade) {
                     alert('Por favor, preencha todos os campos obrigatórios');
                     return;
                 }
                 
                 const order = {
-                    numero: this.generateOrderNumber(),
+                    numero: numeroManual || this.generateOrderNumber(),
                     descricao: descricao,
                     fornecedor: fornecedor,
                     valor: parseFloat(valor),
+                    quantidade: parseInt(quantidade, 10),
                     observacoes: observacoes,
                     status: 'AGUARDANDO_APROVACAO_SC',
-                    solicitante: 'Qualidade'
+                    solicitante: solicitante
                 };
 
                 try {
