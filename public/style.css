@@ -6031,7 +6031,7 @@ body.compras-page {
     justify-content: center;
     align-items: center;
     gap: 0.5rem;
-    margin-top: 0rem;
+    margin-top: 0rem;    
     padding: 1rem 0;
     margin-bottom: 5rem; /* Mais espaço para não ficar colado na linha. */
 }
