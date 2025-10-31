@@ -804,23 +804,40 @@
                             fornecedor: updated.fornecedor,
                             quantidade: updated.quantidade,
                             valor: updated.valor,
+                            status: updated.status || this.selectedOrder.status, // Manter o status atual
                             observacoes: updated.observacoes
                         })
                     });
 
                     if (response.ok) {
-                        this.orders = this.orders.map(o => o.id === this.selectedOrder.id ? updated : o);
+                        const savedOrder = await response.json();
+                        // Atualizar com os dados retornados pela API para garantir sincronização
+                        this.orders = this.orders.map(o => o.id === this.selectedOrder.id ? { ...savedOrder } : o);
                         this.filterOrders();
                         this.showEditModalFlag = false;
                         this.renderModals();
+                        alert('Solicitação atualizada com sucesso!');
                     } else {
-                        const text = await response.text();
-                        alert('Não foi possível salvar. Detalhes: ' + text);
+                        let errorText = 'Erro desconhecido';
+                        try {
+                            const errorJson = await response.json();
+                            errorText = errorJson.error || errorJson.message || JSON.stringify(errorJson);
+                        } catch {
+                            errorText = await response.text();
+                        }
+                        
+                        // Verificar se é erro de duplicidade
+                        if (errorText.toLowerCase().includes('unique') || errorText.toLowerCase().includes('duplicate') || response.status === 409) {
+                            alert('Já existe uma solicitação com este número. Escolha outro número.');
+                        } else {
+                            alert(`Não foi possível salvar. Detalhes: ${errorText}`);
+                        }
                         // Não persiste local quando a API rejeita para evitar divergência
                         this.renderModals();
                     }
                 } catch (e) {
-                    alert('Erro ao salvar alterações. Tente novamente.');
+                    console.error('Erro ao salvar:', e);
+                    alert('Erro ao salvar alterações. Verifique sua conexão e tente novamente.');
                     this.renderModals();
                 }
             }
