@@ -1991,7 +1991,7 @@ body.projects-page {
 .projects-page .content-area {
     background: #f8fafc;
     padding: 0;
-    padding-bottom: 60px; /* Altura do footer para evitar sobreposição - componentes distintos mas encostados */
+    padding-bottom: 58px; /* Altura do footer para evitar sobreposição - componentes distintos mas encostados */
     margin-left: 100px;
     margin-top: 0;
     margin-bottom: 0;
