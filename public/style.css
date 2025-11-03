@@ -1990,10 +1990,11 @@ body.projects-page {
 .projects-page .content-area {
     background: #f8fafc;
     padding: 0;
+    padding-bottom: 60px; /* Altura do footer para que o content-area encoste nele */
     margin-left: 100px;
     margin-top: 0;
-    min-height: calc(100vh - 200px);
-    max-height: calc(100vh - 200px);
+    margin-bottom: 0;
+    min-height: calc(100vh - 80px); /* 100vh - header (~80px) */
     overflow-y: auto;
     flex: 1;
     position: static;
@@ -2005,6 +2006,7 @@ body.projects-page {
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     gap: 2rem;
     padding: 1.5rem 3rem 2rem 3rem;
+    padding-bottom: calc(2rem + 60px); /* Padding padrão + altura do footer */
     margin: 0;
 }
 
