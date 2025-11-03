@@ -5771,7 +5771,7 @@ body.compras-page {
 
 /* Seção de filtros */
 .filters-section {
-    background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%);
     padding: 1rem 1.25rem;
     border-radius: 1rem;
     margin-bottom: 1.5rem;
