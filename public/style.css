@@ -1987,14 +1987,15 @@ body.projects-page {
 }
 
 /* Content Area específico para Projetos */
+/* CORREÇÃO-FOOTER: content-area agora encosta no footer sem lacuna */
 .projects-page .content-area {
     background: #f8fafc;
     padding: 0;
-    padding-bottom: 60px; /* Altura do footer para que o content-area encoste nele */
+    padding-bottom: 0; /* SEM padding inferior - content-area encosta diretamente no footer */
     margin-left: 100px;
     margin-top: 0;
     margin-bottom: 0;
-    min-height: calc(100vh - 80px); /* 100vh - header (~80px) */
+    min-height: calc(100vh - 80px - 60px); /* 100vh - header (~80px) - footer (~60px) */
     overflow-y: auto;
     flex: 1;
     position: static;
@@ -2006,7 +2007,7 @@ body.projects-page {
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     gap: 2rem;
     padding: 1.5rem 3rem 2rem 3rem;
-    padding-bottom: calc(2rem + 60px); /* Padding padrão + altura do footer */
+    padding-bottom: calc(2rem + 60px); /* Padding padrão + altura do footer para que o último item não fique colado */
     margin: 0;
 }
 
