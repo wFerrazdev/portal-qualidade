@@ -1987,11 +1987,11 @@ body.projects-page {
 }
 
 /* Content Area específico para Projetos */
-/* CORREÇÃO-FOOTER: content-area agora encosta no footer sem lacuna */
+/* CORREÇÃO-FOOTER: content-area termina exatamente onde o footer começa, sem lacuna e sem sobrepor */
 .projects-page .content-area {
     background: #f8fafc;
     padding: 0;
-    padding-bottom: 0; /* SEM padding inferior - content-area encosta diretamente no footer */
+    padding-bottom: 60px; /* Altura do footer para evitar sobreposição - componentes distintos mas encostados */
     margin-left: 100px;
     margin-top: 0;
     margin-bottom: 0;
