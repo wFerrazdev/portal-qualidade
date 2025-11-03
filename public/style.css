@@ -488,7 +488,7 @@ body.dashboard-page {
 }
 
 .dashboard-page .dashboard-title {
-  font-size: 2.3rem;
+  font-size: 1.38rem;
   font-weight: 700;
   color: #ffffff;
   margin: 0 0 0.5rem 0;
@@ -499,7 +499,7 @@ body.dashboard-page {
 
 .dashboard-page .dashboard-subtitle {
   color: rgba(255, 255, 255, 0.9);
-  font-size: 0.9rem;
+  font-size: 0.54rem;
   margin: 0;
   font-weight: 400;
   line-height: 1.4;
@@ -509,17 +509,17 @@ body.dashboard-page {
 /* Responsividade para dashboard - Seguindo padrão da página projetos */
 @media (max-width: 1200px) {
     .dashboard-page .dashboard-title {
-        font-size: 2rem;
+        font-size: 1.2rem;
     }
 }
 
 @media (max-width: 768px) {
     .dashboard-page .dashboard-title {
-        font-size: 1.8rem;
+        font-size: 1.08rem;
     }
 
     .dashboard-page .dashboard-subtitle {
-        font-size: 0.8rem;
+        font-size: 0.48rem;
         max-width: 100%;
     }
 }
@@ -634,7 +634,7 @@ body.calibracao-page {
 }
 
 .header-title {
-  font-size: 1.8rem;
+  font-size: 1.08rem;
   font-weight: 700;
   color: #003366;
   margin: 0;
@@ -646,7 +646,7 @@ body.calibracao-page {
 
 .header-subtitle {
   color: #64748b;
-  font-size: 0.9rem;
+  font-size: 0.54rem;
   margin-top: 0.25rem;
   font-weight: 400;
 }
@@ -1139,7 +1139,7 @@ body.calibracao-page {
   }
   
   .header-title {
-    font-size: 1.6rem;
+    font-size: 0.96rem;
   }
   
   .filters-section {
@@ -1193,7 +1193,7 @@ body.calibracao-page {
 
 @media (max-width: 480px) {
   .header-title {
-    font-size: 1.3rem;
+    font-size: 0.78rem;
   }
   
   .filter-group {
@@ -1911,7 +1911,7 @@ body.projects-page {
 }
 
 .projects-page .projects-title {
-    font-size: 2.3rem;
+    font-size: 1.38rem;
     font-weight: 700;
     color: #ffffff;
     margin: 0 0 0.5rem 0;
@@ -1922,7 +1922,7 @@ body.projects-page {
 
 .projects-page .projects-subtitle {
     color: rgba(255, 255, 255, 0.9);
-    font-size: 0.9rem;
+    font-size: 0.54rem;
     margin: 0;
     font-weight: 400;
     line-height: 1.4;
@@ -2015,7 +2015,7 @@ body.projects-page {
     }
     
     .projects-page .projects-title {
-        font-size: 0.2rem;
+        font-size: 1.2rem;
     }
     
     .projects-page .projects-grid {
@@ -3805,7 +3805,7 @@ body.auditorias-page {
 
 /* Título da página de auditorias - mesmo da página de reuniões */
 .auditorias-page .projects-title {
-    font-size: 2.3rem;
+    font-size: 1.38rem;
     font-weight: 700;
     color: #ffffff;
     margin: 0 0 0.5rem 0;
@@ -3815,7 +3815,7 @@ body.auditorias-page {
 /* Subtítulo da página de auditorias - mesmo da página de reuniões */
 .auditorias-page .projects-subtitle {
     color: rgba(255, 255, 255, 0.9);
-    font-size: 0.9rem;
+    font-size: 0.54rem;
     margin: 0;
     font-weight: 400;
     line-height: 1.4;
@@ -3905,11 +3905,11 @@ body.auditorias-page {
     }
     
     .auditorias-page .projects-title {
-        font-size: 1.6rem;
+        font-size: 0.96rem;
     }
     
     .auditorias-page .projects-subtitle {
-        font-size: 0.8rem;
+        font-size: 0.48rem;
     }
     
     .auditorias-page .projects-add-btn {
@@ -5616,7 +5616,7 @@ body.auditorias-page {
 }
 
 .reunioes-page .projects-title {
-    font-size: 2.3rem;
+    font-size: 1.38rem;
     font-weight: 700;
     color: #ffffff;
     margin: 0 0 0.5rem 0;
@@ -5627,7 +5627,7 @@ body.auditorias-page {
 
 .reunioes-page .projects-subtitle {
     color: rgba(255, 255, 255, 0.9);
-    font-size: 0.9rem;
+    font-size: 0.54rem;
     margin: 0;
     font-weight: 400;
     line-height: 1.4;
@@ -5801,7 +5801,7 @@ body.compras-page {
 }
 
 .compras-title {
-    font-size: 2.3rem;
+    font-size: 1.38rem;
     font-weight: 700;
     color: #ffffff;
     margin: 0 0 0.5rem 0;
@@ -5811,7 +5811,7 @@ body.compras-page {
 
 .compras-subtitle {
     color: rgba(255, 255, 255, 0.9);
-    font-size: 0.9rem;
+    font-size: 0.54rem;
     margin: 0;
     font-weight: 400;
     line-height: 1.4;
@@ -5852,11 +5852,11 @@ body.compras-page {
     }
     
     .compras-title {
-        font-size: 1.6rem;
+        font-size: 0.96rem;
     }
     
     .compras-subtitle {
-        font-size: 0.7rem;
+        font-size: 0.42rem;
     }
     
     .compras-header-wrapper .compras-particle {
