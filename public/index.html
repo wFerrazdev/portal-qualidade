@@ -151,52 +151,52 @@
                 
                 <!-- Conteúdo do header -->
                 <div class="dashboard-header">
-                    <div class="header-left">
-                        <h1 class="dashboard-title">Dashboard de Indicadores</h1>
-                        <p class="dashboard-subtitle">Visão geral dos indicadores de qualidade do mês</p>
+                    <div class="dashboard-header-top">
+                        <div class="header-left">
+                            <h1 class="dashboard-title">Dashboard de Indicadores</h1>
+                            <p class="dashboard-subtitle">Visão geral dos indicadores de qualidade do mês</p>
+                        </div>
+                        <div class="header-right">
+                            <!-- Sem botão de adicionar projeto -->
+                        </div>
                     </div>
-                    <div class="header-right">
-                        <!-- Sem botão de adicionar projeto -->
+                    
+                    <!-- Abas e Filtros integrados no header -->
+                    <div class="dashboard-header-bottom">
+                        <div class="tabs-container">
+                            <button class="tab-button active" data-tab="rifs">RIF's</button>
+                            <button class="tab-button" data-tab="opt">OPT</button>
+                            <button class="tab-button" data-tab="nc_interna">NC Interna</button>
+                            <button class="tab-button" data-tab="nc_externa">NC Externa</button>
+                        </div>
+                        <div class="filters-group">
+                            <div class="filter-group">
+                                <span id="currentTabIndicator" class="tab-indicator">RIFS</span>
+                                <select id="periodoMes" class="filter-select">
+                                    <option value="">Selecionar Mês</option>
+                                </select>
+                                <select id="periodoAno" class="filter-select">
+                                    <option value="">Selecionar Ano</option>
+                                </select>
+                                <button id="aplicarPeriodoBtn" class="btn btn-primary btn-icon" title="Aplicar período">
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                </button>
+                                <button id="refreshChartsBtn" class="btn btn-primary btn-icon" title="Atualizar dados">
+                                    <img src="atualizarbtn.png" alt="Atualizar" width="16" height="16" loading="lazy">
+                                </button>
+                            </div>
+                            <button id="generatePdfBtn" class="btn btn-secondary" title="Gerar Relatório em PDF">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="margin-right: 6px;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                </svg>
+                                Relatório
+                            </button>
+                        </div>
                     </div>
                 </div>
             </header>
-
-            <!-- Abas e Filtros Modernos -->
-            <section class="tabs-section">
-                <div class="tabs-with-filters-container">
-                    <div class="tabs-container">
-                        <button class="tab-button active" data-tab="rifs">RIF's</button>
-                        <button class="tab-button" data-tab="opt">OPT</button>
-                        <button class="tab-button" data-tab="nc_interna">NC Interna</button>
-                        <button class="tab-button" data-tab="nc_externa">NC Externa</button>
-                    </div>
-                    <div class="filters-group">
-                    <div class="filter-group">
-                        <span id="currentTabIndicator" class="tab-indicator">RIFS</span>
-                        <select id="periodoMes" class="filter-select">
-                            <option value="">Selecionar Mês</option>
-                        </select>
-                        <select id="periodoAno" class="filter-select">
-                            <option value="">Selecionar Ano</option>
-                        </select>
-                        <button id="aplicarPeriodoBtn" class="btn btn-primary btn-icon" title="Aplicar período">
-                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-                            </svg>
-                        </button>
-                        <button id="refreshChartsBtn" class="btn btn-primary btn-icon" title="Atualizar dados">
-                            <img src="atualizarbtn.png" alt="Atualizar" width="16" height="16" loading="lazy">
-                        </button>
-                    </div>
-                    <button id="generatePdfBtn" class="btn btn-secondary" title="Gerar Relatório em PDF">
-                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="margin-right: 6px;">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
-                        </svg>
-                        Relatório
-                    </button>
-                </div>
-                </div>
-            </section>
 
             <!-- Área de Conteúdo -->
             <section class="content-area">

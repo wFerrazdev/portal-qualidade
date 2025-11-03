@@ -457,13 +457,33 @@ body.dashboard-page {
 /* Header do dashboard - REFAZIDO DO ZERO */
 .dashboard-page .dashboard-header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.5rem 1rem;
+  flex-direction: column;
+  padding: 1.5rem 2rem;
   margin: 0;
-  min-height: 60px;
+  min-height: auto;
   position: relative;
   z-index: 10;
+  gap: 1rem;
+}
+
+/* Topo do header - título e subtítulo */
+.dashboard-page .dashboard-header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+/* Parte inferior do header - abas e filtros */
+.dashboard-page .dashboard-header-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 1.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .dashboard-page .dashboard-title {
@@ -787,38 +807,28 @@ body.calibracao-page {
   flex-shrink: 0;
 }
 
-/* Abas do dashboard - com gradiente alinhado ao header */
-.dashboard-page .tabs-section {
-  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%) !important;
-  border: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  box-shadow: none !important;
-  z-index: 100 !important;
-  margin-top: 0 !important;
-  padding-top: 0.75rem !important;
-  padding-bottom: 0.75rem !important;
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-  position: relative;
-  overflow: hidden;
-  margin-left: 100px !important;
-}
+/* REMOVIDO: tabs-section não é mais necessário - abas estão dentro do dashboard-header */
 
-/* Botões das abas do dashboard - já aplicado acima */
+/* Botões das abas do dashboard - estilo similar aos filtros */
 .dashboard-page .tab-button {
-  color: rgba(255, 255, 255, 0.85) !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  color: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .dashboard-page .tab-button:hover {
-  background: rgba(255, 255, 255, 0.15) !important;
+  background: rgba(255, 255, 255, 0.25) !important;
+  border-color: rgba(255, 255, 255, 0.35) !important;
   color: #ffffff !important;
 }
 
 .dashboard-page .tab-button.active {
-  background: rgba(255, 255, 255, 0.3) !important;
+  background: rgba(255, 255, 255, 0.35) !important;
+  border-color: rgba(255, 255, 255, 0.5) !important;
   color: #ffffff !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
 /* Filtros do dashboard - já aplicado acima */
@@ -888,8 +898,8 @@ body.calibracao-page {
 .tab-button {
   padding: 0.5rem 1rem;
   background: transparent;
-  border: none;
-  border-radius: 12px;
+  border: 1px solid transparent;
+  border-radius: 8px;
   color: #64748b;
   font-size: 0.875rem;
   font-weight: 600;
@@ -901,30 +911,22 @@ body.calibracao-page {
 }
 
 .tab-button::before {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  width: 0;
-  height: 2px;
-  background: rgba(255, 255, 255, 0.8);
-  transition: all 0.2s ease;
-  transform: translateX(-50%);
+  display: none;
 }
 
 .tab-button:hover {
   background: rgba(255, 255, 255, 0.1);
-  color: #ffffff;
+  color: #64748b;
 }
 
 .tab-button.active {
-  background: rgba(255, 255, 255, 0.25);
-  color: #ffffff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  color: #003366;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .tab-button.active::before {
-  width: 80%;
+  display: none;
 }
 
 /* Cards de Gráficos Modernos */
@@ -937,11 +939,11 @@ body.calibracao-page {
   overflow-y: auto;
 }
 
-/* Content area específico para dashboard - começar logo abaixo da tabs-section */
+/* Content area específico para dashboard - começar logo abaixo do header */
 .dashboard-page .content-area {
   background: #f8fafc;
   margin-top: 0;
-  padding-top: 0.5rem; /* Margem mínima entre o grid e a divisão */
+  padding-top: 1rem;
 }
 
 
@@ -1171,9 +1173,14 @@ body.calibracao-page {
     padding: 0.5rem 1rem;
   }
   
-  .dashboard-page .tabs-section {
-    padding: 0.5rem 1rem !important;
-    margin-left: 0 !important;
+  .dashboard-page .dashboard-header {
+    padding: 1rem 1rem !important;
+  }
+  
+  .dashboard-page .dashboard-header-bottom {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
   }
 
   .tab-button {
@@ -1315,13 +1322,23 @@ canvas {
   height: auto;
 }
 
-/* Layout de Abas e Filtros na Mesma Linha */
+/* Layout de Abas e Filtros na Mesma Linha - usado em outras páginas */
 .tabs-with-filters-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0.5rem 2rem;
   gap: 1.5rem;
+}
+
+/* Dashboard usa dashboard-header-bottom ao invés de tabs-with-filters-container */
+.dashboard-page .dashboard-header-bottom .tabs-container {
+  flex: 0 0 auto;
+}
+
+.dashboard-page .dashboard-header-bottom .filters-group {
+  flex: 1 1 auto;
+  justify-content: flex-end;
 }
 
 .filters-group {
@@ -1343,12 +1360,18 @@ canvas {
     justify-content: space-between;
   }
   
-  .dashboard-page .tabs-section {
-    padding: 0.5rem 1.5rem !important;
+  .dashboard-page .dashboard-header {
+    padding: 1.25rem 1.5rem !important;
   }
   
-  .tabs-with-filters-container {
-    padding: 0.5rem 1.5rem;
+  .dashboard-page .dashboard-header-bottom {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+  
+  .dashboard-page .dashboard-header-bottom .filters-group {
+    justify-content: flex-start;
   }
 }
 
@@ -1364,13 +1387,13 @@ canvas {
     justify-content: center;
   }
   
-  .dashboard-page .tabs-section {
-    padding: 0.5rem 1rem !important;
-    margin-left: 0 !important;
+  .dashboard-page .dashboard-header {
+    padding: 1rem 1rem !important;
   }
   
-  .tabs-with-filters-container {
-    padding: 0.5rem 1rem;
+  .dashboard-page .dashboard-header-bottom {
+    flex-direction: column;
+    align-items: stretch;
     gap: 1rem;
   }
   
