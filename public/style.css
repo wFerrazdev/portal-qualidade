@@ -287,14 +287,93 @@ body {
   flex-shrink: 0;
 }
 
-/* Header específico para página de reuniões - transparente para mostrar background animado */
+/* Header específico para página de reuniões - com animações integradas */
 .reunioes-page .content-header {
   background: transparent;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 4px 20px rgba(0, 51, 102, 0.3);
   position: relative;
   overflow: hidden;
+  padding: 0;
   margin-left: 100px;
+}
+
+/* Background animado integrado no content-header de reuniões */
+.reunioes-page .content-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%);
+  z-index: -1;
+}
+
+/* Ondas animadas integradas no content-header de reuniões */
+.reunioes-page .content-header .reunioes-wave {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0.6;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.reunioes-page .content-header .reunioes-wave.wave-1 path {
+  stroke-dasharray: 2000;
+  stroke-dashoffset: 2000;
+  animation: buildWave 12s linear infinite;
+}
+
+.reunioes-page .content-header .reunioes-wave.wave-2 path {
+  stroke-dasharray: 2000;
+  stroke-dashoffset: 2000;
+  animation: buildWave 14s linear infinite 2s;
+}
+
+.reunioes-page .content-header .reunioes-wave.wave-3 path {
+  stroke-dasharray: 2000;
+  stroke-dashoffset: 2000;
+  animation: buildWave 13s linear infinite 4s;
+}
+
+.reunioes-page .content-header .reunioes-wave.wave-4 path {
+  stroke-dasharray: 2000;
+  stroke-dashoffset: 2000;
+  animation: buildWave 15s linear infinite 6s;
+}
+
+.reunioes-page .content-header .reunioes-wave.wave-5 path {
+  stroke-dasharray: 2000;
+  stroke-dashoffset: 2000;
+  animation: buildWave 11s linear infinite 8s;
+}
+
+/* Partículas flutuantes integradas no content-header de reuniões */
+.reunioes-page .content-header .reunioes-particle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: linear-gradient(45deg, #60a5fa, #3b82f6);
+  border-radius: 50%;
+  opacity: 0.8;
+  z-index: 0;
+  pointer-events: none;
+  box-shadow: 0 0 6px rgba(96, 165, 250, 0.37);
+}
+
+.reunioes-page .content-header .reunioes-particle.straight {
+  animation: floatStraightReunioes 5s ease-in-out infinite;
+  animation-fill-mode: both;
+}
+
+/* Conteúdo do header de reuniões */
+.reunioes-page .content-header .projects-header {
+  position: relative;
+  z-index: 2;
 }
 
 /* Background gradiente azul para página de reuniões - mesmo da página de projetos */
@@ -309,17 +388,70 @@ body.dashboard-page {
   color: #ffffff;
 }
 
-/* Header do dashboard - COMPLETAMENTE TRANSPARENTE */
+/* Header do dashboard - com animações integradas */
 .dashboard-page .content-header {
-  background: rgba(0, 0, 0, 0) !important;
-  border: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  box-shadow: none !important;
-  z-index: 99 !important;
-  margin-bottom: 0 !important;
-  padding-bottom: 0 !important;
-  margin-left: 100px !important;
+  background: transparent;
+  border: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+  z-index: 99;
+  margin-bottom: 0;
+  padding-bottom: 0;
+  padding: 0;
+  margin-left: 100px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Background animado integrado no content-header do dashboard */
+.dashboard-page .content-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%);
+  z-index: -1;
+}
+
+/* Ondas animadas integradas no content-header do dashboard */
+.dashboard-page .content-header .dashboard-wave {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0.35;
+  z-index: 0;
+  pointer-events: none;
+  will-change: stroke-dashoffset;
+  transform: translateZ(0);
+}
+
+/* Partículas flutuantes integradas no content-header do dashboard */
+.dashboard-page .content-header .dashboard-particle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: linear-gradient(45deg, #60a5fa, #3b82f6);
+  border-radius: 50%;
+  opacity: 0.8;
+  z-index: 0;
+  pointer-events: none;
+  box-shadow: 0 0 6px rgba(96, 165, 250, 0.37);
+}
+
+.dashboard-page .content-header .dashboard-particle.straight {
+  animation: floatStraight 3s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+  animation-fill-mode: both;
+}
+
+/* Conteúdo do header do dashboard */
+.dashboard-page .content-header .dashboard-header {
+  position: relative;
+  z-index: 2;
 }
 
 /* Header do dashboard - REFAZIDO DO ZERO */
@@ -369,6 +501,101 @@ body.dashboard-page {
         font-size: 1rem;
         max-width: 100%;
     }
+}
+
+/* Background gradiente azul para página de calibração */
+body.calibracao-page {
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%);
+    color: #ffffff;
+}
+
+/* Header específico para página de calibração - com animações integradas */
+.calibracao-page .content-header {
+  background: transparent;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 51, 102, 0.3);
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+  margin-left: 100px;
+}
+
+/* Background animado integrado no content-header de calibração */
+.calibracao-page .content-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%);
+  z-index: -1;
+}
+
+/* Ondas animadas integradas no content-header de calibração */
+.calibracao-page .content-header .calibracao-wave {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0.6;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.calibracao-page .content-header .calibracao-wave.wave-1 path {
+  stroke-dasharray: 2000;
+  stroke-dashoffset: 2000;
+  animation: buildWave 12s linear infinite;
+}
+
+.calibracao-page .content-header .calibracao-wave.wave-2 path {
+  stroke-dasharray: 2000;
+  stroke-dashoffset: 2000;
+  animation: buildWave 14s linear infinite 2s;
+}
+
+.calibracao-page .content-header .calibracao-wave.wave-3 path {
+  stroke-dasharray: 2000;
+  stroke-dashoffset: 2000;
+  animation: buildWave 13s linear infinite 4s;
+}
+
+.calibracao-page .content-header .calibracao-wave.wave-4 path {
+  stroke-dasharray: 2000;
+  stroke-dashoffset: 2000;
+  animation: buildWave 15s linear infinite 6s;
+}
+
+.calibracao-page .content-header .calibracao-wave.wave-5 path {
+  stroke-dasharray: 2000;
+  stroke-dashoffset: 2000;
+  animation: buildWave 11s linear infinite 8s;
+}
+
+/* Partículas flutuantes integradas no content-header de calibração */
+.calibracao-page .content-header .calibracao-particle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: linear-gradient(45deg, #60a5fa, #3b82f6);
+  border-radius: 50%;
+  opacity: 0.8;
+  z-index: 0;
+  pointer-events: none;
+  box-shadow: 0 0 6px rgba(96, 165, 250, 0.37);
+}
+
+.calibracao-page .content-header .calibracao-particle.straight {
+  animation: floatStraightReunioes 5s ease-in-out infinite;
+  animation-fill-mode: both;
+}
+
+/* Conteúdo do header de calibração */
+.calibracao-page .content-header .header-top {
+  position: relative;
+  z-index: 2;
 }
 
 .header-top {
@@ -1517,10 +1744,58 @@ body.projects-page {
     padding: 0;
     margin-left: 100px;
     box-shadow: 0 4px 20px rgba(0, 51, 102, 0.3);
-    position: static;
+    position: relative;
     overflow: hidden;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
+}
+
+/* Background animado integrado no content-header de projetos */
+.projects-page .content-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%);
+    z-index: -1;
+}
+
+/* Ondas animadas integradas no content-header de projetos */
+.projects-page .content-header .projects-wave {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0.6;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Partículas flutuantes integradas no content-header de projetos */
+.projects-page .content-header .projects-particle {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: linear-gradient(45deg, #60a5fa, #3b82f6);
+    border-radius: 50%;
+    opacity: 0.8;
+    z-index: 0;
+    pointer-events: none;
+    box-shadow: 0 0 6px rgba(96, 165, 250, 0.37);
+}
+
+.projects-page .content-header .projects-particle.straight {
+    animation: floatStraightReunioes 5s ease-in-out infinite;
+    animation-fill-mode: both;
+}
+
+/* Conteúdo do header de projetos */
+.projects-page .content-header .projects-header {
+    position: relative;
+    z-index: 2;
 }
 
 /* Mesmos efeitos da página de login */
@@ -1623,6 +1898,7 @@ body.projects-page {
     background: #f8fafc;
     padding: 0;
     margin-left: 100px;
+    margin-top: 0;
     min-height: calc(100vh - 200px);
     max-height: calc(100vh - 200px);
     overflow-y: auto;
@@ -3323,69 +3599,92 @@ body.auditorias-page {
     color: #ffffff;
 }
 
-/* Header específico para página de auditorias - transparente para mostrar background animado */
+/* Header específico para página de auditorias - com animações integradas */
 .auditorias-page .content-header {
   background: transparent;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 4px 20px rgba(0, 51, 102, 0.3);
   position: relative;
   overflow: hidden;
+  padding: 0;
   margin-left: 100px;
 }
 
-
-
-/* Garantir que o content-header da página de auditorias contenha o background animado */
-.auditorias-page .content-header {
-    position: relative;
-    overflow: hidden;
+/* Background animado integrado no content-header de auditorias */
+.auditorias-page .content-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%);
+  z-index: -1;
 }
 
-/* Ajustar ondas para página de auditorias - limitar área de trabalho */
-.auditorias-page .projects-wave {
+/* Ondas animadas integradas no content-header de auditorias */
+.auditorias-page .content-header .auditorias-wave {
     position: absolute;
     width: 100%;
-    height: 80px; /* Reduzir altura das ondas */
+    height: 100%;
+    top: 0;
+    left: 0;
     opacity: 0.6;
 }
 
-.auditorias-page .projects-wave.wave-1 {
-    top: 10%;
-    animation-delay: 0s;
+/* Ondas animadas integradas - Auditorias - paths */
+.auditorias-page .content-header .auditorias-wave.wave-1 path {
+    stroke-dasharray: 2000;
+    stroke-dashoffset: 2000;
+    animation: buildWave 12s linear infinite;
 }
 
-.auditorias-page .projects-wave.wave-2 {
-    top: 25%;
-    animation-delay: 2s;
+.auditorias-page .content-header .auditorias-wave.wave-2 path {
+    stroke-dasharray: 2000;
+    stroke-dashoffset: 2000;
+    animation: buildWave 14s linear infinite 2s;
 }
 
-.auditorias-page .projects-wave.wave-3 {
-    top: 40%;
-    animation-delay: 4s;
+.auditorias-page .content-header .auditorias-wave.wave-3 path {
+    stroke-dasharray: 2000;
+    stroke-dashoffset: 2000;
+    animation: buildWave 13s linear infinite 4s;
 }
 
-.auditorias-page .projects-wave.wave-4 {
-    top: 55%;
-    animation-delay: 6s;
+.auditorias-page .content-header .auditorias-wave.wave-4 path {
+    stroke-dasharray: 2000;
+    stroke-dashoffset: 2000;
+    animation: buildWave 15s linear infinite 6s;
 }
 
-.auditorias-page .projects-wave.wave-5 {
-    top: 70%;
-    animation-delay: 8s;
+.auditorias-page .content-header .auditorias-wave.wave-5 path {
+    stroke-dasharray: 2000;
+    stroke-dashoffset: 2000;
+    animation: buildWave 11s linear infinite 8s;
 }
 
-/* Partículas flutuantes otimizadas para página de auditorias - movimento suave com transparência */
-.auditorias-page .projects-particle {
+/* Partículas flutuantes integradas no content-header de auditorias */
+.auditorias-page .content-header .auditorias-particle {
     position: absolute;
     width: 3px;
     height: 3px;
-    background: #60a5fa;
+    background: linear-gradient(45deg, #60a5fa, #3b82f6);
     border-radius: 50%;
+    opacity: 0.8;
+    z-index: 0;
+    pointer-events: none;
     box-shadow: 0 0 6px rgba(96, 165, 250, 0.37);
-    top: 100%; /* Começar fora da área visível */
-    opacity: 0; /* Iniciar invisíveis */
-    will-change: transform, opacity; /* Otimização de performance */
-    transform: translateZ(0); /* Forçar aceleração de hardware */
+}
+
+.auditorias-page .content-header .auditorias-particle.straight {
+    animation: floatStraightReunioes 5s ease-in-out infinite;
+    animation-fill-mode: both;
+}
+
+/* Conteúdo do header de auditorias */
+.auditorias-page .content-header .projects-header {
+    position: relative;
+    z-index: 2;
 }
 
 /* Classes para diferentes tipos de movimento das partículas - página de auditorias */
@@ -3487,6 +3786,7 @@ body.auditorias-page {
     background: #f8fafc;
     padding: 0;
     margin-left: 100px;
+    margin-top: 0;
     min-height: calc(100vh - 200px);
     max-height: calc(100vh - 200px);
     overflow-y: auto;
@@ -3525,23 +3825,23 @@ body.auditorias-page {
         padding: 16px 28px;
     }
     
-    .auditorias-page .projects-particle {
+    .auditorias-page .content-header .auditorias-particle {
         animation-duration: 7s !important;
     }
     
-    .auditorias-page .projects-wave path {
+    .auditorias-page .content-header .auditorias-wave path {
         animation-duration: 15s !important;
     }
 }
 
 /* Desabilitar animações em dispositivos com baixa performance - página de auditorias */
 @media (prefers-reduced-motion: reduce) {
-    .auditorias-page .projects-particle {
+    .auditorias-page .content-header .auditorias-particle {
         animation: none !important;
         opacity: 0.2 !important;
     }
     
-    .auditorias-page .projects-wave path {
+    .auditorias-page .content-header .auditorias-wave path {
         animation: none !important;
         stroke-dashoffset: 0 !important;
     }
@@ -3549,12 +3849,12 @@ body.auditorias-page {
 
 /* Desabilitar animações em dispositivos muito lentos - página de auditorias */
 @media (max-width: 480px) {
-    .auditorias-page .projects-particle {
+    .auditorias-page .content-header .auditorias-particle {
         animation: none !important;
         opacity: 0.1 !important;
     }
     
-    .auditorias-page .projects-wave path {
+    .auditorias-page .content-header .auditorias-wave path {
         animation: none !important;
         stroke-dashoffset: 0 !important;
     }
@@ -3934,35 +4234,7 @@ body.auditorias-page {
    EXATO da página de login
    ======================================== */
 
-/* Background animado do cabeçalho de projetos */
-.projects-header-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 200px;
-    z-index: 1;
-    overflow: hidden;
-    pointer-events: none;
-}
-
-/* Background animado específico para página de projetos - posicionado corretamente no content-header */
-.projects-page .projects-header-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-    overflow: hidden;
-    pointer-events: none;
-}
-
-/* Garantir que o content-header da página de projetos contenha o background animado */
-.projects-page .content-header {
-    position: relative;
-    overflow: hidden;
-}
+/* REMOVIDO: projects-header-background não é mais necessário - ondas estão diretamente no content-header */
 
 /* Background animado específico para página de reuniões - posicionado corretamente no content-header */
 .reunioes-page .projects-header-background {
@@ -4605,149 +4877,76 @@ body.auditorias-page {
    BACKGROUND ANIMADO DO CABEÇALHO - DASHBOARD
    ======================================== */
 
-/* Background animado do cabeçalho do dashboard - Estendido para contemplar tabs-section */
-.dashboard-header-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: calc(100% + 60px); /* Estender 60px para contemplar tabs-section */
-    z-index: 1;
-    overflow: hidden;
-    pointer-events: none;
-}
+/* REMOVIDO: dashboard-header-background não é mais necessário - ondas estão diretamente no content-header */
 
-/* Garantir que o content-header da página dashboard contenha o background animado */
-.dashboard-page .content-header {
-    position: relative;
-    overflow: visible; /* Permitir que as animações se estendam para o tabs-section */
-}
-
-/* Ondas animadas - Dashboard */
-.dashboard-wave {
-    position: absolute;
-    width: 100%;
-    height: 80px;
-    opacity: 0.35;
-    will-change: stroke-dashoffset; /* Otimização de performance */
-    transform: translateZ(0); /* Forçar aceleração de hardware */
-}
-
-.dashboard-wave.wave-1 {
-    top: 5%;
-    animation-delay: 0s;
-}
-
-.dashboard-wave.wave-1 path {
+/* Ondas animadas integradas - Dashboard - paths */
+.dashboard-page .content-header .dashboard-wave.wave-1 path {
     stroke-dasharray: 2000;
     stroke-dashoffset: 2000;
     animation: buildWave 8s linear infinite;
 }
 
-.dashboard-wave.wave-2 {
-    top: 20%;
-    animation-delay: 4s;
-}
-
-.dashboard-wave.wave-2 path {
+.dashboard-page .content-header .dashboard-wave.wave-2 path {
     stroke-dasharray: 2000;
     stroke-dashoffset: 2000;
     animation: buildWave 8s linear infinite 4s;
 }
 
-.dashboard-wave.wave-3 {
-    top: 35%;
-    animation-delay: 8s;
-}
-
-.dashboard-wave.wave-3 path {
+.dashboard-page .content-header .dashboard-wave.wave-3 path {
     stroke-dasharray: 2000;
     stroke-dashoffset: 2000;
     animation: buildWave 8s linear infinite 8s;
 }
 
-.dashboard-wave.wave-4 {
-    top: 50%;
-    animation-delay: 12s;
-}
-
-.dashboard-wave.wave-4 path {
+.dashboard-page .content-header .dashboard-wave.wave-4 path {
     stroke-dasharray: 2000;
     stroke-dashoffset: 2000;
     animation: buildWave 8s linear infinite 12s;
 }
 
-.dashboard-wave.wave-5 {
-    top: 65%;
-    animation-delay: 16s;
-}
-
-.dashboard-wave.wave-5 path {
+.dashboard-page .content-header .dashboard-wave.wave-5 path {
     stroke-dasharray: 2000;
     stroke-dashoffset: 2000;
     animation: buildWave 8s linear infinite 16s;
 }
 
-/* Partículas flutuantes - Dashboard */
-.dashboard-particle {
-    position: absolute;
-    width: 3px;
-    height: 3px;
-    background: #60a5fa;
-    border-radius: 50%;
-    box-shadow: 0 0 6px rgba(96, 165, 250, 0.37);
-    top: 100%; /* Começar no final do header */
-    opacity: 0; /* Iniciar invisíveis para evitar partículas estáticas */
-    will-change: transform, opacity; /* Otimização de performance */
-    transform: translateZ(0); /* Forçar aceleração de hardware */
-}
+/* REMOVIDO: definições antigas de dashboard-wave e dashboard-particle - agora integradas no content-header */
 
-/* Desabilitar animações em dispositivos com baixa performance */
+/* Desabilitar animações em dispositivos com baixa performance - Dashboard */
 @media (prefers-reduced-motion: reduce) {
-    .dashboard-particle {
+    .dashboard-page .content-header .dashboard-particle {
         animation: none !important;
         opacity: 0.2 !important;
     }
     
-    .dashboard-wave path {
+    .dashboard-page .content-header .dashboard-wave path {
         animation: none !important;
         stroke-dashoffset: 0 !important;
     }
 }
 
-/* Otimizações para dispositivos móveis e baixa performance */
+/* Otimizações para dispositivos móveis e baixa performance - Dashboard */
 @media (max-width: 768px) {
-    .dashboard-particle {
+    .dashboard-page .content-header .dashboard-particle {
         animation-duration: 6s !important;
     }
     
-    .dashboard-wave path {
+    .dashboard-page .content-header .dashboard-wave path {
         animation-duration: 12s !important;
     }
 }
 
-/* Desabilitar animações em dispositivos muito lentos */
+/* Desabilitar animações em dispositivos muito lentos - Dashboard */
 @media (max-width: 480px) {
-    .dashboard-particle {
+    .dashboard-page .content-header .dashboard-particle {
         animation: none !important;
         opacity: 0.1 !important;
     }
     
-    .dashboard-wave path {
+    .dashboard-page .content-header .dashboard-wave path {
         animation: none !important;
         stroke-dashoffset: 0 !important;
     }
-}
-
-/* Classes para diferentes tipos de movimento das partículas - Dashboard */
-.dashboard-particle.diagonal {
-    animation: floatDiagonalDashboard 4s ease-in-out infinite;
-    animation-fill-mode: both;
-}
-
-.dashboard-particle.straight {
-    animation: floatStraightDashboard 4s ease-in-out infinite;
-    animation-fill-mode: both;
 }
 
 /* Partículas da página index - Movimento reto de baixo para cima com 20% menos visibilidade */
