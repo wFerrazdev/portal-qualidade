@@ -200,7 +200,7 @@ body {
   left: 0;
   height: 100vh;
   z-index: 1000;
-  width: 100px;
+  width: 70px; /* Reduzido de 100px para 70px quando retraído */
   background: linear-gradient(180deg, #0f172a 0%, #1e3a8a 100%);
   color: white;
   display: flex;
@@ -250,7 +250,11 @@ body {
   flex-grow: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 0.5rem 0.75rem; /* Padding lateral para dar respiro dos itens */
+  padding: 0.5rem 0.25rem; /* Padding reduzido quando retraído */
+}
+
+.sidebar:hover .sidebar-nav {
+  padding: 0.5rem 0.75rem; /* Padding maior quando expandido */
 }
 
 .sidebar-nav ul { 
@@ -262,8 +266,9 @@ body {
 .sidebar-nav li a { 
   display: flex;
   align-items: center; 
+  justify-content: center; /* Centraliza quando retraído */
   height: 50px; 
-  padding: 0 1rem; 
+  padding: 0 0.5rem; /* Padding reduzido quando retraído */
   color: white; 
   text-decoration: none; 
   white-space: nowrap; 
@@ -274,12 +279,17 @@ body {
 }
 
 .sidebar:hover .sidebar-nav li a { 
-  padding: 0 1rem; /* Mantém padding consistente no hover */
+  justify-content: flex-start; /* Alinha à esquerda quando expandido */
+  padding: 0 1rem; /* Padding maior quando expandido */
 }
 
 .sidebar-nav li a:hover { 
   background: rgba(255, 255, 255, 0.15);
-  transform: translateX(4px);
+  transform: translateX(0); /* Remove transform quando retraído */
+}
+
+.sidebar:hover .sidebar-nav li a:hover { 
+  transform: translateX(4px); /* Adiciona transform quando expandido */
 }
 
 /* Hover vermelho para o botão de logout/sair */
@@ -290,14 +300,22 @@ body {
 
 .sidebar-nav li a.active { 
   background: rgba(255, 255, 255, 0.2);
-  transform: translateX(4px);
+  transform: translateX(0); /* Remove transform quando retraído */
+}
+
+.sidebar:hover .sidebar-nav li a.active { 
+  transform: translateX(4px); /* Adiciona transform quando expandido */
 }
 
 .sidebar-nav li a svg { 
   width: 24px; 
   height: 24px; 
   flex-shrink: 0; 
-  margin-right: 20px; 
+  margin-right: 0; /* Remove margin quando retraído */
+}
+
+.sidebar:hover .sidebar-nav li a svg { 
+  margin-right: 20px; /* Adiciona margin quando expandido */
 }
 
 .sidebar-nav li a span { 
@@ -313,12 +331,13 @@ body {
 }
 
 .user-info {
-  padding: 15px 1.5rem;
+  padding: 15px 0.5rem;
   margin-top: auto;
-  margin-left: 0.75rem;
-  margin-right: 0.75rem;
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
   display: flex;
   align-items: center;
+  justify-content: center; /* Centraliza quando retraído */
   font-size: 0.85em;
   color: #ffffff;
   white-space: nowrap;
@@ -328,6 +347,7 @@ body {
 }
 
 .sidebar:hover .user-info {
+  justify-content: flex-start; /* Alinha à esquerda quando expandido */
   padding: 15px 1.5rem;
   margin-left: 0.75rem;
   margin-right: 0.75rem;
@@ -371,7 +391,7 @@ body {
 /* Conteúdo Principal */
 .main-content {
   flex: 1;
-  margin-left: 100px;
+  margin-left: 70px; /* Ajustado para novo tamanho do sidebar (70px) */
   background: transparent;
   height: 100vh;
   transition: margin-left 0.3s ease;
@@ -404,7 +424,7 @@ body {
   padding: 0rem 0rem;
   border-bottom: 1px solid #e2e8f0;
   position: relative;
-  margin-left: 100px;
+  margin-left: 70px; /* Ajustado para novo tamanho do sidebar (70px) */
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   flex-shrink: 0;
 }
@@ -417,7 +437,7 @@ body {
   position: relative;
   overflow: hidden;
   padding: 0;
-  margin-left: 100px;
+  margin-left: 70px; /* Ajustado para novo tamanho do sidebar (70px) */
 }
 
 /* Background animado integrado no content-header de reuniões */
@@ -521,7 +541,7 @@ body.dashboard-page {
   margin-bottom: 0;
   padding-bottom: 0;
   padding: 0;
-  margin-left: 100px;
+  margin-left: 70px; /* Ajustado para novo tamanho do sidebar (70px) */
   position: relative;
   overflow: hidden;
 }
@@ -660,7 +680,7 @@ body.calibracao-page {
   position: relative;
   overflow: hidden;
   padding: 0;
-  margin-left: 100px;
+  margin-left: 70px; /* Ajustado para novo tamanho do sidebar (70px) */
 }
 
 /* Background animado integrado no content-header de calibração */
@@ -926,7 +946,7 @@ body.calibracao-page {
   padding: 0.5rem 1rem;
   border-bottom: 1px solid #e2e8f0;
   position: relative;
-  margin-left: 100px;
+  margin-left: 70px; /* Ajustado para novo tamanho do sidebar (70px) */
   flex-shrink: 0;
 }
 
@@ -1057,7 +1077,7 @@ body.calibracao-page {
   padding: 1rem 3rem 100px 3rem;
   background: #f8fafc;
   position: relative;
-  margin-left: 100px;
+  margin-left: 70px; /* Ajustado para novo tamanho do sidebar (70px) */
   min-height: calc(100vh - 200px);
   overflow-y: auto;
 }
@@ -1957,7 +1977,7 @@ body.projects-page {
     background: transparent;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     padding: 0;
-    margin-left: 100px;
+    margin-left: 70px; /* Ajustado para novo tamanho do sidebar (70px) */
     box-shadow: 0 4px 20px rgba(0, 51, 102, 0.3);
     position: relative;
     overflow: hidden;
@@ -2114,7 +2134,7 @@ body.projects-page {
     background: #f8fafc;
     padding: 0;
     padding-bottom: 58px; /* Altura do footer para evitar sobreposição - componentes distintos mas encostados */
-    margin-left: 100px;
+    margin-left: 70px; /* Ajustado para novo tamanho do sidebar (70px) */
     margin-top: 0;
     margin-bottom: 0;
     min-height: calc(100vh - 80px - 60px); /* 100vh - header (~80px) - footer (~60px) */
@@ -3825,7 +3845,7 @@ body.auditorias-page {
   position: relative;
   overflow: hidden;
   padding: 0;
-  margin-left: 100px;
+  margin-left: 70px; /* Ajustado para novo tamanho do sidebar (70px) */
 }
 
 /* Background animado integrado no content-header de auditorias */
@@ -4005,7 +4025,7 @@ body.auditorias-page {
     background: #f8fafc;
     padding: 0;
     padding-bottom: 58px; /* Altura do footer para evitar sobreposição - componentes distintos mas encostados */
-    margin-left: 100px;
+    margin-left: 70px; /* Ajustado para novo tamanho do sidebar (70px) */
     margin-top: 0;
     margin-bottom: 0;
     min-height: calc(100vh - 80px - 60px); /* 100vh - header (~80px) - footer (~60px) */
@@ -4020,7 +4040,7 @@ body.auditorias-page {
     background: #f8fafc;
     padding: 0;
     padding-bottom: 58px; /* Altura do footer para evitar sobreposição - componentes distintos mas encostados */
-    margin-left: 100px;
+    margin-left: 70px; /* Ajustado para novo tamanho do sidebar (70px) */
     margin-top: 0;
     margin-bottom: 0;
     min-height: calc(100vh - 80px - 60px); /* 100vh - header (~80px) - footer (~60px) */
@@ -4042,7 +4062,7 @@ body.auditorias-page {
     background: #f8fafc;
     padding: 0;
     padding-bottom: 58px; /* Altura do footer para evitar sobreposição - componentes distintos mas encostados */
-    margin-left: 100px;
+    margin-left: 70px; /* Ajustado para novo tamanho do sidebar (70px) */
     margin-top: 0;
     margin-bottom: 0;
     min-height: calc(100vh - 80px - 60px); /* 100vh - header (~80px) - footer (~60px) */
@@ -5890,7 +5910,7 @@ body.compras-page {
     position: relative;
     overflow: hidden;
     padding: 0;
-    margin-left: 100px;
+    margin-left: 70px; /* Ajustado para novo tamanho do sidebar (70px) */
 }
 
 /* Background animado integrado no header */
@@ -6064,7 +6084,7 @@ body.compras-page {
     overflow: visible;
     min-height: 0;
     margin: 0;
-    margin-left: 100px;
+    margin-left: 70px; /* Ajustado para novo tamanho do sidebar (70px) */
     margin-bottom: 1rem; /* Margem pequena do footer */
     padding-bottom: 0;
     margin-top: 0; /* Sem margem superior para colar no header */
