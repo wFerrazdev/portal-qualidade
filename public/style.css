@@ -1922,9 +1922,21 @@ body:has(.sidebar:hover) .footer {
 
 /* Footer específico para página de compras - alinhar com padding do content-area */
 .compras-page .footer {
-    left: 70px; /* Começa exatamente onde o content-area começa (após margin-left de 70px) */
+    left: 70px !important; /* Força 70px quando retraído - começa exatamente onde o content-area começa (após margin-left de 70px) */
     padding-left: 0; /* Sem padding esquerdo - começa exatamente na divisa margin/padding do content-area */
     padding-right: 0;
+}
+
+/* Garantir que o footer volte para 70px quando o sidebar não estiver em hover */
+body:not(:has(.sidebar:hover)) .footer,
+.sidebar:not(:hover) ~ .footer {
+    left: 70px !important; /* Sempre 70px quando sidebar retraído */
+}
+
+/* Footer com sidebar expandido - todas as páginas */
+body:has(.sidebar:hover) .footer,
+.sidebar:hover ~ .footer {
+    left: 260px !important; /* 260px quando sidebar expandido */
 }
 
 .footer p {
@@ -6095,13 +6107,14 @@ body.compras-page {
 .compras-page .footer {
     position: fixed;
     bottom: 0;
-    left: 100px;
+    left: 70px !important; /* Corrigido para 70px (largura do sidebar retraído) */
     right: 0;
     z-index: 100;
     margin: 0;
     padding: 15px 0;
     flex-shrink: 0;
     background: #f8fafc;
+    transition: left 0.3s ease, filter 0.3s ease, opacity 0.3s ease;
     border-top: 1px solid #e2e8f0;
 }
 
@@ -6779,13 +6792,13 @@ body.compras-page {
     z-index: 9999; /* Garantir que o overlay fique acima do footer */
 }
 
-/* Quando o modal está aberto, aplicar blur no footer */
-body.modal-open .footer,
-.modal-overlay[style*="display: flex"] ~ .footer {
+/* Quando o modal está aberto, aplicar blur no footer - mesma lógica do page-container via backdrop-filter */
+body.modal-open .footer {
     filter: blur(4px);
-    opacity: 0.5;
+    opacity: 0.6;
     pointer-events: none;
     z-index: 100; /* Footer fica atrás do modal */
+    transition: filter 0.3s ease, opacity 0.3s ease;
 }
 
 .modal-content {
