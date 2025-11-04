@@ -490,6 +490,9 @@
             setupEventListeners();
             popularPeriodosUI();
             
+            // IMPORTANTE: Filtrar gráficos ANTES de qualquer carregamento para evitar gráficos de outras abas aparecendo
+            filterCharts('rifs');
+            
             // Aplicar automaticamente o período atual nas bases do Google Sheets
             // Isso garante que as bases sempre estejam com o mês/ano atual ao carregar a página
             if (selectedPeriodo && selectedPeriodo.mes && selectedPeriodo.ano) {
@@ -501,8 +504,6 @@
                 }
             }
             
-            // Primeiro filtra os gráficos para mostrar apenas RIFs
-            filterCharts('rifs');
             // Depois carrega os dados atualizados
             await updateAllCharts();
         }
@@ -593,14 +594,21 @@
             currentTab = activeTab;
             const chartIdsToShow = tabMapping[activeTab];
             
+            // IMPORTANTE: Ocultar TODOS os gráficos primeiro para evitar flickering
+            // Isso garante que gráficos de outras abas não apareçam temporariamente
             allCards.forEach(card => {
-                const canvas = card.querySelector('canvas');
-                if (canvas && chartIdsToShow.includes(canvas.id)) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
+                card.style.display = 'none';
             });
+            
+            // Depois mostrar apenas os da aba ativa
+            if (chartIdsToShow && allCards.length > 0) {
+                chartIdsToShow.forEach(chartId => {
+                    const card = document.getElementById(chartId);
+                    if (card) {
+                        card.style.display = 'block';
+                    }
+                });
+            }
             
             updateTabIndicator(activeTab);
         }
@@ -759,27 +767,96 @@
                     `${API_BASE_URL}/getSheetData?id=${SPREADSHEET_ID_NC_EXTERNA}&sheets=nce_procedentes_anos,nce_naoprocedentes_anos,total_nce_anos,nce_pareto_defeitos,kpi_revertidos`
                 ];
                 
+                // Adicionar timeout para evitar requisições que ficam pendentes
+                const fetchWithTimeout = (url, timeout = 15000) => {
+                    return Promise.race([
+                        fetch(url),
+                        new Promise((_, reject) => 
+                            setTimeout(() => reject(new Error('Timeout')), timeout)
+                        )
+                    ]);
+                };
+
                 const [responseExterno, responseInterno, responseRifs, responseNCExterna] = await Promise.all([
-                    fetch(urls[0]),
-                    fetch(urls[1]),
-                    fetch(urls[2]),
-                    fetch(urls[3])
+                    fetchWithTimeout(urls[0]).catch(e => ({ ok: false, error: e, status: 0 })),
+                    fetchWithTimeout(urls[1]).catch(e => ({ ok: false, error: e, status: 0 })),
+                    fetchWithTimeout(urls[2]).catch(e => ({ ok: false, error: e, status: 0 })),
+                    fetchWithTimeout(urls[3]).catch(e => ({ ok: false, error: e, status: 0 }))
                 ]);
 
-                lastDataExterno = await responseExterno.json();
-                lastDataInterno = await responseInterno.json();
-                lastDataRifs = await responseRifs.json();
-                lastDataNCExterna = await responseNCExterna.json();
+                // Verificar se as respostas são válidas antes de fazer parse
+                // Se houver erro, manter dados anteriores ao invés de sobrescrever com mock
+                if (responseExterno.ok && responseExterno.status === 200) {
+                    try {
+                        const contentType = responseExterno.headers.get('content-type');
+                        if (contentType && contentType.includes('application/json')) {
+                            lastDataExterno = await responseExterno.json();
+                        }
+                    } catch (e) {
+                        console.error('Erro ao parsear dados externos:', e);
+                        // Não sobrescrever dados existentes em caso de erro de parse
+                    }
+                } else if (responseExterno.error) {
+                    console.warn('Erro ao carregar dados externos, mantendo dados anteriores');
+                }
 
-                renderAllCharts();
+                if (responseInterno.ok && responseInterno.status === 200) {
+                    try {
+                        const contentType = responseInterno.headers.get('content-type');
+                        if (contentType && contentType.includes('application/json')) {
+                            lastDataInterno = await responseInterno.json();
+                        }
+                    } catch (e) {
+                        console.error('Erro ao parsear dados internos:', e);
+                    }
+                } else if (responseInterno.error) {
+                    console.warn('Erro ao carregar dados internos, mantendo dados anteriores');
+                }
+
+                if (responseRifs.ok && responseRifs.status === 200) {
+                    try {
+                        const contentType = responseRifs.headers.get('content-type');
+                        if (contentType && contentType.includes('application/json')) {
+                            lastDataRifs = await responseRifs.json();
+                        }
+                    } catch (e) {
+                        console.error('Erro ao parsear dados RIFs:', e);
+                    }
+                } else if (responseRifs.error) {
+                    console.warn('Erro ao carregar dados RIFs, mantendo dados anteriores');
+                }
+
+                if (responseNCExterna.ok && responseNCExterna.status === 200) {
+                    try {
+                        const contentType = responseNCExterna.headers.get('content-type');
+                        if (contentType && contentType.includes('application/json')) {
+                            lastDataNCExterna = await responseNCExterna.json();
+                        }
+                    } catch (e) {
+                        console.error('Erro ao parsear dados NC Externa:', e);
+                    }
+                } else if (responseNCExterna.error) {
+                    console.warn('Erro ao carregar dados NC Externa, mantendo dados anteriores');
+                }
+
+                // Só renderizar se houver dados válidos carregados
+                // Se todos falharam, tentar renderizar com dados existentes
+                if (lastDataExterno || lastDataInterno || lastDataRifs || lastDataNCExterna) {
+                    renderAllCharts();
+                }
                 
             } catch (error) {
                 console.error("Erro ao atualizar gráficos:", error);
+                // Em caso de erro geral, tentar renderizar com dados existentes
+                if (lastDataExterno || lastDataInterno || lastDataRifs || lastDataNCExterna) {
+                    renderAllCharts();
+                }
             } finally {
                 if (refreshBtn) { 
                     refreshBtn.disabled = false; 
                     refreshBtn.classList.remove('loading');
                 }
+                // Garantir que os gráficos estão filtrados corretamente
                 filterCharts(currentTab);
             }
         }
