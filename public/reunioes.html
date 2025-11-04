@@ -215,29 +215,7 @@
             }
         }
 
-        /* Loading state */
-        .loading-spinner {
-            grid-column: 1 / -1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 60px 20px;
-        }
-
-        .loading-spinner::after {
-            content: '';
-            width: 40px;
-            height: 40px;
-            border: 4px solid #e2e8f0;
-            border-top: 4px solid #667eea;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        /* Loading state removido - usando loading-overlay padrão */
 
         /* Estilos para Modal de Visualização */
         .view-modal-content {
@@ -790,7 +768,7 @@
 
             <main class="content-area">
                 <div class="reunioes-grid" id="meetingsGrid">
-                        <div class="loading-spinner"></div>
+                        <!-- Loading será mostrado pelo loading-overlay -->
                 </div>
             </main>
 
