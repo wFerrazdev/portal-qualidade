@@ -642,6 +642,15 @@
     </style>
 </head>
 <body class="unauthenticated reunioes-page">
+    <!-- Loading overlay -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text-container">
+            <div class="loading-text">CARREGANDO</div>
+        </div>
+        <p>Carregando reuniões...</p>
+    </div>
+
     <div class="page-container">
         
         <aside class="sidebar" id="sidebar">
@@ -1361,6 +1370,19 @@
                 } else if (deleteButton) {
                     const reuniaoId = deleteButton.dataset.id;
                     await handleDeleteMeeting(reuniaoId);
+                }
+            });
+
+            // Carregar reuniões ao inicializar a página
+            fetchAndRenderMeetings();
+
+            // Esconder loading quando tudo estiver carregado
+            window.addEventListener('load', function() {
+                const loadingOverlay = document.getElementById('loading-overlay');
+                if (loadingOverlay) {
+                    setTimeout(() => {
+                        loadingOverlay.classList.add('hidden');
+                    }, 500);
                 }
             });
         });

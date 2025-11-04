@@ -691,6 +691,15 @@
     </style>
 </head>
 <body class="unauthenticated auditorias-page">
+    <!-- Loading overlay -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text-container">
+            <div class="loading-text">CARREGANDO</div>
+        </div>
+        <p>Carregando auditorias...</p>
+    </div>
+
     <div class="page-container">
         
         <aside class="sidebar" id="sidebar">
@@ -1848,6 +1857,16 @@
         if (overlay) {
             overlay.addEventListener('click', toggleSidebar);
         }
+
+        // Esconder loading quando tudo estiver carregado
+        window.addEventListener('load', function() {
+            const loadingOverlay = document.getElementById('loading-overlay');
+            if (loadingOverlay) {
+                setTimeout(() => {
+                    loadingOverlay.classList.add('hidden');
+                }, 500);
+            }
+        });
     </script>
 </body>
 </html>

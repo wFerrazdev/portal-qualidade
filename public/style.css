@@ -11,14 +11,125 @@
     overflow: hidden;
 }
 
-/* Loading Overlay para Performance.git */
+/* ========================================
+   TELA DE LOADING PADRONIZADA
+   ======================================== */
+
+/* Loading Overlay para Performance */
 .loading-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    color: white;
+    font-family: 'Inter', sans-serif;
+    overflow: hidden;
+}
+
+.loading-overlay.hidden {
+    display: none;
+}
+
+/* Spinner melhorado */
+.loading-overlay .loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgba(255, 255, 255, 0.2);
+    border-top: 4px solid #60a5fa;
+    border-right: 4px solid #3b82f6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 40px;
+    box-shadow: 0 0 20px rgba(96, 165, 250, 0.3);
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Container do texto de loading */
+.loading-text-container {
+    position: relative;
+    display: inline-block;
+}
+
+/* Texto de loading estático com efeito de reflexo */
+.loading-text {
+    color: #ffffff;
+    font-size: 32px;
+    font-weight: 600;
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    position: relative;
+    display: inline-block;
+    background: linear-gradient(90deg, 
+        rgba(255, 255, 255, 0.3) 0%, 
+        rgba(255, 255, 255, 1) 50%, 
+        rgba(255, 255, 255, 0.3) 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 2s ease-in-out infinite;
+}
+
+/* Efeito de reflexo passando pelas letras */
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+/* Fallback para navegadores que não suportam background-clip */
+.loading-text {
+    color: #ffffff;
+}
+
+@supports (-webkit-background-clip: text) or (background-clip: text) {
+    .loading-text {
+        color: transparent;
+        background: linear-gradient(90deg, 
+            rgba(255, 255, 255, 0.4) 0%, 
+            rgba(255, 255, 255, 1) 50%, 
+            rgba(255, 255, 255, 0.4) 100%
+        );
+        background-size: 200% 100%;
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: shimmer 2s ease-in-out infinite;
+    }
+}
+
+/* Texto secundário (opcional) */
+.loading-overlay p {
+    font-size: 1rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: 20px;
+    letter-spacing: 2px;
+}
+
+/* Loading state específico para compras */
+.loading-state {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -28,29 +139,27 @@
     font-family: 'Inter', sans-serif;
 }
 
-.loading-overlay.hidden {
+.loading-state.hidden {
     display: none;
 }
 
-.loading-spinner {
+.compras-page .loading-spinner {
     width: 50px;
     height: 50px;
-    border: 4px solid rgba(255, 255, 255, 0.3);
-    border-top: 4px solid #60a5fa;
+    border: 4px solid rgba(255, 255, 255, 0.2);
+    border-top: 4px solid #3b82f6;
+    border-right: 4px solid #60a5fa;
     border-radius: 50%;
     animation: spin 1s linear infinite;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
 }
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-.loading-overlay p {
-    font-size: 1.1rem;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.9);
+.compras-page .loading-state p {
+    font-size: 1rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: 20px;
 }
 
 /* Reset e Base */
