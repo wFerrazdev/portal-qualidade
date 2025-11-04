@@ -1228,6 +1228,13 @@
                 // Remove modals existentes
                 const existingModals = document.querySelectorAll('.modal-overlay');
                 existingModals.forEach(modal => modal.remove());
+                
+                // Adicionar/remover classe no body para controlar blur do footer
+                if (this.showModal || this.showDetailModalFlag || this.showEditModalFlag) {
+                    document.body.classList.add('modal-open');
+                } else {
+                    document.body.classList.remove('modal-open');
+                }
 
                 // Modal de criação
                 if (this.showModal) {
