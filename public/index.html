@@ -656,6 +656,11 @@
         async function atualizarPeriodoNoSheets(periodo) {
             const TARGETS = getTargetsForTab(currentTab);
             
+            if (TARGETS.length === 0) {
+                console.log('Nenhum target definido para esta aba, pulando atualização');
+                return;
+            }
+            
             for (const target of TARGETS) {
                 try {
                     const value = target.formatter ? target.formatter(periodo) : `${periodo.mes}/${periodo.ano}`;
@@ -672,14 +677,26 @@
                         })
                     });
                     
+                    // Verificar se a resposta é JSON antes de fazer parse
+                    const contentType = response.headers.get('content-type');
+                    if (!contentType || !contentType.includes('application/json')) {
+                        const text = await response.text();
+                        console.error(`Erro: Resposta não é JSON. Status: ${response.status}, Resposta:`, text.substring(0, 200));
+                        throw new Error(`API retornou resposta inválida (${response.status}): ${text.substring(0, 100)}`);
+                    }
+                    
                     const result = await response.json();
                     console.log(`Resposta para ${target.sheetName}:`, result);
                     
                     if (!response.ok) {
                         console.error(`Erro ao atualizar ${target.sheetName}:`, result);
+                        throw new Error(result.message || result.error || 'Erro desconhecido');
                     }
+                    
+                    console.log(`✅ ${target.sheetName} atualizado com sucesso`);
                 } catch (e) {
-                    console.error('Falha ao atualizar período no Sheets:', e);
+                    console.error(`❌ Falha ao atualizar ${target.sheetName} no Sheets:`, e.message || e);
+                    // Não interromper o loop, continuar tentando atualizar os outros targets
                 }
             }
         }
