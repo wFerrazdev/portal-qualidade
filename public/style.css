@@ -304,7 +304,7 @@ body {
   font-size: 0.875rem;
   position: relative;
   background: transparent;
-  gap: 0.75rem; /* Espaço entre ícone e texto quando expandido */
+  
 }
 
 /* Quando expandido, botão cresce e mostra texto */
@@ -313,6 +313,7 @@ body {
   margin: 0; /* Remove margin quando expandido */
   justify-content: flex-start;
   padding: 0 1rem;
+  gap: 0.75rem;
 }
 
 /* Hover state */
