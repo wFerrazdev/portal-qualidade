@@ -1233,87 +1233,49 @@
                 if (this.showModal) {
                     const modalHTML = `
                         <div class="modal-overlay" style="position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center; z-index: 50; padding: 1rem;">
-                            <div class="modal-content" style="background: white; border-radius: 1rem; max-width: 32rem; width: 100%; padding: 2rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);">
-                                <div style="margin-bottom: 1.5rem;">
-                                    <h2 style="font-size: 1.5rem; font-weight: 700; background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #6366f1 100%); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0 0 0.25rem 0;">
-                                        Nova Solicitação de Compra
-                                    </h2>
-                                    <p style="font-size: 0.875rem; color: #64748b; margin: 0;">Preencha os dados para criar uma nova solicitação</p>
-                                </div>
-                                <div style="display: flex; flex-direction: column; gap: 1.25rem;">
-                                    <div>
-                                        <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">
-                                            N° da Solicitação (ID)
-                                        </label>
-                                        <input type="text" id="modal-numero" 
-                                               style="width: 100%; padding: 0.75rem 1rem; border: 2px solid #e5e7eb; border-radius: 0.75rem; font-size: 0.875rem; transition: all 0.3s ease;"
-                                               placeholder="Ex: 192.088" autocomplete="off">
+                            <div class="modal-container modal-content">
+                                <div class="modal-heading">Nova Solicitação de Compra</div>
+                                <p class="modal-subtitle">Preencha os dados para criar uma nova solicitação</p>
+                                <form class="modal-form">
+                                    <label class="modal-label">N° da Solicitação (ID)</label>
+                                    <input type="text" id="modal-numero" class="modal-input" placeholder="Ex: 192.088" autocomplete="off">
+                                    
+                                    <label class="modal-label">Setor Responsável *</label>
+                                    <select id="modal-solicitante" class="modal-select">
+                                        <option value="Qualidade">Qualidade</option>
+                                        <option value="Produção">Produção</option>
+                                        <option value="Manutenção">Manutenção</option>
+                                        <option value="Logística">Logística</option>
+                                        <option value="Administração">Administração</option>
+                                        <option value="Engenharia">Engenharia</option>
+                                        <option value="Comercial">Comercial</option>
+                                        <option value="TI">TI</option>
+                                    </select>
+                                    
+                                    <label class="modal-label">Descrição do Item/Serviço *</label>
+                                    <input type="text" id="modal-descricao" class="modal-input" value="${this.newOrder.descricao}" placeholder="Ex: Material de laboratório, equipamento, etc.">
+                                    
+                                    <label class="modal-label">Fornecedor *</label>
+                                    <input type="text" id="modal-fornecedor" class="modal-input" value="${this.newOrder.fornecedor}" placeholder="Nome do fornecedor">
+                                    
+                                    <label class="modal-label">Valor Estimado (R$) *</label>
+                                    <input type="number" id="modal-valor" class="modal-input" value="${this.newOrder.valor}" step="0.01" min="0" placeholder="0.00">
+                                    
+                                    <label class="modal-label">Quantidade *</label>
+                                    <input type="number" id="modal-quantidade" class="modal-input" value="${this.newOrder.quantidade || ''}" min="1" placeholder="0">
+                                    
+                                    <label class="modal-label">Observações</label>
+                                    <textarea id="modal-observacoes" class="modal-textarea" rows="3" placeholder="Informações adicionais...">${this.newOrder.observacoes}</textarea>
+                                    
+                                    <div class="modal-buttons">
+                                        <button type="button" onclick="window.gestaoComprasApp.handleCreateOrder()" class="modal-button modal-button-primary">
+                                            Criar Solicitação
+                                        </button>
+                                        <button type="button" onclick="window.gestaoComprasApp.closeModals()" class="modal-button modal-button-secondary">
+                                            Cancelar
+                                        </button>
                                     </div>
-                                    <div>
-                                        <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">Setor Responsável *</label>
-                                        <select id="modal-solicitante" 
-                                                style="width: 100%; padding: 0.75rem 1rem; border: 2px solid #e5e7eb; border-radius: 0.75rem; font-size: 0.875rem; background: #f8fafc;">
-                                            <option value="Qualidade">Qualidade</option>
-                                            <option value="Produção">Produção</option>
-                                            <option value="Manutenção">Manutenção</option>
-                                            <option value="Logística">Logística</option>
-                                            <option value="Administração">Administração</option>
-                                            <option value="Engenharia">Engenharia</option>
-                                            <option value="Comercial">Comercial</option>
-                                            <option value="TI">TI</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">
-                                            Descrição do Item/Serviço *
-                                        </label>
-                                        <input type="text" id="modal-descricao" value="${this.newOrder.descricao}" 
-                                               style="width: 100%; padding: 0.75rem 1rem; border: 2px solid #e5e7eb; border-radius: 0.75rem; font-size: 0.875rem; transition: all 0.3s ease;"
-                                               placeholder="Ex: Material de laboratório, equipamento, etc.">
-                                    </div>
-                                    <div>
-                                        <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">
-                                            Fornecedor *
-                                        </label>
-                                        <input type="text" id="modal-fornecedor" value="${this.newOrder.fornecedor}" 
-                                               style="width: 100%; padding: 0.75rem 1rem; border: 2px solid #e5e7eb; border-radius: 0.75rem; font-size: 0.875rem; transition: all 0.3s ease;"
-                                               placeholder="Nome do fornecedor">
-                                    </div>
-                                    <div>
-                                        <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">
-                                            Valor Estimado (R$) *
-                                        </label>
-                                        <input type="number" id="modal-valor" value="${this.newOrder.valor}" step="0.01" min="0"
-                                               style="width: 100%; padding: 0.75rem 1rem; border: 2px solid #e5e7eb; border-radius: 0.75rem; font-size: 0.875rem; transition: all 0.3s ease;"
-                                               placeholder="0.00">
-                                    </div>
-                                    <div>
-                                        <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">
-                                            Quantidade *
-                                        </label>
-                                        <input type="number" id="modal-quantidade" value="${this.newOrder.quantidade || ''}" min="1"
-                                               style="width: 100%; padding: 0.75rem 1rem; border: 2px solid #e5e7eb; border-radius: 0.75rem; font-size: 0.875rem; transition: all 0.3s ease;"
-                                               placeholder="0">
-                                    </div>
-                                    <div>
-                                        <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #374151; margin-bottom: 0.5rem;">
-                                            Observações
-                                        </label>
-                                        <textarea id="modal-observacoes" rows="3" 
-                                                  style="width: 100%; padding: 0.75rem 1rem; border: 2px solid #e5e7eb; border-radius: 0.75rem; font-size: 0.875rem; transition: all 0.3s ease; resize: vertical;"
-                                                  placeholder="Informações adicionais...">${this.newOrder.observacoes}</textarea>
-                                    </div>
-                                </div>
-                                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
-                                    <button onclick="window.gestaoComprasApp.handleCreateOrder()" 
-                                            style="flex: 1; background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%); color: white; padding: 0.75rem 1.5rem; border-radius: 0.75rem; border: none; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);">
-                                        Criar Solicitação
-                                    </button>
-                                    <button onclick="window.gestaoComprasApp.closeModals()" 
-                                            style="flex: 1; background: #f3f4f6; color: #374151; padding: 0.75rem 1.5rem; border-radius: 0.75rem; border: none; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
-                                        Cancelar
-                                    </button>
-                                </div>
+                                </form>
                             </div>
                         </div>
                     `;
