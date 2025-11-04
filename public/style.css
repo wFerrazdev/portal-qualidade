@@ -250,7 +250,7 @@ body {
   flex-grow: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 0.5rem 0.25rem; /* Padding reduzido quando retraído */
+  padding: 0.5rem 0.5rem; /* Padding lateral para dar espaço ao conteúdo */
 }
 
 .sidebar:hover .sidebar-nav {
@@ -260,7 +260,14 @@ body {
 .sidebar-nav ul { 
   list-style: none; 
   padding: 0; 
-  margin: 0; 
+  margin: 0;
+  width: 100%; /* Garante que a lista ocupe toda a largura */
+}
+
+.sidebar-nav li {
+  width: 100%; /* Garante que cada item da lista ocupe toda a largura */
+  padding: 0;
+  margin: 0;
 }
 
 .sidebar-nav li a { 
@@ -268,14 +275,16 @@ body {
   align-items: center; 
   justify-content: center; /* Centraliza quando retraído */
   height: 50px; 
-  padding: 0 0.5rem; /* Padding reduzido quando retraído */
+  width: 100%; /* Garante que ocupe toda a largura disponível */
+  padding: 0; /* Remove padding padrão */
+  margin: 0.25rem 0; /* Margem vertical apenas */
   color: white; 
   text-decoration: none; 
   white-space: nowrap; 
   transition: all 0.3s ease;
   border-radius: 12px;
-  margin: 0.25rem 0;
   font-weight: 500;
+  box-sizing: border-box; /* Inclui padding no cálculo da largura */
 }
 
 .sidebar:hover .sidebar-nav li a { 
