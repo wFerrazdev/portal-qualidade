@@ -3908,8 +3908,10 @@ body.auditorias-page {
 }
 
 /* Grid de Reuniões - ajustar padding-bottom para espaçamento interno */
-.reunioes-page .projects-grid {
+.reunioes-page .reunioes-grid {
     padding-bottom: calc(2rem + 60px); /* Padding padrão + altura do footer para que o último item não fique colado */
+    padding-left: 3rem; /* Respiro à esquerda para não colar na sidebar */
+    padding-right: 3rem; /* Respiro à direita */
 }
 
 /* Content Area específico para Calibração */

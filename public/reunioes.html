@@ -10,11 +10,11 @@
     <script src="mock-data.js"></script>
     <style>
         /* Estilos Minimalistas para Cards de Reuniões */
-        .projects-grid {
+        .reunioes-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 20px;
-            padding: 20px 0;
+            padding: 20px 3rem;
         }
 
         .meeting-card-minimal {
@@ -186,10 +186,10 @@
 
         /* Responsividade */
         @media (max-width: 768px) {
-            .projects-grid {
+            .reunioes-grid {
                 grid-template-columns: 1fr;
                 gap: 16px;
-                padding: 16px 0;
+                padding: 16px 1rem;
             }
             
             .meeting-card {
@@ -780,7 +780,7 @@
             </header>
 
             <main class="content-area">
-                <div class="projects-grid" id="meetingsGrid">
+                <div class="reunioes-grid" id="meetingsGrid">
                         <div class="loading-spinner"></div>
                 </div>
             </main>
