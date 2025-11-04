@@ -493,18 +493,7 @@
             // IMPORTANTE: Filtrar gráficos ANTES de qualquer carregamento para evitar gráficos de outras abas aparecendo
             filterCharts('rifs');
             
-            // Aplicar automaticamente o período atual nas bases do Google Sheets
-            // Isso garante que as bases sempre estejam com o mês/ano atual ao carregar a página
-            if (selectedPeriodo && selectedPeriodo.mes && selectedPeriodo.ano) {
-                try {
-                    await atualizarPeriodoNoSheets(selectedPeriodo);
-                } catch (error) {
-                    console.error('Erro ao aplicar período inicial:', error);
-                    // Continuar mesmo se houver erro ao atualizar períodos
-                }
-            }
-            
-            // Depois carrega os dados atualizados
+            // Carrega os dados (sem atualizar períodos automaticamente para evitar sobrecarga na API)
             await updateAllCharts();
         }
 
