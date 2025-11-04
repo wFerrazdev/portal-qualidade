@@ -282,6 +282,12 @@ body {
   transform: translateX(4px);
 }
 
+/* Hover vermelho para o botão de logout/sair */
+.sidebar-nav li a#logoutBtn:hover {
+  background: rgba(239, 68, 68, 0.3);
+  border-color: rgba(239, 68, 68, 0.5);
+}
+
 .sidebar-nav li a.active { 
   background: rgba(255, 255, 255, 0.2);
   transform: translateX(4px);
