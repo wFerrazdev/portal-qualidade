@@ -250,6 +250,7 @@ body {
   flex-grow: 1;
   overflow-y: auto;
   overflow-x: hidden;
+  padding: 0.5rem 0.75rem; /* Padding lateral para dar respiro dos itens */
 }
 
 .sidebar-nav ul { 
@@ -262,7 +263,7 @@ body {
   display: flex;
   align-items: center; 
   height: 50px; 
-  padding: 0 38px; 
+  padding: 0 1rem; 
   color: white; 
   text-decoration: none; 
   white-space: nowrap; 
@@ -273,7 +274,7 @@ body {
 }
 
 .sidebar:hover .sidebar-nav li a { 
-  padding: 0 28px; 
+  padding: 0 1rem; /* Mantém padding consistente no hover */
 }
 
 .sidebar-nav li a:hover { 
@@ -306,8 +307,10 @@ body {
 }
 
 .user-info {
-  padding: 15px 38px;
+  padding: 15px 1.5rem;
   margin-top: auto;
+  margin-left: 0.75rem;
+  margin-right: 0.75rem;
   display: flex;
   align-items: center;
   font-size: 0.85em;
@@ -315,11 +318,13 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  transition: padding 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .sidebar:hover .user-info {
-  padding: 15px 28px;
+  padding: 15px 1.5rem;
+  margin-left: 0.75rem;
+  margin-right: 0.75rem;
 }
 
 .user-info svg {
