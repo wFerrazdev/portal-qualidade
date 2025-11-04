@@ -601,11 +601,16 @@
             });
             
             // Depois mostrar apenas os da aba ativa
-            if (chartIdsToShow && allCards.length > 0) {
-                chartIdsToShow.forEach(chartId => {
-                    const card = document.getElementById(chartId);
-                    if (card) {
-                        card.style.display = 'block';
+            // Os chartIdsToShow são IDs dos canvas, então precisamos encontrar o card pai
+            if (chartIdsToShow && chartIdsToShow.length > 0) {
+                chartIdsToShow.forEach(canvasId => {
+                    const canvas = document.getElementById(canvasId);
+                    if (canvas) {
+                        // Encontrar o card pai (indicator-card) que contém o canvas
+                        const card = canvas.closest('.indicator-card');
+                        if (card) {
+                            card.style.display = 'block';
+                        }
                     }
                 });
             }
