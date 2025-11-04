@@ -1902,7 +1902,7 @@ canvas {
 .footer {
     position: fixed;
     bottom: 0;
-    left: 70px; /* Ajustado para 70px (largura do sidebar retraído) */
+    left: 70px; /* Ajustado para 70px (largura do sidebar retraído) - começa exatamente onde o content-area começa (após margin-left) */
     right: 0;
     padding: 15px 0;
     border-top: 1px solid #e2e8f0;
@@ -1912,11 +1912,19 @@ canvas {
     height: auto;
     margin: 0; /* Remove qualquer margem */
     transition: left 0.3s ease, filter 0.3s ease, opacity 0.3s ease;
+    box-sizing: border-box;
 }
 
 /* Footer com sidebar expandido - ajuste via hover no sidebar */
 body:has(.sidebar:hover) .footer {
     left: 260px; /* Largura do sidebar expandido */
+}
+
+/* Footer específico para página de compras - alinhar com padding do content-area */
+.compras-page .footer {
+    left: 70px; /* Começa exatamente onde o content-area começa (após margin-left de 70px) */
+    padding-left: 0; /* Sem padding esquerdo - começa exatamente na divisa margin/padding do content-area */
+    padding-right: 0;
 }
 
 .footer p {
