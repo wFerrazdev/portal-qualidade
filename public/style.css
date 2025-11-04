@@ -3877,14 +3877,51 @@ body.auditorias-page {
     stroke-width: 2.5;
 }
 
-/* Content Area específico para Auditorias - ir até o rodapé */
+/* Content Area específico para Auditorias */
+/* CORREÇÃO-FOOTER: content-area termina exatamente onde o footer começa, sem lacuna e sem sobrepor */
 .auditorias-page .content-area {
     background: #f8fafc;
     padding: 0;
+    padding-bottom: 58px; /* Altura do footer para evitar sobreposição - componentes distintos mas encostados */
     margin-left: 100px;
     margin-top: 0;
-    min-height: calc(100vh - 200px);
-    max-height: calc(100vh - 200px);
+    margin-bottom: 0;
+    min-height: calc(100vh - 80px - 60px); /* 100vh - header (~80px) - footer (~60px) */
+    overflow-y: auto;
+    flex: 1;
+    position: static;
+}
+
+/* Content Area específico para Reuniões */
+/* CORREÇÃO-FOOTER: content-area termina exatamente onde o footer começa, sem lacuna e sem sobrepor */
+.reunioes-page .content-area {
+    background: #f8fafc;
+    padding: 0;
+    padding-bottom: 58px; /* Altura do footer para evitar sobreposição - componentes distintos mas encostados */
+    margin-left: 100px;
+    margin-top: 0;
+    margin-bottom: 0;
+    min-height: calc(100vh - 80px - 60px); /* 100vh - header (~80px) - footer (~60px) */
+    overflow-y: auto;
+    flex: 1;
+    position: static;
+}
+
+/* Grid de Reuniões - ajustar padding-bottom para espaçamento interno */
+.reunioes-page .projects-grid {
+    padding-bottom: calc(2rem + 60px); /* Padding padrão + altura do footer para que o último item não fique colado */
+}
+
+/* Content Area específico para Calibração */
+/* CORREÇÃO-FOOTER: content-area termina exatamente onde o footer começa, sem lacuna e sem sobrepor */
+.calibracao-page .content-area {
+    background: #f8fafc;
+    padding: 0;
+    padding-bottom: 58px; /* Altura do footer para evitar sobreposição - componentes distintos mas encostados */
+    margin-left: 100px;
+    margin-top: 0;
+    margin-bottom: 0;
+    min-height: calc(100vh - 80px - 60px); /* 100vh - header (~80px) - footer (~60px) */
     overflow-y: auto;
     flex: 1;
     position: static;
@@ -3897,6 +3934,14 @@ body.auditorias-page {
     }
     
     .auditorias-page .content-area {
+        margin-left: 0;
+    }
+    
+    .reunioes-page .content-area {
+        margin-left: 0;
+    }
+    
+    .calibracao-page .content-area {
         margin-left: 0;
     }
     
@@ -3974,6 +4019,16 @@ body.auditorias-page {
     margin: 20px;
     margin-left: 0;
     margin-right: 0;
+}
+
+/* Container de auditorias - ajustar padding-bottom para espaçamento interno */
+.auditorias-page .audits-modern-container {
+    padding-bottom: calc(2rem + 60px); /* Padding padrão + altura do footer para que o último item não fique colado */
+}
+
+/* Container de calibração - ajustar padding-bottom para espaçamento interno */
+.calibracao-page .content-area > *:last-child {
+    padding-bottom: calc(2rem + 60px); /* Garante espaçamento interno adequado */
 }
 
 /* Cabeçalho do Calendário */
