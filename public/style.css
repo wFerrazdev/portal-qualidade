@@ -6782,14 +6782,35 @@ body.compras-page {
 /* ==================== NOVO DESIGN DE MODAL BASEADO NO EXEMPLO ==================== */
 /* Container do modal moderno */
 .modal-container {
-    max-width: 550px;
+    max-width: 800px;
     width: 100%;
+    max-height: 90vh;
     background: #F8F9FD;
     background: linear-gradient(0deg, rgb(255, 255, 255) 0%, rgb(244, 247, 251) 100%);
     border-radius: 40px;
-    padding: 25px 35px;
+    padding: 30px 40px;
     border: 5px solid rgb(255, 255, 255);
     box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 30px 30px -20px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.modal-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modal-container::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+}
+
+.modal-container::-webkit-scrollbar-thumb {
+    background: rgba(133, 189, 215, 0.5);
+    border-radius: 10px;
+}
+
+.modal-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(133, 189, 215, 0.7);
 }
 
 .modal-heading {
@@ -6809,6 +6830,13 @@ body.compras-page {
 
 .modal-form {
     margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.modal-form .full-width {
+    grid-column: 1 / -1;
 }
 
 .modal-form .modal-input,
@@ -6817,7 +6845,7 @@ body.compras-page {
     width: 100%;
     background: white;
     border: none;
-    padding: 15px 20px;
+    padding: 12px 18px;
     border-radius: 20px;
     margin-top: 0;
     box-shadow: #cff0ff 0px 10px 10px -5px;
@@ -6863,18 +6891,20 @@ body.compras-page {
     font-size: 0.875rem;
     font-weight: 600;
     color: #374151;
-    margin-top: 15px;
+    margin-top: 0;
     margin-bottom: 5px;
 }
 
-.modal-form .modal-label:first-child {
-    margin-top: 0;
+.modal-form .field-group {
+    display: flex;
+    flex-direction: column;
 }
 
 .modal-buttons {
     display: flex;
     gap: 15px;
-    margin-top: 20px;
+    margin-top: 10px;
+    grid-column: 1 / -1;
 }
 
 .modal-button {
@@ -6978,6 +7008,25 @@ body.compras-page {
     .modal-content {
         margin: 1rem;
         max-width: calc(100vw - 2rem);
+    }
+    
+    .modal-container {
+        max-width: calc(100vw - 2rem);
+        padding: 20px 25px;
+        border-radius: 30px;
+    }
+    
+    .modal-form {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    
+    .modal-heading {
+        font-size: 24px;
+    }
+    
+    .modal-subtitle {
+        font-size: 0.8rem;
     }
 }
 

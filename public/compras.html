@@ -1237,37 +1237,51 @@
                                 <div class="modal-heading">Nova Solicitação de Compra</div>
                                 <p class="modal-subtitle">Preencha os dados para criar uma nova solicitação</p>
                                 <form class="modal-form">
-                                    <label class="modal-label">N° da Solicitação (ID)</label>
-                                    <input type="text" id="modal-numero" class="modal-input" placeholder="Ex: 192.088" autocomplete="off">
+                                    <div class="field-group">
+                                        <label class="modal-label">N° da Solicitação (ID)</label>
+                                        <input type="text" id="modal-numero" class="modal-input" placeholder="Ex: 192.088" autocomplete="off">
+                                    </div>
                                     
-                                    <label class="modal-label">Setor Responsável *</label>
-                                    <select id="modal-solicitante" class="modal-select">
-                                        <option value="Qualidade">Qualidade</option>
-                                        <option value="Produção">Produção</option>
-                                        <option value="Manutenção">Manutenção</option>
-                                        <option value="Logística">Logística</option>
-                                        <option value="Administração">Administração</option>
-                                        <option value="Engenharia">Engenharia</option>
-                                        <option value="Comercial">Comercial</option>
-                                        <option value="TI">TI</option>
-                                    </select>
+                                    <div class="field-group">
+                                        <label class="modal-label">Setor Responsável *</label>
+                                        <select id="modal-solicitante" class="modal-select">
+                                            <option value="Qualidade">Qualidade</option>
+                                            <option value="Produção">Produção</option>
+                                            <option value="Manutenção">Manutenção</option>
+                                            <option value="Logística">Logística</option>
+                                            <option value="Administração">Administração</option>
+                                            <option value="Engenharia">Engenharia</option>
+                                            <option value="Comercial">Comercial</option>
+                                            <option value="TI">TI</option>
+                                        </select>
+                                    </div>
                                     
-                                    <label class="modal-label">Descrição do Item/Serviço *</label>
-                                    <input type="text" id="modal-descricao" class="modal-input" value="${this.newOrder.descricao}" placeholder="Ex: Material de laboratório, equipamento, etc.">
+                                    <div class="field-group full-width">
+                                        <label class="modal-label">Descrição do Item/Serviço *</label>
+                                        <input type="text" id="modal-descricao" class="modal-input" value="${this.newOrder.descricao}" placeholder="Ex: Material de laboratório, equipamento, etc.">
+                                    </div>
                                     
-                                    <label class="modal-label">Fornecedor *</label>
-                                    <input type="text" id="modal-fornecedor" class="modal-input" value="${this.newOrder.fornecedor}" placeholder="Nome do fornecedor">
+                                    <div class="field-group">
+                                        <label class="modal-label">Fornecedor *</label>
+                                        <input type="text" id="modal-fornecedor" class="modal-input" value="${this.newOrder.fornecedor}" placeholder="Nome do fornecedor">
+                                    </div>
                                     
-                                    <label class="modal-label">Valor Estimado (R$) *</label>
-                                    <input type="number" id="modal-valor" class="modal-input" value="${this.newOrder.valor}" step="0.01" min="0" placeholder="0.00">
+                                    <div class="field-group">
+                                        <label class="modal-label">Valor Estimado (R$) *</label>
+                                        <input type="number" id="modal-valor" class="modal-input" value="${this.newOrder.valor}" step="0.01" min="0" placeholder="0.00">
+                                    </div>
                                     
-                                    <label class="modal-label">Quantidade *</label>
-                                    <input type="number" id="modal-quantidade" class="modal-input" value="${this.newOrder.quantidade || ''}" min="1" placeholder="0">
+                                    <div class="field-group">
+                                        <label class="modal-label">Quantidade *</label>
+                                        <input type="number" id="modal-quantidade" class="modal-input" value="${this.newOrder.quantidade || ''}" min="1" placeholder="0">
+                                    </div>
                                     
-                                    <label class="modal-label">Observações</label>
-                                    <textarea id="modal-observacoes" class="modal-textarea" rows="3" placeholder="Informações adicionais...">${this.newOrder.observacoes}</textarea>
+                                    <div class="field-group full-width">
+                                        <label class="modal-label">Observações</label>
+                                        <textarea id="modal-observacoes" class="modal-textarea" rows="3" placeholder="Informações adicionais...">${this.newOrder.observacoes}</textarea>
+                                    </div>
                                     
-                                    <div class="modal-buttons">
+                                    <div class="modal-buttons full-width">
                                         <button type="button" onclick="window.gestaoComprasApp.handleCreateOrder()" class="modal-button modal-button-primary">
                                             Criar Solicitação
                                         </button>
