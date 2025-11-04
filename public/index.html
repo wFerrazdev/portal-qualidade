@@ -700,7 +700,7 @@
                 try {
                     const value = target.formatter ? target.formatter(periodo) : `${periodo.mes}/${periodo.ano}`;
                     
-                    const response = await fetch(`${API_BASE_URL}/setSheetParam`, {
+                    const response = await fetch(`${API_BASE_URL}/getSheetData`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
