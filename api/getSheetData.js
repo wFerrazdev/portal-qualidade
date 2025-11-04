@@ -126,6 +126,15 @@ module.exports = async (req, res) => {
             console.error('Erro:', error.message);
             console.error('Stack:', error.stack);
             
+            // Verificar se é erro de quota (429)
+            if (error.message && error.message.includes('429')) {
+                return res.status(429).json({ 
+                    error: 'Quota exceeded',
+                    message: 'Quota do Google Sheets API excedida. Tente novamente em alguns segundos.',
+                    details: error.message
+                });
+            }
+            
             return res.status(500).json({ 
                 error: 'Error updating Google Sheets',
                 message: error.message,

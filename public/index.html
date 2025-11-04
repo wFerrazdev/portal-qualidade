@@ -695,44 +695,73 @@
                 return;
             }
             
-            // Atualizar todos os targets de uma vez
-            const promises = TARGETS.map(async (target) => {
-                try {
-                    const value = target.formatter ? target.formatter(periodo) : `${periodo.mes}/${periodo.ano}`;
-                    
-                    const response = await fetch(`${API_BASE_URL}/getSheetData`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            spreadsheetId: target.spreadsheetId,
-                            sheetName: target.sheetName,
-                            cellA1: target.cellA1,
-                            value: value
-                        })
-                    });
-                    
-                    // Verificar se a resposta é JSON antes de fazer parse
-                    const contentType = response.headers.get('content-type');
-                    if (!contentType || !contentType.includes('application/json')) {
-                        const text = await response.text();
-                        throw new Error(`API retornou resposta inválida (${response.status})`);
+            // Função para fazer uma requisição com retry
+            const fazerRequisicao = async (target, retries = 3) => {
+                for (let attempt = 1; attempt <= retries; attempt++) {
+                    try {
+                        const value = target.formatter ? target.formatter(periodo) : `${periodo.mes}/${periodo.ano}`;
+                        
+                        const response = await fetch(`${API_BASE_URL}/getSheetData`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                spreadsheetId: target.spreadsheetId,
+                                sheetName: target.sheetName,
+                                cellA1: target.cellA1,
+                                value: value
+                            })
+                        });
+                        
+                        // Verificar se a resposta é JSON antes de fazer parse
+                        const contentType = response.headers.get('content-type');
+                        if (!contentType || !contentType.includes('application/json')) {
+                            const text = await response.text();
+                            throw new Error(`API retornou resposta inválida (${response.status})`);
+                        }
+                        
+                        const result = await response.json();
+                        
+                        // Se for erro 429 (quota exceeded), fazer retry com backoff
+                        if (response.status === 429 || (result.error && result.error.includes('429'))) {
+                            if (attempt < retries) {
+                                const delay = Math.pow(2, attempt) * 1000; // Backoff exponencial: 2s, 4s, 8s
+                                console.warn(`Quota excedida para ${target.sheetName}, tentando novamente em ${delay}ms (tentativa ${attempt}/${retries})`);
+                                await new Promise(resolve => setTimeout(resolve, delay));
+                                continue;
+                            }
+                        }
+                        
+                        if (!response.ok) {
+                            throw new Error(result.message || result.error || 'Erro desconhecido');
+                        }
+                        
+                        return { success: true, target: target.sheetName };
+                    } catch (e) {
+                        if (attempt === retries) {
+                            console.error(`Erro ao atualizar ${target.sheetName} após ${retries} tentativas:`, e.message);
+                            return { success: false, target: target.sheetName, error: e.message };
+                        }
+                        // Se não for erro de quota, não fazer retry
+                        if (!e.message.includes('429') && !e.message.includes('quota')) {
+                            return { success: false, target: target.sheetName, error: e.message };
+                        }
                     }
-                    
-                    const result = await response.json();
-                    
-                    if (!response.ok) {
-                        throw new Error(result.message || result.error || 'Erro desconhecido');
-                    }
-                    
-                    return { success: true, target: target.sheetName };
-                } catch (e) {
-                    console.error(`Erro ao atualizar ${target.sheetName}:`, e.message);
-                    return { success: false, target: target.sheetName, error: e.message };
                 }
-            });
+            };
             
-            // Aguardar todas as atualizações
-            const results = await Promise.all(promises);
+            // Processar sequencialmente com delay para evitar exceder quota
+            const results = [];
+            for (let i = 0; i < TARGETS.length; i++) {
+                const target = TARGETS[i];
+                const result = await fazerRequisicao(target);
+                results.push(result);
+                
+                // Delay de 200ms entre requisições para evitar exceder quota
+                if (i < TARGETS.length - 1) {
+                    await new Promise(resolve => setTimeout(resolve, 200));
+                }
+            }
+            
             const sucessos = results.filter(r => r.success).length;
             const falhas = results.filter(r => !r.success).length;
             
