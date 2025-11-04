@@ -250,93 +250,109 @@ body {
   flex-grow: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 0.5rem 0.5rem; /* Padding lateral para dar espaço ao conteúdo */
+  padding: 0.75rem 0.5rem;
 }
 
 .sidebar:hover .sidebar-nav {
-  padding: 0.5rem 0.75rem; /* Padding maior quando expandido */
+  padding: 0.75rem 0.75rem;
 }
 
 .sidebar-nav ul { 
   list-style: none; 
   padding: 0; 
   margin: 0;
-  width: 100%; /* Garante que a lista ocupe toda a largura */
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sidebar:hover .sidebar-nav ul {
+  align-items: stretch;
 }
 
 .sidebar-nav li {
-  width: 100%; /* Garante que cada item da lista ocupe toda a largura */
+  width: 100%;
   padding: 0;
   margin: 0;
+  display: flex;
+  justify-content: center;
 }
 
+.sidebar:hover .sidebar-nav li {
+  justify-content: stretch;
+}
+
+/* Botões de navegação - refeitos do zero */
 .sidebar-nav li a { 
   display: flex;
-  align-items: center; 
-  justify-content: center; /* Centraliza quando retraído */
-  height: 50px; 
-  width: 100%; /* Garante que ocupe toda a largura disponível */
-  padding: 0; /* Remove padding padrão */
-  margin: 0.25rem 0; /* Margem vertical apenas */
+  align-items: center;
+  justify-content: center; /* Sempre centralizado horizontal e verticalmente */
+  height: 48px;
+  width: 48px; /* Tamanho fixo quando retraído */
+  min-width: 48px;
+  padding: 0;
+  margin: 0;
   color: white; 
   text-decoration: none; 
-  white-space: nowrap; 
-  transition: all 0.3s ease;
+  white-space: nowrap;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border-radius: 12px;
   font-weight: 500;
-  box-sizing: border-box; /* Inclui padding no cálculo da largura */
+  font-size: 0.875rem;
+  position: relative;
+  background: transparent;
+  gap: 0.75rem; /* Espaço entre ícone e texto quando expandido */
 }
 
-.sidebar:hover .sidebar-nav li a { 
-  justify-content: flex-start; /* Alinha à esquerda quando expandido */
-  padding: 0 1rem; /* Padding maior quando expandido */
+/* Quando expandido, botão cresce e mostra texto */
+.sidebar:hover .sidebar-nav li a {
+  width: 100%;
+  justify-content: flex-start;
+  padding: 0 1rem;
 }
 
-.sidebar-nav li a:hover { 
+/* Hover state */
+.sidebar-nav li a:hover {
   background: rgba(255, 255, 255, 0.15);
-  transform: translateX(0); /* Remove transform quando retraído */
 }
 
-.sidebar:hover .sidebar-nav li a:hover { 
-  transform: translateX(4px); /* Adiciona transform quando expandido */
+/* Active state */
+.sidebar-nav li a.active {
+  background: rgba(255, 255, 255, 0.2);
 }
 
-/* Hover vermelho para o botão de logout/sair */
+/* Hover vermelho para logout */
 .sidebar-nav li a#logoutBtn:hover {
   background: rgba(239, 68, 68, 0.3);
-  border-color: rgba(239, 68, 68, 0.5);
 }
 
-.sidebar-nav li a.active { 
-  background: rgba(255, 255, 255, 0.2);
-  transform: translateX(0); /* Remove transform quando retraído */
+/* Ícones SVG */
+.sidebar-nav li a svg {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
 }
 
-.sidebar:hover .sidebar-nav li a.active { 
-  transform: translateX(4px); /* Adiciona transform quando expandido */
+/* Texto dos botões - sempre presente mas com largura 0 quando retraído */
+.sidebar-nav li a span {
+  display: block;
+  opacity: 0;
+  width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: opacity 0.3s ease 0.1s, width 0s ease 0.4s;
+  font-size: 0.875rem;
+  font-weight: 500;
 }
 
-.sidebar-nav li a svg { 
-  width: 24px; 
-  height: 24px; 
-  flex-shrink: 0; 
-  margin-right: 0; /* Remove margin quando retraído */
-}
-
-.sidebar:hover .sidebar-nav li a svg { 
-  margin-right: 20px; /* Adiciona margin quando expandido */
-}
-
-.sidebar-nav li a span { 
-  opacity: 0; 
-  visibility: hidden; 
-  white-space: nowrap; 
-  transition: opacity 0.2s ease 0.1s, visibility 0.2s ease 0.1s;
-}
-
-.sidebar:hover .sidebar-nav li a span { 
-  opacity: 1; 
-  visibility: visible; 
+/* Quando expandido, mostra o texto */
+.sidebar:hover .sidebar-nav li a span {
+  opacity: 1;
+  width: auto;
+  transition: opacity 0.3s ease 0.1s, width 0s ease 0s;
 }
 
 .user-info {
