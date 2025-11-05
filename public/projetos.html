@@ -201,7 +201,7 @@
                     <input type="text" id="titulo" name="titulo" class="modal-input" placeholder="Digite o título do projeto" required>
                 </div>
 
-                <!-- Status e Progresso -->
+                <!-- Status, Progresso e Responsável em uma linha -->
                 <div class="field-group">
                     <label for="status" class="modal-label">Status</label>
                     <select id="status" name="status" class="modal-select">
@@ -213,47 +213,45 @@
 
                 <div class="field-group">
                     <label for="progresso" class="modal-label">Progresso</label>
-                    <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
                         <input type="range" id="progresso" name="progresso" min="0" max="100" value="0" style="flex: 1;">
-                        <span id="progressValue" style="min-width: 45px; text-align: right; font-weight: 600; color: #374151;">0%</span>
+                        <span id="progressValue" style="min-width: 40px; text-align: right; font-weight: 600; color: #374151; font-size: 0.875rem;">0%</span>
                     </div>
                 </div>
 
-                <!-- Responsável -->
-                <div class="field-group full-width">
+                <!-- Responsável e Datas -->
+                <div class="field-group">
                     <label for="responsavel" class="modal-label">Responsável *</label>
                     <input type="text" id="responsavel" name="responsavel" class="modal-input" placeholder="Nome do responsável" required>
                 </div>
 
-                <!-- Datas -->
                 <div class="field-group">
-                    <label for="data_inicio" class="modal-label">Data de Início *</label>
+                    <label for="data_inicio" class="modal-label">Data Início *</label>
                     <input type="date" id="data_inicio" name="data_inicio" class="modal-input" required>
                 </div>
 
                 <div class="field-group">
-                    <label for="data_fim" class="modal-label">Data de Fim</label>
+                    <label for="data_fim" class="modal-label">Data Fim</label>
                     <input type="date" id="data_fim" name="data_fim" class="modal-input">
                 </div>
 
-                <!-- Foto do Projeto -->
-                <div class="field-group full-width">
+                <!-- Foto do Projeto e Principais Feitos lado a lado -->
+                <div class="field-group">
                     <label class="modal-label">Foto do Projeto</label>
-                    <div class="file-upload-area" id="fileUploadArea" style="background: white; border: 2px dashed #e5e7eb; border-radius: 20px; padding: 30px; text-align: center; cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden;">
+                    <div class="file-upload-area-compact" id="fileUploadArea">
                         <input type="file" id="imagem_file" name="imagem_file" accept="image/*" class="file-input" style="position: absolute; opacity: 0; width: 0; height: 0;">
                         <div class="file-upload-content">
-                            <svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #9ca3af; margin-bottom: 10px;">
+                            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #9ca3af; margin-bottom: 6px;">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
                             </svg>
-                            <p class="file-upload-text" style="margin: 0; color: #9ca3af; font-size: 0.875rem;">Clique para selecionar uma imagem</p>
+                            <p class="file-upload-text" style="margin: 0; color: #9ca3af; font-size: 0.75rem;">Clique para selecionar</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Principais Feitos -->
-                <div class="field-group full-width">
+                <div class="field-group">
                     <label for="principais_feitos" class="modal-label">Principais Feitos</label>
-                    <textarea id="principais_feitos" name="principais_feitos" rows="4" class="modal-textarea" placeholder="Digite cada feito em uma linha separada"></textarea>
+                    <textarea id="principais_feitos" name="principais_feitos" rows="3" class="modal-textarea modal-textarea-compact" placeholder="Digite cada feito em uma linha"></textarea>
                 </div>
 
                 <!-- Botões de Ação -->
@@ -687,7 +685,7 @@
                             right: 0;
                             bottom: 0;
                             background: url('${e.target.result}') center/cover;
-                            border-radius: 8px;
+                            border-radius: 16px;
                             z-index: 1;
                         `;
                         fileUploadArea.appendChild(preview);
