@@ -89,7 +89,7 @@ module.exports = async (req, res) => {
                                 data_criacao, 
                                 data_atualizacao
                             FROM pedidos_compras 
-                            ORDER BY data_criacao ASC
+                            ORDER BY data_criacao DESC
                         `);
                     } catch (qtyError) {
                         // Se der erro por coluna não existir, tentar sem quantidade
@@ -108,7 +108,7 @@ module.exports = async (req, res) => {
                                     data_criacao, 
                                     data_atualizacao
                                 FROM pedidos_compras 
-                                ORDER BY data_criacao ASC
+                                ORDER BY data_criacao DESC
                             `);
                             // Adicionar quantidade padrão aos resultados
                             result.rows = result.rows.map(row => ({ ...row, quantidade: 1 }));

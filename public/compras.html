@@ -807,6 +807,13 @@
                     filtered = filtered.filter(order => this.selectedStatuses.includes(order.status));
                 }
 
+                // Ordenar por data de criação (mais recentes primeiro)
+                filtered.sort((a, b) => {
+                    const dateA = new Date(a.data_criacao || a.dataCriacao || 0);
+                    const dateB = new Date(b.data_criacao || b.dataCriacao || 0);
+                    return dateB - dateA; // Ordem decrescente (mais recente primeiro)
+                });
+
                 this.filteredOrders = filtered;
                 
                 // Resetar para primeira página quando filtrar
