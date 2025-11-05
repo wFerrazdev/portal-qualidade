@@ -7134,3 +7134,90 @@ body.modal-open .compras-page .footer {
     }
 }
 
+/* Estilos para o slider de progresso no modal de projetos */
+.modal-form input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 6px;
+    border-radius: 3px;
+    background: #e5e7eb;
+    outline: none;
+    cursor: pointer;
+}
+
+.modal-form input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, rgb(16, 137, 211) 0%, rgb(18, 177, 209) 100%);
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+}
+
+.modal-form input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+.modal-form input[type="range"]::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, rgb(16, 137, 211) 0%, rgb(18, 177, 209) 100%);
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+}
+
+.modal-form input[type="range"]::-moz-range-thumb:hover {
+    transform: scale(1.1);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Botão de exclusão no modal */
+.modal-button.modal-button-secondary.hidden {
+    display: none;
+}
+
+.modal-button.modal-button-secondary[style*="background: #fee2e2"] {
+    background: #fee2e2 !important;
+    color: #dc2626 !important;
+}
+
+.modal-button.modal-button-secondary[style*="background: #fee2e2"]:hover {
+    background: #fecaca !important;
+    transform: scale(1.02);
+}
+
+/* Botão de fechar no modal-container */
+.modal-container .close-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #64748b;
+    padding: 8px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.modal-container .close-button:hover {
+    background: #f3f4f6;
+    color: #dc2626;
+    transform: scale(1.1);
+}
+
+.modal-container .close-button:active {
+    transform: scale(0.95);
+}
+
