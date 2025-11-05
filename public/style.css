@@ -4151,6 +4151,47 @@ body.auditorias-page {
     overflow-y: auto;
     flex: 1;
     position: static;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Aviso centralizado na página de calibração */
+.calibracao-warning {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem;
+    margin: 2rem auto;
+    max-width: 600px;
+    background: #fff3cd;
+    border: 2px solid #ffc107;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(255, 193, 7, 0.2);
+}
+
+.calibracao-warning .warning-icon {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 1rem;
+    color: #f59e0b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.calibracao-warning .warning-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.calibracao-warning .warning-text {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #92400e;
+    text-align: center;
+    margin: 0;
+    line-height: 1.5;
 }
 
 /* Responsividade para página de auditorias */
@@ -4169,6 +4210,22 @@ body.auditorias-page {
     
     .calibracao-page .content-area {
         margin-left: 0;
+    }
+    
+    .calibracao-warning {
+        margin: 1.5rem 1rem;
+        padding: 2rem 1.5rem;
+        max-width: 100%;
+    }
+    
+    .calibracao-warning .warning-icon {
+        width: 48px;
+        height: 48px;
+        margin-bottom: 0.75rem;
+    }
+    
+    .calibracao-warning .warning-text {
+        font-size: 0.9rem;
     }
     
     .auditorias-page .projects-header {
