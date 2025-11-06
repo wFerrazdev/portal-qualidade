@@ -6964,7 +6964,7 @@ body.modal-open .compras-page .footer {
     border-radius: 40px;
     padding: 24px 32px;
     border: 5px solid rgb(255, 255, 255);
-    box-shadow: rgba(27, 45, 150, 0.9) 0px 30px 30px -20px;
+    box-shadow: rgba(27, 45, 150, 0.7) 0px 30px 30px -20px;
     overflow-y: auto;
     overflow-x: hidden;
     /* Scrollbar invisível mas funcional - Firefox e IE/Edge */
@@ -6993,7 +6993,7 @@ body.modal-open .compras-page .footer {
     text-align: center;
     font-weight: 900;
     font-size: 28px;
-    color: rgb(16, 137, 211);
+    color: rgb(27, 45, 150);
     margin: 0 0 6px 0;
 }
 
@@ -7024,7 +7024,7 @@ body.modal-open .compras-page .footer {
     padding: 10px 16px;
     border-radius: 16px;
     margin-top: 0;
-    box-shadow: rgba(27, 45, 150, 0.9) 0px 8px 8px -4px;
+    box-shadow: rgba(27, 45, 150, 0.7) 0px 8px 8px -4px;
     border-inline: 2px solid transparent;
     font-size: 0.875rem;
     font-family: inherit;
@@ -7100,19 +7100,19 @@ body.modal-open .compras-page .footer {
 }
 
 .modal-button-primary {
-    background: linear-gradient(45deg, rgb(16, 137, 211) 0%, rgb(18, 177, 209) 100%);
+    background: linear-gradient(45deg, rgb(27, 45, 150) 0%, rgb(27, 45, 150) 100%);
     color: white;
-    box-shadow: rgba(27, 45, 150, 0.9) 0px 20px 10px -15px;
+    box-shadow: rgba(27, 45, 150, 0.7) 0px 20px 10px -15px;
 }
 
 .modal-button-primary:hover {
     transform: scale(1.03);
-    box-shadow: rgba(27, 45, 150, 0.9) 0px 23px 10px -20px;
+    box-shadow: rgba(27, 45, 150, 0.7) 0px 23px 10px -20px;
 }
 
 .modal-button-primary:active {
     transform: scale(0.95);
-    box-shadow: rgba(27, 45, 150, 0.9) 0px 15px 10px -10px;
+    box-shadow: rgba(27, 45, 150, 0.7) 0px 15px 10px -10px;
 }
 
 .modal-button-secondary {
@@ -7239,7 +7239,7 @@ body.modal-open .compras-page .footer {
     width: 18px;
     height: 18px;
     border-radius: 50%;
-    background: linear-gradient(45deg, rgb(16, 137, 211) 0%, rgb(18, 177, 209) 100%);
+    background: linear-gradient(45deg, rgb(27, 45, 150) 0%, rgb(27, 45, 150) 100%);
     cursor: pointer;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     transition: all 0.2s ease;
@@ -7254,7 +7254,7 @@ body.modal-open .compras-page .footer {
     width: 18px;
     height: 18px;
     border-radius: 50%;
-    background: linear-gradient(45deg, rgb(16, 137, 211) 0%, rgb(18, 177, 209) 100%);
+    background: linear-gradient(45deg, rgb(27, 45, 150) 0%, rgb(27, 45, 150) 100%);
     cursor: pointer;
     border: none;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
