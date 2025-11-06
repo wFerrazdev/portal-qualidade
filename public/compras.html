@@ -354,26 +354,33 @@
             
             // --- LÓGICA DE PERMISSÕES (VISUAL) ---
             // Verificar permissões do usuário autenticado
-            checkAuth().then(user => {
-                if (user) {
-                    // Aqui você pode implementar lógica de permissões baseada no Auth0
-                    // Por exemplo, verificar roles ou claims do usuário
-                    const userRoles = user['https://portalqualidade.com/roles'] || [];
-                    // Se o usuário NÃO tiver a permissão 'admin' na sua lista de permissões...
-                    if (!userRoles.includes('admin')) {
-                        // ...encontra e esconde todos os botões de ação.
-                        const addBtn = document.querySelector('.add-button');
-                        if (addBtn) addBtn.style.display = 'none';
-
-                        // Também esconde os botões de editar/excluir que são criados dinamicamente
-                        // Adicionando uma classe ao container principal para o CSS esconder os botões
-                        const grid = document.querySelector('.projects-grid, .audits-grid, .meetings-list');
-                        if(grid) grid.classList.add('viewer-mode');
+            // Esconder botões de adicionar/editar/excluir para usuários "Leitor"
+            function applyPermissions() {
+                // Verificar se o usuário é "Leitor" (não é "Admin")
+                if (!hasRole('Admin')) {
+                    // Esconder botão "Nova Solicitação"
+                    const novaSolicitacaoBtn = document.getElementById('nova-solicitacao-btn');
+                    if (novaSolicitacaoBtn) {
+                        novaSolicitacaoBtn.style.display = 'none';
                     }
+                    
+                    // Esconder botões de editar/excluir na tabela
+                    // Isso será aplicado quando os botões forem renderizados
+                    window.gestaoComprasApp.hideActionButtons = true;
                 }
-            }).catch(error => {
-                console.error('Erro ao verificar permissões:', error);
-            });
+            }
+            
+            // Aplicar permissões quando a página carregar
+            applyPermissions();
+            
+            // Reaplicar permissões após renderizar a tabela (caso os botões sejam criados dinamicamente)
+            const originalRenderTable = window.gestaoComprasApp.renderTable;
+            if (originalRenderTable) {
+                window.gestaoComprasApp.renderTable = function() {
+                    originalRenderTable.call(this);
+                    applyPermissions();
+                };
+            }
             
 
         });
@@ -418,6 +425,7 @@
                 this.showEditModalFlag = false;
                 this.selectedOrder = null;
                 this.editData = {};
+                this.hideActionButtons = false; // Flag para esconder botões de ação para usuários "Leitor"
                 
                 // Propriedades de paginação
                 this.currentPage = 1;
@@ -923,6 +931,7 @@
                                     </svg>
                                 </button>
                                 
+                                ${this.hideActionButtons ? '' : `
                                 <!-- Botão Excluir -->
                                 <button onclick="window.gestaoComprasApp.deleteOrder(${order.id})" 
                                         style="width: 32px; height: 32px; background: #dc2626; color: white; border: none; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"
@@ -932,6 +941,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                                     </svg>
                                 </button>
+                                `}
                             </div>
                         </td>
                     `;
@@ -1471,6 +1481,7 @@
                                         Fechar
                                     </button>
 
+                                    ${this.hideActionButtons ? '' : `
                                     <button onclick="window.gestaoComprasApp.openEditModal(${order.id})" 
                                             style="padding: 0.625rem 1.25rem; background: #2563eb; color: white; border-radius: 0.5rem; border: none; font-weight: 600; cursor: pointer; transition: all 0.3s ease; font-size: 0.875rem; display: flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
                                         <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1486,7 +1497,9 @@
                                         </svg>
                                         Excluir
                                     </button>
+                                    `}
                                     
+                                    ${this.hideActionButtons ? '' : `
                                     ${currentStage > 1 ? `
                                         <button onclick="window.gestaoComprasApp.regressStage(${order.id})" 
                                                 style="padding: 0.625rem 1.25rem; background: #ea580c; color: white; border-radius: 0.5rem; border: none; font-weight: 600; cursor: pointer; transition: all 0.3s ease; font-size: 0.875rem; display: flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
@@ -1506,6 +1519,7 @@
                                             Avançar
                                         </button>
                                     ` : ''}
+                                    `}
                                 </div>
                             </div>
                         </div>

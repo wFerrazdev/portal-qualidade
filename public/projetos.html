@@ -826,6 +826,41 @@
                     await handleDeleteProjectFromCard(projectId);
                 }
             });
+            
+            // --- LÓGICA DE PERMISSÕES (VISUAL) ---
+            // Esconder botões de adicionar/editar/excluir para usuários "Leitor"
+            function applyPermissions() {
+                // Verificar se o usuário é "Leitor" (não é "Admin")
+                if (!hasRole('Admin')) {
+                    // Esconder botão "Adicionar Projeto"
+                    if (addProjectBtn) {
+                        addProjectBtn.style.display = 'none';
+                    }
+                    
+                    // Esconder botões de editar/excluir nos cards de projeto
+                    const editButtons = document.querySelectorAll('.edit-project');
+                    const deleteButtons = document.querySelectorAll('.delete-project');
+                    editButtons.forEach(btn => btn.style.display = 'none');
+                    deleteButtons.forEach(btn => btn.style.display = 'none');
+                    
+                    // Esconder botão de excluir no modal
+                    if (deleteProjectBtn) {
+                        deleteProjectBtn.style.display = 'none';
+                    }
+                }
+            }
+            
+            // Aplicar permissões quando a página carregar
+            applyPermissions();
+            
+            // Reaplicar permissões após renderizar os projetos (caso os botões sejam criados dinamicamente)
+            const originalRenderProjects = window.renderProjects;
+            if (originalRenderProjects) {
+                window.renderProjects = function() {
+                    originalRenderProjects();
+                    applyPermissions();
+                };
+            }
         });
 
         // --- LÓGICA DO MENU LATERAL ---
