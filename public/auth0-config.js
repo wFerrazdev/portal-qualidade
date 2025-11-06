@@ -114,6 +114,68 @@ function clearAuthCache() {
     isChecking = false;
 }
 
+// Função para decodificar JWT token (sem verificar assinatura)
+function decodeJWT(token) {
+    try {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+        return JSON.parse(jsonPayload);
+    } catch (error) {
+        console.error('Erro ao decodificar token:', error);
+        return null;
+    }
+}
+
+// Função para obter roles do usuário atual
+function getUserRoles() {
+    const token = localStorage.getItem('auth0_token');
+    if (!token) {
+        return [];
+    }
+    
+    const decoded = decodeJWT(token);
+    if (!decoded) {
+        return [];
+    }
+    
+    // Namespace definido na Action do Auth0
+    const ns = 'https://portalqualidade.com/';
+    const roles = decoded[ns + 'roles'];
+    
+    return Array.isArray(roles) ? roles : [];
+}
+
+// Função para verificar se o usuário tem uma role específica
+function hasRole(role) {
+    const roles = getUserRoles();
+    return roles.includes(role);
+}
+
+// Função para verificar se o usuário tem uma permissão específica (para uso futuro)
+function hasPermission(permission) {
+    const token = localStorage.getItem('auth0_token');
+    if (!token) {
+        return false;
+    }
+    
+    const decoded = decodeJWT(token);
+    if (!decoded) {
+        return false;
+    }
+    
+    const ns = 'https://portalqualidade.com/';
+    const permissions = decoded[ns + 'permissions'];
+    
+    if (!Array.isArray(permissions)) {
+        return false;
+    }
+    
+    return permissions.includes(permission);
+}
+
 // Função para obter token de acesso
 async function getAccessToken() {
     return localStorage.getItem('auth0_token');
