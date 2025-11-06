@@ -15,7 +15,11 @@ const CACHE_DURATION = 5 * 60 * 1000; // 5 minutos
 // Função para verificar se o usuário está autenticado
 async function checkAuth() {
     try {
-        const token = localStorage.getItem('auth0_token');
+        // Usar access_token para /userinfo (se disponível), senão usar id_token
+        const accessToken = localStorage.getItem('auth0_access_token');
+        const idToken = localStorage.getItem('auth0_token');
+        const token = accessToken || idToken;
+        
         if (!token) {
             return false;
         }
@@ -38,9 +42,11 @@ async function checkAuth() {
         isChecking = true;
         
         // Verificar se o token ainda é válido (com rate limiting)
+        // Usar access_token para /userinfo (preferencialmente)
+        const tokenForUserInfo = accessToken || idToken;
         const response = await fetch(`https://${auth0Config.domain}/userinfo`, {
             headers: {
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${tokenForUserInfo}`
             }
         });
         
@@ -59,10 +65,12 @@ async function checkAuth() {
             }
             // Se não há cache, retornar false para evitar loop
             localStorage.removeItem('auth0_token');
+            localStorage.removeItem('auth0_access_token');
             userCache = null;
             return false;
         } else {
             localStorage.removeItem('auth0_token');
+            localStorage.removeItem('auth0_access_token');
             userCache = null;
             isChecking = false;
             return false;
@@ -76,6 +84,7 @@ async function checkAuth() {
             return userCache;
         }
         localStorage.removeItem('auth0_token');
+        localStorage.removeItem('auth0_access_token');
         return false;
     }
 }
@@ -96,6 +105,7 @@ function login() {
 // Função para fazer logout
 function logout() {
     localStorage.removeItem('auth0_token');
+    localStorage.removeItem('auth0_access_token');
     userCache = null; // Limpar cache
     lastCheckTime = 0;
     isChecking = false; // Limpar flag de verificação
