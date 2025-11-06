@@ -231,7 +231,7 @@
                                         <polyline points="6 9 12 15 18 9"></polyline>
                                     </svg>
                                 </button>
-                                <div id="status-filter-dropdown" style="display: none; position: absolute; right: 0; top: calc(100% + 0.5rem); width: 20rem; background: white; border: 2px solid #cbd5e1; border-radius: 0.5rem; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); z-index: 20; max-height: 24rem; overflow-y: auto;">
+                                <div id="status-filter-dropdown" style="display: none; position: absolute; right: 0; top: calc(100% + 0.5rem); width: 20rem; background: white; border: 2px solid #cbd5e1; border-radius: 0.5rem; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); z-index: 20; max-height: 24rem; overflow-y: auto; scrollbar-width: none; -ms-overflow-style: none;">
                                     <div style="padding: 0.75rem; border-bottom: 1px solid #e2e8f0; background: #f8fafc;">
                                         <div style="display: flex; align-items: center; justify-content: space-between;">
                                             <span style="font-size: 0.875rem; font-weight: 700; color: #475569;">Filtrar por Status</span>
@@ -1344,26 +1344,20 @@
                     
                     const modalHTML = `
                         <div class="modal-overlay" style="position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; padding: 1rem; z-index: 50;">
-                            <div class="modal-content" style="background: white; border-radius: 1rem; max-width: 40rem; width: 100%; padding: 1.5rem; max-height: 85vh; overflow-y: auto; border: 1px solid #e2e8f0; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); scrollbar-width: thin; scrollbar-color: #3b82f6 #f1f5f9;">
+                            <div class="modal-content" style="background: white; border-radius: 1rem; max-width: 40rem; width: 100%; padding: 1.5rem; max-height: 85vh; overflow-y: auto; border: 1px solid #e2e8f0; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); scrollbar-width: none; -ms-overflow-style: none;">
                                 <style>
                                     .modal-content::-webkit-scrollbar {
-                                        width: 6px;
+                                        width: 0px;
+                                        display: none;
+                                        background: transparent;
                                     }
                                     .modal-content::-webkit-scrollbar-track {
+                                        display: none;
                                         background: transparent;
                                     }
                                     .modal-content::-webkit-scrollbar-thumb {
-                                        background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-                                        border-radius: 3px;
-                                        border: none;
-                                        box-shadow: 0 1px 3px rgba(59, 130, 246, 0.3);
-                                    }
-                                    .modal-content::-webkit-scrollbar-thumb:hover {
-                                        background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
-                                        box-shadow: 0 2px 6px rgba(59, 130, 246, 0.4);
-                                    }
-                                    .modal-content::-webkit-scrollbar-thumb:active {
-                                        background: linear-gradient(135deg, #1d4ed8 0%, #1e3a8a 100%);
+                                        display: none;
+                                        background: transparent;
                                     }
                                 </style>
                                 <!-- Header -->
@@ -1525,7 +1519,7 @@
                     const options = ['Qualidade','Produção','Manutenção','Logística','Administração','Engenharia','Comercial','TI'];
                     const modalHTML = `
                         <div class="modal-overlay" style="position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; padding: 1rem; z-index: 50;">
-                            <div class="modal-content" style="background: white; border-radius: 1rem; max-width: 40rem; width: 100%; padding: 1.5rem; max-height: 85vh; overflow-y: auto; border: 1px solid #e2e8f0; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);">
+                            <div class="modal-content" style="background: white; border-radius: 1rem; max-width: 40rem; width: 100%; padding: 1.5rem; max-height: 85vh; overflow-y: auto; border: 1px solid #e2e8f0; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); scrollbar-width: none; -ms-overflow-style: none;">
                                 <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem;">
                                     <h2 style="font-size:1.25rem; font-weight:700; color:#1e293b; margin:0;">Editar Solicitação</h2>
                                     <button onclick="window.gestaoComprasApp.cancelEdit()" style="color:#64748b; background:none; border:none; cursor:pointer; padding:0.5rem; border-radius:0.5rem;">

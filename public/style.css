@@ -1457,22 +1457,49 @@ body.calibracao-page {
 .indicator-card:nth-child(3) { animation-delay: 0.3s; }
 .indicator-card:nth-child(4) { animation-delay: 0.4s; }
 
-/* Scrollbar Personalizada */
-::-webkit-scrollbar {
-  width: 8px;
+/* ==================== SCROLLBAR INVISÍVEL MAS FUNCIONAL ==================== */
+/* Classe genérica para scrollbar invisível - aplicar em qualquer elemento */
+.hide-scrollbar {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE e Edge antigos */
 }
 
-::-webkit-scrollbar-track {
-  background: #f1f5f9;
+.hide-scrollbar::-webkit-scrollbar {
+    width: 0px;
+    display: none;
+    background: transparent;
 }
 
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #003366 0%, #004488 100%);
-  border-radius: 4px;
+.hide-scrollbar::-webkit-scrollbar-track {
+    display: none;
+    background: transparent;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #004488 0%, #0056b3 100%);
+.hide-scrollbar::-webkit-scrollbar-thumb {
+    display: none;
+    background: transparent;
+}
+
+/* Scrollbar invisível global - aplica em todos os elementos com scroll */
+* {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE e Edge antigos */
+}
+
+*::-webkit-scrollbar {
+    width: 0px;
+    display: none;
+    background: transparent;
+}
+
+*::-webkit-scrollbar-track {
+    display: none;
+    background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+    display: none;
+    background: transparent;
 }
 
 /* Estados de Loading */
@@ -6476,29 +6503,9 @@ body.compras-page {
     background: #f1f5f9 !important;
 }
 
-/* Dropdown customizado */
+/* Dropdown customizado - scrollbar invisível já aplicada globalmente */
 #status-filter-dropdown {
-    scrollbar-width: thin;
-    scrollbar-color: #3b82f6 #f1f5f9;
-}
-
-#status-filter-dropdown::-webkit-scrollbar {
-    width: 8px;
-}
-
-#status-filter-dropdown::-webkit-scrollbar-track {
-    background: #f1f5f9;
-    border-radius: 10px;
-}
-
-#status-filter-dropdown::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #3b82f6, #6366f1);
-    border-radius: 10px;
-    border: 2px solid #f1f5f9;
-}
-
-#status-filter-dropdown::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(135deg, #2563eb, #4f46e5);
+    /* Scrollbar invisível mas funcional - já coberto pela regra global */
 }
 
 /* Opção do dropdown */
@@ -6532,38 +6539,9 @@ body.compras-page {
     max-height: 100%;
 }
 
-/* Barra de rolagem personalizada - WebKit */
-.orders-table-wrapper::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
-}
-
-.orders-table-wrapper::-webkit-scrollbar-track {
-    background: linear-gradient(to right, #f1f5f9, #e2e8f0);
-    border-radius: 10px;
-    margin: 4px 0;
-}
-
-.orders-table-wrapper::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #3b82f6, #6366f1);
-    border-radius: 10px;
-    border: 2px solid #f1f5f9;
-    transition: all 0.3s ease;
-}
-
-.orders-table-wrapper::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(135deg, #2563eb, #4f46e5);
-    border: 2px solid #e2e8f0;
-}
-
-.orders-table-wrapper::-webkit-scrollbar-thumb:active {
-    background: linear-gradient(135deg, #1d4ed8, #4338ca);
-}
-
-/* Firefox */
+/* Barra de rolagem invisível - já aplicada globalmente */
 .orders-table-wrapper {
-    scrollbar-width: thin;
-    scrollbar-color: #3b82f6 #f1f5f9;
+    /* Scrollbar invisível mas funcional - já coberto pela regra global */
 }
 
 /* Tabela de pedidos */
@@ -6753,22 +6731,9 @@ body.compras-page {
     background: white;
 }
 
-.orders-tbody::-webkit-scrollbar {
-    width: 8px;
-}
-
-.orders-tbody::-webkit-scrollbar-track {
-    background: #f1f5f9;
-    border-radius: 4px;
-}
-
-.orders-tbody::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-    border-radius: 4px;
-}
-
-.orders-tbody::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+/* Scrollbar invisível - já aplicada globalmente */
+.orders-tbody {
+    /* Scrollbar invisível mas funcional - já coberto pela regra global */
 }
 
 /* Estilos para os status na tabela */
