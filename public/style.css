@@ -6897,24 +6897,26 @@ body.modal-open .compras-page .footer {
     box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 30px 30px -20px;
     overflow-y: auto;
     overflow-x: hidden;
+    /* Scrollbar invisível mas funcional - Firefox e IE/Edge */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE e Edge antigos */
 }
 
+/* Scrollbar invisível mas funcional - WebKit (Chrome, Safari, Edge) */
 .modal-container::-webkit-scrollbar {
-    width: 8px;
+    width: 0px;
+    display: none;
+    background: transparent;
 }
 
 .modal-container::-webkit-scrollbar-track {
+    display: none;
     background: transparent;
-    border-radius: 10px;
 }
 
 .modal-container::-webkit-scrollbar-thumb {
-    background: rgba(133, 189, 215, 0.5);
-    border-radius: 10px;
-}
-
-.modal-container::-webkit-scrollbar-thumb:hover {
-    background: rgba(133, 189, 215, 0.7);
+    display: none;
+    background: transparent;
 }
 
 .modal-heading {
