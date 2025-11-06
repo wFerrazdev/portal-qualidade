@@ -102,8 +102,19 @@
                 
                 const tokenData = await tokenResponse.json();
                 
-                // Salvar token no localStorage
-                localStorage.setItem('auth0_token', tokenData.access_token);
+                // Salvar tokens no localStorage
+                // Usar id_token para ler roles (sempre é um JWT)
+                // Usar access_token para requisições à API
+                if (tokenData.id_token) {
+                    localStorage.setItem('auth0_token', tokenData.id_token);
+                } else if (tokenData.access_token) {
+                    localStorage.setItem('auth0_token', tokenData.access_token);
+                }
+                
+                // Salvar access_token separadamente para uso em APIs
+                if (tokenData.access_token) {
+                    localStorage.setItem('auth0_access_token', tokenData.access_token);
+                }
                 
                 // Redirecionar para a página principal
                 window.location.href = '/index.html';

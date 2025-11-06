@@ -117,14 +117,39 @@ function clearAuthCache() {
 // Função para decodificar JWT token (sem verificar assinatura)
 function decodeJWT(token) {
     try {
-        const base64Url = token.split('.')[1];
-        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        if (!token || typeof token !== 'string') {
+            console.error('Token inválido: não é uma string');
+            return null;
+        }
+        
+        // Um JWT válido tem 3 partes separadas por pontos: header.payload.signature
+        const parts = token.split('.');
+        if (parts.length !== 3) {
+            console.error('Token inválido: não é um JWT válido (deve ter 3 partes separadas por pontos)');
+            console.log('Token recebido:', token.substring(0, 50) + '...');
+            return null;
+        }
+        
+        const base64Url = parts[1];
+        if (!base64Url) {
+            console.error('Token inválido: payload não encontrado');
+            return null;
+        }
+        
+        // Adicionar padding se necessário
+        let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        while (base64.length % 4) {
+            base64 += '=';
+        }
+        
         const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
             return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
         }).join(''));
+        
         return JSON.parse(jsonPayload);
     } catch (error) {
         console.error('Erro ao decodificar token:', error);
+        console.log('Token (primeiros 100 caracteres):', token ? token.substring(0, 100) : 'null');
         return null;
     }
 }
@@ -176,8 +201,65 @@ function hasPermission(permission) {
     return permissions.includes(permission);
 }
 
-// Função para obter token de acesso
+// Função de debug para verificar o token completo (apenas para desenvolvimento)
+function debugToken() {
+    const token = localStorage.getItem('auth0_token');
+    if (!token) {
+        console.log('❌ Nenhum token encontrado no localStorage');
+        return null;
+    }
+    
+    console.log('📦 Token armazenado (primeiros 100 caracteres):', token.substring(0, 100) + '...');
+    console.log('📏 Tamanho do token:', token.length, 'caracteres');
+    
+    // Verificar formato do token
+    const parts = token.split('.');
+    console.log('🔢 Partes do token:', parts.length, '(deve ser 3 para um JWT válido)');
+    
+    if (parts.length !== 3) {
+        console.error('❌ Token não é um JWT válido! Um JWT deve ter 3 partes separadas por pontos.');
+        console.log('💡 Isso pode acontecer se:');
+        console.log('   - O token foi armazenado incorretamente');
+        console.log('   - O token não é um JWT (pode ser um access token simples)');
+        console.log('   - O token está corrompido');
+        return null;
+    }
+    
+    const decoded = decodeJWT(token);
+    if (!decoded) {
+        console.log('❌ Erro ao decodificar token');
+        return null;
+    }
+    
+    console.log('✅ Token decodificado com sucesso!');
+    console.log('📋 Token decodificado completo:', decoded);
+    
+    const ns = 'https://portalqualidade.com/';
+    const roles = decoded[ns + 'roles'];
+    const permissions = decoded[ns + 'permissions'];
+    
+    console.log('🔑 Roles encontradas:', roles || 'Nenhuma role encontrada');
+    console.log('🔐 Permissions encontradas:', permissions || 'Nenhuma permissão encontrada');
+    
+    if (!roles || roles.length === 0) {
+        console.warn('⚠️ Nenhuma role encontrada no token!');
+        console.log('💡 Verifique:');
+        console.log('   1. A Action "Add roles to token" está no flow Login?');
+        console.log('   2. O usuário tem roles atribuídas no Auth0?');
+        console.log('   3. Você fez logout e login novamente após configurar?');
+    }
+    
+    return decoded;
+}
+
+// Função para obter token de acesso (para uso em APIs)
 async function getAccessToken() {
+    // Priorizar access_token para requisições à API
+    const accessToken = localStorage.getItem('auth0_access_token');
+    if (accessToken) {
+        return accessToken;
+    }
+    // Fallback para o token principal (pode ser id_token)
     return localStorage.getItem('auth0_token');
 }
 
