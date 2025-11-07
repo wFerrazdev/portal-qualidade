@@ -425,7 +425,9 @@
                 this.showEditModalFlag = false;
                 this.selectedOrder = null;
                 this.editData = {};
-                this.hideActionButtons = false; // Flag para esconder botões de ação para usuários "Leitor"
+                // Flag para esconder botões de ação para usuários "Leitor"
+                // Define automaticamente com base nas roles atuais
+                this.hideActionButtons = !hasRole('Admin');
                 
                 // Propriedades de paginação
                 this.currentPage = 1;

@@ -362,6 +362,7 @@
                 if (project.progresso == 100) { progressBarColor = '#28a745'; }
                 else if (project.progresso >= 70) { progressBarColor = '#ffc107'; }
                 else if (project.progresso >= 50) { progressBarColor = '#fd7e14'; }
+                const canEdit = hasRole('Admin');
 
                 // Botões de ação agora são parte do overlay - não precisamos mais do HTML antigo
 
@@ -369,6 +370,7 @@
                     <div class="card-image-container">
                         <img src="${project.imagem_url || 'https://via.placeholder.com/600x400/CCCCCC/FFFFFF?text=Sem+Imagem'}" alt="Imagem do Projeto ${project.nome || project.titulo}">
                         <!-- Ícones pequenos no canto inferior direito -->
+                        ${canEdit ? `
                         <div class="card-action-icons">
                             <button class="action-icon edit-project" data-id="${project.id}" title="Editar Projeto">
                                 <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -380,7 +382,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                                 </svg>
                             </button>
-                        </div>
+                        </div>` : ''}
                     </div>
                     <div class="card-project-body">
                         <h3>${project.nome || project.titulo}</h3>
@@ -854,10 +856,10 @@
             applyPermissions();
             
             // Reaplicar permissões após renderizar os projetos (caso os botões sejam criados dinamicamente)
-            const originalRenderProjects = window.renderProjects;
-            if (originalRenderProjects) {
-                window.renderProjects = function() {
-                    originalRenderProjects();
+            const originalFetchAndRender = fetchAndRenderProjects;
+            if (originalFetchAndRender) {
+                fetchAndRenderProjects = async function() {
+                    await originalFetchAndRender();
                     applyPermissions();
                 };
             }
